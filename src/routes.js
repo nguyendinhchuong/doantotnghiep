@@ -10,6 +10,7 @@ import AddNewPost from "./views/AddNewPost";
 import Errors from "./views/Errors";
 import OutcomeStandard from "./views/OutcomeStandard";
 import BlogPosts from "./views/BlogPosts";
+import AddOS from './components/AddOS'
 
 export default [
   {
@@ -42,5 +43,10 @@ export default [
     path: "/errors",
     layout: DefaultLayout,
     component: Errors
+  },
+  {
+    path: "/addOs",
+    layout: DefaultLayout,
+    component: AddOS
   },
 ];
