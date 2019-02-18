@@ -20,7 +20,9 @@ export default class OutcomeStandard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      faculty: "none",
+      level: "none"
     };
   }
 
@@ -30,7 +32,28 @@ export default class OutcomeStandard extends Component {
     });
   };
 
+  handlefFacultyChange = event => {
+    this.setState({ faculty: event.currentTarget.value });
+  };
+
+  handleLevelChange = event => {
+    this.setState({ level: event.currentTarget.value });
+  };
+
   onCloseAdd = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  onCloseAddCreate = () => {
+    this.props.history.push({
+      pathname: "/outcome-standard/add",
+      search: `?faculty=${this.state.faculty}&level=${this.state.level}`
+    });
+
+    // this.props.history.push("/outcome-standard/add");
+
     this.setState({
       visible: false
     });
@@ -61,7 +84,7 @@ export default class OutcomeStandard extends Component {
               type="button"
               className="btn btn-primary"
               key="save"
-              onClick={this.onCloseAdd}
+              onClick={this.onCloseAddCreate}
               theme="success"
             >
               Tạo
@@ -73,10 +96,10 @@ export default class OutcomeStandard extends Component {
               Khoa:
             </Col>
             <Col lg="9" md="9" sm="9">
-              <FormSelect>
-                <option value="first">Công nghệ thông tin</option>
-                <option value="second">Toán tin</option>
-                <option value="third" disabled>
+              <FormSelect onChange={e => this.handlefFacultyChange(e)}>
+                <option value="Công nghệ thông tin">Công nghệ thông tin</option>
+                <option value="Toán tin">Toán tin</option>
+                <option value="Sinh học" disabled>
                   Sinh học
                 </option>
               </FormSelect>
@@ -88,13 +111,13 @@ export default class OutcomeStandard extends Component {
               Hệ:
             </Col>
             <Col lg="9" md="9" sm="9">
-              <FormSelect>
-                <option value="first">Chất lượng cao</option>
-                <option value="second">Việt Pháp</option>
-                <option value="third" disabled>
+              <FormSelect onChange={e => this.handleLevelChange(e)}>
+                <option value="Chất lượng cao">Chất lượng cao</option>
+                <option value="Việt Pháp">Việt Pháp</option>
+                <option value="Đại trà" disabled>
                   Đại trà
                 </option>
-                <option value="third">Cao đẳng</option>
+                <option value="Cao đẳng">Cao đẳng</option>
               </FormSelect>
             </Col>
           </Row>
@@ -149,16 +172,44 @@ export default class OutcomeStandard extends Component {
                       <td>CNTT</td>
                       <td>CNPM</td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Chỉnh sửa">edit</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Chỉnh sửa"
+                        >
+                          edit
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo bản sao">file_copy</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo bản sao"
+                        >
+                          file_copy
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Xóa">delete</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Xóa"
+                        >
+                          delete
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo file Excel">save_alt</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo file Excel"
+                        >
+                          save_alt
+                        </i>
                       </td>
                     </tr>
                     <tr>
@@ -168,16 +219,44 @@ export default class OutcomeStandard extends Component {
                       <td>CNTT</td>
                       <td>CNPM</td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Chỉnh sửa">edit</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Chỉnh sửa"
+                        >
+                          edit
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo bản sao">file_copy</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo bản sao"
+                        >
+                          file_copy
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Xóa">delete</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Xóa"
+                        >
+                          delete
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo file Excel">save_alt</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo file Excel"
+                        >
+                          save_alt
+                        </i>
                       </td>
                     </tr>
                     <tr>
@@ -187,16 +266,44 @@ export default class OutcomeStandard extends Component {
                       <td>CNTT</td>
                       <td>CNPM</td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Chỉnh sửa">edit</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Chỉnh sửa"
+                        >
+                          edit
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo bản sao">file_copy</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo bản sao"
+                        >
+                          file_copy
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Xóa">delete</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Xóa"
+                        >
+                          delete
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo file Excel">save_alt</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo file Excel"
+                        >
+                          save_alt
+                        </i>
                       </td>
                     </tr>
                     <tr>
@@ -206,16 +313,44 @@ export default class OutcomeStandard extends Component {
                       <td>CNTT</td>
                       <td>CNPM</td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Chỉnh sửa">edit</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Chỉnh sửa"
+                        >
+                          edit
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo bản sao">file_copy</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo bản sao"
+                        >
+                          file_copy
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Xóa">delete</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Xóa"
+                        >
+                          delete
+                        </i>
                       </td>
                       <td>
-                        <i className="material-icons" data-toggle="tooltip" title="Tạo file Excel">save_alt</i>
+                        <i
+                          style={{ cursor: "pointer" }}
+                          className="material-icons"
+                          data-toggle="tooltip"
+                          title="Tạo file Excel"
+                        >
+                          save_alt
+                        </i>
                       </td>
                     </tr>
                   </tbody>
