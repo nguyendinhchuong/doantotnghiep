@@ -49,7 +49,8 @@ export default class OutcomeStandard extends Component {
   onCloseAddCreate = () => {
     this.props.history.push({
       pathname: "/outcome-standard/add",
-      search: `?faculty=${this.state.faculty}&level=${this.state.level}`
+      search: `?faculty=${this.state.faculty}&level=${this.state.level}`,
+      state: { faculty: this.state.faculty, level: this.state.level }
     });
 
     // this.props.history.push("/outcome-standard/add");
