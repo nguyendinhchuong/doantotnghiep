@@ -3,6 +3,7 @@ import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
 import { Button } from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
+import {InputText} from 'primereact/inputtext';
 
 class AddOS extends Component {
 
@@ -10,8 +11,10 @@ class AddOS extends Component {
         super(props);
         this.state = {
             nodes: data1,
+            node: '',
             visible: false,
-            value: '',
+            nameOut: '',
+            root: false,
             data: '',
             dataImport: []
         };
@@ -30,7 +33,8 @@ class AddOS extends Component {
         const root = {
             "key": `${key}`,
             "data": {
-                "name": `${key}`
+                "name": this.state.nameOut,
+                "displayName" :`${key}. ${this.state.nameOut}`
             },
             "children": []
         }
@@ -48,7 +52,8 @@ class AddOS extends Component {
         const subNode = {
             "key": key,
             "data": {
-                "name": key
+                "name": this.state.nameOut,
+                "displayName" :`${key}. ${this.state.nameOut}`
             },
             "children": []
         }
@@ -83,6 +88,10 @@ class AddOS extends Component {
                     children[Number(x[4])].children.push(subNode);
                 break;
             }
+            default:
+             alert('Cannot insert');
+             break;
+             
         }
         this.setState({
             nodes: data1
@@ -90,20 +99,38 @@ class AddOS extends Component {
 
     }
 
-    onClickDialog(event) {
-        this.setState({visible: true});
+    onClickDialog(node) {
+        this.setState({
+            visible: true,
+            root: false,
+            node: node
+        });
     }
 
-    onHideDialog(event) {
+    onClickDialogRoot() {
+        this.setState({
+            visible: true,
+            root: true
+        })
+    }
+
+    onHideDialog() {
         this.setState({visible: false});
     }
 
     handleChange(event) {
-        this.setState({value: event.target.value});
+        this.setState({nameOut: event.target.value});
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
+        if(this.state.root){
+            this.addRoot();
+        }
+        else{
+            this.add(this.state.node);
+        }
+        this.onHideDialog();
+
         event.preventDefault();
     }
 
@@ -136,19 +163,19 @@ class AddOS extends Component {
             <div className="App">
                 <header className="App-header">
                     <div className="p-grid content-section implementation">
-                        <Button type="button" onClick={() => this.addRoot()}
-                            icon="pi pi-search" className="p-button-success" style={{ marginRight: '.5em' }}>
-                        </Button>
-                        <h3>-------------</h3>
-                        <TreeTable value={this.state.nodes}>
-                            <Column field="name" header="Name" expander ></Column>
+                        <h3>Chuẩn Đầu Ra</h3>
+                        <Button label="Thêm mới" icon="pi pi-check" onClick={()=>this.onClickDialogRoot()} />
+                        <hr />                        <TreeTable value={this.state.nodes}>
+                            <Column field="displayName" header="Name" expander ></Column>
                             <Column body={this.actionTemplate} style={{ textAlign: 'left', width: '8em' }} />
                         </TreeTable>
 
                         <div className="content-section implementation">
-                            <Dialog header="Godfather I" visible={this.state.visible} style={{ width: '50vw' }}
-                                footer={footer} onHide={this.onHideDialog} maximizable>
-                                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                            <Dialog header="Name Title" visible={this.state.visible} style={{ width: '50vw' }}
+                                footer={footer} onHide={this.onHideDialog} >
+                                    <InputText type="text" value={this.state.nameOut} 
+                                    onChange={this.handleChange} style={{ width: '100%' }}
+                                     />
                             </Dialog>
 
                         </div>
