@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import XLSX from 'xlsx'
+
 import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
 import { Button } from 'primereact/button';
@@ -10,6 +12,7 @@ class AddOS extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            dataImport: [],
             nodes: data1,
             node: '',
             visible: false,
@@ -22,8 +25,9 @@ class AddOS extends Component {
         this.onClickDialog = this.onClickDialog.bind(this);
         this.addRoot.bind(this);
         this.onHideDialog = this.onHideDialog.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFile = this.handleFile.bind(this);
     }
 
 
@@ -118,7 +122,7 @@ class AddOS extends Component {
         this.setState({visible: false});
     }
 
-    handleChange(event) {
+    handleChangeTitle(event) {
         this.setState({nameOut: event.target.value});
     }
 
@@ -132,6 +136,119 @@ class AddOS extends Component {
         this.onHideDialog();
 
         event.preventDefault();
+    }
+
+    // Handle Import File
+    addImport(node){
+        const x =node.key.split('-');
+        const lenKey= x.length - 1;
+        const index = this.index(x,0);
+
+        switch(lenKey){
+            case 1:{
+                data1[index].children.push(node);
+                break;
+            }
+            case 2:{
+                data1[index].children[this.index(x,1)].children.push(node);
+                break;
+            }
+            case 3:{
+                data1[index].children[this.index(x,1)].children[this.index(x,2)].children.push(node);   
+                break;
+            }
+            case 4:{
+                data1[index].children[this.index(x,1)].children[this.index(x,2)].children[this.index(x,3)].children.push(node);   
+                break;
+            }
+            case 5:{
+                data1[Number(x[0])].children[Number(x[1])].children[Number(x[2])].children[Number(x[3])].children[Number(x[4])].children.push(node);   
+                break;
+            }
+        }
+        this.setState({
+            nodes: data1
+        })
+        
+    }
+
+    addRootImport(node) {
+  
+       data1.push(node);
+
+       this.setState({
+           nodes: data1
+       })
+    }
+
+    handleFile = (file) => {   
+        /* Boilerplate to set up FileReader */
+		const reader = new FileReader();
+		const rABS = !!reader.readAsBinaryString;
+		reader.onload = (e) => {
+			/* Parse data */
+			const bstr = e.target.result;
+			const wb = XLSX.read(bstr, {type:rABS ? 'binary' : 'array'});
+			/* Get first worksheet */
+			const wsname = wb.SheetNames[0];
+			const ws = wb.Sheets[wsname];
+			/* Convert array of arrays */
+			const data = XLSX.utils.sheet_to_json(ws, {header:1});
+			/* Update state */
+            this.setState({ data: data});
+            const x = this.convertJsonToTreeNode(this.state.data);
+            this.setState({nodes: x});
+		};
+        if(rABS) reader.readAsBinaryString(file);
+        else reader.readAsArrayBuffer(file);
+        
+    }
+
+    convertJsonToTreeNode = (arr) => {
+        data1 = [];
+        let keyParentNode;
+        let count = 0;
+        arr.forEach(el => {
+            const keyAndName = this.getKeyAndName(el);
+            let key;
+            if(keyAndName[0]){
+                keyParentNode = el;
+                count = 0;
+                key = keyAndName[0].toString()
+            }
+            else{
+                count++;
+                key = this.getKeyAndName(keyParentNode)[0] + "-" + count.toString();
+            }
+            const name = keyAndName[1];
+            const subNode = {
+                "key": key,
+                "data": {
+                    "name": name,
+                    "displayName" :`${key}. ${name}`
+                },
+                "children": []
+            }
+            if (key && key.length <=1 ) {
+                this.addRootImport(subNode);
+            }
+            else {
+                this.addImport(subNode);
+            }
+        });
+        return data1;
+    }
+
+    getKeyAndName = (element) => {
+        let key , name;
+        key = element[0];
+        if(element[1])
+            key += `-${element[1]}`;
+        if(element[2])
+            key += `-${element[2]}`;
+        if(element[3])
+            name = `${element[3]}`;
+        return [key,name];
     }
 
     index = (ids, id) => {
@@ -165,7 +282,10 @@ class AddOS extends Component {
                     <div className="p-grid content-section implementation">
                         <h3>Chuẩn Đầu Ra</h3>
                         <Button label="Thêm mới" icon="pi pi-check" onClick={()=>this.onClickDialogRoot()} />
-                        <hr />                        <TreeTable value={this.state.nodes}>
+                        <h5>Import</h5>
+                        <DataInput handleFile={this.handleFile} />
+                        <hr />
+                        <TreeTable value={this.state.nodes}>
                             <Column field="displayName" header="Name" expander ></Column>
                             <Column body={this.actionTemplate} style={{ textAlign: 'left', width: '8em' }} />
                         </TreeTable>
@@ -174,7 +294,7 @@ class AddOS extends Component {
                             <Dialog header="Name Title" visible={this.state.visible} style={{ width: '50vw' }}
                                 footer={footer} onHide={this.onHideDialog} >
                                     <InputText type="text" value={this.state.nameOut} 
-                                    onChange={this.handleChange} style={{ width: '100%' }}
+                                    onChange={this.handleChangeTitle} style={{ width: '100%' }}
                                      />
                             </Dialog>
 
@@ -187,6 +307,24 @@ class AddOS extends Component {
     }
 }
 
-const data1 = [];
+let data1 = [];
+
+class DataInput extends React.Component {
+	constructor(props) {
+		super(props);
+		this.ImportFile = this.ImportFile.bind(this);
+	};
+	ImportFile(e) {
+		const files = e.target.files;
+		if(files && files[0]) this.props.handleFile(files[0]);
+	};
+    render() {
+        return (
+            <form >
+                <input type="file" className="form-control" id="file" onChange={this.ImportFile} />
+            </form>
+        );
+    };
+}
 
 export default AddOS;
