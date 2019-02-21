@@ -15,11 +15,50 @@ import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
+import duplicateOS from "../components/containers/duplicateOS";
 
 export default class OutcomeStandard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      rows: [
+        {
+          OSID: 1,
+          index: 1,
+          name: "CĐR khoa CNTT chuyên ngành CNPM khóa 2015",
+          create_date: "12/2/2019",
+          modify_date: "21/2/2019",
+          faculty: "CNTT",
+          system: "Chính quy"
+        },
+        {
+          OSID: 2,
+          index: 2,
+          name: "CĐR khoa CNTT chuyên ngành HTTT khóa 2015",
+          create_date: "12/2/2019",
+          modify_date: "21/2/2019",
+          faculty: "CNTT",
+          system: "Chính quy"
+        },
+        {
+          OSID: 3,
+          index: 3,
+          name: "CĐR khoa CNTT chuyên ngành KHMT khóa 2015",
+          create_date: "12/2/2019",
+          modify_date: "21/2/2019",
+          faculty: "CNTT",
+          system: "Chính quy"
+        },
+        {
+          OSID: 4,
+          index: 4,
+          name: "CĐR khoa CNTT chuyên ngành MMT khóa 2015",
+          create_date: "12/2/2019",
+          modify_date: "21/2/2019",
+          faculty: "CNTT",
+          system: "Chính quy"
+        },
+      ],
       visible: false,
       faculty: "none",
       level: "none"
@@ -31,7 +70,39 @@ export default class OutcomeStandard extends Component {
       visible: true
     });
   };
+  getCurDate = () => {
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    return dd + '/' + mm + '/' + yyyy;
+  }
+  createOS = () => {
 
+  }
+  duplicateOS = (index) => {
+    console.log(this.state.rows);
+    let copyOS = {};
+    copyOS.index = this.state.rows.length + 1;
+    if (this.state.rows[index - 1].name.includes("Copy of")) {
+      copyOS.name = this.state.rows[index - 1].name;
+    } else {
+      copyOS.name = "Copy of " + this.state.rows[index - 1].name;
+    }
+    copyOS.create_date = this.getCurDate();
+    copyOS.modify_date = this.getCurDate();
+    copyOS.faculty = this.state.rows[index - 1].faculty;
+    copyOS.system = this.state.rows[index - 1].system;
+    this.setState({
+      rows: this.state.rows.concat(copyOS)
+    });
+  }
   handlefFacultyChange = event => {
     this.setState({ faculty: event.currentTarget.value });
   };
@@ -148,6 +219,9 @@ export default class OutcomeStandard extends Component {
                         STT
                       </th>
                       <th scope="col" className="border-0">
+                        Tên
+                      </th>
+                      <th scope="col" className="border-0">
                         Ngày tạo
                       </th>
                       <th scope="col" className="border-0">
@@ -166,194 +240,71 @@ export default class OutcomeStandard extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>12/01/2019</td>
-                      <td>12/02/2019</td>
-                      <td>CNTT</td>
-                      <td>CNPM</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          edit
+                    {
+                      this.state.rows.map(row => (
+                        <tr>
+                          <td>{row.index}</td>
+                          <td>{row.name}</td>
+                          <td>{row.create_date}</td>
+                          <td>{row.modify_date}</td>
+                          <td>{row.faculty}</td>
+                          <td>{row.system}</td>
+                          <td>
+                            <Button>
+                              <i
+                                style={{ cursor: "pointer" }}
+                                className="material-icons"
+                                data-toggle="tooltip"
+                                title="Chỉnh sửa"
+                              >
+                                edit
                         </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          file_copy
+                            </Button>
+
+                          </td>
+                          <td>
+                            <Button onClick={() => this.duplicateOS(row.index)}>
+                              <i
+                                style={{ cursor: "pointer" }}
+                                className="material-icons"
+                                data-toggle="tooltip"
+                                title="Tạo bản sao"
+                              >
+                                file_copy
                         </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          delete
+                            </Button>
+
+                          </td>
+                          <td>
+                            <Button>
+                              <i
+                                style={{ cursor: "pointer" }}
+                                className="material-icons"
+                                data-toggle="tooltip"
+                                title="Xóa"
+                              >
+                                delete
                         </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo file Excel"
-                        >
-                          save_alt
+                            </Button>
+
+                          </td>
+                          <td>
+                            <Button>
+                              <i
+                                style={{ cursor: "pointer" }}
+                                className="material-icons"
+                                data-toggle="tooltip"
+                                title="Tạo file Excel"
+                              >
+                                save_alt
                         </i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>12/01/2019</td>
-                      <td>12/02/2019</td>
-                      <td>CNTT</td>
-                      <td>CNPM</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          edit
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          file_copy
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          delete
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo file Excel"
-                        >
-                          save_alt
-                        </i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>12/01/2019</td>
-                      <td>12/02/2019</td>
-                      <td>CNTT</td>
-                      <td>CNPM</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          edit
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          file_copy
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          delete
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo file Excel"
-                        >
-                          save_alt
-                        </i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>12/01/2019</td>
-                      <td>12/02/2019</td>
-                      <td>CNTT</td>
-                      <td>CNPM</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          edit
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          file_copy
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          delete
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo file Excel"
-                        >
-                          save_alt
-                        </i>
-                      </td>
-                    </tr>
+                            </Button>
+
+                          </td>
+                        </tr>
+                      ))
+                    }
+
                   </tbody>
                 </table>
               </CardBody>
