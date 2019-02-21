@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
+import AddOS from "../components/AddOS";
 
 export default class OutcomeStandard extends Component {
   constructor(props) {
@@ -13,9 +14,12 @@ export default class OutcomeStandard extends Component {
   }
 
   render() {
-    let subtitle = `Khoa: ${this.props.location.state.faculty} | Hệ: ${
-      this.props.location.state.level
-    }`;
+    let subtitle =
+      this.props.location.state !== undefined
+        ? `Khoa: ${this.props.location.state.faculty} | Hệ: ${
+            this.props.location.state.level
+          }`
+        : `Khoa: Chưa có | Hệ: Chưa có`;
 
     return (
       <Container fluid className="main-content-container px-4">
@@ -27,136 +31,9 @@ export default class OutcomeStandard extends Component {
             className="text-sm-left"
           />
         </Row>
-
         <Row>
           <Col lg="12" md="12" sm="12">
-            <Card small className="mb-4">
-              <CardBody className="p-0 pb-3">
-                <table className="table mb-0">
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Kiến thức và lập luận kĩ thuật</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          expand_more
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          chevron_right
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          cancel
-                        </i>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>1</td>
-                      <td>Kiến thức và lập luận kĩ thuật</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          expand_more
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          chevron_right
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          cancel
-                        </i>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>1</td>
-                      <td>Kiến thức và lập luận kĩ thuật</td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Chỉnh sửa"
-                        >
-                          expand_more
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Tạo bản sao"
-                        >
-                          chevron_right
-                        </i>
-                      </td>
-                      <td>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="material-icons"
-                          data-toggle="tooltip"
-                          title="Xóa"
-                        >
-                          cancel
-                        </i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="5" md="5" sm="5" />
-          <Col lg="5" md="5" sm="5">
-            <p align="right">
-              <Button theme="success">
-                <i className="material-icons">check_circle</i> Lưu
-              </Button>
-            </p>
-          </Col>
-          <Col lg="2" md="2" sm="2">
-            <p align="left">
-              <Button theme="secondary">
-                <i className="material-icons">cancel</i> Hủy
-              </Button>
-            </p>
+            <AddOS />
           </Col>
         </Row>
       </Container>
