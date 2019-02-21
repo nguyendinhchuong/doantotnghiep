@@ -24,7 +24,6 @@ export default class OutcomeStandard extends Component {
       rows: [
         {
           OSID: 1,
-          index: 1,
           name: "CĐR khoa CNTT chuyên ngành CNPM khóa 2015",
           create_date: "12/2/2019",
           modify_date: "21/2/2019",
@@ -33,7 +32,6 @@ export default class OutcomeStandard extends Component {
         },
         {
           OSID: 2,
-          index: 2,
           name: "CĐR khoa CNTT chuyên ngành HTTT khóa 2015",
           create_date: "12/2/2019",
           modify_date: "21/2/2019",
@@ -42,7 +40,6 @@ export default class OutcomeStandard extends Component {
         },
         {
           OSID: 3,
-          index: 3,
           name: "CĐR khoa CNTT chuyên ngành KHMT khóa 2015",
           create_date: "12/2/2019",
           modify_date: "21/2/2019",
@@ -51,7 +48,6 @@ export default class OutcomeStandard extends Component {
         },
         {
           OSID: 4,
-          index: 4,
           name: "CĐR khoa CNTT chuyên ngành MMT khóa 2015",
           create_date: "12/2/2019",
           modify_date: "21/2/2019",
@@ -86,22 +82,29 @@ export default class OutcomeStandard extends Component {
   createOS = () => {
 
   }
+
   duplicateOS = (index) => {
-    console.log(this.state.rows);
     let copyOS = {};
     copyOS.index = this.state.rows.length + 1;
-    if (this.state.rows[index - 1].name.includes("Copy of")) {
-      copyOS.name = this.state.rows[index - 1].name;
+    if (this.state.rows[index].name.includes("Copy of")) {
+      copyOS.name = this.state.rows[index].name;
     } else {
-      copyOS.name = "Copy of " + this.state.rows[index - 1].name;
+      copyOS.name = "Copy of " + this.state.rows[index].name;
     }
     copyOS.create_date = this.getCurDate();
     copyOS.modify_date = this.getCurDate();
-    copyOS.faculty = this.state.rows[index - 1].faculty;
-    copyOS.system = this.state.rows[index - 1].system;
+    copyOS.faculty = this.state.rows[index].faculty;
+    copyOS.system = this.state.rows[index].system;
     this.setState({
       rows: this.state.rows.concat(copyOS)
     });
+  }
+  deleteOS = (index)=>{
+    console.log(index);
+    this.state.rows.splice(index, 1)
+    this.setState({
+      rows: this.state.rows
+    })
   }
   handlefFacultyChange = event => {
     this.setState({ faculty: event.currentTarget.value });
@@ -241,9 +244,9 @@ export default class OutcomeStandard extends Component {
                   </thead>
                   <tbody>
                     {
-                      this.state.rows.map(row => (
+                      this.state.rows.map((row,i) => (
                         <tr>
-                          <td>{row.index}</td>
+                          <td>{i+1}</td>
                           <td>{row.name}</td>
                           <td>{row.create_date}</td>
                           <td>{row.modify_date}</td>
@@ -263,7 +266,7 @@ export default class OutcomeStandard extends Component {
 
                           </td>
                           <td>
-                            <Button onClick={() => this.duplicateOS(row.index)}>
+                            <Button onClick={() => this.duplicateOS(i)}>
                               <i
                                 style={{ cursor: "pointer" }}
                                 className="material-icons"
@@ -276,7 +279,7 @@ export default class OutcomeStandard extends Component {
 
                           </td>
                           <td>
-                            <Button>
+                            <Button onClick={()=>this.deleteOS(i)}>
                               <i
                                 style={{ cursor: "pointer" }}
                                 className="material-icons"
