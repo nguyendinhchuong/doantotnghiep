@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Button,
-  FormSelect
-} from "shards-react";
+import { Row, Col, Card, CardBody, Button, FormSelect } from "shards-react";
 import Pagination from "rc-pagination";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
-import PageTitle from "../components/common/PageTitle";
-import duplicateOS from "../components/containers/duplicateOS";
-
-export default class OutcomeStandard extends Component {
+export default class OutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +42,7 @@ export default class OutcomeStandard extends Component {
           modify_date: "21/2/2019",
           faculty: "CNTT",
           system: "Chính quy"
-        },
+        }
       ],
       visible: false,
       faculty: "none",
@@ -66,24 +55,22 @@ export default class OutcomeStandard extends Component {
       visible: true
     });
   };
+
   getCurDate = () => {
     let today = new Date();
     let dd = today.getDate();
     let mm = today.getMonth() + 1;
     let yyyy = today.getFullYear();
     if (dd < 10) {
-      dd = '0' + dd;
+      dd = "0" + dd;
     }
     if (mm < 10) {
-      mm = '0' + mm;
+      mm = "0" + mm;
     }
-    return dd + '/' + mm + '/' + yyyy;
-  }
-  createOS = () => {
+    return dd + "/" + mm + "/" + yyyy;
+  };
 
-  }
-
-  duplicateOS = (index) => {
+  duplicateOS = index => {
     let copyOS = {};
     copyOS.index = this.state.rows.length + 1;
     if (this.state.rows[index].name.includes("Copy of")) {
@@ -98,14 +85,16 @@ export default class OutcomeStandard extends Component {
     this.setState({
       rows: this.state.rows.concat(copyOS)
     });
-  }
-  deleteOS = (index)=>{
+  };
+
+  deleteOS = index => {
     console.log(index);
-    this.state.rows.splice(index, 1)
+    this.state.rows.splice(index, 1);
     this.setState({
       rows: this.state.rows
-    })
-  }
+    });
+  };
+
   handlefFacultyChange = event => {
     this.setState({ faculty: event.currentTarget.value });
   };
@@ -126,8 +115,6 @@ export default class OutcomeStandard extends Component {
       search: `?faculty=${this.state.faculty}&level=${this.state.level}`,
       state: { faculty: this.state.faculty, level: this.state.level }
     });
-
-    // this.props.history.push("/outcome-standard/add");
 
     this.setState({
       visible: false
@@ -201,16 +188,7 @@ export default class OutcomeStandard extends Component {
     }
 
     return (
-      <Container fluid className="main-content-container px-4">
-        <Row noGutters className="page-header py-4">
-          <PageTitle
-            sm="4"
-            title="Chuẩn đầu ra"
-            subtitle=""
-            className="text-sm-left"
-          />
-        </Row>
-
+      <div>
         <Row>
           <Col lg="12" md="12" sm="12">
             <Card small className="mb-4">
@@ -243,71 +221,42 @@ export default class OutcomeStandard extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {
-                      this.state.rows.map((row,i) => (
-                        <tr>
-                          <td>{i+1}</td>
-                          <td>{row.name}</td>
-                          <td>{row.create_date}</td>
-                          <td>{row.modify_date}</td>
-                          <td>{row.faculty}</td>
-                          <td>{row.system}</td>
-                          <td>
-                            <Button>
-                              <i
-                                style={{ cursor: "pointer" }}
-                                className="material-icons"
-                                data-toggle="tooltip"
-                                title="Chỉnh sửa"
-                              >
-                                edit
-                        </i>
-                            </Button>
-
-                          </td>
-                          <td>
-                            <Button onClick={() => this.duplicateOS(i)}>
-                              <i
-                                style={{ cursor: "pointer" }}
-                                className="material-icons"
-                                data-toggle="tooltip"
-                                title="Tạo bản sao"
-                              >
-                                file_copy
-                        </i>
-                            </Button>
-
-                          </td>
-                          <td>
-                            <Button onClick={()=>this.deleteOS(i)}>
-                              <i
-                                style={{ cursor: "pointer" }}
-                                className="material-icons"
-                                data-toggle="tooltip"
-                                title="Xóa"
-                              >
-                                delete
-                        </i>
-                            </Button>
-
-                          </td>
-                          <td>
-                            <Button>
-                              <i
-                                style={{ cursor: "pointer" }}
-                                className="material-icons"
-                                data-toggle="tooltip"
-                                title="Tạo file Excel"
-                              >
-                                save_alt
-                        </i>
-                            </Button>
-
-                          </td>
-                        </tr>
-                      ))
-                    }
-
+                    {this.state.rows.map((row, i) => (
+                      <tr>
+                        <td>{i + 1}</td>
+                        <td>{row.name}</td>
+                        <td>{row.create_date}</td>
+                        <td>{row.modify_date}</td>
+                        <td>{row.faculty}</td>
+                        <td>{row.system}</td>
+                        <td>
+                          <Button
+                            style={{ cursor: "pointer" }}
+                            title="Chỉnh sửa"
+                          >
+                            <i className="material-icons">edit</i>
+                          </Button>
+                        </td>
+                        <td>
+                          <Button
+                            onClick={() => this.duplicateOS(i)}
+                            title="Tạo bản sao"
+                          >
+                            <i className="material-icons">file_copy</i>
+                          </Button>
+                        </td>
+                        <td>
+                          <Button onClick={() => this.deleteOS(i)} title="Xóa">
+                            <i className="material-icons">delete</i>
+                          </Button>
+                        </td>
+                        <td>
+                          <Button title="Tạo file Excel">
+                            <i className="material-icons">save_alt</i>
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </CardBody>
@@ -325,7 +274,7 @@ export default class OutcomeStandard extends Component {
           </Col>
         </Row>
         {dialog}
-      </Container>
+      </div>
     );
   }
 }

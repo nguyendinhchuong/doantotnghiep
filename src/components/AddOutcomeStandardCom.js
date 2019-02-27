@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
-class AddOS extends Component {
+class AddOutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,19 +17,11 @@ class AddOS extends Component {
       visible: false,
       nameOut: "",
       root: false,
-      data: "",
-      dataImport: []
+      data: ""
     };
-    this.add.bind(this);
-    this.onClickDialog = this.onClickDialog.bind(this);
-    this.addRoot.bind(this);
-    this.onHideDialog = this.onHideDialog.bind(this);
-    this.handleChangeTitle = this.handleChangeTitle.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleFile = this.handleFile.bind(this);
   }
 
-  addRoot() {
+  addRoot = () => {
     const key = data1.length + 1;
     const root = {
       key: `${key}`,
@@ -44,9 +36,9 @@ class AddOS extends Component {
     this.setState({
       nodes: data1
     });
-  }
+  };
 
-  add(node) {
+  add = node => {
     const length = node.children.length;
     const key = `${node.key}-${length + 1}`;
     const x = node.key.split("-");
@@ -96,32 +88,32 @@ class AddOS extends Component {
     this.setState({
       nodes: data1
     });
-  }
+  };
 
-  onClickDialog(node) {
+  onClickDialog = node => {
     this.setState({
       visible: true,
       root: false,
       node: node
     });
-  }
+  };
 
-  onClickDialogRoot() {
+  onClickDialogRoot = () => {
     this.setState({
       visible: true,
       root: true
     });
-  }
+  };
 
-  onHideDialog() {
+  onHideDialog = () => {
     this.setState({ visible: false });
-  }
+  };
 
-  handleChangeTitle(event) {
+  handleChangeTitle = event => {
     this.setState({ nameOut: event.target.value });
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     if (this.state.root) {
       this.addRoot();
     } else {
@@ -130,10 +122,10 @@ class AddOS extends Component {
     this.onHideDialog();
 
     event.preventDefault();
-  }
+  };
 
   // Handle Import File
-  addImport(node) {
+  addImport = node => {
     const x = node.key.split("-");
     const lenKey = x.length - 1;
     const index = this.index(x, 0);
@@ -171,15 +163,15 @@ class AddOS extends Component {
     this.setState({
       nodes: data1
     });
-  }
+  };
 
-  addRootImport(node) {
+  addRootImport = node => {
     data1.push(node);
 
     this.setState({
       nodes: data1
     });
-  }
+  };
 
   handleFile = file => {
     /* Boilerplate to set up FileReader */
@@ -350,4 +342,4 @@ class DataInput extends React.Component {
   }
 }
 
-export default AddOS;
+export default AddOutcomeStandardCom;

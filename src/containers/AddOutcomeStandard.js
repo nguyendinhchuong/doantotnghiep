@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, CardBody, Button } from "shards-react";
+import { Container, Row, Col } from "shards-react";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
-import AddOS from "../components/AddOS";
+import AddOutcomeStandardCom from "../components/AddOutcomeStandardCom";
 
 export default class OutcomeStandard extends Component {
   constructor(props) {
@@ -33,7 +33,7 @@ export default class OutcomeStandard extends Component {
         </Row>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <AddOS />
+            <AddOutcomeStandardCom />
           </Col>
         </Row>
       </Container>

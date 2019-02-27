@@ -5,13 +5,12 @@ import { Redirect } from "react-router-dom";
 import { DefaultLayout } from "./layouts";
 
 // Route Views
-import BlogOverview from "./views/BlogOverview";
-import AddNewPost from "./views/AddNewPost";
-import Errors from "./views/Errors";
-import OutcomeStandard from "./views/OutcomeStandard";
-import AddOutcomeStandard from "./views/AddOutcomeStandard";
-import BlogPosts from "./views/BlogPosts";
-import AddOS from './components/AddOS'
+import EducateProgram from "./containers/EducateProgram";
+import OutcomeStandard from "./containers/OutcomeStandard";
+import AddOutcomeStandard from "./containers/AddOutcomeStandard";
+import CourseRegister from "./containers/CourseRegister";
+import Errors from "./containers/Errors";
+import CourseMaps from "./containers/CourseMaps";
 
 export default [
   {
@@ -24,7 +23,7 @@ export default [
     path: "/educate-program",
     exact: true,
     layout: DefaultLayout,
-    component: BlogOverview
+    component: EducateProgram
   },
   {
     path: "/outcome-standard",
@@ -42,22 +41,17 @@ export default [
     path: "/course-register",
     exact: true,
     layout: DefaultLayout,
-    component: AddNewPost
+    component: CourseRegister
   },
   {
     path: "/course-maps",
     exact: true,
     layout: DefaultLayout,
-    component: BlogPosts
+    component: CourseMaps
   },
   {
     path: "/errors",
     layout: DefaultLayout,
     component: Errors
-  },
-  {
-    path: "/addOs",
-    layout: DefaultLayout,
-    component: AddOS
   },
 ];
