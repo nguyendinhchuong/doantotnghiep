@@ -261,7 +261,23 @@ class AddOutcomeStandardCom extends Component {
     );
   };
 
+  // export file functions
+
+  exportFile = () => {
+    /* convert state to workbook */
+    const ws = XLSX.utils.aoa_to_sheet(this.state.nodes);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    XLSX.writeFile(wb, "sheetjs.xlsx");
+  };
+
+  // end export file functions
+  
   render() {
+    console.log(this.state.nodes);
+    console.log(this.state.nodes[0]);
+
     const footer = (
       <div>
         <Button label="Yes" icon="pi pi-check" onClick={this.handleSubmit} />
@@ -311,6 +327,10 @@ class AddOutcomeStandardCom extends Component {
               />
             </Dialog>
           </div>
+
+          <button className="btn btn-success" onClick={this.exportFile}>
+            Export
+          </button>
         </div>
       </div>
     );
@@ -341,5 +361,41 @@ class DataInput extends React.Component {
     );
   }
 }
+
+/* list of supported file types */
+const SheetJSFT = [
+  "xlsx",
+  "xlsb",
+  "xlsm",
+  "xls",
+  "xml",
+  "csv",
+  "txt",
+  "ods",
+  "fods",
+  "uos",
+  "sylk",
+  "dif",
+  "dbf",
+  "prn",
+  "qpw",
+  "123",
+  "wb*",
+  "wq*",
+  "html",
+  "htm"
+]
+  .map(function(x) {
+    return "." + x;
+  })
+  .join(",");
+
+/* generate an array of column objects */
+const make_cols = refstr => {
+  let o = [],
+    C = XLSX.utils.decode_range(refstr).e.c + 1;
+  for (var i = 0; i < C; ++i) o[i] = { name: XLSX.utils.encode_col(i), key: i };
+  return o;
+};
 
 export default AddOutcomeStandardCom;
