@@ -45,8 +45,10 @@ export default class OutcomeStandardCom extends Component {
         }
       ],
       visible: false,
-      faculty: "none",
-      level: "none"
+      faculties: ["Công nghệ thông tin", "Toán tin", "Sinh học"],
+      levels: ["Chất lượng cao", "Việt Pháp", "Đại trà", "Cao đẳng"],
+      faculty: "Công nghệ thông tin",
+      level: "Chất lượng cao"
     };
   }
 
@@ -112,7 +114,7 @@ export default class OutcomeStandardCom extends Component {
   onCloseAddCreate = () => {
     this.props.history.push({
       pathname: "/outcome-standard/add",
-      search: `?faculty=${this.state.faculty}&level=${this.state.level}`,
+      // search: `?faculty=${this.state.faculty}&level=${this.state.level}`,
       state: { faculty: this.state.faculty, level: this.state.level }
     });
 
@@ -159,11 +161,9 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handlefFacultyChange(e)}>
-                <option value="Công nghệ thông tin">Công nghệ thông tin</option>
-                <option value="Toán tin">Toán tin</option>
-                <option value="Sinh học" disabled>
-                  Sinh học
-                </option>
+                {this.state.faculties.map((item, i) => {
+                  return <option value={item}>{item}</option>;
+                })}
               </FormSelect>
             </Col>
           </Row>
@@ -174,12 +174,9 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handleLevelChange(e)}>
-                <option value="Chất lượng cao">Chất lượng cao</option>
-                <option value="Việt Pháp">Việt Pháp</option>
-                <option value="Đại trà" disabled>
-                  Đại trà
-                </option>
-                <option value="Cao đẳng">Cao đẳng</option>
+                {this.state.levels.map((item, i) => {
+                  return <option value={item}>{item}</option>;
+                })}
               </FormSelect>
             </Col>
           </Row>

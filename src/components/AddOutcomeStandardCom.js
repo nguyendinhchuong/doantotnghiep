@@ -3,7 +3,7 @@ import XLSX from "xlsx";
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { Button } from "primereact/button";
+import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { getLevel } from "../business/getLevel";
@@ -21,9 +21,18 @@ class AddOutcomeStandardCom extends Component {
       data: "",
       exportData: []
     };
+    this.add.bind(this);
+    this.onClickDialog = this.onClickDialog.bind(this);
+    this.addRoot.bind(this);
+    this.onHideDialog = this.onHideDialog.bind(this);
+    this.handleChangeTitle = this.handleChangeTitle.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFile = this.handleFile.bind(this);
+    this.nameEditor = this.nameEditor.bind(this);
   }
 
-  addRoot = () => {
+  //Add
+  addRoot() {
     const key = data1.length + 1;
     const root = {
       key: `${key}`,
@@ -38,9 +47,9 @@ class AddOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
-  };
+  }
 
-  add = node => {
+  add(node) {
     const length = node.children.length;
     const key = `${node.key}-${length + 1}`;
     const x = node.key.split("-");
@@ -90,32 +99,197 @@ class AddOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
+  }
+  //Delete
+  deleteNode = node => {
+    const x = node.key.split("-");
+    let index, sub;
+    const rankNode = x.length;
+    switch (rankNode) {
+      case 1: {
+        index = x[0];
+        data1 = this.dateAfterDeleted(data1, index);
+        break;
+      }
+      case 2: {
+        sub = data1[this.index(x, 0)].children;
+        sub = this.dateAfterDeleted(sub, Number(x[1]));
+        data1[this.index(x, 0)].children = sub;
+        break;
+      }
+      case 3: {
+        sub = data1[this.index(x, 0)].children[this.index(x, 1)].children;
+        sub = this.dateAfterDeleted(sub, Number(x[2]));
+        data1[this.index(x, 0)].children[this.index(x, 1)].children = sub;
+        break;
+      }
+      case 4: {
+        sub =
+          data1[this.index(x, 0)].children[this.index(x, 1)].children[
+            this.index(x, 2)
+          ].children;
+        sub = this.dateAfterDeleted(sub, Number(x[3]));
+        data1[this.index(x, 0)].children[this.index(x, 1)].children[
+          this.index(x, 2)
+        ].children = sub;
+        break;
+      }
+      case 5: {
+        sub =
+          data1[this.index(x, 0)].children[this.index(x, 1)].children[
+            this.index(x, 2)
+          ].children[this.index(x, 3)].children;
+        sub = this.dateAfterDeleted(sub, Number(x[3]));
+        data1[this.index(x, 0)].children[this.index(x, 1)].children[
+          this.index(x, 2)
+        ].children[this.index(x, 3)].children = sub;
+        break;
+      }
+      default:
+        break;
+    }
+    this.refreshTreeNodes(Number(x[0]) - 1);
   };
 
-  onClickDialog = node => {
+  dateAfterDeleted(data, index) {
+    if (index === data.length) {
+      data = [...data.slice(0, index - 1)];
+    } else if (index <= 1) {
+      data = [...data.slice(index, data.length + 1)];
+    } else {
+      data = [...data.slice(0, index - 1), ...data.slice(index, data.length)];
+    }
+    return data;
+  }
+  // update sub node after delete
+  updateSubNode = (iParent, node) => {
+    if (node.children) {
+      const length = node.children.length;
+      for (let i = 0; i < length; i++) {
+        node.children[i].key = `${iParent}-${i + 1}`;
+        node.children[i].data.displayName = `${node.children[i].key}. ${
+          node.children[i].data.name
+        }`;
+        if (node.children[i].children)
+          this.updateSubNode(node.children[i].key, node.children[i]);
+      }
+    }
+  };
+
+  refreshTreeNodes(indexRefresh) {
+    const length = data1.length;
+
+    for (let i = indexRefresh; i < length; i++) {
+      data1[i].key = (i + 1).toString();
+      data1[i].data.displayName = `${i + 1}. ${data1[i].data.name}`;
+      this.updateSubNode(data1[i].key, data1[i]);
+    }
+
+    this.setState({
+      nodes: data1
+    });
+  }
+
+  //Update
+  nameEditor(props) {
+    return this.inputTextEditor(props, "name");
+  }
+
+  inputTextEditor(props, field) {
+    return (
+      <InputText
+        style={{ width: "80%" }}
+        type="text"
+        value={props.node.data[field]}
+        onChange={e => this.onEditorValueChange(props, e.target.value)}
+      />
+    );
+  }
+
+  onEditorValueChange(props, value) {
+    //let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+    let editedNode = this.findNodeByKey(this.state.nodes, props.node.key);
+    editedNode.data.name = value;
+    editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
+    this.updateNode(editedNode);
+  }
+  //update node after edit node
+  updateNode(node) {
+    const x = node.key.split("-");
+    const rankNode = x.length;
+    switch (rankNode) {
+      case 1: {
+        data1[this.index(x, 0)] = node;
+        break;
+      }
+      case 2: {
+        data1[this.index(x, 0)].children[this.index(x, 1)] = node;
+        break;
+      }
+      case 3: {
+        data1[this.index(x, 0)].children[this.index(x, 1)].children[
+          this.index(x, 2)
+        ] = node;
+        break;
+      }
+      case 4: {
+        data1[this.index(x, 0)].children[this.index(x, 1)].children[
+          this.index(x, 2)
+        ].children[this.index(x, 3)] = node;
+        break;
+      }
+      case 5: {
+        data1[this.index(x, 0)].children[this.index(x, 1)].children[
+          this.index(x, 2)
+        ].children[this.index(x, 3)].children[this.index(x, 4)] = node;
+        break;
+      }
+      default:
+        break;
+    }
+    this.setState({
+      nodes: data1
+    });
+  }
+
+  findNodeByKey(nodes, key) {
+    let path = key.split("-");
+    let node;
+
+    while (path.length) {
+      let list = node ? node.children : nodes;
+      node = list[Number(path[0]) - 1];
+      path.shift();
+    }
+
+    return node;
+  }
+
+  //Event
+  onClickDialog(node) {
     this.setState({
       visible: true,
       root: false,
       node: node
     });
-  };
+  }
 
-  onClickDialogRoot = () => {
+  onClickDialogRoot() {
     this.setState({
       visible: true,
       root: true
     });
-  };
+  }
 
-  onHideDialog = () => {
+  onHideDialog() {
     this.setState({ visible: false });
-  };
+  }
 
-  handleChangeTitle = event => {
+  handleChangeTitle(event) {
     this.setState({ nameOut: event.target.value });
-  };
+  }
 
-  handleSubmit = event => {
+  handleSubmit(event) {
     if (this.state.root) {
       this.addRoot();
     } else {
@@ -124,10 +298,10 @@ class AddOutcomeStandardCom extends Component {
     this.onHideDialog();
 
     event.preventDefault();
-  };
+  }
 
   // Handle Import File
-  addImport = node => {
+  addImport(node) {
     const x = node.key.split("-");
     const lenKey = x.length - 1;
     const index = this.index(x, 0);
@@ -165,18 +339,19 @@ class AddOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
-  };
+  }
 
-  addRootImport = node => {
+  addRootImport(node) {
     data1.push(node);
 
     this.setState({
       nodes: data1
     });
-  };
+  }
 
   handleFile = file => {
     /* Boilerplate to set up FileReader */
+    this.setState({ isLoadData: true });
     const reader = new FileReader();
     const rABS = !!reader.readAsBinaryString;
     reader.onload = e => {
@@ -192,6 +367,10 @@ class AddOutcomeStandardCom extends Component {
       this.setState({ data: data });
       const x = this.convertJsonToTreeNode(this.state.data);
       this.setState({ nodes: x });
+
+      setTimeout(() => {
+        this.setState({ isLoadData: false });
+      }, 1000);
     };
     if (rABS) reader.readAsBinaryString(file);
     else reader.readAsArrayBuffer(file);
@@ -221,10 +400,12 @@ class AddOutcomeStandardCom extends Component {
         },
         children: []
       };
-      if (key && key.length <= 1) {
-        this.addRootImport(subNode);
-      } else {
-        this.addImport(subNode);
+      if (subNode.data.name) {
+        if (key && key.length <= 1) {
+          this.addRootImport(subNode);
+        } else {
+          this.addImport(subNode);
+        }
       }
     });
     return data1;
@@ -247,18 +428,19 @@ class AddOutcomeStandardCom extends Component {
     return (
       <div>
         <Button
-          type="button"
-          icon="fas fa-plus-square"
           onClick={() => this.onClickDialog(node)}
-          className="p-button-success"
-          style={{ marginRight: ".5em" }}
-        />
+          theme="success"
+          style={{ marginRight: ".5em", padding: "10px" }}
+        >
+          <i className="material-icons">keyboard_return</i>
+        </Button>
         <Button
-          type="button"
-          icon="fas fa-minus-circle"
           onClick={() => this.deleteNode(node)}
-          className="p-button-warning"
-        />
+          theme="secondary"
+          style={{ marginRight: ".5em", padding: "10px" }}
+        >
+          <i className="material-icons">delete_sweep</i>
+        </Button>
       </div>
     );
   };
@@ -359,63 +541,80 @@ class AddOutcomeStandardCom extends Component {
 
     const footer = (
       <div>
-        <Button label="Yes" icon="pi pi-check" onClick={this.handleSubmit} />
-        <Button
-          label="No"
-          icon="pi pi-times"
-          onClick={this.onHideDialog}
-          className="p-button-secondary"
-        />
+        <Button onClick={this.handleSubmit} theme="success">
+          Yes
+        </Button>
+        <Button onClick={this.onHideDialog} theme="secondary">
+          No
+        </Button>
       </div>
     );
 
     return (
-      <div>
-        <div className="p-grid content-section implementation">
-          <h5>Import</h5>
-          <DataInput handleFile={this.handleFile} />
-          <hr />
-          <Button
-            label="Thêm mới"
-            icon="pi pi-plus"
-            onClick={() => this.onClickDialogRoot()}
-          />
-          <br />
-          <br />
-          <TreeTable value={this.state.nodes}>
-            <Column field="displayName" header="Name" expander />
-            <Column
-              body={this.actionTemplate}
-              style={{ textAlign: "left", width: "8em" }}
-            />
-          </TreeTable>
+      <div className="p-grid content-section implementation">
+        <Row>
+          <Col lg="1" md="1" sm="1">
+            <h5>Import</h5>
+          </Col>
 
-          <div className="content-section implementation">
-            <Dialog
-              header="Name Title"
-              visible={this.state.visible}
-              style={{ width: "50vw" }}
-              footer={footer}
-              onHide={this.onHideDialog}
-            >
-              <InputText
-                type="text"
-                value={this.state.nameOut}
-                onChange={this.handleChangeTitle}
-                style={{ width: "100%" }}
+          <Col lg="11" md="11" sm="11">
+            <DataInput handleFile={this.handleFile} />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col lg="12" md="12" sm="12">
+            <TreeTable value={this.state.nodes}>
+              <Column field="displayName" header="Name" expander />
+              <Column
+                body={this.actionTemplate}
+                style={{ textAlign: "left", width: "8em" }}
               />
-            </Dialog>
-          </div>
-          <br />
-          <br />
-          <button
-            style={{ float: "right" }}
-            className="btn btn-success"
-            onClick={this.createExportData}
+            </TreeTable>
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <Button
+              style={{ float: "right" }}
+              onClick={() => this.onClickDialogRoot()}
+              theme="success"
+            >
+              <i className="material-icons">add</i> Thêm
+            </Button>
+          </Col>
+        </Row>
+        <hr />
+        <div className="content-section implementation">
+          <Dialog
+            header="Name Title"
+            visible={this.state.visible}
+            style={{ width: "50vw" }}
+            footer={footer}
+            onHide={this.onHideDialog}
           >
-            {/*onClick={this.exportFile}*/}
-            Export
-          </button>
+            <InputText
+              type="text"
+              value={this.state.nameOut}
+              onChange={this.handleChangeTitle}
+              style={{ width: "100%" }}
+            />
+          </Dialog>
+        </div>
+
+        <div>
+          <Row>
+            <Col lg="5" md="5" sm="5" />
+
+            <Col lg="6" md="6" sm="6">
+              <Button
+                className="btn btn-success"
+                style={{ textAlign: "right" }}
+                onClick={this.createExportData}
+              >
+                {/*onClick={this.exportFile}*/}
+                <i className="material-icons">save_alt</i> Export
+              </Button>
+            </Col>
+          </Row>
         </div>
       </div>
     );
