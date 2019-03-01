@@ -6,6 +6,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { getLevel } from "../business/getLevel";
 
 class AddOutcomeStandardCom extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class AddOutcomeStandardCom extends Component {
       visible: false,
       nameOut: "",
       root: false,
-      data: ""
+      data: "",
+      exportData: []
     };
   }
 
@@ -263,9 +265,85 @@ class AddOutcomeStandardCom extends Component {
 
   // export file functions
 
+  createExportData = () => {
+    let level = getLevel(this.state.nodes);
+    let tmpLevel;
+    let tmpArr = [];
+    let exportData = [];
+
+    for (let i in this.state.nodes) {
+      if (this.state.nodes[i].key.length === 1) {
+        let str = "" + this.state.nodes[i].key;
+        tmpArr[0] = parseInt(str.charAt(0));
+        // tmpLevel = 0;
+        // for (tmpLevel; tmpLevel < level - 1; tmpLevel++) {
+        //   tmpArr[tmpLevel] = parseInt(str.charAt(0));
+        // }
+
+        tmpArr[level - 1] = this.state.nodes[i].data.name;
+
+        exportData.push(tmpArr);
+        tmpArr = [];
+      }
+      let children1 = [];
+      children1 = this.state.nodes[i].children;
+
+      for (let j in children1) {
+        if (children1[j].key.length === 3) {
+          let str = "" + children1[j].key;
+          tmpArr[0] = parseInt(str.charAt(0));
+          tmpArr[1] = parseInt(j) + 1;
+
+          tmpArr[level - 1] = children1[j].data.name;
+
+          exportData.push(tmpArr);
+          tmpArr = [];
+        }
+
+        let children2 = [];
+        children2 = children1[j].children;
+
+        for (let k in children2) {
+          if (children2[k].key.length === 5) {
+            let str = "" + children2[k].key;
+            tmpArr[0] = parseInt(str.charAt(0));
+            tmpArr[1] = parseInt(str.charAt(2));
+            tmpArr[2] = parseInt(k) + 1;
+
+            tmpArr[level - 1] = children2[k].data.name;
+
+            exportData.push(tmpArr);
+            tmpArr = [];
+          }
+
+          let children3 = [];
+          children3 = children2[k].children;
+
+          for (let p in children3) {
+            if (children3[p].key.length === 7) {
+              let str = "" + children3[p].key;
+              tmpArr[0] = parseInt(str.charAt(0));
+              tmpArr[1] = parseInt(str.charAt(2));
+              tmpArr[2] = parseInt(str.charAt(4));
+              tmpArr[3] = parseInt(k) + 1;
+
+              tmpArr[level - 1] = children3[p].data.name;
+
+              exportData.push(tmpArr);
+              tmpArr = [];
+            }
+          }
+        }
+      }
+    }
+
+    this.setState({ exportData: exportData });
+  };
+
   exportFile = () => {
+    this.createExportData();
     /* convert state to workbook */
-    const ws = XLSX.utils.aoa_to_sheet(this.state.nodes);
+    const ws = XLSX.utils.aoa_to_sheet(this.state.exportData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     /* generate XLSX file and send to client */
@@ -273,10 +351,11 @@ class AddOutcomeStandardCom extends Component {
   };
 
   // end export file functions
-  
+
   render() {
     console.log(this.state.nodes);
-    console.log(this.state.nodes[0]);
+    console.log(this.state.data);
+    console.log(this.state.exportData);
 
     const footer = (
       <div>
@@ -327,8 +406,14 @@ class AddOutcomeStandardCom extends Component {
               />
             </Dialog>
           </div>
-
-          <button className="btn btn-success" onClick={this.exportFile}>
+          <br />
+          <br />
+          <button
+            style={{ float: "right" }}
+            className="btn btn-success"
+            onClick={this.createExportData}
+          >
+            {/*onClick={this.exportFile}*/}
             Export
           </button>
         </div>
@@ -361,41 +446,5 @@ class DataInput extends React.Component {
     );
   }
 }
-
-/* list of supported file types */
-const SheetJSFT = [
-  "xlsx",
-  "xlsb",
-  "xlsm",
-  "xls",
-  "xml",
-  "csv",
-  "txt",
-  "ods",
-  "fods",
-  "uos",
-  "sylk",
-  "dif",
-  "dbf",
-  "prn",
-  "qpw",
-  "123",
-  "wb*",
-  "wq*",
-  "html",
-  "htm"
-]
-  .map(function(x) {
-    return "." + x;
-  })
-  .join(",");
-
-/* generate an array of column objects */
-const make_cols = refstr => {
-  let o = [],
-    C = XLSX.utils.decode_range(refstr).e.c + 1;
-  for (var i = 0; i < C; ++i) o[i] = { name: XLSX.utils.encode_col(i), key: i };
-  return o;
-};
 
 export default AddOutcomeStandardCom;
