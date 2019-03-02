@@ -1,8 +1,14 @@
-export const getLevel = function myself(nodes) {
-  if (nodes === undefined) return 0;
-  if (nodes[0].children === undefined || nodes[0].children.length === 0)
-    return 1;
-  else {
-    return getLevel(nodes[0].children) + 1;
+export const getMaxLevel = function myself(nodes) {
+  if (nodes === undefined || nodes.length === 0) {
+    return 0;
+  } else {
+    let depths = [];
+    for (let i in nodes) {
+      depths[i] = getMaxLevel(nodes[i].children);
+    }
+
+    let max = Math.max.apply(Math, depths);
+
+    return max + 1;
   }
 };

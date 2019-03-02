@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { getLevel } from "../business/getLevel";
+import { getMaxLevel } from "../business/getLevel";
 
 class AddOutcomeStandardCom extends Component {
   constructor(props) {
@@ -19,8 +19,10 @@ class AddOutcomeStandardCom extends Component {
       nameOut: "",
       root: false,
       data: "",
-      exportData: []
+      exportVisible: false,
+      fileName: "sheet"
     };
+
     this.add.bind(this);
     this.onClickDialog = this.onClickDialog.bind(this);
     this.addRoot.bind(this);
@@ -62,7 +64,6 @@ class AddOutcomeStandardCom extends Component {
       children: []
     };
     const lenKey = x.length;
-    const xx = this.index(x, 0);
     switch (lenKey) {
       case 1: {
         data1[this.index(x, 0)].children.push(subNode);
@@ -191,11 +192,11 @@ class AddOutcomeStandardCom extends Component {
   }
 
   //Update
-  nameEditor(props) {
+  nameEditor = props => {
     return this.inputTextEditor(props, "name");
-  }
+  };
 
-  inputTextEditor(props, field) {
+  inputTextEditor = (props, field) => {
     return (
       <InputText
         style={{ width: "80%" }}
@@ -204,15 +205,15 @@ class AddOutcomeStandardCom extends Component {
         onChange={e => this.onEditorValueChange(props, e.target.value)}
       />
     );
-  }
+  };
 
-  onEditorValueChange(props, value) {
+  onEditorValueChange = (props, value) => {
     //let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
     let editedNode = this.findNodeByKey(this.state.nodes, props.node.key);
     editedNode.data.name = value;
     editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
     this.updateNode(editedNode);
-  }
+  };
   //update node after edit node
   updateNode(node) {
     const x = node.key.split("-");
@@ -285,9 +286,20 @@ class AddOutcomeStandardCom extends Component {
     this.setState({ visible: false });
   }
 
+  onHideExportCom = () => {
+    this.setState({ exportVisible: false });
+  };
+  onShowExportCom = () => {
+    this.setState({ exportVisible: true });
+  };
+
   handleChangeTitle(event) {
     this.setState({ nameOut: event.target.value });
   }
+
+  handleChangeFileName = event => {
+    this.setState({ fileName: event.target.value });
+  };
 
   handleSubmit(event) {
     if (this.state.root) {
@@ -448,30 +460,33 @@ class AddOutcomeStandardCom extends Component {
   // export file functions
 
   createExportData = () => {
-    let level = getLevel(this.state.nodes);
-    let tmpLevel;
+    let level = getMaxLevel(this.state.nodes);
     let tmpArr = [];
     let exportData = [];
 
     for (let i in this.state.nodes) {
-      if (this.state.nodes[i].key.length === 1) {
-        let str = "" + this.state.nodes[i].key;
-        tmpArr[0] = parseInt(str.charAt(0));
-        // tmpLevel = 0;
-        // for (tmpLevel; tmpLevel < level - 1; tmpLevel++) {
-        //   tmpArr[tmpLevel] = parseInt(str.charAt(0));
-        // }
+      // if
+      let str = "" + this.state.nodes[i].key;
+      tmpArr[0] = parseInt(str.charAt(0));
 
-        tmpArr[level - 1] = this.state.nodes[i].data.name;
+      tmpArr[level - 1] = this.state.nodes[i].data.name;
 
-        exportData.push(tmpArr);
-        tmpArr = [];
-      }
+      exportData.push(tmpArr);
+      tmpArr = [];
+      // end if
       let children1 = [];
       children1 = this.state.nodes[i].children;
 
       for (let j in children1) {
-        if (children1[j].key.length === 3) {
+        if (
+          children1[j].children === undefined ||
+          children1[j].children.length === 0
+        ) {
+          tmpArr[level - 1] = children1[j].data.name;
+
+          exportData.push(tmpArr);
+          tmpArr = [];
+        } else {
           let str = "" + children1[j].key;
           tmpArr[0] = parseInt(str.charAt(0));
           tmpArr[1] = parseInt(j) + 1;
@@ -486,7 +501,15 @@ class AddOutcomeStandardCom extends Component {
         children2 = children1[j].children;
 
         for (let k in children2) {
-          if (children2[k].key.length === 5) {
+          if (
+            children2[k].children === undefined ||
+            children2[k].children.length === 0
+          ) {
+            tmpArr[level - 1] = children2[k].data.name;
+
+            exportData.push(tmpArr);
+            tmpArr = [];
+          } else {
             let str = "" + children2[k].key;
             tmpArr[0] = parseInt(str.charAt(0));
             tmpArr[1] = parseInt(str.charAt(2));
@@ -497,12 +520,21 @@ class AddOutcomeStandardCom extends Component {
             exportData.push(tmpArr);
             tmpArr = [];
           }
+          // end if
 
           let children3 = [];
           children3 = children2[k].children;
 
           for (let p in children3) {
-            if (children3[p].key.length === 7) {
+            if (
+              children3[p].children === undefined ||
+              children3[p].children.length === 0
+            ) {
+              tmpArr[level - 1] = children3[p].data.name;
+
+              exportData.push(tmpArr);
+              tmpArr = [];
+            } else {
               let str = "" + children3[p].key;
               tmpArr[0] = parseInt(str.charAt(0));
               tmpArr[1] = parseInt(str.charAt(2));
@@ -519,26 +551,25 @@ class AddOutcomeStandardCom extends Component {
       }
     }
 
-    this.setState({ exportData: exportData });
+    return exportData;
   };
 
-  exportFile = () => {
-    this.createExportData();
-    /* convert state to workbook */
-    const ws = XLSX.utils.aoa_to_sheet(this.state.exportData);
+  exportFile = event => {
+    const ws = XLSX.utils.aoa_to_sheet(this.createExportData());
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
-    /* generate XLSX file and send to client */
-    XLSX.writeFile(wb, "sheetjs.xlsx");
+    XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
+
+    this.onHideExportCom();
+    this.setState({
+      fileName: "sheet"
+    });
+    event.preventDefault();
   };
 
   // end export file functions
 
   render() {
-    console.log(this.state.nodes);
-    console.log(this.state.data);
-    console.log(this.state.exportData);
-
     const footer = (
       <div>
         <Button onClick={this.handleSubmit} theme="success">
@@ -546,6 +577,17 @@ class AddOutcomeStandardCom extends Component {
         </Button>
         <Button onClick={this.onHideDialog} theme="secondary">
           No
+        </Button>
+      </div>
+    );
+
+    const exportCom = (
+      <div>
+        <Button onClick={this.exportFile} theme="success">
+          Save
+        </Button>
+        <Button onClick={this.onHideExportCom} theme="secondary">
+          Cancel
         </Button>
       </div>
     );
@@ -565,7 +607,12 @@ class AddOutcomeStandardCom extends Component {
         <Row>
           <Col lg="12" md="12" sm="12">
             <TreeTable value={this.state.nodes}>
-              <Column field="displayName" header="Name" expander />
+              <Column
+                field="displayName"
+                header="Name"
+                editor={this.nameEditor}
+                expander
+              />
               <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "left", width: "8em" }}
@@ -583,6 +630,23 @@ class AddOutcomeStandardCom extends Component {
           </Col>
         </Row>
         <hr />
+        <div className="content-section implementation">
+          <Dialog
+            header="File Name"
+            visible={this.state.exportVisible}
+            style={{ width: "50vw" }}
+            footer={exportCom}
+            onHide={this.onHideExportCom}
+          >
+            <InputText
+              type="text"
+              value={this.state.fileName}
+              onChange={this.handleChangeFileName}
+              style={{ width: "100%" }}
+            />
+          </Dialog>
+        </div>
+
         <div className="content-section implementation">
           <Dialog
             header="Name Title"
@@ -608,9 +672,8 @@ class AddOutcomeStandardCom extends Component {
               <Button
                 className="btn btn-success"
                 style={{ textAlign: "right" }}
-                onClick={this.createExportData}
+                onClick={this.onShowExportCom}
               >
-                {/*onClick={this.exportFile}*/}
                 <i className="material-icons">save_alt</i> Export
               </Button>
             </Col>
