@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 
-class OutcomeStandard extends Component {
+class OutcomeStandardTemp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -30,7 +30,14 @@ class OutcomeStandard extends Component {
         </Row>
 
         {/*pass the history of routes to child Component*/}
-        <OutcomeStandardCom history={this.props.history} />
+        {/*get redux's dispatches and states*/}
+        <OutcomeStandardCom
+          history={this.props.history}
+          faculties={this.props.faculties}
+          programs={this.props.programs}
+          onLoadFaculties={this.props.onLoadFaculties}
+          onLoadPrograms={this.props.onLoadPrograms}
+        />
       </Container>
     );
   }
@@ -44,4 +51,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onLoadFaculties: facultiesAction.onLoadFaculties,
   onLoadPrograms: programsAction.onLoadPrograms
-})(OutcomeStandard);
+})(OutcomeStandardTemp);

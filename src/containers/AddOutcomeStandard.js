@@ -17,7 +17,7 @@ export default class OutcomeStandard extends Component {
     let subtitle =
       this.props.location.state !== undefined
         ? `Khoa: ${this.props.location.state.faculty} | Hệ: ${
-            this.props.location.state.level
+            this.props.location.state.program
           }`
         : `Khoa: Chưa có | Hệ: Chưa có`;
 

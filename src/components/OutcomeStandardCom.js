@@ -45,10 +45,8 @@ export default class OutcomeStandardCom extends Component {
         }
       ],
       visible: false,
-      faculties: ["Công nghệ thông tin", "Toán tin", "Sinh học"],
-      levels: ["Chất lượng cao", "Việt Pháp", "Đại trà", "Cao đẳng"],
       faculty: "Công nghệ thông tin",
-      level: "Chất lượng cao"
+      program: "Chất lượng cao"
     };
   }
 
@@ -102,7 +100,7 @@ export default class OutcomeStandardCom extends Component {
   };
 
   handleLevelChange = event => {
-    this.setState({ level: event.currentTarget.value });
+    this.setState({ program: event.currentTarget.value });
   };
 
   onCloseAdd = () => {
@@ -114,8 +112,8 @@ export default class OutcomeStandardCom extends Component {
   onCloseAddCreate = () => {
     this.props.history.push({
       pathname: "/outcome-standard/add",
-      // search: `?faculty=${this.state.faculty}&level=${this.state.level}`,
-      state: { faculty: this.state.faculty, level: this.state.level }
+      // search: `?faculty=${this.state.faculty}&program=${this.state.program}`,
+      state: { faculty: this.state.faculty, program: this.state.program }
     });
 
     this.setState({
@@ -161,9 +159,11 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handlefFacultyChange(e)}>
-                {this.state.faculties.map((item, i) => {
-                  return <option value={item}>{item}</option>;
-                })}
+                {Array.isArray(this.props.faculties)
+                  ? this.props.faculties.map((item, i) => {
+                      return <option value={item}>{item}</option>;
+                    })
+                  : null}
               </FormSelect>
             </Col>
           </Row>
@@ -174,9 +174,11 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handleLevelChange(e)}>
-                {this.state.levels.map((item, i) => {
-                  return <option value={item}>{item}</option>;
-                })}
+                {Array.isArray(this.props.programs)
+                  ? this.props.programs.map((item, i) => {
+                      return <option value={item}>{item}</option>;
+                    })
+                  : null}
               </FormSelect>
             </Col>
           </Row>
