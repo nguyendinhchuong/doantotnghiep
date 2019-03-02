@@ -121,6 +121,11 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
+  componentDidMount = () => {
+    this.props.onLoadFaculties();
+    this.props.onLoadPrograms();
+  };
+
   render() {
     let dialog;
     if (this.state.visible) {
