@@ -5,9 +5,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
-import OutcomeStandardCom from "../components/outcomeStandard/OutcomeStandardCom";
+import OutcomeStandardCom from "../components/OutcomeStandardCom";
 
-export default class OutcomeStandard extends Component {
+import { connect } from "react-redux";
+import * as facultiesAction from "../actions/facultiesAction";
+import * as programsAction from "../actions/programsAction";
+
+class OutcomeStandard extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -31,3 +35,13 @@ export default class OutcomeStandard extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  faculties: state.faculties,
+  programs: state.programs
+});
+
+export default connect(mapStateToProps, {
+  onLoadFaculties: facultiesAction.onLoadFaculties,
+  onLoadPrograms: programsAction.onLoadPrograms
+})(OutcomeStandard);
