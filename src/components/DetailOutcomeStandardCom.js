@@ -577,7 +577,7 @@ class DetailOutcomeStandardCom extends Component {
 
     for (let i in this.state.nodes) {
       // if
-      let key = this.state.nodes[i].key;
+      let key = this.state.nodes[i].key + "--";
       let name = this.state.nodes[i].data.name;
       tmpObj = { key, name };
       exportData.push(tmpObj);
@@ -627,10 +627,13 @@ class DetailOutcomeStandardCom extends Component {
   };
 
 onSave = () => {
-  if (this.props.idOutcomeStandard)
+  if (this.props.idOutcomeStandard !== "undefined") {
     var data = this.createSaveData();
-    this.props.onSaveThisOutcomeStandard(data, this.props.idOutcomeStandard);
+    if (this.props.onSaveThisOutcomeStandard)
+      this.props.onSaveThisOutcomeStandard(data, this.props.idOutcomeStandard);
+  }
 };
+
 
   // end save data functions
 
