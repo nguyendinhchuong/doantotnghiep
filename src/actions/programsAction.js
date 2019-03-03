@@ -1,21 +1,21 @@
 import axios from "axios";
-import * as types from "../constants";
+import * as cst from "../constants";
 
 export const loadProgramsSuccess = programs => ({
-  type: types.lOAD_PROGRAMS_SUCCESS,
+  type: cst.LOAD_PROGRAMS_SUCCESS,
   programs: programs
 });
 
 export const loadProgramsError = errorMessage => ({
-  type: types.lOAD_PROGRAMS_ERROR,
+  type: cst.LOAD_PROGRAMS_ERROR,
   errorMessage
 });
 
 export const onLoadPrograms = () => {
   return (dispatch, getState) => {
-    let req = `${types.LINK}/getPrograms`;
+    let req = `${cst.LINK}/programs`;
     axios
-      .get(req, { crossdomain: true })
+      .get(req)
       .then(res => {
         const programs = res.data;
         if (programs === undefined) {

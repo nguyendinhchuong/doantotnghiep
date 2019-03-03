@@ -45,8 +45,8 @@ export default class OutcomeStandardCom extends Component {
         }
       ],
       visible: false,
-      faculty: "Công nghệ thông tin",
-      program: "Chất lượng cao"
+      faculty: {},
+      program: {}
     };
   }
 
@@ -96,11 +96,21 @@ export default class OutcomeStandardCom extends Component {
   };
 
   handlefFacultyChange = event => {
-    this.setState({ faculty: event.currentTarget.value });
+    const id = event.currentTarget.value;
+    if (id !== 0) {
+      const index = event.nativeEvent.target.selectedIndex;
+      const name = event.nativeEvent.target[index].text;
+      this.setState({ faculty: { id, name } });
+    }
   };
 
   handleLevelChange = event => {
-    this.setState({ program: event.currentTarget.value });
+    const id = event.currentTarget.value;
+    if (id !== 0) {
+      const index = event.nativeEvent.target.selectedIndex;
+      const name = event.nativeEvent.target[index].text;
+      this.setState({ program: { id, name } });
+    }
   };
 
   onCloseAdd = () => {
@@ -164,9 +174,12 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handlefFacultyChange(e)}>
+                <option value={0}>Chọn...</option>
                 {Array.isArray(this.props.faculties)
                   ? this.props.faculties.map((item, i) => {
-                      return <option value={item}>{item}</option>;
+                      return (
+                        <option value={item.Id}>{item.NameFaculty}</option>
+                      );
                     })
                   : null}
               </FormSelect>
@@ -179,9 +192,12 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handleLevelChange(e)}>
+                <option value={0}>Chọn...</option>
                 {Array.isArray(this.props.programs)
                   ? this.props.programs.map((item, i) => {
-                      return <option value={item}>{item}</option>;
+                      return (
+                        <option value={item.Id}>{item.NameProgram}</option>
+                      );
                     })
                   : null}
               </FormSelect>

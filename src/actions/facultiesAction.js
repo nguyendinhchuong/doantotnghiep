@@ -1,21 +1,21 @@
 import axios from "axios";
-import * as types from "../constants";
+import * as cst from "../constants";
 
 export const loadFacultiesSuccess = faculties => ({
-  type: types.lOAD_FACULTIES_SUCCESS,
+  type: cst.LOAD_FACULTIES_SUCCESS,
   faculties: faculties
 });
 
 export const loadFacultiesError = errorMessage => ({
-  type: types.lOAD_FACULTIES_ERROR,
+  type: cst.LOAD_FACULTIES_ERROR,
   errorMessage
 });
 
 export const onLoadFaculties = () => {
   return (dispatch, getState) => {
-    let req = `${types.LINK}/getFaculties`;
+    let req = `${cst.LINK}/faculties`;
     axios
-      .get(req, { crossdomain: true })
+      .get(req)
       .then(res => {
         const faculties = res.data;
         if (faculties === undefined) {

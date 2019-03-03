@@ -1,21 +1,21 @@
 import axios from "axios";
-import * as types from "../constants";
+import * as cst from "../constants";
 
 export const loadOutcomeStandardsSuccess = outcomeStandards => ({
-  type: types.lOAD_OUTCOMESTANDARDS_SUCCESS,
+  type: cst.LOAD_OUTCOMESTANDARDS_SUCCESS,
   outcomeStandards: outcomeStandards
 });
 
 export const loadOutcomeStandardsError = errorMessage => ({
-  type: types.lOAD_OUTCOMESTANDARDS_ERROR,
+  type: cst.LOAD_OUTCOMESTANDARDS_ERROR,
   errorMessage
 });
 
 export const onLoadOutcomeStandards = () => {
   return (dispatch, getState) => {
-    let req = `${types.LINK}/getOutcomeStandards`;
+    let req = `${cst.LINK}/outcomeStandards`;
     axios
-      .get(req, { crossdomain: true })
+      .get(req)
       .then(res => {
         const outcomeStandards = res.data;
         if (outcomeStandards === undefined) {
