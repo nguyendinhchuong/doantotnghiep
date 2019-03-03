@@ -96,10 +96,10 @@ export default class OutcomeStandardCom extends Component {
   };
 
   onEdit = row => {
-    // go to /outcome-standard/edit and pass row as data (this.props.location.state.data in EditOutcomeStandard)
     this.props.history.push({
       pathname: "/outcome-standard/edit",
-      state: { data: row }
+      search: `?id=${row.IdOutcome}`
+      // state: { data: row },
     });
     console.log(row);
   };

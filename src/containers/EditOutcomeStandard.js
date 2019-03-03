@@ -14,12 +14,15 @@ export default class EditOutcomeStandard extends Component {
   }
 
   render() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
     let subtitle =
       this.props.location.state !== undefined
         ? `Khoa: ${this.props.location.state.data.NameFaculty} | Hệ: ${
             this.props.location.state.data.NameProgram
           }`
-        : `Khoa: Chưa có | Hệ: Chưa có`;
+        : `Khoa: Chưa có | Hệ: Chưa có | ${id}`;
 
     return (
       <Container fluid className="main-content-container px-4">
