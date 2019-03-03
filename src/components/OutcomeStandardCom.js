@@ -10,43 +10,9 @@ export default class OutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [
-        {
-          OSID: 1,
-          name: "CĐR khoa CNTT chuyên ngành CNPM khóa 2015",
-          create_date: "12/2/2019",
-          modify_date: "21/2/2019",
-          faculty: "CNTT",
-          system: "Chính quy"
-        },
-        {
-          OSID: 2,
-          name: "CĐR khoa CNTT chuyên ngành HTTT khóa 2015",
-          create_date: "12/2/2019",
-          modify_date: "21/2/2019",
-          faculty: "CNTT",
-          system: "Chính quy"
-        },
-        {
-          OSID: 3,
-          name: "CĐR khoa CNTT chuyên ngành KHMT khóa 2015",
-          create_date: "12/2/2019",
-          modify_date: "21/2/2019",
-          faculty: "CNTT",
-          system: "Chính quy"
-        },
-        {
-          OSID: 4,
-          name: "CĐR khoa CNTT chuyên ngành MMT khóa 2015",
-          create_date: "12/2/2019",
-          modify_date: "21/2/2019",
-          faculty: "CNTT",
-          system: "Chính quy"
-        }
-      ],
-      visible: false,
       faculty: {},
-      program: {}
+      program: {},
+      visible: false
     };
   }
 
@@ -134,6 +100,7 @@ export default class OutcomeStandardCom extends Component {
   componentDidMount = () => {
     this.props.onLoadFaculties();
     this.props.onLoadPrograms();
+    this.props.onLoadOutcomeStandards();
   };
 
   render() {
@@ -207,6 +174,33 @@ export default class OutcomeStandardCom extends Component {
       );
     }
 
+    let tableHeader = (
+      <tr>
+        <th scope="col" className="border-0">
+          STT
+        </th>
+        <th scope="col" className="border-0">
+          Tên
+        </th>
+        <th scope="col" className="border-0">
+          Ngày tạo
+        </th>
+        <th scope="col" className="border-0">
+          Ngày sửa
+        </th>
+        <th scope="col" className="border-0">
+          Khoa
+        </th>
+        <th scope="col" className="border-0">
+          Hệ
+        </th>
+        <th scope="col" className="border-0" />
+        <th scope="col" className="border-0" />
+        <th scope="col" className="border-0" />
+        <th scope="col" className="border-0" />
+      </tr>
+    );
+
     return (
       <div>
         <Row>
@@ -214,69 +208,63 @@ export default class OutcomeStandardCom extends Component {
             <Card small className="mb-4">
               <CardBody className="p-0 pb-3">
                 <table className="table mb-0">
-                  <thead className="bg-light">
-                    <tr>
-                      <th scope="col" className="border-0">
-                        STT
-                      </th>
-                      <th scope="col" className="border-0">
-                        Tên
-                      </th>
-                      <th scope="col" className="border-0">
-                        Ngày tạo
-                      </th>
-                      <th scope="col" className="border-0">
-                        Ngày sửa
-                      </th>
-                      <th scope="col" className="border-0">
-                        Khoa
-                      </th>
-                      <th scope="col" className="border-0">
-                        Hệ
-                      </th>
-                      <th scope="col" className="border-0" />
-                      <th scope="col" className="border-0" />
-                      <th scope="col" className="border-0" />
-                      <th scope="col" className="border-0" />
-                    </tr>
-                  </thead>
+                  <thead className="bg-light">{tableHeader}</thead>
                   <tbody>
-                    {this.state.rows.map((row, i) => (
+                    {Array.isArray(this.props.outcomeStandards) &&
+                    this.props.outcomeStandards.length !== 0 ? (
+                      this.props.outcomeStandards.map((row, i) => (
+                        <tr>
+                          <td>{i + 1}</td>
+                          <td>{row.name}</td>
+                          <td>{row.create_date}</td>
+                          <td>{row.modify_date}</td>
+                          <td>{row.faculty}</td>
+                          <td>{row.system}</td>
+                          <td>
+                            <Button
+                              style={{ cursor: "pointer" }}
+                              title="Chỉnh sửa"
+                            >
+                              <i className="material-icons">edit</i>
+                            </Button>
+                          </td>
+                          <td>
+                            <Button
+                              onClick={() => this.duplicateOS(i)}
+                              title="Tạo bản sao"
+                            >
+                              <i className="material-icons">file_copy</i>
+                            </Button>
+                          </td>
+                          <td>
+                            <Button
+                              onClick={() => this.deleteOS(i)}
+                              title="Xóa"
+                            >
+                              <i className="material-icons">delete</i>
+                            </Button>
+                          </td>
+                          <td>
+                            <Button title="Tạo file Excel">
+                              <i className="material-icons">save_alt</i>
+                            </Button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
                       <tr>
-                        <td>{i + 1}</td>
-                        <td>{row.name}</td>
-                        <td>{row.create_date}</td>
-                        <td>{row.modify_date}</td>
-                        <td>{row.faculty}</td>
-                        <td>{row.system}</td>
-                        <td>
-                          <Button
-                            style={{ cursor: "pointer" }}
-                            title="Chỉnh sửa"
-                          >
-                            <i className="material-icons">edit</i>
-                          </Button>
-                        </td>
-                        <td>
-                          <Button
-                            onClick={() => this.duplicateOS(i)}
-                            title="Tạo bản sao"
-                          >
-                            <i className="material-icons">file_copy</i>
-                          </Button>
-                        </td>
-                        <td>
-                          <Button onClick={() => this.deleteOS(i)} title="Xóa">
-                            <i className="material-icons">delete</i>
-                          </Button>
-                        </td>
-                        <td>
-                          <Button title="Tạo file Excel">
-                            <i className="material-icons">save_alt</i>
-                          </Button>
-                        </td>
+                        <td>No records found</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </CardBody>
