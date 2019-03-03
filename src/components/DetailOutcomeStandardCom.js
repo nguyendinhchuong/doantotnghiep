@@ -569,9 +569,70 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
-  // Create data for redux
-  onSaveListOutcomes = () => {
+  // save data functions
+
+  createSaveData = () => {
+    let tmpObj = {};
+    let exportData = [];
+
+    for (let i in this.state.nodes) {
+      // if
+      let key = this.state.nodes[i].key;
+      let name = this.state.nodes[i].data.name;
+      tmpObj = { key, name };
+      exportData.push(tmpObj);
+      tmpObj = [];
+      // end if
+      let children1 = [];
+      children1 = this.state.nodes[i].children;
+
+      for (let j in children1) {
+        // if
+        let key = children1[j].key;
+        let name = children1[j].data.name;
+        tmpObj = { key, name };
+        exportData.push(tmpObj);
+        tmpObj = [];
+        // end if
+
+        let children2 = [];
+        children2 = children1[j].children;
+
+        for (let k in children2) {
+          // if
+          let key = children2[k].key;
+          let name = children2[k].data.name;
+          tmpObj = { key, name };
+          exportData.push(tmpObj);
+          tmpObj = [];
+          // end if
+
+          let children3 = [];
+          children3 = children2[k].children;
+
+          for (let p in children3) {
+            // if
+            let key = children3[p].key;
+            let name = children3[p].data.name;
+            tmpObj = { key, name };
+            exportData.push(tmpObj);
+            tmpObj = [];
+            // end if
+          }
+        }
+      }
+    }
+
+    return exportData;
   };
+
+onSave = () => {
+  if (this.props.idOutcomeStandard)
+    var data = this.createSaveData();
+    this.props.onSaveThisOutcomeStandard(data, this.props.idOutcomeStandard);
+};
+
+  // end save data functions
 
   render() {
     const footer = (
@@ -674,7 +735,7 @@ class DetailOutcomeStandardCom extends Component {
             <Col lg="4" md="4" sm="4" />
 
             <Col lg="3" md="3" sm="3">
-              <Button theme="success" onClick={this.onSaveListOutcomes}>
+              <Button theme="success" onClick={this.onSave}>
                 <i className="material-icons">save</i> Save
               </Button>
             </Col>
