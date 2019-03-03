@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import XLSX from "xlsx";
+import axios from 'axios';
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
@@ -7,6 +8,7 @@ import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { getMaxLevel } from "../business/getLevel";
+import * as link from '../constants/links'
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -569,6 +571,16 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
+  /* save list item of outcome into db */
+  saveListOutcomes = ()=>{
+    const nodesSave = [];
+    axios.post('',{nodesSave})
+    .then(res =>{
+      console.log(res);
+    })
+  }
+
+
   render() {
     const footer = (
       <div>
@@ -626,6 +638,15 @@ class DetailOutcomeStandardCom extends Component {
               theme="success"
             >
               <i className="material-icons">add</i> Thêm
+            </Button>
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <Button
+              style={{ float: "right" }}
+              onClick={() => this.saveListOutcomes()}
+              theme="success"
+            >
+              <i className="material-icons"></i> Save
             </Button>
           </Col>
         </Row>
