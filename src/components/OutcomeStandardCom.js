@@ -97,6 +97,13 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
+  // ex 2015-03-04T00:00:00.000Z
+  formatDatetime = (date) =>{
+    const d = new Date(date);
+    const dateTime = [d.getFullYear(), d.getMonth(), d.getDay(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds()];
+    return `${dateTime[0]}-${dateTime[1]}-${dateTime[2]} ${dateTime[3]}:${dateTime[4]}:${dateTime[5]}`;
+  };
+
   componentDidMount = () => {
     this.props.onLoadFaculties();
     this.props.onLoadPrograms();
@@ -215,11 +222,11 @@ export default class OutcomeStandardCom extends Component {
                       this.props.outcomeStandards.map((row, i) => (
                         <tr>
                           <td>{i + 1}</td>
-                          <td>{row.name}</td>
-                          <td>{row.create_date}</td>
-                          <td>{row.modify_date}</td>
-                          <td>{row.faculty}</td>
-                          <td>{row.system}</td>
+                          <td>{'CDR '+ row.NameFaculty}</td>
+                          <td>{this.formatDatetime(row.DateCareated)}</td>
+                          <td>{this.formatDatetime(row.DateEdited)}</td>
+                          <td>{row.NameFaculty}</td>
+                          <td>{row.NameProgram}</td>
                           <td>
                             <Button
                               style={{ cursor: "pointer" }}

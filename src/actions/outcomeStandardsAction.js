@@ -21,6 +21,8 @@ export const onLoadOutcomeStandards = () => {
         if (outcomeStandards === undefined) {
           dispatch(loadOutcomeStandardsError("Do not have data"));
         } else {
+          console.log('---DATA-------');
+          console.log(outcomeStandards);
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
         }
       })

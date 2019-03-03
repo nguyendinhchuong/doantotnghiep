@@ -1,4 +1,4 @@
-export const LINK = "http://localhost:3000";
+export const LINK = "http://localhost:3001";
 
 // faculties actions
 export const LOAD_FACULTIES = "LOAD_FACULTIES";
