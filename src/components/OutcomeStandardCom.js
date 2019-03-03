@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { Row, Col, Card, CardBody, Button, FormSelect } from "shards-react";
-import Pagination from "rc-pagination";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
 
 export default class OutcomeStandardCom extends Component {
   constructor(props) {
@@ -97,11 +95,29 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
+  onEdit = row => {
+    // go to /outcome-standard/edit and pass row as data (this.props.location.state.data in EditOutcomeStandard)
+    this.props.history.push({
+      pathname: "/outcome-standard/edit",
+      state: { data: row }
+    });
+    console.log(row);
+  };
+
   // ex 2015-03-04T00:00:00.000Z
-  formatDatetime = (date) =>{
+  formatDatetime = date => {
     const d = new Date(date);
-    const dateTime = [d.getFullYear(), d.getMonth(), d.getDay(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds()];
-    return `${dateTime[0]}-${dateTime[1]}-${dateTime[2]} ${dateTime[3]}:${dateTime[4]}:${dateTime[5]}`;
+    const dateTime = [
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDay(),
+      d.getUTCHours(),
+      d.getUTCMinutes(),
+      d.getUTCSeconds()
+    ];
+    return `${dateTime[0]}-${dateTime[1]}-${dateTime[2]} ${dateTime[3]}:${
+      dateTime[4]
+    }:${dateTime[5]}`;
   };
 
   componentDidMount = () => {
@@ -222,7 +238,7 @@ export default class OutcomeStandardCom extends Component {
                       this.props.outcomeStandards.map((row, i) => (
                         <tr>
                           <td>{i + 1}</td>
-                          <td>{'CDR '+ row.NameFaculty}</td>
+                          <td>{"CDR " + row.NameFaculty}</td>
                           <td>{this.formatDatetime(row.DateCareated)}</td>
                           <td>{this.formatDatetime(row.DateEdited)}</td>
                           <td>{row.NameFaculty}</td>
@@ -231,23 +247,18 @@ export default class OutcomeStandardCom extends Component {
                             <Button
                               style={{ cursor: "pointer" }}
                               title="Chỉnh sửa"
+                              onClick={() => this.onEdit(row)}
                             >
                               <i className="material-icons">edit</i>
                             </Button>
                           </td>
                           <td>
-                            <Button
-                              onClick={() => this.duplicateOS(i)}
-                              title="Tạo bản sao"
-                            >
+                            <Button title="Tạo bản sao">
                               <i className="material-icons">file_copy</i>
                             </Button>
                           </td>
                           <td>
-                            <Button
-                              onClick={() => this.deleteOS(i)}
-                              title="Xóa"
-                            >
+                            <Button title="Xóa">
                               <i className="material-icons">delete</i>
                             </Button>
                           </td>
@@ -261,15 +272,15 @@ export default class OutcomeStandardCom extends Component {
                     ) : (
                       <tr>
                         <td>No records found</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
                       </tr>
                     )}
                   </tbody>
@@ -277,9 +288,7 @@ export default class OutcomeStandardCom extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col lg="6" md="6" sm="6">
-            <Pagination current={1} total={25} />
-          </Col>
+          <Col lg="6" md="6" sm="6" />
           <Col lg="6" md="6" sm="6">
             <p align="right">
               <Button onClick={this.onOpenAdd} theme="success">

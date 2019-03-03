@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cst from "../constants";
+import * as links from "../constants/links";
 
 export const loadProgramsSuccess = programs => ({
   type: cst.LOAD_PROGRAMS_SUCCESS,
@@ -13,7 +14,7 @@ export const loadProgramsError = errorMessage => ({
 
 export const onLoadPrograms = () => {
   return (dispatch, getState) => {
-    let req = `${cst.LINK}/programs`;
+    let req = links.LOAD_ALL_PROGRAMS;
     axios
       .get(req)
       .then(res => {

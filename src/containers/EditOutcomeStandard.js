@@ -7,7 +7,7 @@ import "rc-pagination/assets/index.css";
 import PageTitle from "../components/common/PageTitle";
 import DetailOutcomeStandardCom from "../components/DetailOutcomeStandardCom";
 
-export default class AddOutcomeStandard extends Component {
+export default class EditOutcomeStandard extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -16,8 +16,8 @@ export default class AddOutcomeStandard extends Component {
   render() {
     let subtitle =
       this.props.location.state !== undefined
-        ? `Khoa: ${this.props.location.state.faculty.name} | Hệ: ${
-            this.props.location.state.program.name
+        ? `Khoa: ${this.props.location.state.data.NameFaculty} | Hệ: ${
+            this.props.location.state.data.NameProgram
           }`
         : `Khoa: Chưa có | Hệ: Chưa có`;
 

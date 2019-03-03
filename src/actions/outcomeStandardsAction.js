@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cst from "../constants";
+import * as links from "../constants/links";
 
 export const loadOutcomeStandardsSuccess = outcomeStandards => ({
   type: cst.LOAD_OUTCOMESTANDARDS_SUCCESS,
@@ -13,7 +14,7 @@ export const loadOutcomeStandardsError = errorMessage => ({
 
 export const onLoadOutcomeStandards = () => {
   return (dispatch, getState) => {
-    let req = `${cst.LINK}/outcomeStandards`;
+    let req = links.LOAD_ALL_OUTCOMESTANDARDS;
     axios
       .get(req)
       .then(res => {
@@ -21,8 +22,6 @@ export const onLoadOutcomeStandards = () => {
         if (outcomeStandards === undefined) {
           dispatch(loadOutcomeStandardsError("Do not have data"));
         } else {
-          console.log('---DATA-------');
-          console.log(outcomeStandards);
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
         }
       })

@@ -8,7 +8,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { getMaxLevel } from "../business/getLevel";
 
-class AddOutcomeStandardCom extends Component {
+class DetailOutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -709,4 +709,4 @@ class DataInput extends React.Component {
   }
 }
 
-export default AddOutcomeStandardCom;
+export default DetailOutcomeStandardCom;

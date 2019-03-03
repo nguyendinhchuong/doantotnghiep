@@ -1,5 +1,3 @@
-export const LINK = "http://localhost:3001";
-
 // faculties actions
 export const LOAD_FACULTIES = "LOAD_FACULTIES";
 export const LOAD_FACULTIES_SUCCESS = "LOAD_FACULTIES_SUCCESS";
@@ -10,7 +8,7 @@ export const LOAD_PROGRAMS = "LOAD_PROGRAMS";
 export const LOAD_PROGRAMS_SUCCESS = "LOAD_PROGRAMS_SUCCESS";
 export const LOAD_PROGRAMS_ERROR = "LOAD_PROGRAMS_ERROR";
 
-// programs actions
+// outcomeStandards actions
 export const LOAD_OUTCOMESTANDARDS = "LOAD_OUTCOMESTANDARDS";
 export const LOAD_OUTCOMESTANDARDS_SUCCESS = "LOAD_OUTCOMESTANDARDS_SUCCESS";
 export const LOAD_OUTCOMESTANDARDS_ERROR = "LOAD_OUTCOMESTANDARDS_ERROR";

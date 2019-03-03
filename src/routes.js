@@ -8,6 +8,7 @@ import { DefaultLayout } from "./layouts";
 import EducateProgram from "./containers/EducateProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
 import AddOutcomeStandard from "./containers/AddOutcomeStandard";
+import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import CourseRegister from "./containers/CourseRegister";
 import Errors from "./containers/Errors";
 import CourseMaps from "./containers/CourseMaps";
@@ -38,6 +39,12 @@ export default [
     component: AddOutcomeStandard
   },
   {
+    path: "/outcome-standard/edit",
+    exact: false,
+    layout: DefaultLayout,
+    component: EditOutcomeStandard
+  },
+  {
     path: "/course-register",
     exact: true,
     layout: DefaultLayout,
@@ -53,5 +60,5 @@ export default [
     path: "/errors",
     layout: DefaultLayout,
     component: Errors
-  },
+  }
 ];

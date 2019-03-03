@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cst from "../constants";
+import * as links from "../constants/links";
 
 export const loadFacultiesSuccess = faculties => ({
   type: cst.LOAD_FACULTIES_SUCCESS,
@@ -13,7 +14,7 @@ export const loadFacultiesError = errorMessage => ({
 
 export const onLoadFaculties = () => {
   return (dispatch, getState) => {
-    let req = `${cst.LINK}/faculties`;
+    let req = links.LOAD_ALL_FACULTIES;
     axios
       .get(req)
       .then(res => {
