@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import XLSX from "xlsx";
-import axios from 'axios';
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
@@ -8,7 +7,6 @@ import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { getMaxLevel } from "../business/getLevel";
-import * as link from '../constants/links'
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -571,15 +569,9 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
-  /* save list item of outcome into db */
-  saveListOutcomes = ()=>{
-    const nodesSave = [];
-    axios.post('',{nodesSave})
-    .then(res =>{
-      console.log(res);
-    })
-  }
-
+  // Create data for redux
+  onSaveListOutcomes = () => {
+  };
 
   render() {
     const footer = (
@@ -637,16 +629,8 @@ class DetailOutcomeStandardCom extends Component {
               onClick={() => this.onClickDialogRoot()}
               theme="success"
             >
-              <i className="material-icons">add</i> Thêm
-            </Button>
-          </Col>
-          <Col lg="12" md="12" sm="12">
-            <Button
-              style={{ float: "right" }}
-              onClick={() => this.saveListOutcomes()}
-              theme="success"
-            >
-              <i className="material-icons"></i> Save
+              <i className="material-icons">add</i>
+              <i className="material-icons">add</i>
             </Button>
           </Col>
         </Row>
@@ -687,14 +671,16 @@ class DetailOutcomeStandardCom extends Component {
 
         <div>
           <Row>
-            <Col lg="5" md="5" sm="5" />
+            <Col lg="4" md="4" sm="4" />
 
-            <Col lg="6" md="6" sm="6">
-              <Button
-                className="btn btn-success"
-                style={{ textAlign: "right" }}
-                onClick={this.onShowExportCom}
-              >
+            <Col lg="3" md="3" sm="3">
+              <Button theme="success" onClick={this.onSaveListOutcomes}>
+                <i className="material-icons">save</i> Save
+              </Button>
+            </Col>
+
+            <Col lg="5" md="5" sm="5">
+              <Button theme="success" onClick={this.onShowExportCom}>
                 <i className="material-icons">save_alt</i> Export
               </Button>
             </Col>
