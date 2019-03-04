@@ -8,6 +8,7 @@ import PageTitle from "../components/common/PageTitle";
 import DetailOutcomeStandardCom from "../components/DetailOutcomeStandardCom";
 
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
+import * as infoOutcomeStandardAction from "../actions/infoOutcomeStandardAction";
 
 import { connect } from "react-redux";
 
@@ -17,14 +18,31 @@ class EditOutcomeStandardTmp extends Component {
     this.state = {};
   }
 
+  componentDidMount = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+    this.props.onLoadInfoOutcomeStandard(id);
+  };
+
   render() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
+    let subtitle = Array.isArray(this.props.infoOutcomeStandard)
+      ? `Khoa: ${this.props.infoOutcomeStandard[0].NameFaculty} | Hệ: ${
+          this.props.infoOutcomeStandard[0].NameProgram
+        }`
+      : `Khoa: Chưa có | Hệ: Chưa có`;
+
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
-          <PageTitle sm="4" title="Sửa chuẩn đầu ra" className="text-sm-left" />
+          <PageTitle
+            sm="4"
+            title="Sửa chuẩn đầu ra"
+            subtitle={subtitle}
+            className="text-sm-left"
+          />
         </Row>
         <Row>
           <Col lg="12" md="12" sm="12">
@@ -39,9 +57,12 @@ class EditOutcomeStandardTmp extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  infoOutcomeStandard: state.infoOutcomeStandard
+});
 
 export default connect(mapStateToProps, {
   onSaveThisOutcomeStandard:
-    detailOutcomeStandardAction.onSaveThisOutcomeStandard
+    detailOutcomeStandardAction.onSaveThisOutcomeStandard,
+  onLoadInfoOutcomeStandard: infoOutcomeStandardAction.onLoadInfoOutcomeStandard
 })(EditOutcomeStandardTmp);

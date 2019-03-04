@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { getMaxLevel } from "../business/getLevel";
+import { getMaxLevel, createSaveData, createExportData } from "../business/";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -459,103 +459,12 @@ class DetailOutcomeStandardCom extends Component {
 
   // export file functions
 
-  createExportData = () => {
+  onExportFile = event => {
+    let data = [];
     let level = getMaxLevel(this.state.nodes);
-    let tmpArr = [];
-    let exportData = [];
-
-    for (let i in this.state.nodes) {
-      // if
-      let str = "" + this.state.nodes[i].key;
-      tmpArr[0] = parseInt(str.charAt(0));
-
-      tmpArr[level - 1] = this.state.nodes[i].data.name;
-
-      exportData.push(tmpArr);
-      tmpArr = [];
-      // end if
-      let children1 = [];
-      children1 = this.state.nodes[i].children;
-
-      for (let j in children1) {
-        if (
-          children1[j].children === undefined ||
-          children1[j].children.length === 0
-        ) {
-          tmpArr[level - 1] = children1[j].data.name;
-
-          exportData.push(tmpArr);
-          tmpArr = [];
-        } else {
-          let str = "" + children1[j].key;
-          tmpArr[0] = parseInt(str.charAt(0));
-          tmpArr[1] = parseInt(j) + 1;
-
-          tmpArr[level - 1] = children1[j].data.name;
-
-          exportData.push(tmpArr);
-          tmpArr = [];
-        }
-
-        let children2 = [];
-        children2 = children1[j].children;
-
-        for (let k in children2) {
-          if (
-            children2[k].children === undefined ||
-            children2[k].children.length === 0
-          ) {
-            tmpArr[level - 1] = children2[k].data.name;
-
-            exportData.push(tmpArr);
-            tmpArr = [];
-          } else {
-            let str = "" + children2[k].key;
-            tmpArr[0] = parseInt(str.charAt(0));
-            tmpArr[1] = parseInt(str.charAt(2));
-            tmpArr[2] = parseInt(k) + 1;
-
-            tmpArr[level - 1] = children2[k].data.name;
-
-            exportData.push(tmpArr);
-            tmpArr = [];
-          }
-          // end if
-
-          let children3 = [];
-          children3 = children2[k].children;
-
-          for (let p in children3) {
-            if (
-              children3[p].children === undefined ||
-              children3[p].children.length === 0
-            ) {
-              tmpArr[level - 1] = children3[p].data.name;
-
-              exportData.push(tmpArr);
-              tmpArr = [];
-            } else {
-              let str = "" + children3[p].key;
-              tmpArr[0] = parseInt(str.charAt(0));
-              tmpArr[1] = parseInt(str.charAt(2));
-              tmpArr[2] = parseInt(str.charAt(4));
-              tmpArr[3] = parseInt(k) + 1;
-
-              tmpArr[level - 1] = children3[p].data.name;
-
-              exportData.push(tmpArr);
-              tmpArr = [];
-            }
-          }
-        }
-      }
-    }
-
-    return exportData;
-  };
-
-  exportFile = event => {
-    const ws = XLSX.utils.aoa_to_sheet(this.createExportData());
+    createExportData(this.state.nodes, data, level);
+    console.log(data);
+    const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
@@ -571,69 +480,17 @@ class DetailOutcomeStandardCom extends Component {
 
   // save data functions
 
-  createSaveData = () => {
-    let tmpObj = {};
-    let exportData = [];
-
-    for (let i in this.state.nodes) {
-      // if
-      let key = this.state.nodes[i].key + "--";
-      let name = this.state.nodes[i].data.name;
-      tmpObj = { key, name };
-      exportData.push(tmpObj);
-      tmpObj = [];
-      // end if
-      let children1 = [];
-      children1 = this.state.nodes[i].children;
-
-      for (let j in children1) {
-        // if
-        let key = children1[j].key;
-        let name = children1[j].data.name;
-        tmpObj = { key, name };
-        exportData.push(tmpObj);
-        tmpObj = [];
-        // end if
-
-        let children2 = [];
-        children2 = children1[j].children;
-
-        for (let k in children2) {
-          // if
-          let key = children2[k].key;
-          let name = children2[k].data.name;
-          tmpObj = { key, name };
-          exportData.push(tmpObj);
-          tmpObj = [];
-          // end if
-
-          let children3 = [];
-          children3 = children2[k].children;
-
-          for (let p in children3) {
-            // if
-            let key = children3[p].key;
-            let name = children3[p].data.name;
-            tmpObj = { key, name };
-            exportData.push(tmpObj);
-            tmpObj = [];
-            // end if
-          }
-        }
-      }
+  onSave = () => {
+    if (this.props.idOutcomeStandard !== "undefined") {
+      let data = [];
+      createSaveData(this.state.nodes, data);
+      if (this.props.onSaveThisOutcomeStandard)
+        this.props.onSaveThisOutcomeStandard(
+          data,
+          this.props.idOutcomeStandard
+        );
     }
-
-    return exportData;
   };
-
-onSave = () => {
-  if (this.props.idOutcomeStandard !== "undefined") {
-    var data = this.createSaveData();
-    if (this.props.onSaveThisOutcomeStandard)
-      this.props.onSaveThisOutcomeStandard(data, this.props.idOutcomeStandard);
-  }
-};
-
 
   // end save data functions
 
@@ -651,7 +508,7 @@ onSave = () => {
 
     const exportCom = (
       <div>
-        <Button onClick={this.exportFile} theme="success">
+        <Button onClick={this.onExportFile} theme="success">
           Save
         </Button>
         <Button onClick={this.onHideExportCom} theme="secondary">
