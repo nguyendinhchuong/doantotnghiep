@@ -99,9 +99,7 @@ export default class OutcomeStandardCom extends Component {
     this.props.history.push({
       pathname: "/outcome-standard/edit",
       search: `?id=${row.IdOutcome}`
-      // state: { data: row },
     });
-    console.log(row);
   };
 
   // ex 2015-03-04T00:00:00.000Z

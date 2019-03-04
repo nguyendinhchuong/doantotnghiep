@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { getMaxLevel } from "../business/getLevel";
+import { getMaxLevel, createSaveData, createExportData } from "../business/";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -474,6 +474,7 @@ class DetailOutcomeStandardCom extends Component {
 
   // export file functions
 
+<<<<<<< HEAD
   createExportData = (nodes) => {
     let level = getMaxLevel(nodes);
     let tmpArr = [];
@@ -571,6 +572,14 @@ class DetailOutcomeStandardCom extends Component {
 
   exportFile = event => {
     const ws = XLSX.utils.aoa_to_sheet(this.createExportData(this.state.nodes));
+=======
+  onExportFile = event => {
+    let data = [];
+    let level = getMaxLevel(this.state.nodes);
+    createExportData(this.state.nodes, data, level);
+    console.log(data);
+    const ws = XLSX.utils.aoa_to_sheet(data);
+>>>>>>> 41f1ab96a0bb2134f405e85fcc8051f6a2ca2646
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
@@ -584,6 +593,7 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
+<<<<<<< HEAD
   // history
 
   getToday(date){
@@ -613,6 +623,23 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   
+=======
+  // save data functions
+
+  onSave = () => {
+    if (this.props.idOutcomeStandard !== "undefined") {
+      let data = [];
+      createSaveData(this.state.nodes, data);
+      if (this.props.onSaveThisOutcomeStandard)
+        this.props.onSaveThisOutcomeStandard(
+          data,
+          this.props.idOutcomeStandard
+        );
+    }
+  };
+
+  // end save data functions
+>>>>>>> 41f1ab96a0bb2134f405e85fcc8051f6a2ca2646
 
   render() {
     const footer = (
@@ -628,7 +655,7 @@ class DetailOutcomeStandardCom extends Component {
 
     const exportCom = (
       <div>
-        <Button onClick={this.exportFile} theme="success">
+        <Button onClick={this.onExportFile} theme="success">
           Save
         </Button>
         <Button onClick={this.onHideExportCom} theme="secondary">
@@ -715,7 +742,7 @@ class DetailOutcomeStandardCom extends Component {
             <Col lg="4" md="4" sm="4" />
 
             <Col lg="3" md="3" sm="3">
-              <Button theme="success" onClick={this.onSaveListOutcomes}>
+              <Button theme="success" onClick={this.onSave}>
                 <i className="material-icons">save</i> Save
               </Button>
             </Col>
