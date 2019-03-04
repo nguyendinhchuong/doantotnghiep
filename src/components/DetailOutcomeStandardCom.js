@@ -13,6 +13,7 @@ class DetailOutcomeStandardCom extends Component {
     super(props);
     this.state = {
       dataImport: [],
+      dataHistory: [],
       nodes: data1,
       node: "",
       visible: false,
@@ -45,6 +46,10 @@ class DetailOutcomeStandardCom extends Component {
       children: []
     };
     data1.push(root);
+
+    const history = this.historyObject(root,'add');
+
+    histories.push(history)
 
     this.setState({
       nodes: data1
@@ -97,6 +102,9 @@ class DetailOutcomeStandardCom extends Component {
         alert("Cannot insert");
         break;
     }
+    const history = this.historyObject(subNode,'add');
+
+    histories.push(history)
     this.setState({
       nodes: data1
     });
@@ -149,6 +157,9 @@ class DetailOutcomeStandardCom extends Component {
       default:
         break;
     }
+    const history = this.historyObject(node,'delete');
+
+    histories.push(history)
     this.refreshTreeNodes(Number(x[0]) - 1);
   };
 
@@ -248,6 +259,9 @@ class DetailOutcomeStandardCom extends Component {
       default:
         break;
     }
+    const history = this.historyObject(node,'update');
+
+    histories.push(history)
     this.setState({
       nodes: data1
     });
@@ -378,7 +392,7 @@ class DetailOutcomeStandardCom extends Component {
       /* Update state */
       this.setState({ data: data });
       const x = this.convertJsonToTreeNode(this.state.data);
-      this.setState({ nodes: x });
+      this.setState({ nodes: x ,dataImport: x});
 
       setTimeout(() => {
         this.setState({ isLoadData: false });
@@ -424,6 +438,7 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   getKeyAndName = element => {
+    const length = element.length;
     let key, name;
     key = element[0];
     if (element[1]) key += `-${element[1]}`;
@@ -459,23 +474,23 @@ class DetailOutcomeStandardCom extends Component {
 
   // export file functions
 
-  createExportData = () => {
-    let level = getMaxLevel(this.state.nodes);
+  createExportData = (nodes) => {
+    let level = getMaxLevel(nodes);
     let tmpArr = [];
     let exportData = [];
 
-    for (let i in this.state.nodes) {
+    for (let i in nodes) {
       // if
-      let str = "" + this.state.nodes[i].key;
+      let str = "" + nodes[i].key;
       tmpArr[0] = parseInt(str.charAt(0));
 
-      tmpArr[level - 1] = this.state.nodes[i].data.name;
+      tmpArr[level - 1] = nodes[i].data.name;
 
       exportData.push(tmpArr);
       tmpArr = [];
       // end if
       let children1 = [];
-      children1 = this.state.nodes[i].children;
+      children1 = nodes[i].children;
 
       for (let j in children1) {
         if (
@@ -555,7 +570,7 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   exportFile = event => {
-    const ws = XLSX.utils.aoa_to_sheet(this.createExportData());
+    const ws = XLSX.utils.aoa_to_sheet(this.createExportData(this.state.nodes));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
@@ -569,9 +584,35 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
+  // history
+
+  getToday(date){
+
+  }
+
+  historyObject = (node,action ) =>{
+    return {
+      key:node.key,
+      nameNode:node.data.name,
+      userName :'test',
+      dateEdit: new Date(),
+      contentEdit:`${action} index: ${node.key} date:${new Date()}`
+    };
+  }
+
+  onShowHistory = () =>{
+    console.log(histories);
+  }
+
   // Create data for redux
   onSaveListOutcomes = () => {
+    const arr = [...this.createExportData(this.state.nodes),...this.createExportData(this.state.dataImport)];
+
+    console.log(arr);
+  
   };
+
+  
 
   render() {
     const footer = (
@@ -684,14 +725,20 @@ class DetailOutcomeStandardCom extends Component {
                 <i className="material-icons">save_alt</i> Export
               </Button>
             </Col>
+            <Col lg="5" md="5" sm="5">
+              <Button theme="success" onClick={this.onShowHistory}>
+                <i className="material-icons">save_alt</i> History
+              </Button>
+            </Col>
           </Row>
         </div>
       </div>
     );
   }
 }
-
+let histories = [];
 let data1 = [];
+
 
 class DataInput extends React.Component {
   constructor(props) {
