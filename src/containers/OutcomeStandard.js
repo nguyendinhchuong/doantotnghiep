@@ -6,6 +6,7 @@ import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
 import OutcomeStandardCom from "../components/OutcomeStandardCom";
+// import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
@@ -30,6 +31,8 @@ class OutcomeStandardTemp extends Component {
           />
         </Row>
 
+        {/*<AlertCom message={this.props.message} />*/}
+
         {/*pass the history of routes to child Component*/}
         {/*get redux's dispatches and states*/}
         <OutcomeStandardCom
@@ -50,12 +53,14 @@ class OutcomeStandardTemp extends Component {
 const mapStateToProps = state => ({
   faculties: state.faculties,
   programs: state.programs,
-  outcomeStandards: state.outcomeStandards
+  outcomeStandards: state.outcomeStandards,
+  message: state.message
 });
 
 export default connect(mapStateToProps, {
   onLoadFaculties: facultiesAction.onLoadFaculties,
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
-  onDeleteThisOutcomeStandard: outcomeStandardsAction.onDeleteThisOutcomeStandard,
+  onDeleteThisOutcomeStandard:
+    outcomeStandardsAction.onDeleteThisOutcomeStandard
 })(OutcomeStandardTemp);

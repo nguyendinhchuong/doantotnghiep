@@ -3,7 +3,7 @@ import XLSX from "xlsx";
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { Row, Col, Button } from "shards-react";
+import { Row, Col, Button, Card } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { getMaxLevel, createSaveData, createExportData } from "../business/";
@@ -47,9 +47,9 @@ class DetailOutcomeStandardCom extends Component {
     };
     data1.push(root);
 
-    const history = this.historyObject(root,'add');
+    const history = this.historyObject(root, "add");
 
-    histories.push(history)
+    histories.push(history);
 
     this.setState({
       nodes: data1
@@ -102,14 +102,16 @@ class DetailOutcomeStandardCom extends Component {
         alert("Cannot insert");
         break;
     }
-    const history = this.historyObject(subNode,'add');
+    const history = this.historyObject(subNode, "add");
 
-    histories.push(history)
+    histories.push(history);
     this.setState({
       nodes: data1
     });
   }
+
   //Delete
+
   deleteNode = node => {
     const x = node.key.split("-");
     let index, sub;
@@ -157,9 +159,9 @@ class DetailOutcomeStandardCom extends Component {
       default:
         break;
     }
-    const history = this.historyObject(node,'delete');
+    const history = this.historyObject(node, "delete");
 
-    histories.push(history)
+    histories.push(history);
     this.refreshTreeNodes(Number(x[0]) - 1);
   };
 
@@ -259,9 +261,9 @@ class DetailOutcomeStandardCom extends Component {
       default:
         break;
     }
-    const history = this.historyObject(node,'update');
+    const history = this.historyObject(node, "update");
 
-    histories.push(history)
+    histories.push(history);
     this.setState({
       nodes: data1
     });
@@ -392,7 +394,7 @@ class DetailOutcomeStandardCom extends Component {
       /* Update state */
       this.setState({ data: data });
       const x = this.convertJsonToTreeNode(this.state.data);
-      this.setState({ nodes: x ,dataImport: x});
+      this.setState({ nodes: x, dataImport: x });
 
       setTimeout(() => {
         this.setState({ isLoadData: false });
@@ -474,112 +476,12 @@ class DetailOutcomeStandardCom extends Component {
 
   // export file functions
 
-<<<<<<< HEAD
-  createExportData = (nodes) => {
-    let level = getMaxLevel(nodes);
-    let tmpArr = [];
-    let exportData = [];
-
-    for (let i in nodes) {
-      // if
-      let str = "" + nodes[i].key;
-      tmpArr[0] = parseInt(str.charAt(0));
-
-      tmpArr[level - 1] = nodes[i].data.name;
-
-      exportData.push(tmpArr);
-      tmpArr = [];
-      // end if
-      let children1 = [];
-      children1 = nodes[i].children;
-
-      for (let j in children1) {
-        if (
-          children1[j].children === undefined ||
-          children1[j].children.length === 0
-        ) {
-          tmpArr[level - 1] = children1[j].data.name;
-
-          exportData.push(tmpArr);
-          tmpArr = [];
-        } else {
-          let str = "" + children1[j].key;
-          tmpArr[0] = parseInt(str.charAt(0));
-          tmpArr[1] = parseInt(j) + 1;
-
-          tmpArr[level - 1] = children1[j].data.name;
-
-          exportData.push(tmpArr);
-          tmpArr = [];
-        }
-
-        let children2 = [];
-        children2 = children1[j].children;
-
-        for (let k in children2) {
-          if (
-            children2[k].children === undefined ||
-            children2[k].children.length === 0
-          ) {
-            tmpArr[level - 1] = children2[k].data.name;
-
-            exportData.push(tmpArr);
-            tmpArr = [];
-          } else {
-            let str = "" + children2[k].key;
-            tmpArr[0] = parseInt(str.charAt(0));
-            tmpArr[1] = parseInt(str.charAt(2));
-            tmpArr[2] = parseInt(k) + 1;
-
-            tmpArr[level - 1] = children2[k].data.name;
-
-            exportData.push(tmpArr);
-            tmpArr = [];
-          }
-          // end if
-
-          let children3 = [];
-          children3 = children2[k].children;
-
-          for (let p in children3) {
-            if (
-              children3[p].children === undefined ||
-              children3[p].children.length === 0
-            ) {
-              tmpArr[level - 1] = children3[p].data.name;
-
-              exportData.push(tmpArr);
-              tmpArr = [];
-            } else {
-              let str = "" + children3[p].key;
-              tmpArr[0] = parseInt(str.charAt(0));
-              tmpArr[1] = parseInt(str.charAt(2));
-              tmpArr[2] = parseInt(str.charAt(4));
-              tmpArr[3] = parseInt(k) + 1;
-
-              tmpArr[level - 1] = children3[p].data.name;
-
-              exportData.push(tmpArr);
-              tmpArr = [];
-            }
-          }
-        }
-      }
-    }
-
-    return exportData;
-  };
-
-  exportFile = event => {
-    const ws = XLSX.utils.aoa_to_sheet(this.createExportData(this.state.nodes));
-=======
   onExportFile = event => {
     let data = [];
     let level = getMaxLevel(this.state.nodes);
     createExportData(this.state.nodes, data, level);
     console.log(data);
     const ws = XLSX.utils.aoa_to_sheet(data);
->>>>>>> 41f1ab96a0bb2134f405e85fcc8051f6a2ca2646
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
@@ -593,37 +495,33 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
-<<<<<<< HEAD
   // history
 
-  getToday(date){
+  getToday(date) {}
 
-  }
-
-  historyObject = (node,action ) =>{
+  historyObject = (node, action) => {
     return {
-      key:node.key,
-      nameNode:node.data.name,
-      userName :'test',
+      key: node.key,
+      nameNode: node.data.name,
+      userName: "test",
       dateEdit: new Date(),
-      contentEdit:`${action} index: ${node.key} date:${new Date()}`
+      contentEdit: `${action} index: ${node.key} date:${new Date()}`
     };
-  }
+  };
 
-  onShowHistory = () =>{
+  onShowHistory = () => {
     console.log(histories);
-  }
+  };
 
   // Create data for redux
   onSaveListOutcomes = () => {
-    const arr = [...this.createExportData(this.state.nodes),...this.createExportData(this.state.dataImport)];
-
+    const arr = [
+      ...this.createExportData(this.state.nodes),
+      ...this.createExportData(this.state.dataImport)
+    ];
     console.log(arr);
-  
   };
 
-  
-=======
   // save data functions
 
   onSave = () => {
@@ -639,7 +537,6 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   // end save data functions
->>>>>>> 41f1ab96a0bb2134f405e85fcc8051f6a2ca2646
 
   render() {
     const footer = (
@@ -675,6 +572,28 @@ class DetailOutcomeStandardCom extends Component {
             <DataInput handleFile={this.handleFile} />
           </Col>
         </Row>
+
+        <hr />
+        <Row>
+          <Col lg="1" md="1" sm="1" />
+          <Col lg="4" md="4" sm="4">
+            <Button theme="success" onClick={this.onSave}>
+              <i className="material-icons">save</i> Save
+            </Button>
+          </Col>
+
+          <Col lg="4" md="4" sm="4">
+            <Button theme="success" onClick={this.onShowExportCom}>
+              <i className="material-icons">save_alt</i> Export
+            </Button>
+          </Col>
+          <Col lg="3" md="3" sm="3">
+            <Button theme="success" onClick={this.onShowHistory}>
+              <i className="material-icons">change_history</i> History
+            </Button>
+          </Col>
+        </Row>
+
         <hr />
         <Row>
           <Col lg="12" md="12" sm="12">
@@ -692,17 +611,26 @@ class DetailOutcomeStandardCom extends Component {
             </TreeTable>
           </Col>
           <Col lg="12" md="12" sm="12">
-            <Button
-              style={{ float: "right" }}
-              onClick={() => this.onClickDialogRoot()}
-              theme="success"
-            >
-              <i className="material-icons">add</i>
-              <i className="material-icons">add</i>
-            </Button>
+            <Card small className="mb-4">
+                <table className="table mb-0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <Button
+                          style={{ float: "right", paddingRight: "10px", paddingLeft: "10px" }}
+                          onClick={() => this.onClickDialogRoot()}
+                          theme="success"
+                        >
+                          <i className="material-icons">add_circle_outline</i>
+                          Thêm Node
+                        </Button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </Card>
           </Col>
         </Row>
-        <hr />
         <div className="content-section implementation">
           <Dialog
             header="File Name"
@@ -736,36 +664,12 @@ class DetailOutcomeStandardCom extends Component {
             />
           </Dialog>
         </div>
-
-        <div>
-          <Row>
-            <Col lg="4" md="4" sm="4" />
-
-            <Col lg="3" md="3" sm="3">
-              <Button theme="success" onClick={this.onSave}>
-                <i className="material-icons">save</i> Save
-              </Button>
-            </Col>
-
-            <Col lg="5" md="5" sm="5">
-              <Button theme="success" onClick={this.onShowExportCom}>
-                <i className="material-icons">save_alt</i> Export
-              </Button>
-            </Col>
-            <Col lg="5" md="5" sm="5">
-              <Button theme="success" onClick={this.onShowHistory}>
-                <i className="material-icons">save_alt</i> History
-              </Button>
-            </Col>
-          </Row>
-        </div>
       </div>
     );
   }
 }
 let histories = [];
 let data1 = [];
-
 
 class DataInput extends React.Component {
   constructor(props) {

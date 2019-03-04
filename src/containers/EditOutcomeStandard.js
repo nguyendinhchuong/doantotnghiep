@@ -22,6 +22,7 @@ class EditOutcomeStandardTmp extends Component {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
     this.props.onLoadInfoOutcomeStandard(id);
+    this.props.onLoadThisOutcomeStandard(id);
   };
 
   render() {
@@ -49,6 +50,7 @@ class EditOutcomeStandardTmp extends Component {
             <DetailOutcomeStandardCom
               onSaveThisOutcomeStandard={this.props.onSaveThisOutcomeStandard}
               idOutcomeStandard={id}
+              detailOutcomeStandard={this.props.detailOutcomeStandard}
             />
           </Col>
         </Row>
@@ -58,11 +60,15 @@ class EditOutcomeStandardTmp extends Component {
 }
 
 const mapStateToProps = state => ({
-  infoOutcomeStandard: state.infoOutcomeStandard
+  infoOutcomeStandard: state.infoOutcomeStandard,
+  detailOutcomeStandard: state.detailOutcomeStandard
 });
 
 export default connect(mapStateToProps, {
   onSaveThisOutcomeStandard:
     detailOutcomeStandardAction.onSaveThisOutcomeStandard,
-  onLoadInfoOutcomeStandard: infoOutcomeStandardAction.onLoadInfoOutcomeStandard
+  onLoadThisOutcomeStandard:
+    detailOutcomeStandardAction.onLoadThisOutcomeStandard,
+  onLoadInfoOutcomeStandard:
+    infoOutcomeStandardAction.onLoadInfoOutcomeStandard
 })(EditOutcomeStandardTmp);

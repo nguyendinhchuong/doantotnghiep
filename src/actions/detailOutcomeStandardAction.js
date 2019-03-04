@@ -32,6 +32,35 @@ export const onSaveThisOutcomeStandard = (data, id) => {
   };
 };
 
+export const loadDetailOutcomeStandardSuccess = detailOutcomeStandard => ({
+  type: cst.LOAD_DETAIL_OUTCOMESTANDARD_SUCCESS,
+  detailOutcomeStandard: detailOutcomeStandard
+});
+
+export const loadDetailOutcomeStandardError = errorMessage => ({
+  type: cst.LOAD_DETAIL_OUTCOMESTANDARD_ERROR,
+  errorMessage
+});
+
+export const onLoadThisOutcomeStandard = (id) => {
+  return (dispatch, getState) => {
+    let req = `${links.LOAD_DETAIL_OUTCOMESTANDARD}${id}`;
+    axios
+      .post(req)
+      .then(res => {
+        const detailOutcomeStandard = res.data;
+        if (detailOutcomeStandard === undefined) {
+          dispatch(loadDetailOutcomeStandardSuccess(detailOutcomeStandard));
+        } else {
+          dispatch(loadDetailOutcomeStandardSuccess(res));
+        }
+      })
+      .catch(err => {
+        dispatch(loadDetailOutcomeStandardError(err));
+      });
+  };
+};
+
 // export const addThisOutcomeStandardSuccess = successMessage => ({
 //   type: cst.ADD_DETAIL_OUTCOMESTANDARD_SUCCESS,
 //   successMessage
