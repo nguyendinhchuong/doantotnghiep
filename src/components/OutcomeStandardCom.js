@@ -243,7 +243,6 @@ export default class OutcomeStandardCom extends Component {
                           <td>{row.NameProgram}</td>
                           <td>
                             <Button
-                              style={{ cursor: "pointer" }}
                               title="Chỉnh sửa"
                               onClick={() => this.onEdit(row)}
                             >
@@ -256,7 +255,10 @@ export default class OutcomeStandardCom extends Component {
                             </Button>
                           </td>
                           <td>
-                            <Button title="Xóa">
+                            <Button
+                            title="Xóa"
+                            onClick={() => this.props.onDeleteThisOutcomeStandard(row.IdOutcome)}
+                            >
                               <i className="material-icons">delete</i>
                             </Button>
                           </td>

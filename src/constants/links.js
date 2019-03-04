@@ -8,9 +8,10 @@ export const LOAD_ALL_PROGRAMS = `${LINK}/programs`;
 
 // outcomeStandards links
 export const LOAD_ALL_OUTCOMESTANDARDS = `${LINK}/outcomeStandards`;
+export const DELETE_OUTCOMESTANDARD = `${LINK}/outcomeStandard/`;
 
 // detailOutcomeStandard links
 export const SAVE_DETAIL_OUTCOMESTANDARD = `${LINK}/outcomeStandards/`;
 
-// detailOutcomeStandard links
+// infoOutcomeStandard links
 export const LOAD_INFO_OUTCOMESTANDARD = `${LINK}/programFaculty/`;

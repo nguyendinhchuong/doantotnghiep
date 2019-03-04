@@ -40,6 +40,7 @@ class OutcomeStandardTemp extends Component {
           onLoadFaculties={this.props.onLoadFaculties}
           onLoadPrograms={this.props.onLoadPrograms}
           onLoadOutcomeStandards={this.props.onLoadOutcomeStandards}
+          onDeleteThisOutcomeStandard={this.props.onDeleteThisOutcomeStandard}
         />
       </Container>
     );
@@ -55,5 +56,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onLoadFaculties: facultiesAction.onLoadFaculties,
   onLoadPrograms: programsAction.onLoadPrograms,
-  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards
+  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
+  onDeleteThisOutcomeStandard: outcomeStandardsAction.onDeleteThisOutcomeStandard,
 })(OutcomeStandardTemp);
