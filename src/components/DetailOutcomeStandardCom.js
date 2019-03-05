@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { getMaxLevel, createSaveData, createExportData } from "../business/";
+import * as logic from "../business/";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -36,171 +36,27 @@ class DetailOutcomeStandardCom extends Component {
 
   //Add
   addRoot() {
-    const key = data1.length + 1;
-    const root = {
-      key: `${key}`,
-      data: {
-        name: this.state.nameOut,
-        displayName: `${key}. ${this.state.nameOut}`
-      },
-      children: []
-    };
-    data1.push(root);
-
-    const history = this.historyObject(root,'add');
-
-    histories.push(history)
-
+    const x= logic.addRoot(data1,this.state.nameOut);
+    data1.push(x);
     this.setState({
       nodes: data1
     });
   }
 
   add(node) {
-    const length = node.children.length;
-    const key = `${node.key}-${length + 1}`;
-    const x = node.key.split("-");
-    const subNode = {
-      key: key,
-      data: {
-        name: this.state.nameOut,
-        displayName: `${key}. ${this.state.nameOut}`
-      },
-      children: []
-    };
-    const lenKey = x.length;
-    switch (lenKey) {
-      case 1: {
-        data1[this.index(x, 0)].children.push(subNode);
-        break;
-      }
-      case 2: {
-        data1[this.index(x, 0)].children[this.index(x, 1)].children.push(
-          subNode
-        );
-        break;
-      }
-      case 3: {
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children.push(subNode);
-        break;
-      }
-      case 4: {
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children[this.index(x, 3)].children.push(subNode);
-        break;
-      }
-      case 5: {
-        data1[Number(x[0])].children[Number(x[1])].children[
-          Number(x[2])
-        ].children[Number(x[3])].children[Number(x[4])].children.push(subNode);
-        break;
-      }
-      default:
-        alert("Cannot insert");
-        break;
-    }
-    const history = this.historyObject(subNode,'add');
+    data1 = logic.add(data1, node, this.state.nameOut);
 
-    histories.push(history)
     this.setState({
       nodes: data1
     });
   }
   //Delete
   deleteNode = node => {
-    const x = node.key.split("-");
-    let index, sub;
-    const rankNode = x.length;
-    switch (rankNode) {
-      case 1: {
-        index = x[0];
-        data1 = this.dateAfterDeleted(data1, index);
-        break;
-      }
-      case 2: {
-        sub = data1[this.index(x, 0)].children;
-        sub = this.dateAfterDeleted(sub, Number(x[1]));
-        data1[this.index(x, 0)].children = sub;
-        break;
-      }
-      case 3: {
-        sub = data1[this.index(x, 0)].children[this.index(x, 1)].children;
-        sub = this.dateAfterDeleted(sub, Number(x[2]));
-        data1[this.index(x, 0)].children[this.index(x, 1)].children = sub;
-        break;
-      }
-      case 4: {
-        sub =
-          data1[this.index(x, 0)].children[this.index(x, 1)].children[
-            this.index(x, 2)
-          ].children;
-        sub = this.dateAfterDeleted(sub, Number(x[3]));
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children = sub;
-        break;
-      }
-      case 5: {
-        sub =
-          data1[this.index(x, 0)].children[this.index(x, 1)].children[
-            this.index(x, 2)
-          ].children[this.index(x, 3)].children;
-        sub = this.dateAfterDeleted(sub, Number(x[3]));
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children[this.index(x, 3)].children = sub;
-        break;
-      }
-      default:
-        break;
-    }
-    const history = this.historyObject(node,'delete');
-
-    histories.push(history)
-    this.refreshTreeNodes(Number(x[0]) - 1);
-  };
-
-  dateAfterDeleted(data, index) {
-    if (index === data.length) {
-      data = [...data.slice(0, index - 1)];
-    } else if (index <= 1) {
-      data = [...data.slice(index, data.length + 1)];
-    } else {
-      data = [...data.slice(0, index - 1), ...data.slice(index, data.length)];
-    }
-    return data;
-  }
-  // update sub node after delete
-  updateSubNode = (iParent, node) => {
-    if (node.children) {
-      const length = node.children.length;
-      for (let i = 0; i < length; i++) {
-        node.children[i].key = `${iParent}-${i + 1}`;
-        node.children[i].data.displayName = `${node.children[i].key}. ${
-          node.children[i].data.name
-        }`;
-        if (node.children[i].children)
-          this.updateSubNode(node.children[i].key, node.children[i]);
-      }
-    }
-  };
-
-  refreshTreeNodes(indexRefresh) {
-    const length = data1.length;
-
-    for (let i = indexRefresh; i < length; i++) {
-      data1[i].key = (i + 1).toString();
-      data1[i].data.displayName = `${i + 1}. ${data1[i].data.name}`;
-      this.updateSubNode(data1[i].key, data1[i]);
-    }
-
+    data1 = logic.deleteNode(data1,node);
     this.setState({
       nodes: data1
-    });
-  }
+    })
+  };
 
   //Update
   nameEditor = props => {
@@ -220,65 +76,19 @@ class DetailOutcomeStandardCom extends Component {
 
   onEditorValueChange = (props, value) => {
     //let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-    let editedNode = this.findNodeByKey(this.state.nodes, props.node.key);
+    let editedNode = logic.findNodeByKey(this.state.nodes, props.node.key);
     editedNode.data.name = value;
     editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
     this.updateNode(editedNode);
   };
   //update node after edit node
   updateNode(node) {
-    const x = node.key.split("-");
-    const rankNode = x.length;
-    switch (rankNode) {
-      case 1: {
-        data1[this.index(x, 0)] = node;
-        break;
-      }
-      case 2: {
-        data1[this.index(x, 0)].children[this.index(x, 1)] = node;
-        break;
-      }
-      case 3: {
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ] = node;
-        break;
-      }
-      case 4: {
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children[this.index(x, 3)] = node;
-        break;
-      }
-      case 5: {
-        data1[this.index(x, 0)].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children[this.index(x, 3)].children[this.index(x, 4)] = node;
-        break;
-      }
-      default:
-        break;
-    }
-    const history = this.historyObject(node,'update');
-
-    histories.push(history)
+    data1 = logic.updateNode(data1, node);
     this.setState({
       nodes: data1
     });
   }
 
-  findNodeByKey(nodes, key) {
-    let path = key.split("-");
-    let node;
-
-    while (path.length) {
-      let list = node ? node.children : nodes;
-      node = list[Number(path[0]) - 1];
-      path.shift();
-    }
-
-    return node;
-  }
 
   //Event
   onClickDialog(node) {
@@ -327,53 +137,7 @@ class DetailOutcomeStandardCom extends Component {
   }
 
   // Handle Import File
-  addImport(node) {
-    const x = node.key.split("-");
-    const lenKey = x.length - 1;
-    const index = this.index(x, 0);
 
-    switch (lenKey) {
-      case 1: {
-        data1[index].children.push(node);
-        break;
-      }
-      case 2: {
-        data1[index].children[this.index(x, 1)].children.push(node);
-        break;
-      }
-      case 3: {
-        data1[index].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children.push(node);
-        break;
-      }
-      case 4: {
-        data1[index].children[this.index(x, 1)].children[
-          this.index(x, 2)
-        ].children[this.index(x, 3)].children.push(node);
-        break;
-      }
-      case 5: {
-        data1[Number(x[0])].children[Number(x[1])].children[
-          Number(x[2])
-        ].children[Number(x[3])].children[Number(x[4])].children.push(node);
-        break;
-      }
-      default:
-        break;
-    }
-    this.setState({
-      nodes: data1
-    });
-  }
-
-  addRootImport(node) {
-    data1.push(node);
-
-    this.setState({
-      nodes: data1
-    });
-  }
 
   handleFile = file => {
     /* Boilerplate to set up FileReader */
@@ -391,8 +155,8 @@ class DetailOutcomeStandardCom extends Component {
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
       /* Update state */
       this.setState({ data: data });
-      const x = this.convertJsonToTreeNode(this.state.data);
-      this.setState({ nodes: x ,dataImport: x});
+      const x = logic.convertJsonToTreeNode(data1,this.state.data);
+      this.setState({ nodes: x });
 
       setTimeout(() => {
         this.setState({ isLoadData: false });
@@ -400,51 +164,6 @@ class DetailOutcomeStandardCom extends Component {
     };
     if (rABS) reader.readAsBinaryString(file);
     else reader.readAsArrayBuffer(file);
-  };
-
-  convertJsonToTreeNode = arr => {
-    data1 = [];
-    let keyParentNode;
-    let count = 0;
-    arr.forEach(el => {
-      const keyAndName = this.getKeyAndName(el);
-      let key;
-      if (keyAndName[0]) {
-        keyParentNode = el;
-        count = 0;
-        key = keyAndName[0].toString();
-      } else {
-        count++;
-        key = this.getKeyAndName(keyParentNode)[0] + "-" + count.toString();
-      }
-      const name = keyAndName[1];
-      const subNode = {
-        key: key,
-        data: {
-          name: name,
-          displayName: `${key}. ${name}`
-        },
-        children: []
-      };
-      if (subNode.data.name) {
-        if (key && key.length <= 1) {
-          this.addRootImport(subNode);
-        } else {
-          this.addImport(subNode);
-        }
-      }
-    });
-    return data1;
-  };
-
-  getKeyAndName = element => {
-    const length = element.length;
-    let key, name;
-    key = element[0];
-    if (element[1]) key += `-${element[1]}`;
-    if (element[2]) key += `-${element[2]}`;
-    if (element[3]) name = `${element[3]}`;
-    return [key, name];
   };
 
   index = (ids, id) => {
@@ -474,9 +193,8 @@ class DetailOutcomeStandardCom extends Component {
 
   // export file functions
 
-<<<<<<< HEAD
   createExportData = (nodes) => {
-    let level = getMaxLevel(nodes);
+    let level = logic.getMaxLevel(nodes);
     let tmpArr = [];
     let exportData = [];
 
@@ -572,14 +290,6 @@ class DetailOutcomeStandardCom extends Component {
 
   exportFile = event => {
     const ws = XLSX.utils.aoa_to_sheet(this.createExportData(this.state.nodes));
-=======
-  onExportFile = event => {
-    let data = [];
-    let level = getMaxLevel(this.state.nodes);
-    createExportData(this.state.nodes, data, level);
-    console.log(data);
-    const ws = XLSX.utils.aoa_to_sheet(data);
->>>>>>> 41f1ab96a0bb2134f405e85fcc8051f6a2ca2646
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
@@ -593,12 +303,8 @@ class DetailOutcomeStandardCom extends Component {
 
   // end export file functions
 
-<<<<<<< HEAD
   // history
 
-  getToday(date){
-
-  }
 
   historyObject = (node,action ) =>{
     return {
@@ -623,23 +329,6 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   
-=======
-  // save data functions
-
-  onSave = () => {
-    if (this.props.idOutcomeStandard !== "undefined") {
-      let data = [];
-      createSaveData(this.state.nodes, data);
-      if (this.props.onSaveThisOutcomeStandard)
-        this.props.onSaveThisOutcomeStandard(
-          data,
-          this.props.idOutcomeStandard
-        );
-    }
-  };
-
-  // end save data functions
->>>>>>> 41f1ab96a0bb2134f405e85fcc8051f6a2ca2646
 
   render() {
     const footer = (
