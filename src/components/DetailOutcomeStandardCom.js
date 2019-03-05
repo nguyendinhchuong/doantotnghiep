@@ -298,6 +298,7 @@ class DetailOutcomeStandardCom extends Component {
       visible: true,
       root: true
     });
+    console.log(this.state.nodes);
   }
 
   onHideDialog() {
@@ -490,8 +491,8 @@ class DetailOutcomeStandardCom extends Component {
 
     this.onHideExportCom();
     this.setState({
-      fileName: this.props.infoOutcomeStandard.NameOutcome
-        ? this.props.infoOutcomeStandard.NameOutcome
+      fileName: this.props.infoOutcomeStandard
+        ? this.props.infoOutcomeStandard.NameOutcomeStandard
         : this.props.nameOutcome
     });
     event.preventDefault();
@@ -550,6 +551,12 @@ class DetailOutcomeStandardCom extends Component {
     //       this.props.idOutcomeStandard
     //     );
     // }
+  };
+
+  componentWillMount = () => {
+    this.setState({
+      nodes: {}
+    });
   };
 
   render() {
@@ -684,7 +691,7 @@ class DetailOutcomeStandardCom extends Component {
               type="text"
               value={
                 this.props.infoOutcomeStandard
-                  ? this.props.infoOutcomeStandard.NameOutcome
+                  ? this.props.infoOutcomeStandard.NameOutcomeStandard
                   : this.props.location !== undefined
                     ? this.props.location.state.nameOutcome
                     : ""

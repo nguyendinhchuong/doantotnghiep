@@ -124,12 +124,19 @@ export default class OutcomeStandardCom extends Component {
     }
   };
 
-  onEdit = row => {
+  onEdit = IdOutcome => {
     this.props.history.push({
       pathname: "/outcome-standard/edit",
-      search: `?id=${row.IdOutcome}`
+      search: `?id=${IdOutcome}`
     });
   };
+
+  onCreateExcelFile=IdOutcome => {
+    this.props.onLoadThisOutcomeStandard(IdOutcome);
+    if(this.props.detailOutcomeStandard!=={}){
+
+    }
+   };
 
   // ex 2015-03-04T00:00:00.000Z
   formatDatetime = date => {
@@ -291,7 +298,7 @@ export default class OutcomeStandardCom extends Component {
                       this.props.outcomeStandards.map((row, i) => (
                         <tr>
                           <td>{i + 1}</td>
-                          <td>{row.NameOutcome}</td>
+                          <td>{row.NameOutcomeStandard}</td>
                           <td>{this.formatDatetime(row.DateCareated)}</td>
                           <td>{this.formatDatetime(row.DateEdited)}</td>
                           <td>{row.NameFaculty}</td>
@@ -299,7 +306,7 @@ export default class OutcomeStandardCom extends Component {
                           <td>
                             <Button
                               title="Chỉnh sửa"
-                              onClick={() => this.onEdit(row)}
+                              onClick={() => this.onEdit(row.IdOutcome)}
                             >
                               <i className="material-icons">edit</i>
                             </Button>
@@ -322,7 +329,12 @@ export default class OutcomeStandardCom extends Component {
                             </Button>
                           </td>
                           <td>
-                            <Button title="Tạo file Excel">
+                            <Button
+                              title="Tạo file Excel"
+                              onClick={() =>
+                                this.onCreateExcelFile(row.IdOutcome)
+                              }
+                            >
                               <i className="material-icons">save_alt</i>
                             </Button>
                           </td>

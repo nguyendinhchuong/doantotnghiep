@@ -43,7 +43,7 @@ class EditOutcomeStandardTmp extends Component {
       : `Khoa: Chưa có | Hệ: Chưa có`;
 
     let title = Array.isArray(this.props.infoOutcomeStandard)
-      ? `Sửa chuẩn đầu ra: ${this.props.infoOutcomeStandard[0].NameOutcome}`
+      ? `Sửa chuẩn đầu ra: ${this.props.infoOutcomeStandard[0].NameOutcomeStandard}`
       : null;
 
     return (
