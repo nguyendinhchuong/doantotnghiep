@@ -490,9 +490,9 @@ class DetailOutcomeStandardCom extends Component {
 
     this.onHideExportCom();
     this.setState({
-      fileName: this.props.infoOutcomeStandard.NameFaculty
+      fileName: this.props.infoOutcomeStandard.NameOutcome
         ? this.props.infoOutcomeStandard.NameOutcome
-        : ""
+        : this.props.nameOutcome
     });
     event.preventDefault();
   };
@@ -607,7 +607,7 @@ class DetailOutcomeStandardCom extends Component {
                 theme="success"
                 onClick={this.onAdd}
               >
-                <i className="material-icons">save</i> Thêm CĐR mới
+                <i className="material-icons">save</i> Tạo CĐR mới
               </Button>
             )}
 
@@ -685,7 +685,9 @@ class DetailOutcomeStandardCom extends Component {
               value={
                 this.props.infoOutcomeStandard
                   ? this.props.infoOutcomeStandard.NameOutcome
-                  : ""
+                  : this.props.location !== undefined
+                    ? this.props.location.state.nameOutcome
+                    : ""
               }
               onChange={this.handleChangeFileName}
               style={{ width: "100%" }}

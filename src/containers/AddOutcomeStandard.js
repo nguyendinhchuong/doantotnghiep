@@ -22,7 +22,6 @@ class AddOutcomeStandardTmp extends Component {
       JSON.stringify(this.props.message).length - 1
     );
 
-    console.log(this.props.location.state.faculty);
     let subtitle;
     if (this.props.location.state !== undefined) {
       subtitle =
@@ -36,7 +35,10 @@ class AddOutcomeStandardTmp extends Component {
       subtitle = `Khoa: Chưa có | Hệ: Chưa có`;
     }
 
-    let title = `Thêm chuẩn đầu ra: ${this.props.location.state.nameOutcome}`;
+    let title =
+      this.props.location.state !== undefined
+        ? `Thêm chuẩn đầu ra: ${this.props.location.state.nameOutcome}`
+        : `Thêm chuẩn đầu ra`;
 
     return (
       <Container fluid className="main-content-container px-4">
@@ -55,7 +57,9 @@ class AddOutcomeStandardTmp extends Component {
         </Row>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <DetailOutcomeStandardCom />
+            <DetailOutcomeStandardCom
+              nameOutcome={this.props.location.state.nameOutcome}
+            />
           </Col>
         </Row>
       </Container>

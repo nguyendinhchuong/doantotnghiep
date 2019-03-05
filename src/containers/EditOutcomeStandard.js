@@ -31,8 +31,10 @@ class EditOutcomeStandardTmp extends Component {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
- const message=JSON.stringify(this.props.message).substring(
-        1,JSON.stringify(this.props.message).length - 1);
+    const message = JSON.stringify(this.props.message).substring(
+      1,
+      JSON.stringify(this.props.message).length - 1
+    );
 
     let subtitle = Array.isArray(this.props.infoOutcomeStandard)
       ? `Khoa: ${this.props.infoOutcomeStandard[0].NameFaculty} | Hệ: ${
@@ -40,21 +42,23 @@ class EditOutcomeStandardTmp extends Component {
         }`
       : `Khoa: Chưa có | Hệ: Chưa có`;
 
-      let title=`Sửa chuẩn đầu ra: ${this.props.infoOutcomeStandard[0].NameOutcome}`;
+    let title = Array.isArray(this.props.infoOutcomeStandard)
+      ? `Sửa chuẩn đầu ra: ${this.props.infoOutcomeStandard[0].NameOutcome}`
+      : null;
 
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
-        <Col lg="10" md="10" sm="10">
-          <PageTitle
-            sm="8"
-            title={title}
-            subtitle={subtitle}
-            className="text-sm-left"
-          />
+          <Col lg="10" md="10" sm="10">
+            <PageTitle
+              sm="8"
+              title={title}
+              subtitle={subtitle}
+              className="text-sm-left"
+            />
           </Col>
-        <Col lg="2" md="2" sm="2">
-          <AlertCom message={message}/>
+          <Col lg="2" md="2" sm="2">
+            <AlertCom message={message} />
           </Col>
         </Row>
         <Row>
@@ -63,7 +67,11 @@ class EditOutcomeStandardTmp extends Component {
               onSaveThisOutcomeStandard={this.props.onSaveThisOutcomeStandard}
               idOutcomeStandard={id}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
-              infoOutcomeStandard={Array.isArray(this.props.infoOutcomeStandard)?this.props.infoOutcomeStandard[0]:null}
+              infoOutcomeStandard={
+                Array.isArray(this.props.infoOutcomeStandard)
+                  ? this.props.infoOutcomeStandard[0]
+                  : null
+              }
             />
           </Col>
         </Row>
@@ -75,7 +83,7 @@ class EditOutcomeStandardTmp extends Component {
 const mapStateToProps = state => ({
   infoOutcomeStandard: state.infoOutcomeStandard,
   detailOutcomeStandard: state.detailOutcomeStandard,
-  message:state.message
+  message: state.message
 });
 
 export default connect(mapStateToProps, {
@@ -83,6 +91,5 @@ export default connect(mapStateToProps, {
     detailOutcomeStandardAction.onSaveThisOutcomeStandard,
   onLoadThisOutcomeStandard:
     detailOutcomeStandardAction.onLoadThisOutcomeStandard,
-  onLoadInfoOutcomeStandard:
-    infoOutcomeStandardAction.onLoadInfoOutcomeStandard
+  onLoadInfoOutcomeStandard: infoOutcomeStandardAction.onLoadInfoOutcomeStandard
 })(EditOutcomeStandardTmp);
