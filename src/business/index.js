@@ -13,7 +13,7 @@ export const getMaxLevel = function myself(nodes) {
   }
 };
 
-export const createSaveData = function itseft(nodes, data) {
+export const createSaveData = function itseft(nodes, data, id) {
   if (nodes === undefined || nodes.length === 0) return 0;
   else {
     let tmpObj = {};
@@ -24,7 +24,7 @@ export const createSaveData = function itseft(nodes, data) {
 
       let name = nodes[i].data.name;
 
-      tmpObj = { key, name };
+      tmpObj = { key, name, id };
 
       data.push(tmpObj);
       tmpObj = {};

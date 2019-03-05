@@ -4,6 +4,8 @@ export const infoOutcomeStandard = (state = {}, action) => {
   switch (action.type) {
     case types.LOAD_INFO_OUTCOMESTANDARD_SUCCESS:
       return [...action.infoOutcomeStandard];
+    case types.LOAD_INFO_OUTCOMESTANDARD_ERROR:
+      return {};
     default:
       return state;
   }
