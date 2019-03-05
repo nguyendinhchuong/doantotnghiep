@@ -60,8 +60,7 @@ export const createExportData = function themseft(nodes, data, level) {
   }
 };
 
-export const  getKeyAndName = element => {
-  const length = element.length;
+export const getKeyAndName = element => {
   let key, name;
   key = element[0];
   if (element[1]) key += `-${element[1]}`;
@@ -72,7 +71,7 @@ export const  getKeyAndName = element => {
 
 // add node
 
-export const  addRoot = (data1, nameOut) => {
+export const addRoot = (data1, nameOut) => {
   const key = data1.length + 1;
   const root = {
     key: `${key}`,
@@ -85,7 +84,7 @@ export const  addRoot = (data1, nameOut) => {
   return root;
 }
 
-export const  add = (data1, node, nameOut) => {
+export const add = (data1, node, nameOut) => {
   const length = node.children.length;
   const key = `${node.key}-${length + 1}`;
   const x = node.key.split("-");
@@ -98,36 +97,40 @@ export const  add = (data1, node, nameOut) => {
     children: []
   };
   const lenKey = x.length;
-  const xx = indexOfNode(x, 0);
   switch (lenKey) {
-    case 1: {
-      data1[indexOfNode(x, 0)].children.push(subNode);
-      break;
-    }
-    case 2: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children.push(
-        subNode
-      );
-      break;
-    }
-    case 3: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children.push(subNode);
-      break;
-    }
-    case 4: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children.push(subNode);
-      break;
-    }
-    case 5: {
-      data1[Number(x[0])].children[Number(x[1])].children[
-        Number(x[2])
-      ].children[Number(x[3])].children[Number(x[4])].children.push(subNode);
-      break;
-    }
+    case 1:
+      {
+        data1[indexOfNode(x, 0)].children.push(subNode);
+        break;
+      }
+    case 2:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children.push(
+          subNode
+        );
+        break;
+      }
+    case 3:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children.push(subNode);
+        break;
+      }
+    case 4:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children[indexOfNode(x, 3)].children.push(subNode);
+        break;
+      }
+    case 5:
+      {
+        data1[Number(x[0])].children[Number(x[1])].children[
+          Number(x[2])
+        ].children[Number(x[3])].children[Number(x[4])].children.push(subNode);
+        break;
+      }
     default:
       alert("Cannot insert");
       break;
@@ -136,55 +139,61 @@ export const  add = (data1, node, nameOut) => {
   return data1;
 }
 
-export const indexOfNode= (ids, id) => {
+export const indexOfNode = (ids, id) => {
   return Number(ids[id]) - 1;
 };
 
-// delete 
+// delete
+
 export const deleteNode = (data1, node) => {
   const x = node.key.split("-");
   let index, sub;
   const rankNode = x.length;
   switch (rankNode) {
-    case 1: {
-      index = x[0];
-      data1 = dateAfterDeleted(data1, index);
-      break;
-    }
-    case 2: {
-      sub = data1[indexOfNode(x, 0)].children;
-      sub = dateAfterDeleted(sub, Number(x[1]));
-      data1[indexOfNode(x, 0)].children = sub;
-      break;
-    }
-    case 3: {
-      sub = data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children;
-      sub = dateAfterDeleted(sub, Number(x[2]));
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children = sub;
-      break;
-    }
-    case 4: {
-      sub =
+    case 1:
+      {
+        index = x[0];
+        data1 = dateAfterDeleted(data1, index);
+        break;
+      }
+    case 2:
+      {
+        sub = data1[indexOfNode(x, 0)].children;
+        sub = dateAfterDeleted(sub, Number(x[1]));
+        data1[indexOfNode(x, 0)].children = sub;
+        break;
+      }
+    case 3:
+      {
+        sub = data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children;
+        sub = dateAfterDeleted(sub, Number(x[2]));
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children = sub;
+        break;
+      }
+    case 4:
+      {
+        sub =
         data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
           indexOfNode(x, 2)
         ].children;
-      sub = dateAfterDeleted(sub, Number(x[3]));
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children = sub;
-      break;
-    }
-    case 5: {
-      sub =
+        sub = dateAfterDeleted(sub, Number(x[3]));
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children = sub;
+        break;
+      }
+    case 5:
+      {
+        sub =
         data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
           indexOfNode(x, 2)
         ].children[indexOfNode(x, 3)].children;
-      sub = dateAfterDeleted(sub, Number(x[3]));
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children = sub;
-      break;
-    }
+        sub = dateAfterDeleted(sub, Number(x[3]));
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children[indexOfNode(x, 3)].children = sub;
+        break;
+      }
     default:
       break;
   }
@@ -203,6 +212,7 @@ export const dateAfterDeleted = (data, index) => {
   return data;
 }
 // update sub node after delete
+
 export const updateSubNode = (iParent, node) => {
   if (node.children) {
     const length = node.children.length;
@@ -223,43 +233,49 @@ export const refreshTreeNodes = (data1, indexRefresh) => {
   for (let i = indexRefresh; i < length; i++) {
     data1[i].key = (i + 1).toString();
     data1[i].data.displayName = `${i + 1}. ${data1[i].data.name}`;
-      updateSubNode(data1[i].key, data1[i]);
+    updateSubNode(data1[i].key, data1[i]);
   }
 
   return data1;
 }
 
- //update node after edit node
-export const  updateNode = (data1, node) => {
+//update node after edit node
+
+export const updateNode = (data1, node) => {
   const x = node.key.split("-");
   const rankNode = x.length;
   switch (rankNode) {
-    case 1: {
-      data1[indexOfNode(x, 0)] = node;
-      break;
-    }
-    case 2: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)] = node;
-      break;
-    }
-    case 3: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ] = node;
-      break;
-    }
-    case 4: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)] = node;
-      break;
-    }
-    case 5: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children[indexOfNode(x, 4)] = node;
-      break;
-    }
+    case 1:
+      {
+        data1[indexOfNode(x, 0)] = node;
+        break;
+      }
+    case 2:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)] = node;
+        break;
+      }
+    case 3:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ] = node;
+        break;
+      }
+    case 4:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children[indexOfNode(x, 3)] = node;
+        break;
+      }
+    case 5:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children[indexOfNode(x, 3)].children[indexOfNode(x, 4)] = node;
+        break;
+      }
     default:
       break;
   }
@@ -281,49 +297,55 @@ export const findNodeByKey = (nodes, key) => {
 }
 
 // import
+
 export const addImport = (data1, node) => {
   const x = node.key.split("-");
   const lenKey = x.length - 1;
 
   switch (lenKey) {
-    case 1: {
-      data1[indexOfNode(x,0)].children.push(node);
-      break;
-    }
-    case 2: {
-      data1[indexOfNode(x,0)].children[indexOfNode(x, 1)].children.push(node);
-      break;
-    }
-    case 3: {
-      data1[indexOfNode(x,0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children.push(node);
-      break;
-    }
-    case 4: {
-      data1[indexOfNode(x,0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children.push(node);
-      break;
-    }
-    case 5: {
-      data1[indexOfNode(x,0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children[indexOfNode(x, 4)].children.push(node);
-      break;
-    }
+    case 1:
+      {
+        data1[indexOfNode(x, 0)].children.push(node);
+        break;
+      }
+    case 2:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children.push(node);
+        break;
+      }
+    case 3:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children.push(node);
+        break;
+      }
+    case 4:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children[indexOfNode(x, 3)].children.push(node);
+        break;
+      }
+    case 5:
+      {
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+          indexOfNode(x, 2)
+        ].children[indexOfNode(x, 3)].children[indexOfNode(x, 4)].children.push(node);
+        break;
+      }
     default:
       break;
   }
   return data1;
 }
 
-export const addRootImport = (data1, node) =>{
+export const addRootImport = (data1, node) => {
   data1.push(node);
   return data1;
 }
 
-export const convertJsonToTreeNode = (data1 , arr) => {
+export const convertJsonToTreeNode = (data1, arr) => {
   data1 = [];
   let keyParentNode;
   let count = 0;

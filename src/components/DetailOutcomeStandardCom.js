@@ -34,7 +34,7 @@ class DetailOutcomeStandardCom extends Component {
 
   // add
   addRoot() {
-    const x= logic.addRoot(data1,this.state.nameOut);
+    const x = logic.addRoot(data1, this.state.nameOut);
     data1.push(x);
     this.setState({
       nodes: data1
@@ -43,19 +43,17 @@ class DetailOutcomeStandardCom extends Component {
 
   add(node) {
     data1 = logic.add(data1, node, this.state.nameOut);
-
     this.setState({
       nodes: data1
     });
   }
 
   // delete
-
   deleteNode = node => {
-    data1 = logic.deleteNode(data1,node);
+    data1 = logic.deleteNode(data1, node);
     this.setState({
       nodes: data1
-    })
+    });
   };
 
   // update
@@ -89,7 +87,6 @@ class DetailOutcomeStandardCom extends Component {
       nodes: data1
     });
   }
-
 
   // event
   onClickDialog(node) {
@@ -138,9 +135,7 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   }
 
-  // Handle Import File
-
-
+  // handle Import File
   handleFile = file => {
     /* Boilerplate to set up FileReader */
     this.setState({ isLoadData: true });
@@ -156,7 +151,7 @@ class DetailOutcomeStandardCom extends Component {
       /* Convert array of arrays */
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
       /* Update state */
-      data1 = logic.convertJsonToTreeNode(data1,data);
+      data1 = logic.convertJsonToTreeNode(data1, data);
       this.setState({ nodes: data1 });
 
       setTimeout(() => {
@@ -194,123 +189,53 @@ class DetailOutcomeStandardCom extends Component {
     );
   };
 
-  // export file functions
-
-  createExportData = (nodes) => {
-    let level = logic.getMaxLevel(nodes);
-    let tmpArr = [];
-    let exportData = [];
-
-    for (let i in nodes) {
-      // if
-      let str = "" + nodes[i].key;
-      tmpArr[0] = parseInt(str.charAt(0));
-
-      tmpArr[level - 1] = nodes[i].data.name;
-
-      exportData.push(tmpArr);
-      tmpArr = [];
-      // end if
-      let children1 = [];
-      children1 = nodes[i].children;
-
-      for (let j in children1) {
-        if (
-          children1[j].children === undefined ||
-          children1[j].children.length === 0
-        ) {
-          tmpArr[level - 1] = children1[j].data.name;
-
-          exportData.push(tmpArr);
-          tmpArr = [];
-        } else {
-          let str = "" + children1[j].key;
-          tmpArr[0] = parseInt(str.charAt(0));
-          tmpArr[1] = parseInt(j) + 1;
-
-          tmpArr[level - 1] = children1[j].data.name;
-
-          exportData.push(tmpArr);
-          tmpArr = [];
-        }
-
-        let children2 = [];
-        children2 = children1[j].children;
-
-        for (let k in children2) {
-          if (
-            children2[k].children === undefined ||
-            children2[k].children.length === 0
-          ) {
-            tmpArr[level - 1] = children2[k].data.name;
-
-            exportData.push(tmpArr);
-            tmpArr = [];
-          } else {
-            let str = "" + children2[k].key;
-            tmpArr[0] = parseInt(str.charAt(0));
-            tmpArr[1] = parseInt(str.charAt(2));
-            tmpArr[2] = parseInt(k) + 1;
-
-            tmpArr[level - 1] = children2[k].data.name;
-
-            exportData.push(tmpArr);
-            tmpArr = [];
-          }
-          // end if
-
-          let children3 = [];
-          children3 = children2[k].children;
-
-          for (let p in children3) {
-            if (
-              children3[p].children === undefined ||
-              children3[p].children.length === 0
-            ) {
-              tmpArr[level - 1] = children3[p].data.name;
-
-              exportData.push(tmpArr);
-              tmpArr = [];
-            } else {
-              let str = "" + children3[p].key;
-              tmpArr[0] = parseInt(str.charAt(0));
-              tmpArr[1] = parseInt(str.charAt(2));
-              tmpArr[2] = parseInt(str.charAt(4));
-              tmpArr[3] = parseInt(k) + 1;
-
-              tmpArr[level - 1] = children3[p].data.name;
-
-              exportData.push(tmpArr);
-              tmpArr = [];
-            }
-          }
-        }
-      }
-    }
-
-    return exportData;
-  };
-
-  exportFile = event => {
-    const ws = XLSX.utils.aoa_to_sheet(this.createExportData(this.state.nodes));
+  // export file
+  onExportFile = event => {
+    let data = [];
+    let level = logic.getMaxLevel(this.state.nodes);
+    logic.createExportData(this.state.nodes, data, level);
+    const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Program standard");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
 
     this.onHideExportCom();
     this.setState({
-      fileName: this.props.infoOutcomeStandard
-        ? this.props.infoOutcomeStandard.NameOutcomeStandard
-        : this.props.nameOutcome
+      fileName: ""
     });
     event.preventDefault();
   };
+  // save data
+  onSave = () => {
+    if (this.props.idOutcomeStandard !== "undefined") {
+      let data = [];
+      logic.createSaveData(
+        this.state.nodes,
+        data,
+        this.props.idOutcomeStandard
+      );
+      if (this.props.onSaveThisOutcomeStandard)
+        this.props.onSaveThisOutcomeStandard(
+          data,
+          this.props.idOutcomeStandard
+        );
+    }
+  };
 
-  // end export file functions
+  // add data
+  onAdd = () => {
+    // if (this.props.idOutcomeStandard !== "undefined") {
+    //   let data = [];
+    //   createSaveData(this.state.nodes, data);
+    //   if (this.props.onSaveThisOutcomeStandard)
+    //     this.props.onSaveThisOutcomeStandard(
+    //       data,
+    //       this.props.idOutcomeStandard
+    //     );
+    // }
+  };
 
   // history
-
-
   historyObject = (node, action) => {
     return {
       key: node.key,
@@ -334,7 +259,17 @@ class DetailOutcomeStandardCom extends Component {
     console.log(arr);
   };
 
-  
+  componentDidMount = () => {
+    this.setState({
+      nodes: {}
+    });
+  };
+
+  componentWillMount = () => {
+    this.setState({
+      nodes: {}
+    });
+  };
 
   render() {
     const footer = (
@@ -466,13 +401,7 @@ class DetailOutcomeStandardCom extends Component {
           >
             <InputText
               type="text"
-              value={
-                this.props.infoOutcomeStandard
-                  ? this.props.infoOutcomeStandard.NameOutcomeStandard
-                  : this.props.location !== undefined
-                    ? this.props.location.state.nameOutcome
-                    : ""
-              }
+              value={this.state.fileName}
               onChange={this.handleChangeFileName}
               style={{ width: "100%" }}
             />
@@ -499,8 +428,6 @@ class DetailOutcomeStandardCom extends Component {
     );
   }
 }
-let histories = [];
-let data1 = [];
 
 class DataInput extends React.Component {
   constructor(props) {
@@ -524,5 +451,8 @@ class DataInput extends React.Component {
     );
   }
 }
+
+let histories = [];
+let data1 = [];
 
 export default DetailOutcomeStandardCom;
