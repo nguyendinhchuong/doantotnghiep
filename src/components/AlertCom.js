@@ -11,8 +11,8 @@ export default class AlertCom extends React.Component {
   render() {
     return (
       <div className="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
-        {this.props.message}
         <Alert
+          theme="light"
           open={this.state.visible}
           style={{
             cursor: "pointer",
@@ -21,20 +21,20 @@ export default class AlertCom extends React.Component {
             position: "relative"
           }}
         >
-          {}{" "}
-          <i
-            onClick={this.dismiss}
-            style={{ cursor: "pointer" }}
-            className="material-icons"
-          >
-            close
-          </i>
+          {this.props.message}{" "}
         </Alert>
       </div>
     );
   }
 
   dismiss() {
-    this.setState({ visible: false });
+    // this.setState({ visible: false });
   }
+          // <i
+          //   onClick={this.dismiss}
+          //   style={{ cursor: "pointer" }}
+          //   className="material-icons"
+          // >
+          //   close
+          // </i>
 }

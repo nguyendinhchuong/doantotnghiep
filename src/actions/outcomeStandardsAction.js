@@ -10,7 +10,7 @@ export const loadOutcomeStandardsSuccess = outcomeStandards => ({
 
 export const loadOutcomeStandardsError = errorMessage => ({
   type: cst.LOAD_OUTCOMESTANDARDS_ERROR,
-  errorMessage
+  outcomeStandards:{}
 });
 
 export const onLoadOutcomeStandards = () => {
@@ -22,12 +22,16 @@ export const onLoadOutcomeStandards = () => {
         const outcomeStandards = res.data;
         if (outcomeStandards === undefined) {
           dispatch(loadOutcomeStandardsError("Do not have data"));
+            //
+          dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
         }
       })
       .catch(err => {
         dispatch(loadOutcomeStandardsError(err));
+        //
+          dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };
@@ -51,12 +55,12 @@ export const onDeleteThisOutcomeStandard = id => {
         dispatch(deleteThisOutcomeStandardSuccess(res));
         dispatch(onLoadOutcomeStandards());
         //
-        dispatch(message.message("Success"));
+        dispatch(message.message("Xóa thành công"));
       })
       .catch(err => {
         dispatch(deleteThisOutcomeStandardError(err));
         //
-        dispatch(message.message(err));
+        dispatch(message.message("Xóa thất bại"));
       });
   };
 };

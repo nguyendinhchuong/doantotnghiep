@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Row, Col, Card, CardBody, Button, FormSelect } from "shards-react";
+import { Row, Col, Card, CardBody, Button, FormSelect,FormInput } from "shards-react";
+// import { InputText } from "primereact/inputtext";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -8,9 +9,10 @@ export default class OutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      faculty: {},
-      program: {},
-      visible: false
+      faculty: "",
+      program: "",
+      visible: false,
+      nameOS:""
     };
   }
 
@@ -59,7 +61,11 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
-  handlefFacultyChange = event => {
+  handleNameOSChange= event => {
+    this.setState({ nameOS: event.target.value });
+  };
+
+  handleFacultyChange = event => {
     const id = event.currentTarget.value;
     if (id !== 0) {
       const index = event.nativeEvent.target.selectedIndex;
@@ -84,15 +90,18 @@ export default class OutcomeStandardCom extends Component {
   };
 
   onCloseAddCreate = () => {
+    if(this.state.faculty.id!== "0"&&this.state.program.id!== "0"&&this.state.nameOS!==""){
+
     this.props.history.push({
       pathname: "/outcome-standard/add",
       // search: `?faculty=${this.state.faculty}&program=${this.state.program}`,
-      state: { faculty: this.state.faculty, program: this.state.program }
+      state: { faculty: this.state.faculty, program: this.state.program, nameOS:this.state.nameOS }
     });
 
     this.setState({
       visible: false
     });
+    }
   };
 
   onEdit = row => {
@@ -158,10 +167,24 @@ export default class OutcomeStandardCom extends Component {
         >
           <Row>
             <Col lg="3" md="3" sm="3">
+              Chuẩn đầu ra:
+            </Col>
+            <Col lg="9" md="9" sm="9">
+            <FormInput
+            type="text"
+            value={this.state.nameOS}
+            onChange={this.handleNameOSChange}
+            placeholder="Tên..."
+            className="mb-2" />
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col lg="3" md="3" sm="3">
               Khoa:
             </Col>
             <Col lg="9" md="9" sm="9">
-              <FormSelect onChange={e => this.handlefFacultyChange(e)}>
+              <FormSelect onChange={e => this.handleFacultyChange(e)}>
                 <option value={0}>Chọn...</option>
                 {Array.isArray(this.props.faculties)
                   ? this.props.faculties.map((item, i) => {
@@ -225,6 +248,13 @@ export default class OutcomeStandardCom extends Component {
     return (
       <div>
         <Row>
+        <Col lg="12" md="12" sm="12">
+            <p align="left">
+              <Button onClick={this.onOpenAdd} theme="success">
+                <i className="material-icons">add</i> Thêm
+              </Button>
+            </p>
+          </Col>
           <Col lg="12" md="12" sm="12">
             <Card small className="mb-4">
               <CardBody className="p-0 pb-3">
@@ -287,14 +317,6 @@ export default class OutcomeStandardCom extends Component {
                 </table>
               </CardBody>
             </Card>
-          </Col>
-          <Col lg="6" md="6" sm="6" />
-          <Col lg="6" md="6" sm="6">
-            <p align="right">
-              <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">add</i> Thêm
-              </Button>
-            </p>
           </Col>
         </Row>
         {dialog}

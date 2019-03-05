@@ -22,12 +22,12 @@ export const onSaveThisOutcomeStandard = (data, id) => {
       .then(res => {
         dispatch(saveThisOutcomeStandardSuccess(res));
         //
-        dispatch(message.message("Success"));
+        dispatch(message.message("Lưu thành công"));
       })
       .catch(err => {
         dispatch(saveThisOutcomeStandardError(err));
         //
-        dispatch(message.message(err));
+        dispatch(message.message("Lưu thất bại"));
       });
   };
 };
@@ -42,7 +42,7 @@ export const loadDetailOutcomeStandardError = errorMessage => ({
   errorMessage
 });
 
-export const onLoadThisOutcomeStandard = (id) => {
+export const onLoadThisOutcomeStandard = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_OUTCOMESTANDARD}${id}`;
     axios
@@ -51,12 +51,15 @@ export const onLoadThisOutcomeStandard = (id) => {
         const detailOutcomeStandard = res.data;
         if (detailOutcomeStandard === undefined) {
           dispatch(loadDetailOutcomeStandardSuccess(detailOutcomeStandard));
+          //
+          dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadDetailOutcomeStandardSuccess(res));
         }
       })
       .catch(err => {
         dispatch(loadDetailOutcomeStandardError(err));
+        dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };

@@ -10,7 +10,7 @@ export const loadProgramsSuccess = programs => ({
 
 export const loadProgramsError = errorMessage => ({
   type: cst.LOAD_PROGRAMS_ERROR,
-  errorMessage
+  programs:{}
 });
 
 export const onLoadPrograms = () => {
@@ -23,17 +23,15 @@ export const onLoadPrograms = () => {
         if (programs === undefined) {
           dispatch(loadProgramsError("Do not have data"));
           //
-          dispatch(message.message("Do not have data"));
+          dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadProgramsSuccess(programs));
-          //
-          dispatch(message.message("Success"));
         }
       })
       .catch(err => {
         dispatch(loadProgramsError(err));
-        //
-        dispatch(message.message(err));
+         //
+          dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };

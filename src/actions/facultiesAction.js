@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
+import * as message from "./message";
 
 export const loadFacultiesSuccess = faculties => ({
   type: cst.LOAD_FACULTIES_SUCCESS,
@@ -21,12 +22,16 @@ export const onLoadFaculties = () => {
         const faculties = res.data;
         if (faculties === undefined) {
           dispatch(loadFacultiesError("Do not have data"));
+          //
+          dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadFacultiesSuccess(faculties));
         }
       })
       .catch(err => {
         dispatch(loadFacultiesError(err));
+        //
+        dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };

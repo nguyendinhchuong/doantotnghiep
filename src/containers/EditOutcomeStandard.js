@@ -6,6 +6,7 @@ import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
 import DetailOutcomeStandardCom from "../components/DetailOutcomeStandardCom";
+import AlertCom from "../components/AlertCom";
 
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 import * as infoOutcomeStandardAction from "../actions/infoOutcomeStandardAction";
@@ -23,11 +24,15 @@ class EditOutcomeStandardTmp extends Component {
     const id = urlParams.get("id");
     this.props.onLoadInfoOutcomeStandard(id);
     this.props.onLoadThisOutcomeStandard(id);
+    console.log(this.props.detailOutcomeStandard);
   };
 
   render() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
+
+ const message=JSON.stringify(this.props.message).substring(
+        1,JSON.stringify(this.props.message).length - 1);
 
     let subtitle = Array.isArray(this.props.infoOutcomeStandard)
       ? `Khoa: ${this.props.infoOutcomeStandard[0].NameFaculty} | Hệ: ${
@@ -38,12 +43,17 @@ class EditOutcomeStandardTmp extends Component {
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
+        <Col lg="10" md="10" sm="10">
           <PageTitle
             sm="4"
             title="Sửa chuẩn đầu ra"
             subtitle={subtitle}
             className="text-sm-left"
           />
+          </Col>
+        <Col lg="2" md="2" sm="2">
+          <AlertCom message={message}/>
+          </Col>
         </Row>
         <Row>
           <Col lg="12" md="12" sm="12">
@@ -61,7 +71,8 @@ class EditOutcomeStandardTmp extends Component {
 
 const mapStateToProps = state => ({
   infoOutcomeStandard: state.infoOutcomeStandard,
-  detailOutcomeStandard: state.detailOutcomeStandard
+  detailOutcomeStandard: state.detailOutcomeStandard,
+  message:state.message
 });
 
 export default connect(mapStateToProps, {

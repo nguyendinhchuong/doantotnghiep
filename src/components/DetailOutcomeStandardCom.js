@@ -34,7 +34,7 @@ class DetailOutcomeStandardCom extends Component {
     this.nameEditor = this.nameEditor.bind(this);
   }
 
-  //Add
+  // add
   addRoot() {
     const key = data1.length + 1;
     const root = {
@@ -110,7 +110,7 @@ class DetailOutcomeStandardCom extends Component {
     });
   }
 
-  //Delete
+  // delete
 
   deleteNode = node => {
     const x = node.key.split("-");
@@ -175,6 +175,7 @@ class DetailOutcomeStandardCom extends Component {
     }
     return data;
   }
+
   // update sub node after delete
   updateSubNode = (iParent, node) => {
     if (node.children) {
@@ -204,7 +205,7 @@ class DetailOutcomeStandardCom extends Component {
     });
   }
 
-  //Update
+  // update
   nameEditor = props => {
     return this.inputTextEditor(props, "name");
   };
@@ -227,7 +228,8 @@ class DetailOutcomeStandardCom extends Component {
     editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
     this.updateNode(editedNode);
   };
-  //update node after edit node
+
+  // update node after edit node
   updateNode(node) {
     const x = node.key.split("-");
     const rankNode = x.length;
@@ -282,7 +284,7 @@ class DetailOutcomeStandardCom extends Component {
     return node;
   }
 
-  //Event
+  // event
   onClickDialog(node) {
     this.setState({
       visible: true,
@@ -328,7 +330,7 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   }
 
-  // Handle Import File
+  //  handle Import File
   addImport(node) {
     const x = node.key.split("-");
     const lenKey = x.length - 1;
@@ -474,13 +476,12 @@ class DetailOutcomeStandardCom extends Component {
     );
   };
 
-  // export file functions
+  // export file
 
   onExportFile = event => {
     let data = [];
     let level = getMaxLevel(this.state.nodes);
     createExportData(this.state.nodes, data, level);
-    console.log(data);
     const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
@@ -492,8 +493,6 @@ class DetailOutcomeStandardCom extends Component {
     });
     event.preventDefault();
   };
-
-  // end export file functions
 
   // history
 
@@ -513,7 +512,7 @@ class DetailOutcomeStandardCom extends Component {
     console.log(histories);
   };
 
-  // Create data for redux
+  // create data for redux
   onSaveListOutcomes = () => {
     const arr = [
       ...this.createExportData(this.state.nodes),
@@ -522,12 +521,12 @@ class DetailOutcomeStandardCom extends Component {
     console.log(arr);
   };
 
-  // save data functions
+  // save data
 
   onSave = () => {
     if (this.props.idOutcomeStandard !== "undefined") {
       let data = [];
-      createSaveData(this.state.nodes, data);
+      createSaveData(this.state.nodes, data, this.props.idOutcomeStandard);
       if (this.props.onSaveThisOutcomeStandard)
         this.props.onSaveThisOutcomeStandard(
           data,
@@ -536,7 +535,19 @@ class DetailOutcomeStandardCom extends Component {
     }
   };
 
-  // end save data functions
+  // add data
+
+  onAdd = () => {
+    // if (this.props.idOutcomeStandard !== "undefined") {
+    //   let data = [];
+    //   createSaveData(this.state.nodes, data);
+    //   if (this.props.onSaveThisOutcomeStandard)
+    //     this.props.onSaveThisOutcomeStandard(
+    //       data,
+    //       this.props.idOutcomeStandard
+    //     );
+    // }
+  };
 
   render() {
     const footer = (
@@ -577,19 +588,21 @@ class DetailOutcomeStandardCom extends Component {
         <Row>
           <Col lg="1" md="1" sm="1" />
           <Col lg="4" md="4" sm="4">
-            <Button theme="success" onClick={this.onSave}>
-              <i className="material-icons">save</i> Save
-            </Button>
+            {this.props.onSaveThisOutcomeStandard?<Button theme="success" onClick={this.onSave}>
+              <i className="material-icons">save</i> Lưu
+            </Button>:<Button theme="success" onClick={this.onAdd}>
+              <i className="material-icons">save</i> Thêm
+            </Button>}
           </Col>
 
           <Col lg="4" md="4" sm="4">
             <Button theme="success" onClick={this.onShowExportCom}>
-              <i className="material-icons">save_alt</i> Export
+              <i className="material-icons">save_alt</i> Tạo file Excel
             </Button>
           </Col>
           <Col lg="3" md="3" sm="3">
             <Button theme="success" onClick={this.onShowHistory}>
-              <i className="material-icons">change_history</i> History
+              <i className="material-icons">change_history</i> Xem lịch sử
             </Button>
           </Col>
         </Row>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Container, Row } from "shards-react";
+import { Container, Row, Col } from "shards-react";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
 import OutcomeStandardCom from "../components/OutcomeStandardCom";
-// import AlertCom from "../components/AlertCom";
+import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
@@ -20,18 +20,23 @@ class OutcomeStandardTemp extends Component {
   }
 
   render() {
+    const message=JSON.stringify(this.props.message).substring(
+        1,JSON.stringify(this.props.message).length - 1);
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
+        <Col lg="8" md="8" sm="8">
           <PageTitle
             sm="4"
             title="Chuẩn đầu ra"
             subtitle=""
             className="text-sm-left"
           />
+          </Col>
+        <Col lg="4" md="4" sm="4">
+          <AlertCom message={message}/>
+          </Col>
         </Row>
-
-        {/*<AlertCom message={this.props.message} />*/}
 
         {/*pass the history of routes to child Component*/}
         {/*get redux's dispatches and states*/}
