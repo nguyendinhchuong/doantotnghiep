@@ -6,6 +6,9 @@ export const LOAD_ALL_FACULTIES = `${LINK}/faculties/`;
 // programs links
 export const LOAD_ALL_PROGRAMS = `${LINK}/programs/`;
 
+// faculties programs links
+export const CREATE_FAC_PRO = `${LINK}/facultyProgram/`;
+
 // outcomeStandards links
 export const LOAD_ALL_OUTCOMESTANDARDS = `${LINK}/outcomeStandards/`;
 export const DELETE_OUTCOMESTANDARD = `${LINK}/outcomeStandard/`;

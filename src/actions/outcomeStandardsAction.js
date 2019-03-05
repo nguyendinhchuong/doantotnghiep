@@ -10,7 +10,7 @@ export const loadOutcomeStandardsSuccess = outcomeStandards => ({
 
 export const loadOutcomeStandardsError = errorMessage => ({
   type: cst.LOAD_OUTCOMESTANDARDS_ERROR,
-  outcomeStandards:{}
+  outcomeStandards: {}
 });
 
 export const onLoadOutcomeStandards = () => {
@@ -22,7 +22,7 @@ export const onLoadOutcomeStandards = () => {
         const outcomeStandards = res.data;
         if (outcomeStandards === undefined) {
           dispatch(loadOutcomeStandardsError("Do not have data"));
-            //
+          //
           dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
@@ -31,7 +31,7 @@ export const onLoadOutcomeStandards = () => {
       .catch(err => {
         dispatch(loadOutcomeStandardsError(err));
         //
-          dispatch(message.message("Lỗi đường chuyền"));
+        dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };

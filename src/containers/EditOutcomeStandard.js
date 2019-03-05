@@ -40,13 +40,15 @@ class EditOutcomeStandardTmp extends Component {
         }`
       : `Khoa: Chưa có | Hệ: Chưa có`;
 
+      let title=`Sửa chuẩn đầu ra: ${this.props.infoOutcomeStandard[0].NameOutcome}`;
+
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
         <Col lg="10" md="10" sm="10">
           <PageTitle
-            sm="4"
-            title="Sửa chuẩn đầu ra"
+            sm="8"
+            title={title}
             subtitle={subtitle}
             className="text-sm-left"
           />
@@ -61,6 +63,7 @@ class EditOutcomeStandardTmp extends Component {
               onSaveThisOutcomeStandard={this.props.onSaveThisOutcomeStandard}
               idOutcomeStandard={id}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
+              infoOutcomeStandard={Array.isArray(this.props.infoOutcomeStandard)?this.props.infoOutcomeStandard[0]:null}
             />
           </Col>
         </Row>

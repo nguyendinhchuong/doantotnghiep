@@ -10,7 +10,7 @@ export const loadProgramsSuccess = programs => ({
 
 export const loadProgramsError = errorMessage => ({
   type: cst.LOAD_PROGRAMS_ERROR,
-  programs:{}
+  programs: {}
 });
 
 export const onLoadPrograms = () => {
@@ -30,8 +30,8 @@ export const onLoadPrograms = () => {
       })
       .catch(err => {
         dispatch(loadProgramsError(err));
-         //
-          dispatch(message.message("Lỗi đường chuyền"));
+        //
+        dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };

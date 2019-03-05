@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Row, Col, Card, CardBody, Button, FormSelect,FormInput } from "shards-react";
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Button,
+  FormSelect,
+  FormInput
+} from "shards-react";
 // import { InputText } from "primereact/inputtext";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
@@ -9,10 +17,10 @@ export default class OutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      faculty: "",
-      program: "",
+      faculty: { id: "0" },
+      program: { id: "0" },
       visible: false,
-      nameOS:""
+      nameOutcome: ""
     };
   }
 
@@ -61,8 +69,8 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
-  handleNameOSChange= event => {
-    this.setState({ nameOS: event.target.value });
+  handleNameOutcomeChange = event => {
+    this.setState({ nameOutcome: event.target.value });
   };
 
   handleFacultyChange = event => {
@@ -74,7 +82,7 @@ export default class OutcomeStandardCom extends Component {
     }
   };
 
-  handleLevelChange = event => {
+  handleProgramChange = event => {
     const id = event.currentTarget.value;
     if (id !== 0) {
       const index = event.nativeEvent.target.selectedIndex;
@@ -90,17 +98,29 @@ export default class OutcomeStandardCom extends Component {
   };
 
   onCloseAddCreate = () => {
-    if(this.state.faculty.id!== "0"&&this.state.program.id!== "0"&&this.state.nameOS!==""){
+    if (
+      this.state.faculty.id !== "0" &&
+      this.state.program.id !== "0" &&
+      this.state.nameOutcome !== ""
+    ) {
+      let NameFaculty = this.state.faculty.name;
+      let NameProgram = this.state.program.name;
+      let NameOutcome = this.state.nameOutcome;
+      let data = { NameFaculty, NameProgram, NameOutcome };
+      this.props.onCreateFacultyProgram(data);
+      this.props.history.push({
+        pathname: "/outcome-standard/add",
+        // search: `?faculty=${this.state.faculty}&program=${this.state.program}`,
+        state: {
+          faculty: this.state.faculty,
+          program: this.state.program,
+          nameOutcome: this.state.nameOutcome
+        }
+      });
 
-    this.props.history.push({
-      pathname: "/outcome-standard/add",
-      // search: `?faculty=${this.state.faculty}&program=${this.state.program}`,
-      state: { faculty: this.state.faculty, program: this.state.program, nameOS:this.state.nameOS }
-    });
-
-    this.setState({
-      visible: false
-    });
+      this.setState({
+        visible: false
+      });
     }
   };
 
@@ -170,12 +190,13 @@ export default class OutcomeStandardCom extends Component {
               Chuẩn đầu ra:
             </Col>
             <Col lg="9" md="9" sm="9">
-            <FormInput
-            type="text"
-            value={this.state.nameOS}
-            onChange={this.handleNameOSChange}
-            placeholder="Tên..."
-            className="mb-2" />
+              <FormInput
+                type="text"
+                value={this.state.nameOutcome}
+                onChange={this.handleNameOutcomeChange}
+                placeholder="Tên..."
+                className="mb-2"
+              />
             </Col>
           </Row>
           <br />
@@ -185,7 +206,9 @@ export default class OutcomeStandardCom extends Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <FormSelect onChange={e => this.handleFacultyChange(e)}>
-                <option value={0}>Chọn...</option>
+                <option selected value={0}>
+                  Chọn...
+                </option>
                 {Array.isArray(this.props.faculties)
                   ? this.props.faculties.map((item, i) => {
                       return (
@@ -202,8 +225,10 @@ export default class OutcomeStandardCom extends Component {
               Hệ:
             </Col>
             <Col lg="9" md="9" sm="9">
-              <FormSelect onChange={e => this.handleLevelChange(e)}>
-                <option value={0}>Chọn...</option>
+              <FormSelect onChange={e => this.handleProgramChange(e)}>
+                <option selected value={0}>
+                  Chọn...
+                </option>
                 {Array.isArray(this.props.programs)
                   ? this.props.programs.map((item, i) => {
                       return (
@@ -248,7 +273,7 @@ export default class OutcomeStandardCom extends Component {
     return (
       <div>
         <Row>
-        <Col lg="12" md="12" sm="12">
+          <Col lg="12" md="12" sm="12">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
                 <i className="material-icons">add</i> Thêm
@@ -266,7 +291,7 @@ export default class OutcomeStandardCom extends Component {
                       this.props.outcomeStandards.map((row, i) => (
                         <tr>
                           <td>{i + 1}</td>
-                          <td>{"CDR " + row.NameFaculty}</td>
+                          <td>{row.NameOutcome}</td>
                           <td>{this.formatDatetime(row.DateCareated)}</td>
                           <td>{this.formatDatetime(row.DateEdited)}</td>
                           <td>{row.NameFaculty}</td>
@@ -286,8 +311,12 @@ export default class OutcomeStandardCom extends Component {
                           </td>
                           <td>
                             <Button
-                            title="Xóa"
-                            onClick={() => this.props.onDeleteThisOutcomeStandard(row.IdOutcome)}
+                              title="Xóa"
+                              onClick={() =>
+                                this.props.onDeleteThisOutcomeStandard(
+                                  row.IdOutcome
+                                )
+                              }
                             >
                               <i className="material-icons">delete</i>
                             </Button>
@@ -301,7 +330,7 @@ export default class OutcomeStandardCom extends Component {
                       ))
                     ) : (
                       <tr>
-                        <td>No records found</td>
+                        <td>Chưa có dữ liệu</td>
                         <td />
                         <td />
                         <td />

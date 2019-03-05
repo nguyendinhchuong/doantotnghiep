@@ -30,11 +30,11 @@ export default class AlertCom extends React.Component {
   dismiss() {
     // this.setState({ visible: false });
   }
-          // <i
-          //   onClick={this.dismiss}
-          //   style={{ cursor: "pointer" }}
-          //   className="material-icons"
-          // >
-          //   close
-          // </i>
+  // <i
+  //   onClick={this.dismiss}
+  //   style={{ cursor: "pointer" }}
+  //   className="material-icons"
+  // >
+  //   close
+  // </i>
 }

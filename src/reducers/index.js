@@ -14,4 +14,5 @@ const rootReducer = combineReducers({
   detailOutcomeStandard,
   message
 });
+
 export default rootReducer;

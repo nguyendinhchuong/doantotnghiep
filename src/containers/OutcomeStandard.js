@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
+import * as facProAction from "../actions/FacProAction";
 
 class OutcomeStandardTemp extends Component {
   constructor(props) {
@@ -20,21 +21,23 @@ class OutcomeStandardTemp extends Component {
   }
 
   render() {
-    const message=JSON.stringify(this.props.message).substring(
-        1,JSON.stringify(this.props.message).length - 1);
+    const message = JSON.stringify(this.props.message).substring(
+      1,
+      JSON.stringify(this.props.message).length - 1
+    );
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
-        <Col lg="8" md="8" sm="8">
-          <PageTitle
-            sm="4"
-            title="Chuẩn đầu ra"
-            subtitle=""
-            className="text-sm-left"
-          />
+          <Col lg="10" md="10" sm="10">
+            <PageTitle
+              sm="8"
+              title="Chuẩn đầu ra"
+              subtitle="danh sách"
+              className="text-sm-left"
+            />
           </Col>
-        <Col lg="4" md="4" sm="4">
-          <AlertCom message={message}/>
+          <Col lg="2" md="2" sm="2">
+            <AlertCom message={message} />
           </Col>
         </Row>
 
@@ -49,6 +52,7 @@ class OutcomeStandardTemp extends Component {
           onLoadPrograms={this.props.onLoadPrograms}
           onLoadOutcomeStandards={this.props.onLoadOutcomeStandards}
           onDeleteThisOutcomeStandard={this.props.onDeleteThisOutcomeStandard}
+          onCreateFacultyProgram={this.props.onCreateFacultyProgram}
         />
       </Container>
     );
@@ -67,5 +71,6 @@ export default connect(mapStateToProps, {
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onDeleteThisOutcomeStandard:
-    outcomeStandardsAction.onDeleteThisOutcomeStandard
+    outcomeStandardsAction.onDeleteThisOutcomeStandard,
+  onCreateFacultyProgram: facProAction.onCreateFacultyProgram
 })(OutcomeStandardTemp);

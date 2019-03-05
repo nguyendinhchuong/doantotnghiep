@@ -13,8 +13,7 @@ import CourseRegister from "./containers/CourseRegister";
 import Errors from "./containers/Errors";
 import CourseMaps from "./containers/CourseMaps";
 
-export default [
-  {
+export default [{
     path: "/",
     exact: true,
     layout: DefaultLayout,

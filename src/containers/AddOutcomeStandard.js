@@ -17,36 +17,40 @@ class AddOutcomeStandardTmp extends Component {
   }
 
   render() {
-     const message=JSON.stringify(this.props.message).substring(
-        1,JSON.stringify(this.props.message).length - 1);
+    const message = JSON.stringify(this.props.message).substring(
+      1,
+      JSON.stringify(this.props.message).length - 1
+    );
 
-    console.log(this.props.location.state.faculty)
+    console.log(this.props.location.state.faculty);
     let subtitle;
-     if(this.props.location.state !== undefined){
-      subtitle=this.props.location.state.faculty.name !== undefined&&this.props.location.state.program.name!==undefined
-        ? `Khoa: ${this.props.location.state.faculty.name} | Hệ: ${
-            this.props.location.state.program.name
-          }`
-        : `Khoa: Chưa có | Hệ: Chưa có`;
-      
-     }else{
-      subtitle=`Khoa: Chưa có | Hệ: Chưa có`;
-     }
+    if (this.props.location.state !== undefined) {
+      subtitle =
+        this.props.location.state.faculty.name !== undefined &&
+        this.props.location.state.program.name !== undefined
+          ? `Khoa: ${this.props.location.state.faculty.name} | Hệ: ${
+              this.props.location.state.program.name
+            }`
+          : `Khoa: Chưa có | Hệ: Chưa có`;
+    } else {
+      subtitle = `Khoa: Chưa có | Hệ: Chưa có`;
+    }
 
+    let title = `Thêm chuẩn đầu ra: ${this.props.location.state.nameOutcome}`;
 
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
           <Col lg="10" md="10" sm="10">
-          <PageTitle
-            sm="4"
-            title="Thêm chuẩn đầu ra"
-            subtitle={subtitle}
-            className="text-sm-left"
-          />
+            <PageTitle
+              sm="8"
+              title={title}
+              subtitle={subtitle}
+              className="text-sm-left"
+            />
           </Col>
-        <Col lg="2" md="2" sm="2">
-          <AlertCom message={message}/>
+          <Col lg="2" md="2" sm="2">
+            <AlertCom message={message} />
           </Col>
         </Row>
         <Row>
@@ -60,8 +64,7 @@ class AddOutcomeStandardTmp extends Component {
 }
 
 const mapStateToProps = state => ({
-  message:state.message
+  message: state.message
 });
 
-export default connect(mapStateToProps, {
-})(AddOutcomeStandardTmp);
+export default connect(mapStateToProps, {})(AddOutcomeStandardTmp);

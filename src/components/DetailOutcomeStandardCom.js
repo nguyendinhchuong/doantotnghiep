@@ -3,7 +3,7 @@ import XLSX from "xlsx";
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { Row, Col, Button, Card } from "shards-react";
+import { Row, Col, Button, Card, Badge } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { getMaxLevel, createSaveData, createExportData } from "../business/";
@@ -21,7 +21,7 @@ class DetailOutcomeStandardCom extends Component {
       root: false,
       data: "",
       exportVisible: false,
-      fileName: "sheet"
+      fileName: ""
     };
 
     this.add.bind(this);
@@ -442,7 +442,6 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   getKeyAndName = element => {
-    const length = element.length;
     let key, name;
     key = element[0];
     if (element[1]) key += `-${element[1]}`;
@@ -462,6 +461,7 @@ class DetailOutcomeStandardCom extends Component {
           onClick={() => this.onClickDialog(node)}
           theme="success"
           style={{ marginRight: ".5em", padding: "10px" }}
+          title="Thêm cấp con"
         >
           <i className="material-icons">keyboard_return</i>
         </Button>
@@ -469,6 +469,7 @@ class DetailOutcomeStandardCom extends Component {
           onClick={() => this.deleteNode(node)}
           theme="secondary"
           style={{ marginRight: ".5em", padding: "10px" }}
+          title="Xóa cấp này"
         >
           <i className="material-icons">delete_sweep</i>
         </Button>
@@ -484,12 +485,14 @@ class DetailOutcomeStandardCom extends Component {
     createExportData(this.state.nodes, data, level);
     const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    XLSX.utils.book_append_sheet(wb, ws, "Program standard");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
 
     this.onHideExportCom();
     this.setState({
-      fileName: "sheet"
+      fileName: this.props.infoOutcomeStandard.NameFaculty
+        ? this.props.infoOutcomeStandard.NameOutcome
+        : ""
     });
     event.preventDefault();
   };
@@ -553,10 +556,10 @@ class DetailOutcomeStandardCom extends Component {
     const footer = (
       <div>
         <Button onClick={this.handleSubmit} theme="success">
-          Yes
+          Thêm
         </Button>
         <Button onClick={this.onHideDialog} theme="secondary">
-          No
+          Hủy
         </Button>
       </div>
     );
@@ -564,10 +567,10 @@ class DetailOutcomeStandardCom extends Component {
     const exportCom = (
       <div>
         <Button onClick={this.onExportFile} theme="success">
-          Save
+          Tạo file
         </Button>
         <Button onClick={this.onHideExportCom} theme="secondary">
-          Cancel
+          Hủy
         </Button>
       </div>
     );
@@ -576,7 +579,9 @@ class DetailOutcomeStandardCom extends Component {
       <div className="p-grid content-section implementation">
         <Row>
           <Col lg="1" md="1" sm="1">
-            <h5>Import</h5>
+            <Badge outline theme="success" style={{ padding: "10px" }}>
+              Chọn file
+            </Badge>
           </Col>
 
           <Col lg="11" md="11" sm="11">
@@ -587,24 +592,43 @@ class DetailOutcomeStandardCom extends Component {
         <hr />
         <Row>
           <Col lg="1" md="1" sm="1" />
-          <Col lg="4" md="4" sm="4">
-            {this.props.onSaveThisOutcomeStandard?<Button theme="success" onClick={this.onSave}>
-              <i className="material-icons">save</i> Lưu
-            </Button>:<Button theme="success" onClick={this.onAdd}>
-              <i className="material-icons">save</i> Thêm
-            </Button>}
-          </Col>
+          <Col lg="6" md="6" sm="6">
+            {this.props.onSaveThisOutcomeStandard ? (
+              <Button
+                style={{ margin: "0 10px" }}
+                theme="success"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">save</i> Lưu CĐR
+              </Button>
+            ) : (
+              <Button
+                style={{ margin: "0 10px" }}
+                theme="success"
+                onClick={this.onAdd}
+              >
+                <i className="material-icons">save</i> Thêm CĐR mới
+              </Button>
+            )}
 
-          <Col lg="4" md="4" sm="4">
-            <Button theme="success" onClick={this.onShowExportCom}>
+            <Button
+              style={{ margin: "0 10px" }}
+              theme="success"
+              onClick={this.onShowExportCom}
+            >
               <i className="material-icons">save_alt</i> Tạo file Excel
             </Button>
+            {this.props.onSaveThisOutcomeStandard ? (
+              <Button
+                style={{ margin: "0 10px" }}
+                theme="success"
+                onClick={this.onShowHistory}
+              >
+                <i className="material-icons">change_history</i> Xem lịch sử
+              </Button>
+            ) : null}
           </Col>
-          <Col lg="3" md="3" sm="3">
-            <Button theme="success" onClick={this.onShowHistory}>
-              <i className="material-icons">change_history</i> Xem lịch sử
-            </Button>
-          </Col>
+          <Col lg="5" md="5" sm="5" />
         </Row>
 
         <hr />
@@ -613,7 +637,7 @@ class DetailOutcomeStandardCom extends Component {
             <TreeTable value={this.state.nodes}>
               <Column
                 field="displayName"
-                header="Name"
+                header="Tên dòng"
                 editor={this.nameEditor}
                 expander
               />
@@ -625,28 +649,32 @@ class DetailOutcomeStandardCom extends Component {
           </Col>
           <Col lg="12" md="12" sm="12">
             <Card small className="mb-4">
-                <table className="table mb-0">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Button
-                          style={{ float: "right", paddingRight: "10px", paddingLeft: "10px" }}
-                          onClick={() => this.onClickDialogRoot()}
-                          theme="success"
-                        >
-                          <i className="material-icons">add_circle_outline</i>
-                          Thêm Node
-                        </Button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <table className="table mb-0">
+                <tbody>
+                  <tr>
+                    <td>
+                      <Button
+                        style={{
+                          float: "right",
+                          paddingRight: "10px",
+                          paddingLeft: "10px"
+                        }}
+                        onClick={() => this.onClickDialogRoot()}
+                        theme="success"
+                      >
+                        <i className="material-icons">add_circle_outline</i>
+                        Thêm Node
+                      </Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </Card>
           </Col>
         </Row>
         <div className="content-section implementation">
           <Dialog
-            header="File Name"
+            header="Tên file"
             visible={this.state.exportVisible}
             style={{ width: "50vw" }}
             footer={exportCom}
@@ -654,7 +682,11 @@ class DetailOutcomeStandardCom extends Component {
           >
             <InputText
               type="text"
-              value={this.state.fileName}
+              value={
+                this.props.infoOutcomeStandard
+                  ? this.props.infoOutcomeStandard.NameOutcome
+                  : ""
+              }
               onChange={this.handleChangeFileName}
               style={{ width: "100%" }}
             />
@@ -663,7 +695,7 @@ class DetailOutcomeStandardCom extends Component {
 
         <div className="content-section implementation">
           <Dialog
-            header="Name Title"
+            header="Tên..."
             visible={this.state.visible}
             style={{ width: "50vw" }}
             footer={footer}

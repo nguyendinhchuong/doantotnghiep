@@ -10,7 +10,7 @@ export const loadInfoOutcomeStandardSuccess = infoOutcomeStandard => ({
 
 export const loadInfoOutcomeStandardError = errorMessage => ({
   type: cst.LOAD_INFO_OUTCOMESTANDARD_ERROR,
-  infoOutcomeStandard:{}
+  infoOutcomeStandard: {}
 });
 
 export const onLoadInfoOutcomeStandard = id => {
@@ -31,7 +31,7 @@ export const onLoadInfoOutcomeStandard = id => {
       .catch(err => {
         dispatch(loadInfoOutcomeStandardError(err));
         //
-          dispatch(message.message("Lỗi đường chuyền"));
+        dispatch(message.message("Lỗi đường chuyền"));
       });
   };
 };
