@@ -22,12 +22,12 @@ export const onSaveThisOutcomeStandard = (data, id) => {
       .then(res => {
         dispatch(saveThisOutcomeStandardSuccess(res));
         //
-        dispatch(message.message("Lưu thành công"));
+        dispatch(message.message("Lưu cây CĐR thành công"));
       })
       .catch(err => {
         dispatch(saveThisOutcomeStandardError(err));
         //
-        dispatch(message.message("Lưu thất bại"));
+        dispatch(message.message("Lưu cây CĐR thất bại"));
       });
   };
 };
@@ -55,6 +55,8 @@ export const onLoadThisOutcomeStandard = id => {
           dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadDetailOutcomeStandardSuccess(res));
+          //
+          dispatch(message.message("Tải cây CĐR thành công"));
         }
       })
       .catch(err => {

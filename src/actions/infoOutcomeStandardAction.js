@@ -26,6 +26,8 @@ export const onLoadInfoOutcomeStandard = id => {
           dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadInfoOutcomeStandardSuccess(infoOutcomeStandard));
+          //
+          dispatch(message.message("Tải thông tin CĐR thành công"));
         }
       })
       .catch(err => {

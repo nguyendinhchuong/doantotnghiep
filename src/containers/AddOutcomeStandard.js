@@ -43,7 +43,7 @@ class AddOutcomeStandardTmp extends Component {
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
-          <Col lg="10" md="10" sm="10">
+          <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="8"
               title={title}
@@ -51,7 +51,7 @@ class AddOutcomeStandardTmp extends Component {
               className="text-sm-left"
             />
           </Col>
-          <Col lg="2" md="2" sm="2">
+          <Col lg="4" md="4" sm="4">
             <AlertCom message={message} />
           </Col>
         </Row>

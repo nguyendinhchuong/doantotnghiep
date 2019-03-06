@@ -21,6 +21,12 @@ class OutcomeStandardTemp extends Component {
     this.state = {};
   }
 
+  componentDidMount = () => {
+    this.props.onLoadFaculties();
+    this.props.onLoadPrograms();
+    this.props.onLoadOutcomeStandards();
+  };
+
   render() {
     const message = JSON.stringify(this.props.message).substring(
       1,
@@ -29,7 +35,7 @@ class OutcomeStandardTemp extends Component {
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
-          <Col lg="10" md="10" sm="10">
+          <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="8"
               title="Chuẩn đầu ra"
@@ -37,7 +43,7 @@ class OutcomeStandardTemp extends Component {
               className="text-sm-left"
             />
           </Col>
-          <Col lg="2" md="2" sm="2">
+          <Col lg="4" md="4" sm="4">
             <AlertCom message={message} />
           </Col>
         </Row>
@@ -45,15 +51,13 @@ class OutcomeStandardTemp extends Component {
         {/*pass the history of routes to child Component*/}
         {/*get redux's dispatches and states*/}
         <OutcomeStandardCom
+          message={message}
           history={this.props.history}
           faculties={this.props.faculties}
           programs={this.props.programs}
           outcomeStandards={this.props.outcomeStandards}
           detailOutcomeStandard={this.props.detailOutcomeStandard}
 
-          onLoadFaculties={this.props.onLoadFaculties}
-          onLoadPrograms={this.props.onLoadPrograms}
-          onLoadOutcomeStandards={this.props.onLoadOutcomeStandards}
           onDeleteThisOutcomeStandard={this.props.onDeleteThisOutcomeStandard}
           onCreateFacultyProgram={this.props.onCreateFacultyProgram}
           onLoadThisOutcomeStandard={this.props.onLoadThisOutcomeStandard}

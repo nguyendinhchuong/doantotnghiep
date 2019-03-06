@@ -8,10 +8,13 @@ import {
   FormSelect,
   FormInput
 } from "shards-react";
-// import { InputText } from "primereact/inputtext";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
+
+import * as logic from "../business";
+
+import TableHeaderCom from "./TableHeaderCom";
 
 export default class OutcomeStandardCom extends Component {
   constructor(props) {
@@ -27,45 +30,6 @@ export default class OutcomeStandardCom extends Component {
   onOpenAdd = () => {
     this.setState({
       visible: true
-    });
-  };
-
-  getCurDate = () => {
-    let today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-    return dd + "/" + mm + "/" + yyyy;
-  };
-
-  duplicateOS = index => {
-    let copyOS = {};
-    copyOS.index = this.state.rows.length + 1;
-    if (this.state.rows[index].name.includes("Copy of")) {
-      copyOS.name = this.state.rows[index].name;
-    } else {
-      copyOS.name = "Copy of " + this.state.rows[index].name;
-    }
-    copyOS.create_date = this.getCurDate();
-    copyOS.modify_date = this.getCurDate();
-    copyOS.faculty = this.state.rows[index].faculty;
-    copyOS.system = this.state.rows[index].system;
-    this.setState({
-      rows: this.state.rows.concat(copyOS)
-    });
-  };
-
-  deleteOS = index => {
-    console.log(index);
-    this.state.rows.splice(index, 1);
-    this.setState({
-      rows: this.state.rows
     });
   };
 
@@ -108,15 +72,17 @@ export default class OutcomeStandardCom extends Component {
       let NameOutcome = this.state.nameOutcome;
       let data = { NameFaculty, NameProgram, NameOutcome };
       this.props.onCreateFacultyProgram(data);
-      this.props.history.push({
-        pathname: "/outcome-standard/add",
-        // search: `?faculty=${this.state.faculty}&program=${this.state.program}`,
-        state: {
-          faculty: this.state.faculty,
-          program: this.state.program,
-          nameOutcome: this.state.nameOutcome
-        }
-      });
+      if (this.props.message !== "Tạo CĐR thất bại") {
+        this.props.history.push({
+          pathname: "/outcome-standard/add",
+          // search: `?faculty=${this.state.faculty}&program=${this.state.program}`,
+          state: {
+            faculty: this.state.faculty,
+            program: this.state.program,
+            nameOutcome: this.state.nameOutcome
+          }
+        });
+      }
 
       this.setState({
         visible: false
@@ -131,33 +97,10 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
-  onCreateExcelFile=IdOutcome => {
+  onCreateExcelFile = IdOutcome => {
     this.props.onLoadThisOutcomeStandard(IdOutcome);
-    if(this.props.detailOutcomeStandard!=={}){
-
+    if (this.props.detailOutcomeStandard !== {}) {
     }
-   };
-
-  // ex 2015-03-04T00:00:00.000Z
-  formatDatetime = date => {
-    const d = new Date(date);
-    const dateTime = [
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDay(),
-      d.getUTCHours(),
-      d.getUTCMinutes(),
-      d.getUTCSeconds()
-    ];
-    return `${dateTime[0]}-${dateTime[1]}-${dateTime[2]} ${dateTime[3]}:${
-      dateTime[4]
-    }:${dateTime[5]}`;
-  };
-
-  componentDidMount = () => {
-    this.props.onLoadFaculties();
-    this.props.onLoadPrograms();
-    this.props.onLoadOutcomeStandards();
   };
 
   render() {
@@ -249,34 +192,6 @@ export default class OutcomeStandardCom extends Component {
         </Dialog>
       );
     }
-
-    let tableHeader = (
-      <tr>
-        <th scope="col" className="border-0">
-          STT
-        </th>
-        <th scope="col" className="border-0">
-          Tên
-        </th>
-        <th scope="col" className="border-0">
-          Ngày tạo
-        </th>
-        <th scope="col" className="border-0">
-          Ngày sửa
-        </th>
-        <th scope="col" className="border-0">
-          Khoa
-        </th>
-        <th scope="col" className="border-0">
-          Hệ
-        </th>
-        <th scope="col" className="border-0" />
-        <th scope="col" className="border-0" />
-        <th scope="col" className="border-0" />
-        <th scope="col" className="border-0" />
-      </tr>
-    );
-
     return (
       <div>
         <Row>
@@ -291,7 +206,7 @@ export default class OutcomeStandardCom extends Component {
             <Card small className="mb-4">
               <CardBody className="p-0 pb-3">
                 <table className="table mb-0">
-                  <thead className="bg-light">{tableHeader}</thead>
+                  <thead className="bg-light"><TableHeaderCom /></thead>
                   <tbody>
                     {Array.isArray(this.props.outcomeStandards) &&
                     this.props.outcomeStandards.length !== 0 ? (
@@ -299,8 +214,8 @@ export default class OutcomeStandardCom extends Component {
                         <tr>
                           <td>{i + 1}</td>
                           <td>{row.NameOutcomeStandard}</td>
-                          <td>{this.formatDatetime(row.DateCareated)}</td>
-                          <td>{this.formatDatetime(row.DateEdited)}</td>
+                          <td>{logic.formatDatetime(row.DateCareated)}</td>
+                          <td>{logic.formatDatetime(row.DateEdited)}</td>
                           <td>{row.NameFaculty}</td>
                           <td>{row.NameProgram}</td>
                           <td>

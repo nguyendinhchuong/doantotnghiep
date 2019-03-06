@@ -26,6 +26,8 @@ export const onLoadOutcomeStandards = () => {
           dispatch(message.message("Chưa có dữ liệu"));
         } else {
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
+          //
+          dispatch(message.message("Tải các CĐR thành công"));
         }
       })
       .catch(err => {

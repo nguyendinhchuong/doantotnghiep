@@ -60,6 +60,30 @@ export const createExportData = function themseft(nodes, data, level) {
   }
 };
 
+// export const changeDbToExcelFormat = (db, level) => {
+//   let data = []
+//   let tmpArr = [];
+//   for (let i in db) {
+
+//     let str = "" + nodes[i].key;
+//     if (str.length === 1) tmpArr[0] = parseInt(str.charAt(0));
+
+//     if (nodes[i].children !== undefined && nodes[i].children.length !== 0) {
+//       for (var j = 0; j < level - 1; j++) {
+//         if (str.length > 2 * j) tmpArr[j] = parseInt(str.charAt(2 * j));
+//       }
+//     }
+
+//     tmpArr[level - 1] = nodes[i].data.name;
+
+//     let key = db[i].key;
+//     let name = db[i].name;
+
+//     data.push(tmpArr);
+//     tmpArr = [];
+//   }
+// };
+
 export const getKeyAndName = element => {
   let key, name;
   key = element[0];
@@ -378,4 +402,33 @@ export const convertJsonToTreeNode = (data1, arr) => {
     }
   });
   return data1;
+};
+
+export const getCurDate = () => {
+  let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1;
+  let yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+  return dd + "/" + mm + "/" + yyyy;
+};
+
+export const formatDatetime = date => {
+  const d = new Date(date);
+  const dateTime = [
+    d.getFullYear(),
+    d.getMonth(),
+    d.getDay(),
+    d.getUTCHours(),
+    d.getUTCMinutes(),
+    d.getUTCSeconds()
+  ];
+  return `${dateTime[0]}-${dateTime[1]}-${dateTime[2]} ${dateTime[3]}:${
+      dateTime[4]
+    }:${dateTime[5]}`;
 };

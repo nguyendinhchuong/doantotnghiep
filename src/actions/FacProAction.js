@@ -13,7 +13,7 @@ export const createFacultyProgramError = errorMessage => ({
   errorMessage
 });
 
-export const onCreateFacultyProgram = (data) => {
+export const onCreateFacultyProgram = data => {
   return (dispatch, getState) => {
     let link = `${links.CREATE_FAC_PRO}`;
     let req = { link, data };
@@ -22,12 +22,12 @@ export const onCreateFacultyProgram = (data) => {
       .then(res => {
         dispatch(createFacultyProgramSuccess(res));
         //
-        dispatch(message.message("Tạo thành công"));
+        dispatch(message.message("Tạo CĐR thành công"));
       })
       .catch(err => {
         dispatch(createFacultyProgramError(err));
         //
-        dispatch(message.message("Tạo thất bại"));
+        dispatch(message.message("Tạo CĐR thất bại"));
       });
   };
 };

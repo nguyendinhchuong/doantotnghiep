@@ -4,40 +4,62 @@ import { Alert } from "shards-react";
 export default class AlertCom extends React.Component {
   constructor(props) {
     super(props);
-    this.dismiss = this.dismiss.bind(this);
-    this.state = { visible: true, message: "" };
+
+    this.interval = null;
+    this.state = {
+      visible: false,
+      countdown: 0,
+      timeUntilDismissed: 2,
+      message: ""
+    };
+
+    this.showAlert = this.showAlert.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.clearInterval = this.clearInterval.bind(this);
+  }
+
+  showAlert() {
+    this.clearInterval();
+    this.setState({ visible: true, countdown: 0, timeUntilDismissed: 3 });
+    this.interval = setInterval(this.handleTimeChange, 1000);
+  }
+
+  handleTimeChange() {
+    if (this.state.countdown < this.state.timeUntilDismissed - 1) {
+      this.setState({
+        ...this.state,
+        ...{ countdown: this.state.countdown + 1 }
+      });
+      return;
+    }
+
+    this.setState({ ...this.state, ...{ visible: false } });
+    this.clearInterval();
+  }
+
+  clearInterval() {
+    clearInterval(this.interval);
+    this.interval = null;
   }
 
   componentWillReceiveProps = nextProps => {
-    // if (nextProps.message !== this.state.message)
-    this.setState({ message: nextProps.message, visible: true });
-  };
-
-  dismiss = () => {
-    this.setState({ visible: false });
+    this.setState({ message: nextProps.message });
+    this.showAlert();
   };
 
   render() {
     return (
-      <div className="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+      <div>
         <Alert
           theme="light"
-          open={this.state.visible}
           style={{
             cursor: "pointer",
-            width: "auto",
-            margin: "0 auto",
             position: "relative"
           }}
+          className="mb-3"
+          open={this.state.visible}
         >
-          {this.state.message}{" "}
-          <i
-            onClick={this.dismiss}
-            style={{ cursor: "pointer" }}
-            className="material-icons"
-          >
-            close
-          </i>
+          {this.state.message}
         </Alert>
       </div>
     );

@@ -3,10 +3,13 @@ import XLSX from "xlsx";
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { Row, Col, Button, Card, Badge } from "shards-react";
+import { Row, Col, Button, Card } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import * as logic from "../business/";
+
+import * as logic from "../business";
+
+import DataInputCom from "./DataInputCom";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -214,6 +217,7 @@ class DetailOutcomeStandardCom extends Component {
         data,
         this.props.idOutcomeStandard
       );
+      console.log(data);
       if (this.props.onSaveThisOutcomeStandard)
         this.props.onSaveThisOutcomeStandard(
           data,
@@ -296,22 +300,9 @@ class DetailOutcomeStandardCom extends Component {
 
     return (
       <div className="p-grid content-section implementation">
-        <Row>
-          <Col lg="1" md="1" sm="1">
-            <Badge outline theme="success" style={{ padding: "10px" }}>
-              Chọn file
-            </Badge>
-          </Col>
-
-          <Col lg="11" md="11" sm="11">
-            <DataInput handleFile={this.handleFile} />
-          </Col>
-        </Row>
-
         <hr />
         <Row>
-          <Col lg="1" md="1" sm="1" />
-          <Col lg="6" md="6" sm="6">
+          <Col lg="10" md="10" sm="10">
             {this.props.onSaveThisOutcomeStandard ? (
               <Button
                 style={{ margin: "0 10px" }}
@@ -347,10 +338,10 @@ class DetailOutcomeStandardCom extends Component {
               </Button>
             ) : null}
           </Col>
-          <Col lg="5" md="5" sm="5" />
+          <Col lg="2" md="2" sm="2">
+            <DataInputCom handleFile={this.handleFile} />
+          </Col>
         </Row>
-
-        <hr />
         <Row>
           <Col lg="12" md="12" sm="12">
             <TreeTable value={this.state.nodes}>
@@ -425,29 +416,6 @@ class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
       </div>
-    );
-  }
-}
-
-class DataInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.ImportFile = this.ImportFile.bind(this);
-  }
-  ImportFile(e) {
-    const files = e.target.files;
-    if (files && files[0]) this.props.handleFile(files[0]);
-  }
-  render() {
-    return (
-      <form>
-        <input
-          type="file"
-          className="form-control"
-          id="file"
-          onChange={this.ImportFile}
-        />
-      </form>
     );
   }
 }
