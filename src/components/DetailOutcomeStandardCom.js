@@ -10,6 +10,7 @@ import { InputText } from "primereact/inputtext";
 import * as logic from "../business";
 
 import DataInputCom from "./DataInputCom";
+import HistHeaderCom from "./HistHeaderCom";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ class DetailOutcomeStandardCom extends Component {
       nameOut: "",
       root: false,
       exportVisible: false,
-      fileName: ""
+      fileName: "",
+      histVisible: false
     };
 
     this.add.bind(this);
@@ -42,7 +44,7 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
-    const history = this.historyObject(x,"Insert");
+    const history = this.historyObject(x, "Insert");
     histories.push(history.contentEdit);
   }
 
@@ -52,7 +54,7 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
-    const history = this.historyObject(data[1],"Insert");
+    const history = this.historyObject(data[1], "Insert");
     histories.push(history.contentEdit);
   }
 
@@ -257,6 +259,15 @@ class DetailOutcomeStandardCom extends Component {
 
   onShowHistory = () => {
     console.log(histories);
+    this.setState({
+      histVisible: true
+    });
+  };
+
+  onHideHistory = () => {
+    this.setState({
+      histVisible: false
+    });
   };
 
   // create data for redux
@@ -411,6 +422,31 @@ class DetailOutcomeStandardCom extends Component {
               onChange={this.handleChangeTitle}
               style={{ width: "100%" }}
             />
+          </Dialog>
+        </div>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="Lịch sử thay đổi"
+            visible={this.state.histVisible}
+            style={{ width: "50vw" }}
+            onHide={this.onHideHistory}
+          >
+            <Card
+              small
+              className="mb-4"
+              style={{ overflow: "scroll", height: "400px" }}
+            >
+              <table className="table mb-0">
+                <tbody>
+                  {histories.map((row, i) => (
+                    <tr>
+                      <td>{row}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
           </Dialog>
         </div>
       </div>

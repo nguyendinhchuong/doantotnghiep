@@ -83,6 +83,27 @@ export const createExportData = function themseft(nodes, data, level) {
 //     tmpArr = [];
 //   }
 // };
+///////////////////////////////////////////////////////////////////
+// export const changeDbToExcelFormat = (data) => {
+//   // let level = data[0].keyOutcomeStandard.length;
+//   let level = 4;
+//   let outData = [];
+//   let tmpArr = [];
+//   for (let i in data) {
+//     let str = data[i].keyOutcomeStandard;
+//     for (var j = 0; j < level - 1; j++) {
+//       if (str.charAt(2 * j) !== "-" && str.length >= 2 * j)
+//         tmpArr[j] = parseInt(str.charAt(2 * j));
+//     }
+
+//     let name = "" + data[i].NameOutcomeStandard;
+//     tmpArr[level - 1] = name;
+//     outData.push(tmpArr);
+//     tmpArr = [];
+//   }
+//   return outData;
+// };
+
 
 export const getKeyAndName = element => {
   let key, name;

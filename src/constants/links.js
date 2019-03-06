@@ -16,8 +16,8 @@ export const ADD_OUTCOMESTANDARD = `${LINK}/outcomeStandard/`;
 
 // detailOutcomeStandard links
 export const SAVE_DETAIL_OUTCOMESTANDARD = `${LINK}/listOutcomeStandard/`;
-export const LOAD_DETAIL_OUTCOMESTANDARD = `${LINK}/listOutcomeStandardsss/`;
-export const ADD_DETAIL_OUTCOMESTANDARD = `${LINK}/listOutcomeStandardasasasa/`;
+export const LOAD_DETAIL_OUTCOMESTANDARD = `${LINK}/listOutcomeStandardfuck/`;
+export const ADD_DETAIL_OUTCOMESTANDARD = `${LINK}/listOutcomeStandardfuck/`;
 
 // infoOutcomeStandard links
 export const LOAD_INFO_OUTCOMESTANDARD = `${LINK}/programFaculty/`;

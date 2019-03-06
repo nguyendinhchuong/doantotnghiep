@@ -22,8 +22,8 @@ class EditOutcomeStandardTmp extends Component {
   componentDidMount = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
-    this.props.onLoadInfoOutcomeStandard(id);
     this.props.onLoadThisOutcomeStandard(id);
+    this.props.onLoadInfoOutcomeStandard(id);
   };
 
   render() {
