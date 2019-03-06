@@ -160,7 +160,7 @@ export const add = (data1, node, nameOut) => {
       break;
   }
 
-  return data1;
+  return [data1, subNode];
 }
 
 export const indexOfNode = (ids, id) => {
@@ -320,6 +320,7 @@ export const findNodeByKey = (nodes, key) => {
   return node;
 }
 
+
 // import
 
 export const addImport = (data1, node) => {
@@ -432,3 +433,14 @@ export const formatDatetime = date => {
       dateTime[4]
     }:${dateTime[5]}`;
 };
+
+let data = [];
+//History
+export const listNodeDeleted = (nodes) => {
+  if(nodes.children.length > 0){
+    nodes.children.forEach(node => {
+      data.push(node);
+    })
+  }
+  return data;
+}

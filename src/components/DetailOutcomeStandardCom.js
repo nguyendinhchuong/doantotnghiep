@@ -42,13 +42,18 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
+    const history = this.historyObject(x,"Insert");
+    histories.push(history.contentEdit);
   }
 
   add(node) {
-    data1 = logic.add(data1, node, this.state.nameOut);
+    const data = logic.add(data1, node, this.state.nameOut);
+    data1 = data[0];
     this.setState({
       nodes: data1
     });
+    const history = this.historyObject(data[1],"Insert");
+    histories.push(history.contentEdit);
   }
 
   // delete
@@ -57,6 +62,8 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
+    const history = this.historyObject(node, "Delete");
+    histories.push(history.contentEdit);
   };
 
   // update
@@ -89,6 +96,8 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
+    const history = this.historyObject(node, "Update");
+    histories.push(history.contentEdit);
   }
 
   // event
@@ -105,7 +114,6 @@ class DetailOutcomeStandardCom extends Component {
       visible: true,
       root: true
     });
-    console.log(this.state.nodes);
   }
 
   onHideDialog() {
@@ -241,9 +249,9 @@ class DetailOutcomeStandardCom extends Component {
     return {
       key: node.key,
       nameNode: node.data.name,
-      userName: "test",
+      userName: "Messi",
       dateEdit: new Date(),
-      contentEdit: `${action} index: ${node.key} date:${new Date()}`
+      contentEdit: `Messi ${action} index: ${node.key} date:${new Date()}`
     };
   };
 
@@ -257,7 +265,6 @@ class DetailOutcomeStandardCom extends Component {
       ...this.createExportData(this.state.nodes),
       ...this.createExportData(this.state.dataImport)
     ];
-    console.log(arr);
   };
 
   componentWillReceiveProps = nextProps => {
@@ -266,7 +273,6 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   render() {
-    console.log(this.state.nodes);
     const footer = (
       <div>
         <Button onClick={this.handleSubmit} theme="success">
