@@ -8,6 +8,8 @@ import PageTitle from "../components/common/PageTitle";
 import DetailOutcomeStandardCom from "../components/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 
+import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
+
 import { connect } from "react-redux";
 
 class AddOutcomeStandardTmp extends Component {
@@ -57,7 +59,10 @@ class AddOutcomeStandardTmp extends Component {
         </Row>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <DetailOutcomeStandardCom />
+            <DetailOutcomeStandardCom
+              onAddThisOutcomeStandard={this.props.onAddThisOutcomeStandard}
+              detailOutcomeStandard={this.props.detailOutcomeStandard}
+            />
           </Col>
         </Row>
       </Container>
@@ -66,7 +71,10 @@ class AddOutcomeStandardTmp extends Component {
 }
 
 const mapStateToProps = state => ({
+  detailOutcomeStandard: state.detailOutcomeStandard,
   message: state.message
 });
 
-export default connect(mapStateToProps, {})(AddOutcomeStandardTmp);
+export default connect(mapStateToProps, {
+  onAddThisOutcomeStandard: detailOutcomeStandardAction.onAddThisOutcomeStandard
+})(AddOutcomeStandardTmp);

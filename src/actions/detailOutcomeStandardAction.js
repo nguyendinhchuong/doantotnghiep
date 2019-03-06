@@ -8,12 +8,12 @@ export const saveThisOutcomeStandardSuccess = successMessage => ({
   successMessage
 });
 
-export const saveThisOutcomeStandardError = errorMessage => ({
+export const saveThisOutcomeStandardError = nodes => ({
   type: cst.SAVE_DETAIL_OUTCOMESTANDARD_ERROR,
-  errorMessage
+  detailOutcomeStandard: nodes
 });
 
-export const onSaveThisOutcomeStandard = (data, id) => {
+export const onSaveThisOutcomeStandard = (data, nodes, id) => {
   return (dispatch, getState) => {
     let link = `${links.SAVE_DETAIL_OUTCOMESTANDARD}${id}`;
     let req = { link, data };
@@ -22,12 +22,12 @@ export const onSaveThisOutcomeStandard = (data, id) => {
       .then(res => {
         dispatch(saveThisOutcomeStandardSuccess(res));
         //
-        dispatch(message.message("Lưu cây CĐR thành công"));
+        dispatch(message.message(new String("Lưu cây CĐR thành công")));
       })
       .catch(err => {
-        dispatch(saveThisOutcomeStandardError(err));
+        dispatch(saveThisOutcomeStandardError(nodes));
         //
-        dispatch(message.message("Lưu cây CĐR thất bại"));
+        dispatch(message.message(new String(`Lưu cây CĐR thất bại: ${err}`)));
       });
   };
 };
@@ -46,51 +46,56 @@ export const onLoadThisOutcomeStandard = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_OUTCOMESTANDARD}${id}`;
     axios
-      .post(req)
+      .get(req)
       .then(res => {
         const detailOutcomeStandard = res.data;
         if (detailOutcomeStandard === undefined) {
+          dispatch(loadDetailOutcomeStandardError(res));
+          //
+          // dispatch(message.message(new String("Chưa có dữ liệu")));
+          dispatch(message.message("error network"));
+        } else {
+          //
+          // Code function change detailOutcomeStandard to treenode here
+          //
           dispatch(loadDetailOutcomeStandardSuccess(detailOutcomeStandard));
           //
-          dispatch(message.message("Chưa có dữ liệu"));
-        } else {
-          dispatch(loadDetailOutcomeStandardSuccess(res));
-          //
-          dispatch(message.message("Tải cây CĐR thành công"));
+          dispatch(message.message(new String("Tải cây CĐR thành công")));
         }
       })
       .catch(err => {
         dispatch(loadDetailOutcomeStandardError(err));
-        dispatch(message.message("Lỗi đường chuyền"));
+        // dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
+        dispatch(message.message("error network"));
       });
   };
 };
 
-// export const addThisOutcomeStandardSuccess = successMessage => ({
-//   type: cst.ADD_DETAIL_OUTCOMESTANDARD_SUCCESS,
-//   successMessage
-// });
+export const addThisOutcomeStandardSuccess = successMessage => ({
+  type: cst.ADD_DETAIL_OUTCOMESTANDARD_SUCCESS,
+  successMessage
+});
 
-// export const addThisOutcomeStandardError = errorMessage => ({
-//   type: cst.ADD_DETAIL_OUTCOMESTANDARD_ERROR,
-//   errorMessage
-// });
+export const addThisOutcomeStandardError = nodes => ({
+  type: cst.ADD_DETAIL_OUTCOMESTANDARD_ERROR,
+  detailOutcomeStandard: nodes
+});
 
-// export const onAddThisOutcomeStandard = (idFaculty, idProgram) => {
-//   return (dispatch, getState) => {
-//     let link = `${links.SAVE_DETAIL_OUTCOMESTANDARD}${idFaculty}`;
-//     let req = { link };
-//     axios
-//       .post(req)
-//       .then(res => {
-//         dispatch(addThisOutcomeStandardSuccess(res));
-//         //
-//         dispatch(message.message("Success"));
-//       })
-//       .catch(err => {
-//         dispatch(addThisOutcomeStandardError(err));
-//         //
-//         dispatch(message.message(err));
-//       });
-//   };
-// };
+export const onAddThisOutcomeStandard = (data, nodes) => {
+  return (dispatch, getState) => {
+    let link = `${links.ADD_DETAIL_OUTCOMESTANDARD}`;
+    let req = { link, data };
+    axios
+      .post(req)
+      .then(res => {
+        dispatch(addThisOutcomeStandardSuccess(res));
+        //
+        dispatch(message.message(new String("Thêm cây CĐR thành công")));
+      })
+      .catch(err => {
+        dispatch(addThisOutcomeStandardError(nodes));
+        //
+        dispatch(message.message(new String(`Thêm cây CĐR thất bại: ${err}`)));
+      });
+  };
+};

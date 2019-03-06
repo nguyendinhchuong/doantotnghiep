@@ -5,7 +5,11 @@ export const detailOutcomeStandard = (state = {}, action) => {
     case types.LOAD_DETAIL_OUTCOMESTANDARD_SUCCESS:
       return action.detailOutcomeStandard;
     case types.LOAD_DETAIL_OUTCOMESTANDARD_ERROR:
-      return {};
+      return [];
+    case types.SAVE_DETAIL_OUTCOMESTANDARD_ERROR:
+      return action.detailOutcomeStandard;
+    case types.ADD_DETAIL_OUTCOMESTANDARD_ERROR:
+      return action.detailOutcomeStandard;
     default:
       return state;
   }

@@ -23,7 +23,7 @@ export const onLoadPrograms = () => {
         if (programs === undefined) {
           dispatch(loadProgramsError("Do not have data"));
           //
-          dispatch(message.message("Chưa có dữ liệu"));
+          dispatch(message.message(new String("Chưa có dữ liệu")));
         } else {
           dispatch(loadProgramsSuccess(programs));
         }
@@ -31,7 +31,7 @@ export const onLoadPrograms = () => {
       .catch(err => {
         dispatch(loadProgramsError(err));
         //
-        dispatch(message.message("Lỗi đường chuyền"));
+        dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
       });
   };
 };

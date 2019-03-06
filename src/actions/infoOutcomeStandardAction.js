@@ -23,17 +23,17 @@ export const onLoadInfoOutcomeStandard = id => {
         if (infoOutcomeStandard === undefined) {
           dispatch(loadInfoOutcomeStandardError("Do not have data"));
           //
-          dispatch(message.message("Chưa có dữ liệu"));
+          dispatch(message.message(new String("Chưa có dữ liệu")));
         } else {
           dispatch(loadInfoOutcomeStandardSuccess(infoOutcomeStandard));
           //
-          dispatch(message.message("Tải thông tin CĐR thành công"));
+          dispatch(message.message(new String("Tải thông tin CĐR thành công")));
         }
       })
       .catch(err => {
         dispatch(loadInfoOutcomeStandardError(err));
         //
-        dispatch(message.message("Lỗi đường chuyền"));
+        dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
       });
   };
 };

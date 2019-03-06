@@ -22,12 +22,12 @@ export const onCreateFacultyProgram = data => {
       .then(res => {
         dispatch(createFacultyProgramSuccess(res));
         //
-        dispatch(message.message("Tạo CĐR thành công"));
+        dispatch(message.message(new String("Tạo CĐR thành công")));
       })
       .catch(err => {
         dispatch(createFacultyProgramError(err));
         //
-        dispatch(message.message("Tạo CĐR thất bại"));
+        dispatch(message.message(new String(`Tạo CĐR thất bại: ${err}`)));
       });
   };
 };

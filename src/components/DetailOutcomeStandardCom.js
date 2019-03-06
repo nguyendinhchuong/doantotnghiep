@@ -115,6 +115,7 @@ class DetailOutcomeStandardCom extends Component {
   onHideExportCom = () => {
     this.setState({ exportVisible: false });
   };
+
   onShowExportCom = () => {
     this.setState({ exportVisible: true });
   };
@@ -208,6 +209,7 @@ class DetailOutcomeStandardCom extends Component {
     });
     event.preventDefault();
   };
+
   // save data
   onSave = () => {
     if (this.props.idOutcomeStandard !== "undefined") {
@@ -217,10 +219,10 @@ class DetailOutcomeStandardCom extends Component {
         data,
         this.props.idOutcomeStandard
       );
-      console.log(data);
       if (this.props.onSaveThisOutcomeStandard)
         this.props.onSaveThisOutcomeStandard(
           data,
+          this.state.nodes,
           this.props.idOutcomeStandard
         );
     }
@@ -228,15 +230,10 @@ class DetailOutcomeStandardCom extends Component {
 
   // add data
   onAdd = () => {
-    // if (this.props.idOutcomeStandard !== "undefined") {
-    //   let data = [];
-    //   createSaveData(this.state.nodes, data);
-    //   if (this.props.onSaveThisOutcomeStandard)
-    //     this.props.onSaveThisOutcomeStandard(
-    //       data,
-    //       this.props.idOutcomeStandard
-    //     );
-    // }
+    let data = [];
+    logic.createSaveData(this.state.nodes, data);
+    if (this.props.onAddThisOutcomeStandard)
+      this.props.onAddThisOutcomeStandard(data, this.state.nodes);
   };
 
   // history
@@ -263,19 +260,13 @@ class DetailOutcomeStandardCom extends Component {
     console.log(arr);
   };
 
-  componentDidMount = () => {
-    this.setState({
-      nodes: {}
-    });
-  };
-
-  componentWillMount = () => {
-    this.setState({
-      nodes: {}
-    });
+  componentWillReceiveProps = nextProps => {
+    // if(nextProps.detailOutcomeStandard!==nextProps.detailOutcomeStandard)
+    this.setState({ nodes: nextProps.detailOutcomeStandard });
   };
 
   render() {
+    console.log(this.state.nodes);
     const footer = (
       <div>
         <Button onClick={this.handleSubmit} theme="success">
@@ -309,7 +300,7 @@ class DetailOutcomeStandardCom extends Component {
                 theme="success"
                 onClick={this.onSave}
               >
-                <i className="material-icons">save</i> Lưu CĐR
+                <i className="material-icons">save</i> Lưu cây CĐR
               </Button>
             ) : (
               <Button
@@ -317,7 +308,7 @@ class DetailOutcomeStandardCom extends Component {
                 theme="success"
                 onClick={this.onAdd}
               >
-                <i className="material-icons">save</i> Tạo CĐR mới
+                <i className="material-icons">save</i> Tạo cây CĐR mới
               </Button>
             )}
 
@@ -382,6 +373,7 @@ class DetailOutcomeStandardCom extends Component {
             </Card>
           </Col>
         </Row>
+
         <div className="content-section implementation">
           <Dialog
             header="Tên file"

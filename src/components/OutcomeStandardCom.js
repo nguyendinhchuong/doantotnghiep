@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import XLSX from "xlsx";
+
 import {
   Row,
   Col,
@@ -8,6 +10,7 @@ import {
   FormSelect,
   FormInput
 } from "shards-react";
+import { InputText } from "primereact/inputtext";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -23,7 +26,9 @@ export default class OutcomeStandardCom extends Component {
       faculty: { id: "0" },
       program: { id: "0" },
       visible: false,
-      nameOutcome: ""
+      exportVisible: false,
+      fileName: "",
+      loadExactOutcome: false
     };
   }
 
@@ -59,6 +64,25 @@ export default class OutcomeStandardCom extends Component {
     this.setState({
       visible: false
     });
+  };
+
+  onCloseExport = () => {
+    this.setState({
+      exportVisible: false
+    });
+  };
+
+  onShowExportCom = idOutcome => {
+    this.props.onLoadThisOutcomeStandard(idOutcome);
+    this.setState({ exportVisible: true, loadExactOutcome: true });
+  };
+
+  onHideExportCom = () => {
+    this.setState({ exportVisible: false });
+  };
+
+  handleChangeFileName = event => {
+    this.setState({ fileName: event.target.value });
   };
 
   onCloseAddCreate = () => {
@@ -97,10 +121,25 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
-  onCreateExcelFile = IdOutcome => {
-    this.props.onLoadThisOutcomeStandard(IdOutcome);
-    if (this.props.detailOutcomeStandard !== {}) {
+  // export file
+  onExportFile = event => {
+    if (this.state.loadExactOutcome && this.props.message !== "error network") {
+      const ws = XLSX.utils.aoa_to_sheet(this.props.detailOutcomeStandard);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Program standard");
+      XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
+
+      this.onHideExportCom();
+      this.setState({
+        fileName: ""
+      });
+    } else {
+      this.onHideExportCom();
+      this.setState({
+        fileName: ""
+      });
     }
+    event.preventDefault();
   };
 
   render() {
@@ -192,6 +231,18 @@ export default class OutcomeStandardCom extends Component {
         </Dialog>
       );
     }
+
+    const exportCom = (
+      <div>
+        <Button onClick={this.onExportFile} theme="success">
+          Tạo file
+        </Button>
+        <Button onClick={this.onHideExportCom} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
     return (
       <div>
         <Row>
@@ -206,7 +257,9 @@ export default class OutcomeStandardCom extends Component {
             <Card small className="mb-4">
               <CardBody className="p-0 pb-3">
                 <table className="table mb-0">
-                  <thead className="bg-light"><TableHeaderCom /></thead>
+                  <thead className="bg-light">
+                    <TableHeaderCom />
+                  </thead>
                   <tbody>
                     {Array.isArray(this.props.outcomeStandards) &&
                     this.props.outcomeStandards.length !== 0 ? (
@@ -247,7 +300,7 @@ export default class OutcomeStandardCom extends Component {
                             <Button
                               title="Tạo file Excel"
                               onClick={() =>
-                                this.onCreateExcelFile(row.IdOutcome)
+                                this.onShowExportCom(row.IdOutcome)
                               }
                             >
                               <i className="material-icons">save_alt</i>
@@ -276,6 +329,24 @@ export default class OutcomeStandardCom extends Component {
           </Col>
         </Row>
         {dialog}
+
+        <div className="content-section implementation">
+          <Dialog
+            title={<div>Tên file</div>}
+            visible={this.state.exportVisible}
+            onClose={this.onCloseExport}
+            style={{ width: "50vw" }}
+            footer={exportCom}
+            onHide={this.onHideExportCom}
+          >
+            <InputText
+              type="text"
+              value={this.state.fileName}
+              onChange={this.handleChangeFileName}
+              style={{ width: "100%" }}
+            />
+          </Dialog>
+        </div>
       </div>
     );
   }
