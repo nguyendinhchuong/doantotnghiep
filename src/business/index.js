@@ -13,28 +13,6 @@ export const getMaxLevel = function myself(nodes) {
   }
 };
 
-export const createSaveData = function itseft(nodes, data, id) {
-  if (nodes === undefined || nodes.length === 0) return 0;
-  else {
-    let tmpObj = {};
-    for (let i in nodes) {
-      let key;
-      if (nodes[i].key.length === 1) key = nodes[i].key + "--";
-      else key = nodes[i].key;
-
-      let name = nodes[i].data.name;
-
-      tmpObj = { key, name, id };
-
-      data.push(tmpObj);
-      tmpObj = {};
-
-      let children = nodes[i].children;
-      createSaveData(children, data);
-    }
-  }
-};
-
 export const createExportData = function themseft(nodes, data, level) {
   if (nodes === undefined || nodes.length === 0) return;
   else {
@@ -60,50 +38,47 @@ export const createExportData = function themseft(nodes, data, level) {
   }
 };
 
-// export const changeDbToExcelFormat = (db, level) => {
-//   let data = []
-//   let tmpArr = [];
+// export const createSaveData = function itseft(nodes, data, id) {
+//   if (nodes === undefined || nodes.length === 0) return 0;
+//   else {
+//     let tmpObj = {};
+//     for (let i in nodes) {
+//       let key;
+//       if (nodes[i].key.length === 1) key = nodes[i].key + "--";
+//       else key = nodes[i].key;
+
+//       let name = nodes[i].data.name;
+
+//       tmpObj = { key, name, id };
+
+//       data.push(tmpObj);
+//       tmpObj = {};
+
+//       let children = nodes[i].children;
+//       createSaveData(children, data);
+//     }
+//   }
+// };
+
+// export const changeDbFormatToExcelFormat = (db) => {
+//   // let data = JSON.parse(db);
 //   for (let i in db) {
+//     let a = jQuery.parseJSON(db[i]);
+//     console.log(a.KeyOutcomeStandard)
+//     // let value=thisData[i];
 
-//     let str = "" + nodes[i].key;
-//     if (str.length === 1) tmpArr[0] = parseInt(str.charAt(0));
+//     // let str = "" + value.KeyOutcomeStandard;
 
-//     if (nodes[i].children !== undefined && nodes[i].children.length !== 0) {
-//       for (var j = 0; j < level - 1; j++) {
-//         if (str.length > 2 * j) tmpArr[j] = parseInt(str.charAt(2 * j));
-//       }
-//     }
+//     // for (var j = 0; j < level - 1; j++) {
+//     //   if (str.length > 2 * j) tmpArr[j] = parseInt(str.charAt(2 * j));
+//     // }
+//     // tmpArr[level - 1] = value.NameOutcomeStandard;
 
-//     tmpArr[level - 1] = nodes[i].data.name;
-
-//     let key = db[i].key;
-//     let name = db[i].name;
-
-//     data.push(tmpArr);
-//     tmpArr = [];
+//     // data.push(tmpArr);
+//     // tmpArr = [];
 //   }
+//   return data;
 // };
-///////////////////////////////////////////////////////////////////
-// export const changeDbToExcelFormat = (data) => {
-//   // let level = data[0].keyOutcomeStandard.length;
-//   let level = 4;
-//   let outData = [];
-//   let tmpArr = [];
-//   for (let i in data) {
-//     let str = data[i].keyOutcomeStandard;
-//     for (var j = 0; j < level - 1; j++) {
-//       if (str.charAt(2 * j) !== "-" && str.length >= 2 * j)
-//         tmpArr[j] = parseInt(str.charAt(2 * j));
-//     }
-
-//     let name = "" + data[i].NameOutcomeStandard;
-//     tmpArr[level - 1] = name;
-//     outData.push(tmpArr);
-//     tmpArr = [];
-//   }
-//   return outData;
-// };
-
 
 export const getKeyAndName = element => {
   let key, name;
@@ -458,7 +433,7 @@ export const formatDatetime = date => {
 let data = [];
 //History
 export const listNodeDeleted = (nodes) => {
-  if(nodes.children.length > 0){
+  if (nodes.children.length > 0) {
     nodes.children.forEach(node => {
       data.push(node);
     })

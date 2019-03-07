@@ -21,19 +21,43 @@ export const onLoadInfoOutcomeStandard = id => {
       .then(res => {
         const infoOutcomeStandard = res.data;
         if (infoOutcomeStandard === undefined) {
-          dispatch(loadInfoOutcomeStandardError("Do not have data"));
-          //
-          dispatch(message.message(new String("Chưa có dữ liệu")));
+          dispatch(loadInfoOutcomeStandardError(res));
+          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
           dispatch(loadInfoOutcomeStandardSuccess(infoOutcomeStandard));
-          //
-          dispatch(message.message(new String("Tải thông tin CĐR thành công")));
+          dispatch(message.message(new String(`Tải thông tin CĐR thành công`)));
         }
       })
       .catch(err => {
         dispatch(loadInfoOutcomeStandardError(err));
-        //
-        dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
+        dispatch(message.message(new String(`Tải thông tin CĐR thất bại`)));
+      });
+  };
+};
+
+export const createInfoOutcomeStandardSuccess = successMessage => ({
+  type: cst.CREATE_INFO_OUTCOMESTANDARD_SUCCESS,
+  successMessage
+});
+
+export const createInfoOutcomeStandardError = errorMessage => ({
+  type: cst.CREATE_INFO_OUTCOMESTANDARD_ERROR,
+  errorMessage
+});
+
+export const onCreateInfoOutcomeStandard = data => {
+  return (dispatch, getState) => {
+    let link = `${links.CREATE_INFO_OUTCOMESTANDARD}`;
+    let req = { link, data };
+    axios
+      .post(req)
+      .then(res => {
+        dispatch(createInfoOutcomeStandardSuccess(res));
+        dispatch(message.message(new String(`Tạo thông tin CĐR thành công`)));
+      })
+      .catch(err => {
+        dispatch(createInfoOutcomeStandardError(err));
+        dispatch(message.message(new String(`Tạo thông tin CĐR thất bại`)));
       });
   };
 };

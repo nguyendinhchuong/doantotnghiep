@@ -10,59 +10,54 @@ export const loadOutcomeStandardsSuccess = outcomeStandards => ({
 
 export const loadOutcomeStandardsError = errorMessage => ({
   type: cst.LOAD_OUTCOMESTANDARDS_ERROR,
-  outcomeStandards: {}
+  errorMessage
 });
 
 export const onLoadOutcomeStandards = () => {
   return (dispatch, getState) => {
-    let req = links.LOAD_ALL_OUTCOMESTANDARDS;
+    let req = links.LOAD_OUTCOMESTANDARDS;
     axios
       .get(req)
       .then(res => {
         const outcomeStandards = res.data;
         if (outcomeStandards === undefined) {
-          dispatch(loadOutcomeStandardsError("Do not have data"));
-          //
-          dispatch(message.message(new String("Chưa có dữ liệu")));
+          dispatch(loadOutcomeStandardsError(res));
+          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
-          //
-          dispatch(message.message(new String("Tải các CĐR thành công")));
+          dispatch(message.message(new String(`Tải các CĐR thành công`)));
         }
       })
       .catch(err => {
         dispatch(loadOutcomeStandardsError(err));
-        //
-        dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
+        dispatch(message.message(new String(`Tải các CĐR thất bại`)));
       });
   };
 };
 
-export const deleteThisOutcomeStandardSuccess = successMessage => ({
+export const deleteOutcomeStandardSuccess = successMessage => ({
   type: cst.DELETE_OUTCOMESTANDARD_SUCCESS,
   successMessage
 });
 
-export const deleteThisOutcomeStandardError = errorMessage => ({
+export const deleteOutcomeStandardError = errorMessage => ({
   type: cst.DELETE_OUTCOMESTANDARD_ERROR,
   errorMessage
 });
 
-export const onDeleteThisOutcomeStandard = id => {
+export const onDeleteOutcomeStandard = id => {
   return (dispatch, getState) => {
     let req = `${links.DELETE_OUTCOMESTANDARD}${id}`;
     axios
       .post(req)
       .then(res => {
-        dispatch(deleteThisOutcomeStandardSuccess(res));
+        dispatch(deleteOutcomeStandardSuccess(res));
         dispatch(onLoadOutcomeStandards());
-        //
-        dispatch(message.message(new String("Xóa thành công")));
+        dispatch(message.message(new String(`Xóa CĐR thành công`)));
       })
       .catch(err => {
-        dispatch(deleteThisOutcomeStandardError(err));
-        //
-        dispatch(message.message(new String(`Xóa thất bại: ${err}`)));
+        dispatch(deleteOutcomeStandardError(err));
+        dispatch(message.message(new String(`Xóa CĐR thất bại`)));
       });
   };
 };

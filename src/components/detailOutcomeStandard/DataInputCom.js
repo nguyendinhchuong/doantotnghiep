@@ -3,12 +3,11 @@ import React from "react";
 export default class DataInputCom extends React.Component {
   constructor(props) {
     super(props);
-    this.ImportFile = this.ImportFile.bind(this);
   }
-  ImportFile(e) {
+  ImportFile = e => {
     const files = e.target.files;
     if (files && files[0]) this.props.handleFile(files[0]);
-  }
+  };
   render() {
     return (
       <form>

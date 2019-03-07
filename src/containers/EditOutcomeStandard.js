@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
-import DetailOutcomeStandardCom from "../components/DetailOutcomeStandardCom";
+import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
@@ -22,30 +22,25 @@ class EditOutcomeStandardTmp extends Component {
   componentDidMount = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
-    this.props.onLoadThisOutcomeStandard(id);
+    this.props.onLoadDetailOutcomeStandard(id);
     this.props.onLoadInfoOutcomeStandard(id);
   };
 
   render() {
+    const tmp = JSON.stringify(this.props.message);
+    const message = tmp.substring(1, tmp.length - 1);
+
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
-    const message = JSON.stringify(this.props.message).substring(
-      1,
-      JSON.stringify(this.props.message).length - 1
-    );
+    const infoOS = this.props.infoOutcomeStandard;
+    const subtitle = Array.isArray(infoOS)
+      ? `Khoa: ${infoOS[0].NameFaculty} | Hệ: ${infoOS[0].NameProgram}`
+      : `Khoa: Chưa tải được | Hệ: Chưa tải được`;
 
-    let subtitle = Array.isArray(this.props.infoOutcomeStandard)
-      ? `Khoa: ${this.props.infoOutcomeStandard[0].NameFaculty} | Hệ: ${
-          this.props.infoOutcomeStandard[0].NameProgram
-        }`
-      : `Khoa: Chưa có | Hệ: Chưa có`;
-
-    let title = Array.isArray(this.props.infoOutcomeStandard)
-      ? `Sửa chuẩn đầu ra: ${
-          this.props.infoOutcomeStandard[0].NameOutcomeStandard
-        }`
-      : null;
+    const title = Array.isArray(infoOS)
+      ? `Sửa chuẩn đầu ra: ${infoOS[0].NameOutcomeStandard}`
+      : `Sửa chuẩn đầu ra: Chưa tải được`;
 
     return (
       <Container fluid className="main-content-container px-4">
@@ -65,14 +60,12 @@ class EditOutcomeStandardTmp extends Component {
         <Row>
           <Col lg="12" md="12" sm="12">
             <DetailOutcomeStandardCom
-              onSaveThisOutcomeStandard={this.props.onSaveThisOutcomeStandard}
+              onSaveDetailOutcomeStandard={
+                this.props.onSaveDetailOutcomeStandard
+              }
               idOutcomeStandard={id}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
-              infoOutcomeStandard={
-                Array.isArray(this.props.infoOutcomeStandard)
-                  ? this.props.infoOutcomeStandard[0]
-                  : null
-              }
+              infoOutcomeStandard={Array.isArray(infoOS) ? infoOS[0] : null}
             />
           </Col>
         </Row>
@@ -88,9 +81,9 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onSaveThisOutcomeStandard:
-    detailOutcomeStandardAction.onSaveThisOutcomeStandard,
-  onLoadThisOutcomeStandard:
-    detailOutcomeStandardAction.onLoadThisOutcomeStandard,
+  onSaveDetailOutcomeStandard:
+    detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
+  onLoadDetailOutcomeStandard:
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
   onLoadInfoOutcomeStandard: infoOutcomeStandardAction.onLoadInfoOutcomeStandard
 })(EditOutcomeStandardTmp);

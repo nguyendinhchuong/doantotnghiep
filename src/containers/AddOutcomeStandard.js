@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
-import DetailOutcomeStandardCom from "../components/DetailOutcomeStandardCom";
+import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
@@ -19,27 +19,23 @@ class AddOutcomeStandardTmp extends Component {
   }
 
   render() {
-    const message = JSON.stringify(this.props.message).substring(
-      1,
-      JSON.stringify(this.props.message).length - 1
-    );
+    const tmp = JSON.stringify(this.props.message);
+    const message = tmp.substring(1, tmp.length - 1);
 
     let subtitle;
-    if (this.props.location.state !== undefined) {
+    const state = this.props.location.state;
+    if (state !== undefined) {
       subtitle =
-        this.props.location.state.faculty.name !== undefined &&
-        this.props.location.state.program.name !== undefined
-          ? `Khoa: ${this.props.location.state.faculty.name} | Hệ: ${
-              this.props.location.state.program.name
-            }`
+        state.faculty.name !== undefined && state.program.name !== undefined
+          ? `Khoa: ${state.faculty.name} | Hệ: ${state.program.name}`
           : `Khoa: Chưa có | Hệ: Chưa có`;
     } else {
       subtitle = `Khoa: Chưa có | Hệ: Chưa có`;
     }
 
     let title =
-      this.props.location.state !== undefined
-        ? `Thêm chuẩn đầu ra: ${this.props.location.state.nameOutcome}`
+      state !== undefined
+        ? `Thêm chuẩn đầu ra: ${state.nameOutcome}`
         : `Thêm chuẩn đầu ra`;
 
     return (
@@ -60,8 +56,8 @@ class AddOutcomeStandardTmp extends Component {
         <Row>
           <Col lg="12" md="12" sm="12">
             <DetailOutcomeStandardCom
-              onAddThisOutcomeStandard={this.props.onAddThisOutcomeStandard}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
+              onAddDetailOutcomeStandard={this.props.onAddDetailOutcomeStandard}
             />
           </Col>
         </Row>
@@ -76,5 +72,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onAddThisOutcomeStandard: detailOutcomeStandardAction.onAddThisOutcomeStandard
+  onAddDetailOutcomeStandard:
+    detailOutcomeStandardAction.onAddDetailOutcomeStandard
 })(AddOutcomeStandardTmp);

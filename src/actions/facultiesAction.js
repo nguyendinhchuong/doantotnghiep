@@ -14,25 +14,22 @@ export const loadFacultiesError = errorMessage => ({
 });
 
 export const onLoadFaculties = () => {
-    return (dispatch, getState) => {
-      let req = links.LOAD_ALL_FACULTIES;
-      axios
-        .get(req)
-        .then(res => {
-            const faculties = res.data;
-            if (faculties === undefined) {
-              dispatch(loadFacultiesError("Do not have data"));
-              //
-              dispatch(message.message(new String("Chưa có dữ liệu")));
-              }
-              else {
-                dispatch(loadFacultiesSuccess(faculties));
-              }
-            })
-          .catch(err => {
-            dispatch(loadFacultiesError(err));
-            //
-            dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
-          });
-        };
-    };
+  return (dispatch, getState) => {
+    let req = links.LOAD_FACULTIES;
+    axios
+      .get(req)
+      .then(res => {
+        const faculties = res.data;
+        if (faculties === undefined) {
+          dispatch(loadFacultiesError(res));
+          dispatch(message.message(new String(`Chưa có dữ liệu`)));
+        } else {
+          dispatch(loadFacultiesSuccess(faculties));
+        }
+      })
+      .catch(err => {
+        dispatch(loadFacultiesError(err));
+        dispatch(message.message(new String(`Tải các khoa thất bại`)));
+      });
+  };
+};

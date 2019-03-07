@@ -12,19 +12,15 @@ export default class AlertCom extends React.Component {
       timeUntilDismissed: 2,
       message: ""
     };
-
-    this.showAlert = this.showAlert.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.clearInterval = this.clearInterval.bind(this);
   }
 
-  showAlert() {
+  showAlert = () => {
     this.clearInterval();
     this.setState({ visible: true, countdown: 0, timeUntilDismissed: 3 });
     this.interval = setInterval(this.handleTimeChange, 1000);
-  }
+  };
 
-  handleTimeChange() {
+  handleTimeChange = () => {
     if (this.state.countdown < this.state.timeUntilDismissed - 1) {
       this.setState({
         ...this.state,
@@ -35,12 +31,12 @@ export default class AlertCom extends React.Component {
 
     this.setState({ ...this.state, ...{ visible: false } });
     this.clearInterval();
-  }
+  };
 
-  clearInterval() {
+  clearInterval = () => {
     clearInterval(this.interval);
     this.interval = null;
-  }
+  };
 
   componentWillReceiveProps = nextProps => {
     this.setState({ message: nextProps.message });

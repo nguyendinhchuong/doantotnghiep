@@ -10,28 +10,26 @@ export const loadProgramsSuccess = programs => ({
 
 export const loadProgramsError = errorMessage => ({
   type: cst.LOAD_PROGRAMS_ERROR,
-  programs: {}
+  errorMessage
 });
 
 export const onLoadPrograms = () => {
   return (dispatch, getState) => {
-    let req = links.LOAD_ALL_PROGRAMS;
+    let req = links.LOAD_PROGRAMS;
     axios
       .get(req)
       .then(res => {
         const programs = res.data;
         if (programs === undefined) {
-          dispatch(loadProgramsError("Do not have data"));
-          //
-          dispatch(message.message(new String("Chưa có dữ liệu")));
+          dispatch(loadProgramsError(res));
+          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
           dispatch(loadProgramsSuccess(programs));
         }
       })
       .catch(err => {
         dispatch(loadProgramsError(err));
-        //
-        dispatch(message.message(new String(`Lỗi đường chuyền: ${err}`)));
+        dispatch(message.message(new String(`Tải các hệ thất bại`)));
       });
   };
 };

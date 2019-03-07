@@ -7,10 +7,9 @@ import { Row, Col, Button, Card } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
-import * as logic from "../business";
+import * as logic from "../../business";
 
 import DataInputCom from "./DataInputCom";
-import HistHeaderCom from "./HistHeaderCom";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -23,40 +22,26 @@ class DetailOutcomeStandardCom extends Component {
       nameOut: "",
       root: false,
       exportVisible: false,
-      fileName: "",
-      histVisible: false
+      fileName: ""
     };
-
-    this.add.bind(this);
-    this.onClickDialog = this.onClickDialog.bind(this);
-    this.addRoot.bind(this);
-    this.onHideDialog = this.onHideDialog.bind(this);
-    this.handleChangeTitle = this.handleChangeTitle.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleFile = this.handleFile.bind(this);
-    this.nameEditor = this.nameEditor.bind(this);
   }
 
   // add
-  addRoot() {
+  addRoot = () => {
     const x = logic.addRoot(data1, this.state.nameOut);
     data1.push(x);
     this.setState({
       nodes: data1
     });
-    const history = this.historyObject(x, "Insert");
-    histories.push(history.contentEdit);
-  }
+  };
 
-  add(node) {
+  add = node => {
     const data = logic.add(data1, node, this.state.nameOut);
     data1 = data[0];
     this.setState({
       nodes: data1
     });
-    const history = this.historyObject(data[1], "Insert");
-    histories.push(history.contentEdit);
-  }
+  };
 
   // delete
   deleteNode = node => {
@@ -64,8 +49,6 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({
       nodes: data1
     });
-    const history = this.historyObject(node, "Delete");
-    histories.push(history.contentEdit);
   };
 
   // update
@@ -93,34 +76,32 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   // update node after edit node
-  updateNode(node) {
+  updateNode = node => {
     data1 = logic.updateNode(data1, node);
     this.setState({
       nodes: data1
     });
-    const history = this.historyObject(node, "Update");
-    histories.push(history.contentEdit);
-  }
+  };
 
   // event
-  onClickDialog(node) {
+  onClickDialog = node => {
     this.setState({
       visible: true,
       root: false,
       node: node
     });
-  }
+  };
 
-  onClickDialogRoot() {
+  onClickDialogRoot = () => {
     this.setState({
       visible: true,
       root: true
     });
-  }
+  };
 
-  onHideDialog() {
+  onHideDialog = () => {
     this.setState({ visible: false });
-  }
+  };
 
   onHideExportCom = () => {
     this.setState({ exportVisible: false });
@@ -130,15 +111,15 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ exportVisible: true });
   };
 
-  handleChangeTitle(event) {
+  handleChangeTitle = event => {
     this.setState({ nameOut: event.target.value });
-  }
+  };
 
   handleChangeFileName = event => {
     this.setState({ fileName: event.target.value });
   };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     if (this.state.root) {
       this.addRoot();
     } else {
@@ -147,7 +128,7 @@ class DetailOutcomeStandardCom extends Component {
     this.onHideDialog();
 
     event.preventDefault();
-  }
+  };
 
   // handle Import File
   handleFile = file => {
@@ -220,17 +201,32 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  // save data
+  // // need this function
+  // // save data
+  // onSave = () => {
+  //   if (this.props.idOutcomeStandard !== "undefined") {
+  //     let data = [];
+  //     logic.createSaveData(
+  //       this.state.nodes,
+  //       data,
+  //       this.props.idOutcomeStandard
+  //     );
+  //     if (this.props.onSaveDetailOutcomeStandard)
+  //       this.props.onSaveDetailOutcomeStandard(
+  //         data,
+  //         this.state.nodes,
+  //         this.props.idOutcomeStandard
+  //       );
+  //   }
+  // };
+
+    // save data
   onSave = () => {
     if (this.props.idOutcomeStandard !== "undefined") {
-      let data = [];
-      logic.createSaveData(
-        this.state.nodes,
-        data,
-        this.props.idOutcomeStandard
-      );
-      if (this.props.onSaveThisOutcomeStandard)
-        this.props.onSaveThisOutcomeStandard(
+      let data =logic.changeDbFormatToExcelFormat(this.props.detailOutcomeStandard);
+      console.log(data);
+      if (this.props.onSaveDetailOutcomeStandard)
+        this.props.onSaveDetailOutcomeStandard(
           data,
           this.state.nodes,
           this.props.idOutcomeStandard
@@ -242,41 +238,12 @@ class DetailOutcomeStandardCom extends Component {
   onAdd = () => {
     let data = [];
     logic.createSaveData(this.state.nodes, data);
-    if (this.props.onAddThisOutcomeStandard)
-      this.props.onAddThisOutcomeStandard(data, this.state.nodes);
+    if (this.props.onAddDetailOutcomeStandard)
+      this.props.onAddDetailOutcomeStandard(data, this.state.nodes);
   };
 
-  // history
-  historyObject = (node, action) => {
-    return {
-      key: node.key,
-      nameNode: node.data.name,
-      userName: "Messi",
-      dateEdit: new Date(),
-      contentEdit: `Messi ${action} index: ${node.key} date:${new Date()}`
-    };
-  };
-
-  onShowHistory = () => {
-    console.log(histories);
-    this.setState({
-      histVisible: true
-    });
-  };
-
-  onHideHistory = () => {
-    this.setState({
-      histVisible: false
-    });
-  };
-
-  // create data for redux
-  onSaveListOutcomes = () => {
-    const arr = [
-      ...this.createExportData(this.state.nodes),
-      ...this.createExportData(this.state.dataImport)
-    ];
-  };
+  // see versions
+  onSeeVersions = () => {};
 
   componentWillReceiveProps = nextProps => {
     // if(nextProps.detailOutcomeStandard!==nextProps.detailOutcomeStandard)
@@ -311,7 +278,7 @@ class DetailOutcomeStandardCom extends Component {
         <hr />
         <Row>
           <Col lg="10" md="10" sm="10">
-            {this.props.onSaveThisOutcomeStandard ? (
+            {this.props.onSaveDetailOutcomeStandard ? (
               <Button
                 style={{ margin: "0 10px" }}
                 theme="success"
@@ -336,13 +303,14 @@ class DetailOutcomeStandardCom extends Component {
             >
               <i className="material-icons">save_alt</i> Tạo file Excel
             </Button>
-            {this.props.onSaveThisOutcomeStandard ? (
+            {this.props.onSaveDetailOutcomeStandard ? (
               <Button
                 style={{ margin: "0 10px" }}
                 theme="success"
-                onClick={this.onShowHistory}
+                onClick={this.onSeeVersions}
               >
-                <i className="material-icons">change_history</i> Xem lịch sử
+                <i className="material-icons">change_history</i> Xem các phiên
+                bản
               </Button>
             ) : null}
           </Col>
@@ -424,37 +392,11 @@ class DetailOutcomeStandardCom extends Component {
             />
           </Dialog>
         </div>
-
-        <div className="content-section implementation">
-          <Dialog
-            header="Lịch sử thay đổi"
-            visible={this.state.histVisible}
-            style={{ width: "50vw" }}
-            onHide={this.onHideHistory}
-          >
-            <Card
-              small
-              className="mb-4"
-              style={{ overflow: "scroll", height: "400px" }}
-            >
-              <table className="table mb-0">
-                <tbody>
-                  {histories.map((row, i) => (
-                    <tr>
-                      <td>{row}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Card>
-          </Dialog>
-        </div>
       </div>
     );
   }
 }
 
-let histories = [];
 let data1 = [];
 
 export default DetailOutcomeStandardCom;
