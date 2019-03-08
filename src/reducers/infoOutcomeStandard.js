@@ -2,9 +2,9 @@ import * as types from "../constants";
 
 export const infoOutcomeStandard = (state = {}, action) => {
   switch (action.type) {
-    case types.LOAD_INFO_OUTCOMESTANDARD_SUCCESS:
+    case types.LOAD_OUTCOMESTANDARD_SUCCESS:
       return [...action.infoOutcomeStandard];
-    case types.LOAD_INFO_OUTCOMESTANDARD_ERROR:
+    case types.LOAD_OUTCOMESTANDARD_ERROR:
       return {};
     default:
       return state;

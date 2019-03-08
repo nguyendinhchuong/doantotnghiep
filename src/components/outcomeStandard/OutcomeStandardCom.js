@@ -80,7 +80,7 @@ export default class OutcomeStandardCom extends Component {
         NameProgram,
         NameOutcome
       };
-      this.props.onCreateInfoOutcomeStandard(data);
+      this.props.onAddOutcomeStandard(data);
 
       this.props.history.push({
         pathname: "/outcome-standard/add",
@@ -116,8 +116,6 @@ export default class OutcomeStandardCom extends Component {
     const dialog = (
       <Dialog
         visible={this.state.visible}
-        animation="slide-fade"
-        maskAnimation="fade"
         onClose={this.onCloseAdd}
         style={{ width: 520 }}
         title={<div>Thêm chuẩn đầu ra</div>}

@@ -220,27 +220,27 @@ class DetailOutcomeStandardCom extends Component {
   //   }
   // };
 
-    // save data
-  onSave = () => {
-    if (this.props.idOutcomeStandard !== "undefined") {
-      let data =logic.changeDbFormatToExcelFormat(this.props.detailOutcomeStandard);
-      console.log(data);
-      if (this.props.onSaveDetailOutcomeStandard)
-        this.props.onSaveDetailOutcomeStandard(
-          data,
-          this.state.nodes,
-          this.props.idOutcomeStandard
-        );
-    }
-  };
+  //   // save data
+  // onSave = () => {
+  //   if (this.props.idOutcomeStandard !== "undefined") {
+  //     let data =logic.changeDbFormatToExcelFormat(this.props.detailOutcomeStandard);
+  //     console.log(data);
+  //     if (this.props.onSaveDetailOutcomeStandard)
+  //       this.props.onSaveDetailOutcomeStandard(
+  //         data,
+  //         this.state.nodes,
+  //         this.props.idOutcomeStandard
+  //       );
+  //   }
+  // };
 
-  // add data
-  onAdd = () => {
-    let data = [];
-    logic.createSaveData(this.state.nodes, data);
-    if (this.props.onAddDetailOutcomeStandard)
-      this.props.onAddDetailOutcomeStandard(data, this.state.nodes);
-  };
+  // // add data
+  // onAdd = () => {
+  //   let data = [];
+  //   logic.createSaveData(this.state.nodes, data);
+  //   if (this.props.onAddDetailOutcomeStandard)
+  //     this.props.onAddDetailOutcomeStandard(data, this.state.nodes);
+  // };
 
   // see versions
   onSeeVersions = () => {};

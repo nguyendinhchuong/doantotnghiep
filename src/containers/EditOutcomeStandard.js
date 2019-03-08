@@ -9,7 +9,7 @@ import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/Detail
 import AlertCom from "../components/AlertCom";
 
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
-import * as infoOutcomeStandardAction from "../actions/infoOutcomeStandardAction";
+import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 
 import { connect } from "react-redux";
 
@@ -85,5 +85,5 @@ export default connect(mapStateToProps, {
     detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
   onLoadDetailOutcomeStandard:
     detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
-  onLoadInfoOutcomeStandard: infoOutcomeStandardAction.onLoadInfoOutcomeStandard
+  onLoadOutcomeStandard: outcomeStandardsAction.onLoadOutcomeStandard
 })(EditOutcomeStandardTmp);

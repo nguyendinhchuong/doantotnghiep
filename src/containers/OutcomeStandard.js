@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
-import * as infoOutcomeStandardAction from "../actions/infoOutcomeStandardAction";
 
 class OutcomeStandardTemp extends Component {
   constructor(props) {
@@ -51,7 +50,7 @@ class OutcomeStandardTemp extends Component {
           faculties={this.props.faculties}
           programs={this.props.programs}
           outcomeStandards={this.props.outcomeStandards}
-          onCreateInfoOutcomeStandard={this.props.onCreateInfoOutcomeStandard}
+          onAddOutcomeStandard={this.props.onAddOutcomeStandard}
           onDeleteOutcomeStandard={this.props.onDeleteOutcomeStandard}
         />
       </Container>
@@ -71,6 +70,6 @@ export default connect(mapStateToProps, {
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onDeleteOutcomeStandard: outcomeStandardsAction.onDeleteOutcomeStandard,
-  onCreateInfoOutcomeStandard:
-    infoOutcomeStandardAction.onCreateInfoOutcomeStandard
+  onAddOutcomeStandard:
+    outcomeStandardsAction.onAddOutcomeStandard
 })(OutcomeStandardTemp);
