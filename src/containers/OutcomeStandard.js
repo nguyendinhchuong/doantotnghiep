@@ -20,8 +20,8 @@ class OutcomeStandardTemp extends Component {
   }
 
   componentDidMount = () => {
-    this.props.onLoadFaculties();
-    this.props.onLoadPrograms();
+    // this.props.onLoadFaculties();
+    // this.props.onLoadPrograms();
     this.props.onLoadOutcomeStandards();
   };
 
@@ -50,6 +50,8 @@ class OutcomeStandardTemp extends Component {
           faculties={this.props.faculties}
           programs={this.props.programs}
           outcomeStandards={this.props.outcomeStandards}
+          onLoadFaculties={this.props.onLoadFaculties}
+          onLoadPrograms={this.props.onLoadPrograms}
           onAddOutcomeStandard={this.props.onAddOutcomeStandard}
           onDeleteOutcomeStandard={this.props.onDeleteOutcomeStandard}
         />

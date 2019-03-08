@@ -29,6 +29,8 @@ export default class OutcomeStandardCom extends Component {
   }
 
   onOpenAdd = () => {
+    this.props.onLoadFaculties();
+    this.props.onLoadPrograms();
     this.setState({
       visible: true
     });
