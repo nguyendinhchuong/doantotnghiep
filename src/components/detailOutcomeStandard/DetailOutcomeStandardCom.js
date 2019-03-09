@@ -212,13 +212,13 @@ class DetailOutcomeStandardCom extends Component {
   //   }
   // };
 
-  // // add data
-  // onAdd = () => {
-  //   let data = [];
-  //   logic.createSaveData(this.state.nodes, data);
-  //   if (this.props.onAddDetailOutcomeStandard)
-  //     this.props.onAddDetailOutcomeStandard(data, this.state.nodes);
-  // };
+  // add data
+  onAdd = () => {
+    let data = [];
+    let level = logic.getMaxLevel(this.state.nodes);
+    logic.createSaveData(this.state.nodes, data, 1, level);
+    console.log(data);
+  };
 
   // see versions
   onSeeRevisions = () => {

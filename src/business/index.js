@@ -38,47 +38,28 @@ export const createExportData = function themseft(nodes, data, level) {
   }
 };
 
-// export const createSaveData = function itseft(nodes, data, id) {
-//   if (nodes === undefined || nodes.length === 0) return 0;
-//   else {
-//     let tmpObj = {};
-//     for (let i in nodes) {
-//       let key;
-//       if (nodes[i].key.length === 1) key = nodes[i].key + "--";
-//       else key = nodes[i].key;
+export const createSaveData = function itseft(nodes, data, id, level) {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    let tmpObj = {};
+    for (let i in nodes) {
+      let length = level - nodes[i].key.length / 2 - 1;
+      let keyRow = nodes[i].key;
+      for (var j = 0; j < length; j++) {
+        keyRow = keyRow + "-";
+      }
+      let nameRow = nodes[i].data.name;
+      let idOutcomeStandard = id;
+      tmpObj = { idOutcomeStandard, keyRow, nameRow };
 
-//       let name = nodes[i].data.name;
+      data.push(tmpObj);
+      tmpObj = {};
 
-//       tmpObj = { key, name, id };
-
-//       data.push(tmpObj);
-//       tmpObj = {};
-
-//       let children = nodes[i].children;
-//       createSaveData(children, data);
-//     }
-//   }
-// };
-
-// export const changeDbFormatToExcelFormat = (db) => {
-//   // let data = JSON.parse(db);
-//   for (let i in db) {
-//     let a = jQuery.parseJSON(db[i]);
-//     console.log(a.KeyOutcomeStandard)
-//     // let value=thisData[i];
-
-//     // let str = "" + value.KeyOutcomeStandard;
-
-//     // for (var j = 0; j < level - 1; j++) {
-//     //   if (str.length > 2 * j) tmpArr[j] = parseInt(str.charAt(2 * j));
-//     // }
-//     // tmpArr[level - 1] = value.NameOutcomeStandard;
-
-//     // data.push(tmpArr);
-//     // tmpArr = [];
-//   }
-//   return data;
-// };
+      let children = nodes[i].children;
+      createSaveData(children, data, id, level);
+    }
+  }
+};
 
 export const getKeyAndName = element => {
   let key, name;
@@ -231,6 +212,7 @@ export const dateAfterDeleted = (data, index) => {
   }
   return data;
 }
+
 // update sub node after delete
 
 export const updateSubNode = (iParent, node) => {
@@ -316,7 +298,6 @@ export const findNodeByKey = (nodes, key) => {
   return node;
 }
 
-
 // import
 
 export const addImport = (data1, node) => {
@@ -401,30 +382,30 @@ export const convertJsonToTreeNode = (data1, arr) => {
   return data1;
 };
 
-export const getRank = key =>{
+export const getRank = key => {
   let rank = 0;
   const x = key.split('-');
-  x.forEach(value =>{if(value != '') return rank++;});
+  x.forEach(value => { if (value !== '') return rank++; });
   return rank;
 }
 
-export const lastNumberOfKey = str =>{
+export const lastNumberOfKey = str => {
   const length = str.length;
-  for(let i = length-1 ;i>=0 ;i-- ){
-    if(Number.isInteger(Number(str[i])))
+  for (let i = length - 1; i >= 0; i--) {
+    if (Number.isInteger(Number(str[i])))
       return i;
   }
 }
 
 // 1-- => '1' , 1-1- => '1-1'
-export const getFormatKey = key =>{
-  return key.slice(0,lastNumberOfKey(key)+1);
+export const getFormatKey = key => {
+  return key.slice(0, lastNumberOfKey(key) + 1);
 }
 
-export const convertDBToTreeNode = (arrDB) =>{
+export const convertDBToTreeNode = (arrDB) => {
   let data1 = [];
   arrDB.forEach((el) => {
-    const key =  getFormatKey(el.keyRow);
+    const key = getFormatKey(el.keyRow);
     const name = el.nameRow;
     const subNode = {
       key: key,
@@ -442,7 +423,6 @@ export const convertDBToTreeNode = (arrDB) =>{
   });
   return data1;
 }
-
 
 export const getCurDate = () => {
   let today = new Date();
@@ -472,14 +452,3 @@ export const formatDatetime = date => {
       dateTime[4]
     }:${dateTime[5]}`;
 };
-
-let data = [];
-//History
-export const listNodeDeleted = (nodes) => {
-  if (nodes.children.length > 0) {
-    nodes.children.forEach(node => {
-      data.push(node);
-    })
-  }
-  return data;
-}
