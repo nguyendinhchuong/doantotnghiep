@@ -21,14 +21,17 @@ export const onLoadOutcomeStandards = () => {
       .then(res => {
         const outcomeStandards = res.data;
         if (outcomeStandards === undefined) {
+          dispatch(message.isRight(0));
           dispatch(loadOutcomeStandardsError(res));
           dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
+          dispatch(message.isRight(1));
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
           dispatch(message.message(new String(`Tải các CĐR thành công`)));
         }
       })
       .catch(err => {
+        dispatch(message.isRight(0));
         dispatch(loadOutcomeStandardsError(err));
         dispatch(message.message(new String(`Tải các CĐR thất bại`)));
       });
@@ -51,11 +54,13 @@ export const onDeleteOutcomeStandard = id => {
     axios
       .post(req)
       .then(res => {
+        dispatch(message.isRight(1));
         dispatch(deleteOutcomeStandardSuccess(res));
         dispatch(onLoadOutcomeStandards());
         dispatch(message.message(new String(`Xóa CĐR thành công`)));
       })
       .catch(err => {
+        dispatch(message.isRight(0));
         dispatch(deleteOutcomeStandardError(err));
         dispatch(message.message(new String(`Xóa CĐR thất bại`)));
       });
@@ -79,10 +84,13 @@ export const onAddOutcomeStandard = data => {
     axios
       .post(req)
       .then(res => {
+        dispatch(message.isRight(1));
+        dispatch(onLoadOutcomeStandard(res.data.id));
         dispatch(addOutcomeStandardSuccess(res));
         dispatch(message.message(new String(`Tạo CĐR thành công`)));
       })
       .catch(err => {
+        dispatch(message.isRight(0));
         dispatch(addOutcomeStandardError(err));
         dispatch(message.message(new String(`Tạo CĐR thất bại`)));
       });
@@ -107,14 +115,17 @@ export const onLoadOutcomeStandard = id => {
       .then(res => {
         const infoOutcomeStandard = res.data;
         if (infoOutcomeStandard === undefined) {
+          dispatch(message.isRight(0));
           dispatch(loadOutcomeStandardError(res));
           dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
+          dispatch(message.isRight(1));
           dispatch(loadOutcomeStandardSuccess(infoOutcomeStandard));
           dispatch(message.message(new String(`Tải CĐR thành công`)));
         }
       })
       .catch(err => {
+        dispatch(message.isRight(0));
         dispatch(loadOutcomeStandardError(err));
         dispatch(message.message(new String(`Tải CĐR thất bại`)));
       });

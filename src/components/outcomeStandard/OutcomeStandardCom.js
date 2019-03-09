@@ -24,7 +24,8 @@ export default class OutcomeStandardCom extends Component {
     this.state = {
       faculty: { id: "0" },
       program: { id: "0" },
-      visible: false
+      visible: false,
+      shoolYear: ""
     };
   }
 
@@ -38,6 +39,10 @@ export default class OutcomeStandardCom extends Component {
 
   handleNameOutcomeChange = event => {
     this.setState({ nameOutcome: event.target.value });
+  };
+
+  handleShoolYearChange = event => {
+    this.setState({ shoolYear: event.target.value });
   };
 
   handleFacultyChange = event => {
@@ -68,35 +73,43 @@ export default class OutcomeStandardCom extends Component {
     if (
       this.state.faculty.id !== "0" &&
       this.state.program.id !== "0" &&
-      this.state.nameOutcome !== ""
+      this.state.nameOutcome !== "" &&
+      this.state.shoolYear !== ""
     ) {
       let IdFaculty = this.state.faculty.id;
       let NameFaculty = this.state.faculty.name;
       let IdProgram = this.state.program.id;
       let NameProgram = this.state.program.name;
       let NameOutcome = this.state.nameOutcome;
+      let ShoolYear = this.state.shoolYear;
       let data = {
+        NameOutcome,
         IdFaculty,
         NameFaculty,
         IdProgram,
         NameProgram,
-        NameOutcome
+        ShoolYear
       };
       this.props.onAddOutcomeStandard(data);
 
-      this.props.history.push({
-        pathname: "/outcome-standard/add",
-        state: {
-          faculty: this.state.faculty,
-          program: this.state.program,
-          nameOutcome: this.state.nameOutcome
-        }
+      // this.props.history.push({
+      //   pathname: "/outcome-standard/add",
+      //   state: {
+      //     faculty: this.state.faculty,
+      //     program: this.state.program,
+      //     nameOutcome: this.state.nameOutcome
+      //   }
+      // });
+      if (this.props.isRight) {
+        this.props.history.push({
+          pathname: "/outcome-standard/edit",
+          search: `?id=${this.props.infoOutcomeStandard.idOutcome}`
+        });
+      }
+      this.setState({
+        visible: false
       });
     }
-
-    this.setState({
-      visible: false
-    });
   };
 
   onEdit = IdOutcome => {
@@ -152,6 +165,21 @@ export default class OutcomeStandardCom extends Component {
               value={this.state.nameOutcome}
               onChange={this.handleNameOutcomeChange}
               placeholder="Tên..."
+              className="mb-2"
+            />
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col lg="3" md="3" sm="3">
+            Năm học:
+          </Col>
+          <Col lg="9" md="9" sm="9">
+            <FormInput
+              type="text"
+              value={this.state.shoolYear}
+              onChange={this.handleShoolYearChange}
+              placeholder="2015"
               className="mb-2"
             />
           </Col>
@@ -219,10 +247,12 @@ export default class OutcomeStandardCom extends Component {
                         <tr>
                           <td>{i + 1}</td>
                           <td>{row.NameOutcomeStandard}</td>
-                          <td>{logic.formatDatetime(row.DateCareated)}</td>
-                          <td>{logic.formatDatetime(row.DateEdited)}</td>
                           <td>{row.NameFaculty}</td>
                           <td>{row.NameProgram}</td>
+                          <td>{row.NameUser}</td>
+                          <td>{row.ShoolYear}</td>
+                          <td>{logic.formatDatetime(row.DateCreated)}</td>
+                          <td>{logic.formatDatetime(row.DateEdited)}</td>
                           <td>
                             <Button
                               title="Chỉnh sửa"

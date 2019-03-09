@@ -21,13 +21,16 @@ export const onLoadPrograms = () => {
       .then(res => {
         const programs = res.data;
         if (programs === undefined) {
+          dispatch(message.isRight(0));
           dispatch(loadProgramsError(res));
           dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
+          dispatch(message.isRight(1));
           dispatch(loadProgramsSuccess(programs));
         }
       })
       .catch(err => {
+        dispatch(message.isRight(0));
         dispatch(loadProgramsError(err));
         dispatch(message.message(new String(`Tải các hệ thất bại`)));
       });

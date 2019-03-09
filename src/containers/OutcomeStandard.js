@@ -46,9 +46,11 @@ class OutcomeStandardTemp extends Component {
 
         <OutcomeStandardCom
           history={this.props.history}
+          isRight={this.props.isRight}
           message={message}
           faculties={this.props.faculties}
           programs={this.props.programs}
+          infoOutcomeStandard={this.props.infoOutcomeStandard}
           outcomeStandards={this.props.outcomeStandards}
           onLoadFaculties={this.props.onLoadFaculties}
           onLoadPrograms={this.props.onLoadPrograms}
@@ -64,7 +66,8 @@ const mapStateToProps = state => ({
   message: state.message,
   faculties: state.faculties,
   programs: state.programs,
-  outcomeStandards: state.outcomeStandards
+  outcomeStandards: state.outcomeStandards,
+  isRight: state.isRight
 });
 
 export default connect(mapStateToProps, {

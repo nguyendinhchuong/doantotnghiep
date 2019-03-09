@@ -132,23 +132,17 @@ class DetailOutcomeStandardCom extends Component {
 
   // handle Import File
   handleFile = file => {
-    /* Boilerplate to set up FileReader */
     this.setState({ isLoadData: true });
     const reader = new FileReader();
     const rABS = !!reader.readAsBinaryString;
     reader.onload = e => {
-      /* Parse data */
       const bstr = e.target.result;
       const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
-      /* Get first worksheet */
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
-      /* Convert array of arrays */
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      /* Update state */
       data1 = logic.convertJsonToTreeNode(data1, data);
       this.setState({ nodes: data1 });
-
       setTimeout(() => {
         this.setState({ isLoadData: false });
       }, 1000);
@@ -193,7 +187,6 @@ class DetailOutcomeStandardCom extends Component {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Program standard");
     XLSX.writeFile(wb, `${this.state.fileName}.xlsx`);
-
     this.onHideExportCom();
     this.setState({
       fileName: ""
@@ -201,7 +194,6 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  // // need this function
   // // save data
   // onSave = () => {
   //   if (this.props.idOutcomeStandard !== "undefined") {
@@ -220,20 +212,6 @@ class DetailOutcomeStandardCom extends Component {
   //   }
   // };
 
-  //   // save data
-  // onSave = () => {
-  //   if (this.props.idOutcomeStandard !== "undefined") {
-  //     let data =logic.changeDbFormatToExcelFormat(this.props.detailOutcomeStandard);
-  //     console.log(data);
-  //     if (this.props.onSaveDetailOutcomeStandard)
-  //       this.props.onSaveDetailOutcomeStandard(
-  //         data,
-  //         this.state.nodes,
-  //         this.props.idOutcomeStandard
-  //       );
-  //   }
-  // };
-
   // // add data
   // onAdd = () => {
   //   let data = [];
@@ -243,10 +221,11 @@ class DetailOutcomeStandardCom extends Component {
   // };
 
   // see versions
-  onSeeVersions = () => {};
+  onSeeRevisions = () => {
+    console.log("on See revision clicked");
+  };
 
   componentWillReceiveProps = nextProps => {
-    // if(nextProps.detailOutcomeStandard!==nextProps.detailOutcomeStandard)
     this.setState({ nodes: nextProps.detailOutcomeStandard });
   };
 
@@ -307,7 +286,7 @@ class DetailOutcomeStandardCom extends Component {
               <Button
                 style={{ margin: "0 10px" }}
                 theme="success"
-                onClick={this.onSeeVersions}
+                onClick={this.onSeeRevisions}
               >
                 <i className="material-icons">change_history</i> Xem các phiên
                 bản

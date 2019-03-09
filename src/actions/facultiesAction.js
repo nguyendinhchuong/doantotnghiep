@@ -21,13 +21,16 @@ export const onLoadFaculties = () => {
       .then(res => {
         const faculties = res.data;
         if (faculties === undefined) {
+          dispatch(message.isRight(0));
           dispatch(loadFacultiesError(res));
           dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
+          dispatch(message.isRight(1));
           dispatch(loadFacultiesSuccess(faculties));
         }
       })
       .catch(err => {
+        dispatch(message.isRight(0));
         dispatch(loadFacultiesError(err));
         dispatch(message.message(new String(`Tải các khoa thất bại`)));
       });
