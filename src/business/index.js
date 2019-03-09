@@ -401,6 +401,49 @@ export const convertJsonToTreeNode = (data1, arr) => {
   return data1;
 };
 
+export const getRank = key =>{
+  let rank = 0;
+  const x = key.split('-');
+  x.forEach(value =>{if(value != '') return rank++;});
+  return rank;
+}
+
+export const lastNumberOfKey = str =>{
+  const length = str.length;
+  for(let i = length-1 ;i>=0 ;i-- ){
+    if(Number.isInteger(Number(str[i])))
+      return i;
+  }
+}
+
+// 1-- => '1' , 1-1- => '1-1'
+export const getFormatKey = key =>{
+  return key.slice(0,lastNumberOfKey(key)+1);
+}
+
+export const convertDBToTreeNode = (arrDB) =>{
+  let data1 = [];
+  arrDB.forEach((el) => {
+    const key =  getFormatKey(el.keyRow);
+    const name = el.nameRow;
+    const subNode = {
+      key: key,
+      data: {
+        name: name,
+        displayName: `${key}. ${name}`
+      },
+      children: []
+    };
+    if (getRank(el.keyRow) <= 1) {
+      data1 = addRootImport(data1, subNode);
+    } else {
+      data1 = addImport(data1, subNode);
+    }
+  });
+  return data1;
+}
+
+
 export const getCurDate = () => {
   let today = new Date();
   let dd = today.getDate();

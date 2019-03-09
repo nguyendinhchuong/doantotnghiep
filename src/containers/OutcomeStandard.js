@@ -43,7 +43,7 @@ class OutcomeStandardTemp extends Component {
             <AlertCom message={message} />
           </Col>
         </Row>
-
+        
         <OutcomeStandardCom
           history={this.props.history}
           message={message}
