@@ -22,7 +22,9 @@ class DetailOutcomeStandardCom extends Component {
       nameOut: "",
       root: false,
       exportVisible: false,
-      fileName: ""
+      fileName: "",
+      drapNodeVisible: false,
+      keyDrap: ""
     };
   }
 
@@ -111,6 +113,14 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ exportVisible: true });
   };
 
+  onShowDialogDrapNode = (node) =>{
+    this.setState({ drapNodeVisible: true , node: node});
+  }
+
+  onHideDialogDrapNode = () =>{
+    this.setState({ drapNodeVisible: false });
+  }
+
   handleChangeTitle = event => {
     this.setState({ nameOut: event.target.value });
   };
@@ -118,6 +128,10 @@ class DetailOutcomeStandardCom extends Component {
   handleChangeFileName = event => {
     this.setState({ fileName: event.target.value });
   };
+
+  handleChangeKeyDrap = event =>{
+    this.setState({ keyDrap: event.target.value });
+  }
 
   handleSubmit = event => {
     if (this.state.root) {
@@ -129,6 +143,12 @@ class DetailOutcomeStandardCom extends Component {
 
     event.preventDefault();
   };
+
+  handleSubmitDrapNode = event =>{
+
+    this.onHideDialogDrapNode();
+    event.preventDefault();
+  }
 
   // handle Import File
   handleFile = file => {
@@ -171,6 +191,14 @@ class DetailOutcomeStandardCom extends Component {
           theme="secondary"
           style={{ marginRight: ".5em", padding: "10px" }}
           title="Xóa cấp này"
+        >
+          <i className="material-icons">delete_sweep</i>
+        </Button>
+        <Button
+          onClick={() => this.onShowDialogDrapNode(node)}
+          theme="secondary"
+          style={{ marginRight: ".5em", padding: "10px" }}
+          title="Chuyển node"
         >
           <i className="material-icons">delete_sweep</i>
         </Button>
@@ -236,6 +264,17 @@ class DetailOutcomeStandardCom extends Component {
           Thêm
         </Button>
         <Button onClick={this.onHideDialog} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
+    const footerDrapNode = (
+      <div>
+        <Button onClick={this.handleSubmitDrapNode} theme="success">
+          Drap
+        </Button>
+        <Button onClick={this.onHideDialogDrapNode} theme="secondary">
           Hủy
         </Button>
       </div>
@@ -308,7 +347,7 @@ class DetailOutcomeStandardCom extends Component {
               />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "left", width: "8em" }}
+                style={{ textAlign: "left", width: "11em" }}
               />
             </TreeTable>
           </Col>
@@ -371,6 +410,24 @@ class DetailOutcomeStandardCom extends Component {
             />
           </Dialog>
         </div>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="KeyNode"
+            visible={this.state.drapNodeVisible}
+            style={{ width: "50vw" }}
+            footer={footerDrapNode}
+            onHide={this.onHideDialogDrapNode}
+          >
+            <InputText
+              type="text"
+              value={this.state.keyDrap}
+              onChange={this.handleChangeKeyDrap}
+              style={{ width: "100%" }}
+            />
+          </Dialog>
+        </div>
+
       </div>
     );
   }

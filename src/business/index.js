@@ -452,3 +452,22 @@ export const formatDatetime = date => {
       dateTime[4]
     }:${dateTime[5]}`;
 };
+
+export const checkKeyDrap = (keyDrap) =>{
+  if(keyDrap.length == 1 && Number.isInteger(Number(keyDrap))){
+        return true;
+  }
+  const arr = keyDrap.split('-');
+  if(arr.length < 0)
+  {
+    return false;
+  }
+  arr.forEach(item => {
+    const xx = Number.isInteger(Number(item));
+    if(!xx){
+      console.log('ccc');
+      return false;
+    }
+  });
+  return true;
+}
