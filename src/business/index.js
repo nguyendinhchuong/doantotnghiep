@@ -71,7 +71,7 @@ export const getKeyAndName = element => {
 };
 
 // add node
-
+//add last
 export const addRoot = (data1, nameOut) => {
   const key = data1.length + 1;
   const root = {
@@ -82,9 +82,21 @@ export const addRoot = (data1, nameOut) => {
     },
     children: []
   };
-  return root;
+  data1.push(root);
+  return data1;
+};
+//add any index
+export const addIndexRoot = (data1, node ,index) => {
+  const nodeBefore = findNodeByKey(data1, index);
+  let root = node;
+  root.key = nodeBefore.key;
+
+  data1 =[...data1.slice(0,index-1),...[root],...data1.slice(index-1,data1.length)];
+  data1 = [...refreshTreeNodes(data1, Number(index) - 1)];
+  return data1;
 };
 
+// add subnode last index
 export const add = (data1, node, nameOut) => {
   const length = node.children.length;
   const key = `${node.key}-${length + 1}`;
@@ -132,8 +144,68 @@ export const add = (data1, node, nameOut) => {
       break;
   }
 
-  return [data1, subNode];
+  return data1;
 };
+// add subnode any index
+export const addAny = (data1, node, indexNode) => {
+  const x = indexNode.split("-");
+  const subNode = node;
+  subNode.key = indexNode;
+  const lenKey = x.length;
+  // index of position insert
+  const index = Number(x[x.length-1]);
+  let dataCacul;
+  switch (lenKey-1) {
+    case 1: {
+      dataCacul = [...data1[indexOfNode(x, 0)].children];
+      dataCacul = [...dataCacul.slice(0,index - 1),...[subNode],...dataCacul.slice(index -1 ,dataCacul.length)];
+      data1[indexOfNode(x, 0)].children = [...dataCacul];
+      break;
+    }
+    case 2: {
+      dataCacul =  data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children;
+      dataCacul = [...dataCacul.slice(0,index - 1),...[subNode],...dataCacul.slice(index -1 ,dataCacul.length)];
+      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children = [... dataCacul];
+      break;
+    }
+    case 3: {
+      dataCacul =  data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[indexOfNode(x, 2)].children;
+
+        dataCacul = [...dataCacul.slice(0,index - 1),...[subNode],...dataCacul.slice(index -1 ,dataCacul.length)];
+
+        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[indexOfNode(x, 2)].children = [...dataCacul];
+      break;
+    }
+    case 4: {
+      dataCacul =  data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+        indexOfNode(x, 2)].children[indexOfNode(x, 3)].children;
+        
+      dataCacul = [...dataCacul.slice(0,index - 1),...[subNode],...dataCacul.slice(index -1 ,dataCacul.length)];
+
+      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+        indexOfNode(x, 2)].children[indexOfNode(x, 3)].children = [...dataCacul];
+      break;
+    }
+    case 5: {
+     dataCacul =  data1[Number(x[0])].children[Number(x[1])].children[
+        Number(x[2])
+      ].children[Number(x[3])].children[Number(x[4])].children;
+
+      dataCacul = [...dataCacul.slice(0,index - 1),...[subNode],...dataCacul.slice(index -1 ,dataCacul.length)];
+
+      data1[Number(x[0])].children[Number(x[1])].children[
+        Number(x[2])
+      ].children[Number(x[3])].children[Number(x[4])].children = [...dataCacul];
+      break;
+    }
+    default:
+      alert("Cannot insert");
+      break;
+  }
+  data1 = [...refreshTreeNodes(data1, Number(x[0])-1)];
+  return data1;
+};
+
 
 export const indexOfNode = (ids, id) => {
   return Number(ids[id]) - 1;
@@ -271,7 +343,11 @@ export const updateNode = (data1, node) => {
 };
 
 export const findNodeByKey = (nodes, key) => {
-  let path = key.split("-");
+  let path = [...key];
+  if(key.length > 1)
+  {
+    path = [...key.split("-")];
+  }
   let node;
 
   while (path.length) {
@@ -279,9 +355,9 @@ export const findNodeByKey = (nodes, key) => {
     node = list[Number(path[0]) - 1];
     path.shift();
   }
-
   return node;
 };
+
 
 // import
 
@@ -329,7 +405,7 @@ export const addRootImport = (data1, node) => {
   return data1;
 };
 
-export const convertJsonToTreeNode = (data1, arr) => {
+export const convertArrToTreeNode = (data1, arr) => {
   data1 = [];
   let keyParentNode;
   let count = 0;
@@ -436,20 +512,34 @@ export const formatDatetime = date => {
   }:${dateTime[5]}`;
 };
 
+// Drag
+
 export const checkKeyDrap = keyDrap => {
   if (keyDrap.length == 1 && Number.isInteger(Number(keyDrap))) {
     return true;
   }
-  const arr = keyDrap.split("-");
-  if (arr.length < 0) {
-    return false;
-  }
-  arr.forEach(item => {
-    const xx = Number.isInteger(Number(item));
-    if (!xx) {
-      console.log("ccc");
-      return false;
-    }
-  });
-  return true;
+
 };
+
+export const dragIntoRoot = (data, node, index) =>{
+  data = [...deleteNode(data, node)];
+  data = [...addIndexRoot(data,node, index)];
+  return data;
+};
+
+export const dragIntoSubNode = (data, node, index) =>{
+  //const parentKey = index.substring(0,index.lastIndexOf('-'));
+  //const parentNode = findNodeByKey(parentKey);
+  data = [...deleteNode(data, node)];
+  data = [...addAny(data, node, index)];
+  return data;
+}
+
+export const dragIntoAny = (data, node, index) =>{
+  if(index.length <=1 ){
+    return data = [...dragIntoRoot(data, node, index)];
+  }
+  else{
+    return data = [...dragIntoSubNode(data, node, index)];
+  }
+}

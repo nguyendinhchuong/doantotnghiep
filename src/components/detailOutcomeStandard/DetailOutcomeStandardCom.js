@@ -34,16 +34,14 @@ class DetailOutcomeStandardCom extends Component {
 
   // add
   addRoot = () => {
-    const x = logic.addRoot(data1, this.state.nameOut);
-    data1.push(x);
+    data1 = logic.addRoot(data1, this.state.nameOut);
     this.setState({
       nodes: data1
     });
   };
 
   add = node => {
-    const data = logic.add(data1, node, this.state.nameOut);
-    data1 = data[0];
+    data1 = logic.add(data1, node, this.state.nameOut);
     this.setState({
       nodes: data1
     });
@@ -172,6 +170,15 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   handleSubmitDragNode = event => {
+    if(this.state.node.key != this.state.keyDrag){
+      data1 = [ ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)];
+      this.setState({
+        nodes: [...data1]
+      });
+    }
+    else{
+      alert('Key trùng nhau');
+    }
     this.onHideDialogDragNode();
     event.preventDefault();
   };
@@ -187,8 +194,8 @@ class DetailOutcomeStandardCom extends Component {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      data1 = logic.convertJsonToTreeNode(data1, data);
-      this.setState({ nodes: data1 });
+      data1 = [...logic.convertArrToTreeNode(data1, data)];
+      this.setState({ nodes: [...data1] });
       setTimeout(() => {
         this.setState({ isLoadData: false });
       }, 1000);
@@ -253,7 +260,6 @@ class DetailOutcomeStandardCom extends Component {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
-    console.log(data);
     console.log("save OS clicked");
   };
 
