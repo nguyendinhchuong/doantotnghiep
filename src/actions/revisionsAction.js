@@ -3,9 +3,9 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
-export const loadRevisionsSuccess = Revisions => ({
+export const loadRevisionsSuccess = revisions => ({
   type: cst.LOAD_REVISIONS_SUCCESS,
-  Revisions: Revisions
+  revisions: revisions
 });
 
 export const loadRevisionsError = errorMessage => ({
@@ -13,20 +13,20 @@ export const loadRevisionsError = errorMessage => ({
   errorMessage
 });
 
-export const onLoadRevisions = (idOutcomeStandard) => {
+export const onLoadRevisions = idOutcomeStandard => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_REVISIONS}${idOutcomeStandard}`;
+    let req = `${links.LOAD_REVISIONS}?idoutcome=${idOutcomeStandard}`;
     axios
       .get(req)
       .then(res => {
-        const Revisions = res.data;
-        if (Revisions === undefined) {
+        const revisions = res.data.data;
+        if (revisions === undefined) {
           dispatch(message.isRight(0));
           dispatch(loadRevisionsError(res));
           dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
           dispatch(message.isRight(1));
-          dispatch(loadRevisionsSuccess(Revisions));
+          dispatch(loadRevisionsSuccess(revisions));
           dispatch(message.message(new String(`Tải các phiên bản thành công`)));
         }
       })

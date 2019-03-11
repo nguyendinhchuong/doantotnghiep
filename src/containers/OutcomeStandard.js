@@ -43,7 +43,7 @@ class OutcomeStandardTemp extends Component {
             <AlertCom message={message} />
           </Col>
         </Row>
-        
+
         <OutcomeStandardCom
           history={this.props.history}
           isRight={this.props.isRight}
@@ -75,6 +75,5 @@ export default connect(mapStateToProps, {
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onDeleteOutcomeStandard: outcomeStandardsAction.onDeleteOutcomeStandard,
-  onAddOutcomeStandard:
-    outcomeStandardsAction.onAddOutcomeStandard
+  onAddOutcomeStandard: outcomeStandardsAction.onAddOutcomeStandard
 })(OutcomeStandardTemp);

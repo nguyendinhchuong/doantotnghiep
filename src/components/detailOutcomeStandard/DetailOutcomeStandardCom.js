@@ -10,6 +10,7 @@ import { InputText } from "primereact/inputtext";
 import * as logic from "../../business";
 
 import DataInputCom from "./DataInputCom";
+import RevisionsCom from "./RevisionsCom";
 
 class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class DetailOutcomeStandardCom extends Component {
       visible: false,
       nameOut: "",
       root: false,
+      revisionsVisible: false,
       exportVisible: false,
       fileName: "",
       drapNodeVisible: false,
@@ -105,6 +107,16 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ visible: false });
   };
 
+  // see versions
+  onSeeRevisions = () => {
+    this.props.onLoadRevisions(1);
+    this.setState({ revisionsVisible: true });
+  };
+
+  onHideRevisions = () => {
+    this.setState({ revisionsVisible: false });
+  };
+
   onHideExportCom = () => {
     this.setState({ exportVisible: false });
   };
@@ -113,13 +125,13 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ exportVisible: true });
   };
 
-  onShowDialogDrapNode = (node) =>{
-    this.setState({ drapNodeVisible: true , node: node});
-  }
+  onShowDialogDrapNode = node => {
+    this.setState({ drapNodeVisible: true, node: node });
+  };
 
-  onHideDialogDrapNode = () =>{
+  onHideDialogDrapNode = () => {
     this.setState({ drapNodeVisible: false });
-  }
+  };
 
   handleChangeTitle = event => {
     this.setState({ nameOut: event.target.value });
@@ -129,9 +141,9 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ fileName: event.target.value });
   };
 
-  handleChangeKeyDrap = event =>{
+  handleChangeKeyDrap = event => {
     this.setState({ keyDrap: event.target.value });
-  }
+  };
 
   handleSubmit = event => {
     if (this.state.root) {
@@ -144,11 +156,10 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  handleSubmitDrapNode = event =>{
-
+  handleSubmitDrapNode = event => {
     this.onHideDialogDrapNode();
     event.preventDefault();
-  }
+  };
 
   // handle Import File
   handleFile = file => {
@@ -248,12 +259,8 @@ class DetailOutcomeStandardCom extends Component {
     console.log(data);
   };
 
-  // see versions
-  onSeeRevisions = () => {
-    console.log("on See revision clicked");
-  };
-
   componentWillReceiveProps = nextProps => {
+    data1 = nextProps.detailOutcomeStandard;
     this.setState({ nodes: nextProps.detailOutcomeStandard });
   };
 
@@ -428,6 +435,17 @@ class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
 
+        <div className="content-section implementation">
+          <Dialog
+            header="Các phiên bản"
+            blockScroll={false}
+            style={{ width: "60vw" }}
+            visible={this.state.revisionsVisible}
+            onHide={this.onHideRevisions}
+          >
+            <RevisionsCom revisions={this.props.revisions} />
+          </Dialog>
+        </div>
       </div>
     );
   }

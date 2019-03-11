@@ -19,7 +19,7 @@ export const onLoadPrograms = () => {
     axios
       .get(req)
       .then(res => {
-        const programs = res.data;
+        const programs = res.data.data;
         if (programs === undefined) {
           dispatch(message.isRight(0));
           dispatch(loadProgramsError(res));

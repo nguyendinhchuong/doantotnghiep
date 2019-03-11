@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
+import * as logic from "../business";
 import * as message from "./message";
 
 export const addDetailOutcomeStandardSuccess = successMessage => ({
@@ -73,16 +74,17 @@ export const loadDetailOutcomeStandardError = errorMessage => ({
 
 export const onLoadDetailOutcomeStandard = id => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_DETAIL_OUTCOMESTANDARD}${id}`;
+    let req = `${links.LOAD_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`;
     axios
       .get(req)
       .then(res => {
-        const detailOutcomeStandard = res.data;
-        if (detailOutcomeStandard === undefined) {
+        const data = res.data;
+        if (data === undefined) {
           dispatch(message.isRight(0));
           dispatch(loadDetailOutcomeStandardError(res));
           dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
+          let detailOutcomeStandard = logic.convertDBToTreeNode(data);
           dispatch(message.isRight(1));
           dispatch(loadDetailOutcomeStandardSuccess(detailOutcomeStandard));
           dispatch(message.message(new String(`Tải cây CĐR thành công`)));

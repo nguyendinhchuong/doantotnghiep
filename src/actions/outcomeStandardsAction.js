@@ -19,7 +19,7 @@ export const onLoadOutcomeStandards = () => {
     axios
       .get(req)
       .then(res => {
-        const outcomeStandards = res.data;
+        const outcomeStandards = res.data.data;
         if (outcomeStandards === undefined) {
           dispatch(message.isRight(0));
           dispatch(loadOutcomeStandardsError(res));
@@ -85,8 +85,8 @@ export const onAddOutcomeStandard = data => {
       .post(req)
       .then(res => {
         dispatch(message.isRight(1));
-        dispatch(onLoadOutcomeStandard(res.data.id));
         dispatch(addOutcomeStandardSuccess(res));
+        dispatch(onLoadOutcomeStandards());
         dispatch(message.message(new String(`Tạo CĐR thành công`)));
       })
       .catch(err => {
@@ -109,7 +109,7 @@ export const loadOutcomeStandardError = errorMessage => ({
 
 export const onLoadOutcomeStandard = id => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_OUTCOMESTANDARD}${id}`;
+    let req = `${links.LOAD_OUTCOMESTANDARD}?idoutcome=${id}`;
     axios
       .get(req)
       .then(res => {

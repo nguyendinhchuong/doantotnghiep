@@ -76,36 +76,20 @@ export default class OutcomeStandardCom extends Component {
       this.state.nameOutcome !== "" &&
       this.state.shoolYear !== ""
     ) {
+      let NameOutcomeStandard = this.state.nameOutcome;
       let IdFaculty = this.state.faculty.id;
-      let NameFaculty = this.state.faculty.name;
       let IdProgram = this.state.program.id;
-      let NameProgram = this.state.program.name;
-      let NameOutcome = this.state.nameOutcome;
       let ShoolYear = this.state.shoolYear;
       let data = {
-        NameOutcome,
+        NameOutcomeStandard,
         IdFaculty,
-        NameFaculty,
         IdProgram,
-        NameProgram,
-        ShoolYear
+        IdUser: 1,
+        ShoolYear,
+        DateCreated: new Date(),
+        DateEdited: new Date()
       };
       this.props.onAddOutcomeStandard(data);
-
-      // this.props.history.push({
-      //   pathname: "/outcome-standard/add",
-      //   state: {
-      //     faculty: this.state.faculty,
-      //     program: this.state.program,
-      //     nameOutcome: this.state.nameOutcome
-      //   }
-      // });
-      if (this.props.isRight) {
-        this.props.history.push({
-          pathname: "/outcome-standard/edit",
-          search: `?id=${this.props.infoOutcomeStandard.idOutcome}`
-        });
-      }
       this.setState({
         visible: false
       });
@@ -256,7 +240,7 @@ export default class OutcomeStandardCom extends Component {
                           <td>
                             <Button
                               title="Chỉnh sửa"
-                              onClick={() => this.onEdit(row.IdOutcome)}
+                              onClick={() => this.onEdit(row.Id)}
                             >
                               <i className="material-icons">edit</i>
                             </Button>
@@ -264,7 +248,7 @@ export default class OutcomeStandardCom extends Component {
                           <td>
                             <Button
                               title="Tạo bản sao"
-                              onClick={() => this.onCopy(row.IdOutcome)}
+                              onClick={() => this.onCopy(row.Id)}
                             >
                               <i className="material-icons">file_copy</i>
                             </Button>
@@ -272,7 +256,7 @@ export default class OutcomeStandardCom extends Component {
                           <td>
                             <Button
                               title="Xóa"
-                              onClick={() => this.onDelete(row.IdOutcome)}
+                              onClick={() => this.onDelete(row.Id)}
                             >
                               <i className="material-icons">delete</i>
                             </Button>

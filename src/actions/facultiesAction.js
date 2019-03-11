@@ -19,7 +19,7 @@ export const onLoadFaculties = () => {
     axios
       .get(req)
       .then(res => {
-        const faculties = res.data;
+        const faculties = res.data.data;
         if (faculties === undefined) {
           dispatch(message.isRight(0));
           dispatch(loadFacultiesError(res));
