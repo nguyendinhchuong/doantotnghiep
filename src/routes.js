@@ -7,7 +7,7 @@ import { DefaultLayout } from "./layouts";
 // Route Views
 import EducateProgram from "./containers/EducateProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
-import AddOutcomeStandard from "./containers/AddOutcomeStandard";
+import TestOutcomeStandard from "./containers/TestOutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import CourseRegister from "./containers/CourseRegister";
 import Errors from "./containers/Errors";
@@ -32,10 +32,10 @@ export default [{
     component: OutcomeStandard
   },
   {
-    path: "/outcome-standard/add",
+    path: "/outcome-standard/test",
     exact: true,
     layout: DefaultLayout,
-    component: AddOutcomeStandard
+    component: TestOutcomeStandard
   },
   {
     path: "/outcome-standard/edit",

@@ -24,9 +24,11 @@ class DetailOutcomeStandardCom extends Component {
       root: false,
       revisionsVisible: false,
       exportVisible: false,
+      saveRevisionVisible: false,
+      nameRevision: "",
       fileName: "",
-      drapNodeVisible: false,
-      keyDrap: ""
+      DragNodeVisible: false,
+      keyDrag: ""
     };
   }
 
@@ -117,6 +119,15 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ revisionsVisible: false });
   };
 
+  // save version
+  onShowSaveRevision = () => {
+    this.setState({ saveRevisionVisible: true });
+  };
+
+  onHideSaveRevision = () => {
+    this.setState({ saveRevisionVisible: false });
+  };
+
   onHideExportCom = () => {
     this.setState({ exportVisible: false });
   };
@@ -125,12 +136,12 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ exportVisible: true });
   };
 
-  onShowDialogDrapNode = node => {
-    this.setState({ drapNodeVisible: true, node: node });
+  onShowDialogDragNode = node => {
+    this.setState({ DragNodeVisible: true, node: node });
   };
 
-  onHideDialogDrapNode = () => {
-    this.setState({ drapNodeVisible: false });
+  onHideDialogDragNode = () => {
+    this.setState({ DragNodeVisible: false });
   };
 
   handleChangeTitle = event => {
@@ -141,8 +152,12 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ fileName: event.target.value });
   };
 
-  handleChangeKeyDrap = event => {
-    this.setState({ keyDrap: event.target.value });
+  handleChangeKeyDrag = event => {
+    this.setState({ keyDrag: event.target.value });
+  };
+
+  handleChangeNameRevision = event => {
+    this.setState({ nameRevision: event.target.value });
   };
 
   handleSubmit = event => {
@@ -156,8 +171,8 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  handleSubmitDrapNode = event => {
-    this.onHideDialogDrapNode();
+  handleSubmitDragNode = event => {
+    this.onHideDialogDragNode();
     event.preventDefault();
   };
 
@@ -198,18 +213,18 @@ class DetailOutcomeStandardCom extends Component {
           <i className="material-icons">keyboard_return</i>
         </Button>
         <Button
+          onClick={() => this.onShowDialogDragNode(node)}
+          theme="info"
+          style={{ marginRight: ".5em", padding: "10px" }}
+          title="Chuyển cấp"
+        >
+          <i className="material-icons">swap_vert</i>
+        </Button>
+        <Button
           onClick={() => this.deleteNode(node)}
           theme="secondary"
           style={{ marginRight: ".5em", padding: "10px" }}
           title="Xóa cấp này"
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
-        <Button
-          onClick={() => this.onShowDialogDrapNode(node)}
-          theme="secondary"
-          style={{ marginRight: ".5em", padding: "10px" }}
-          title="Chuyển node"
         >
           <i className="material-icons">delete_sweep</i>
         </Button>
@@ -233,30 +248,22 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  // // save data
-  // onSave = () => {
-  //   if (this.props.idOutcomeStandard !== "undefined") {
-  //     let data = [];
-  //     logic.createSaveData(
-  //       this.state.nodes,
-  //       data,
-  //       this.props.idOutcomeStandard
-  //     );
-  //     if (this.props.onSaveDetailOutcomeStandard)
-  //       this.props.onSaveDetailOutcomeStandard(
-  //         data,
-  //         this.state.nodes,
-  //         this.props.idOutcomeStandard
-  //       );
-  //   }
-  // };
-
-  // add data
-  onAdd = () => {
+  // save outcomestandard
+  onSave = () => {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
     console.log(data);
+    console.log("save OS clicked");
+  };
+
+  // on save revision
+  onSaveRevision = () => {
+    console.log("save Re clicked");
+  };
+  onEditRevision = idRevision => {
+    this.props.onLoadDetailRevision(idRevision);
+    this.setState({ revisionsVisible: false });
   };
 
   componentWillReceiveProps = nextProps => {
@@ -276,12 +283,12 @@ class DetailOutcomeStandardCom extends Component {
       </div>
     );
 
-    const footerDrapNode = (
+    const footerDragNode = (
       <div>
-        <Button onClick={this.handleSubmitDrapNode} theme="success">
-          Drap
+        <Button onClick={this.handleSubmitDragNode} theme="success">
+          Chuyển
         </Button>
-        <Button onClick={this.onHideDialogDrapNode} theme="secondary">
+        <Button onClick={this.onHideDialogDragNode} theme="secondary">
           Hủy
         </Button>
       </div>
@@ -298,29 +305,29 @@ class DetailOutcomeStandardCom extends Component {
       </div>
     );
 
+    const saveRevisionCom = (
+      <div>
+        <Button onClick={this.onSaveRevision} theme="success">
+          Lưu
+        </Button>
+        <Button onClick={this.onHideSaveRevision} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
     return (
       <div className="p-grid content-section implementation">
         <hr />
         <Row>
           <Col lg="10" md="10" sm="10">
-            {this.props.onSaveDetailOutcomeStandard ? (
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onSave}
-              >
-                <i className="material-icons">save</i> Lưu cây CĐR
-              </Button>
-            ) : (
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onAdd}
-              >
-                <i className="material-icons">save</i> Tạo cây CĐR mới
-              </Button>
-            )}
-
+            <Button
+              style={{ margin: "0 10px" }}
+              theme="success"
+              onClick={this.onSave}
+            >
+              <i className="material-icons">save</i> Lưu cây CĐR
+            </Button>
             <Button
               style={{ margin: "0 10px" }}
               theme="success"
@@ -328,16 +335,20 @@ class DetailOutcomeStandardCom extends Component {
             >
               <i className="material-icons">save_alt</i> Tạo file Excel
             </Button>
-            {this.props.onSaveDetailOutcomeStandard ? (
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onSeeRevisions}
-              >
-                <i className="material-icons">change_history</i> Xem các phiên
-                bản
-              </Button>
-            ) : null}
+            <Button
+              style={{ margin: "0 10px" }}
+              theme="success"
+              onClick={this.onSeeRevisions}
+            >
+              <i className="material-icons">history</i> Xem các phiên bản
+            </Button>
+            <Button
+              style={{ margin: "0 10px" }}
+              theme="success"
+              onClick={this.onShowSaveRevision}
+            >
+              <i className="material-icons">change_history</i> Lưu phiên bản
+            </Button>
           </Col>
           <Col lg="2" md="2" sm="2">
             <DataInputCom handleFile={this.handleFile} />
@@ -420,16 +431,16 @@ class DetailOutcomeStandardCom extends Component {
 
         <div className="content-section implementation">
           <Dialog
-            header="KeyNode"
-            visible={this.state.drapNodeVisible}
+            header="Khóa cấp chuyển tới"
+            visible={this.state.DragNodeVisible}
             style={{ width: "50vw" }}
-            footer={footerDrapNode}
-            onHide={this.onHideDialogDrapNode}
+            footer={footerDragNode}
+            onHide={this.onHideDialogDragNode}
           >
             <InputText
               type="text"
-              value={this.state.keyDrap}
-              onChange={this.handleChangeKeyDrap}
+              value={this.state.keyDrag}
+              onChange={this.handleChangeKeyDrag}
               style={{ width: "100%" }}
             />
           </Dialog>
@@ -443,7 +454,27 @@ class DetailOutcomeStandardCom extends Component {
             visible={this.state.revisionsVisible}
             onHide={this.onHideRevisions}
           >
-            <RevisionsCom revisions={this.props.revisions} />
+            <RevisionsCom
+              onEdit={this.onEditRevision}
+              revisions={this.props.revisions}
+            />
+          </Dialog>
+        </div>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="Tên phiên bản..."
+            visible={this.state.saveRevisionVisible}
+            style={{ width: "50vw" }}
+            footer={saveRevisionCom}
+            onHide={this.onHideSaveRevision}
+          >
+            <InputText
+              type="text"
+              value={this.state.nameRevision}
+              onChange={this.handleChangeNameRevision}
+              style={{ width: "100%" }}
+            />
           </Dialog>
         </div>
       </div>

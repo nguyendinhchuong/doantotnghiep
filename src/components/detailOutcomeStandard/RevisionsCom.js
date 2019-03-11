@@ -39,7 +39,7 @@ export default class RevisionsCom extends React.Component {
                         <td>
                           <Button
                             title="Chỉnh sửa"
-                            onClick={() => this.onEdit(row.Id)}
+                            onClick={() => this.props.onEdit(row.Id)}
                           >
                             <i className="material-icons">edit</i>
                           </Button>
@@ -47,7 +47,7 @@ export default class RevisionsCom extends React.Component {
                         <td>
                           <Button
                             title="Xóa"
-                            onClick={() => this.onDelete(row.Id)}
+                            onClick={() => this.props.onDelete(row.Id)}
                           >
                             <i className="material-icons">delete</i>
                           </Button>

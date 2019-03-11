@@ -25,7 +25,7 @@ export default class OutcomeStandardCom extends Component {
       faculty: { id: "0" },
       program: { id: "0" },
       visible: false,
-      shoolYear: ""
+      schoolYear: ""
     };
   }
 
@@ -41,8 +41,8 @@ export default class OutcomeStandardCom extends Component {
     this.setState({ nameOutcome: event.target.value });
   };
 
-  handleShoolYearChange = event => {
-    this.setState({ shoolYear: event.target.value });
+  handleSchoolYearChange = event => {
+    this.setState({ schoolYear: event.target.value });
   };
 
   handleFacultyChange = event => {
@@ -74,21 +74,22 @@ export default class OutcomeStandardCom extends Component {
       this.state.faculty.id !== "0" &&
       this.state.program.id !== "0" &&
       this.state.nameOutcome !== "" &&
-      this.state.shoolYear !== ""
+      this.state.schoolYear !== ""
     ) {
       let NameOutcomeStandard = this.state.nameOutcome;
-      let IdFaculty = this.state.faculty.id;
-      let IdProgram = this.state.program.id;
-      let ShoolYear = this.state.shoolYear;
+      let IdFaculty = parseInt(this.state.faculty.id, 10);
+      let IdProgram = parseInt(this.state.program.id, 10);
+      let SchoolYear = this.state.schoolYear;
       let data = {
-        NameOutcomeStandard,
         IdFaculty,
         IdProgram,
         IdUser: 1,
-        ShoolYear,
+        NameOutcomeStandard,
+        SchoolYear,
         DateCreated: new Date(),
         DateEdited: new Date()
       };
+      console.log(data);
       this.props.onAddOutcomeStandard(data);
       this.setState({
         visible: false
@@ -105,10 +106,6 @@ export default class OutcomeStandardCom extends Component {
 
   onDelete = IdOutcome => {
     this.props.onDeleteOutcomeStandard(IdOutcome);
-  };
-
-  onCopy = IdOutcome => {
-    console.log("Copy clicked");
   };
 
   render() {
@@ -161,8 +158,8 @@ export default class OutcomeStandardCom extends Component {
           <Col lg="9" md="9" sm="9">
             <FormInput
               type="text"
-              value={this.state.shoolYear}
-              onChange={this.handleShoolYearChange}
+              value={this.state.schoolYear}
+              onChange={this.handleSchoolYearChange}
               placeholder="2015"
               className="mb-2"
             />
@@ -234,7 +231,7 @@ export default class OutcomeStandardCom extends Component {
                           <td>{row.NameFaculty}</td>
                           <td>{row.NameProgram}</td>
                           <td>{row.NameUser}</td>
-                          <td>{row.ShoolYear}</td>
+                          <td>{row.SchoolYear}</td>
                           <td>{logic.formatDatetime(row.DateCreated)}</td>
                           <td>{logic.formatDatetime(row.DateEdited)}</td>
                           <td>
@@ -243,14 +240,6 @@ export default class OutcomeStandardCom extends Component {
                               onClick={() => this.onEdit(row.Id)}
                             >
                               <i className="material-icons">edit</i>
-                            </Button>
-                          </td>
-                          <td>
-                            <Button
-                              title="Tạo bản sao"
-                              onClick={() => this.onCopy(row.Id)}
-                            >
-                              <i className="material-icons">file_copy</i>
                             </Button>
                           </td>
                           <td>

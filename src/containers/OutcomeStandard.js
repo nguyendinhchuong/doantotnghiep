@@ -20,8 +20,6 @@ class OutcomeStandardTemp extends Component {
   }
 
   componentDidMount = () => {
-    // this.props.onLoadFaculties();
-    // this.props.onLoadPrograms();
     this.props.onLoadOutcomeStandards();
   };
 

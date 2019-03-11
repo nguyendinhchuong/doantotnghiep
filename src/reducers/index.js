@@ -5,7 +5,6 @@ import { outcomeStandards } from "./outcomeStandards";
 import { infoOutcomeStandard } from "./infoOutcomeStandard";
 import { detailOutcomeStandard } from "./detailOutcomeStandard";
 import { revisions } from "./revisions";
-import { detailRevision } from "./detailRevision";
 import { message } from "./message";
 import { isRight } from "./isRight";
 
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
   infoOutcomeStandard,
   detailOutcomeStandard,
   revisions,
-  detailRevision,
   message,
   isRight
 });

@@ -11,6 +11,7 @@ import AlertCom from "../components/AlertCom";
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 import * as revisionsAction from "../actions/revisionsAction";
+import * as detailRevisionAction from "../actions/detailRevisionAction";
 
 import { connect } from "react-redux";
 
@@ -62,13 +63,14 @@ class EditOutcomeStandardTmp extends Component {
           <Col lg="12" md="12" sm="12">
             <DetailOutcomeStandardCom
               revisions={this.props.revisions}
+              idOutcomeStandard={id}
+              infoOutcomeStandard={Array.isArray(infoOS) ? infoOS[0] : null}
+              detailOutcomeStandard={this.props.detailOutcomeStandard}
+              onLoadRevisions={this.props.onLoadRevisions}
               onSaveDetailOutcomeStandard={
                 this.props.onSaveDetailOutcomeStandard
               }
-              idOutcomeStandard={id}
-              onLoadRevisions={this.props.onLoadRevisions}
-              detailOutcomeStandard={this.props.detailOutcomeStandard}
-              infoOutcomeStandard={Array.isArray(infoOS) ? infoOS[0] : null}
+              onLoadDetailRevision={this.props.onLoadDetailRevision}
             />
           </Col>
         </Row>
@@ -90,5 +92,6 @@ export default connect(mapStateToProps, {
   onLoadDetailOutcomeStandard:
     detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
   onLoadOutcomeStandard: outcomeStandardsAction.onLoadOutcomeStandard,
-  onLoadRevisions: revisionsAction.onLoadRevisions
+  onLoadRevisions: revisionsAction.onLoadRevisions,
+  onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision
 })(EditOutcomeStandardTmp);

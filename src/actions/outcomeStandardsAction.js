@@ -81,6 +81,7 @@ export const onAddOutcomeStandard = data => {
   return (dispatch, getState) => {
     let link = `${links.ADD_OUTCOMESTANDARD}`;
     let req = { link, data };
+    // JSON.stringify
     axios
       .post(req)
       .then(res => {
