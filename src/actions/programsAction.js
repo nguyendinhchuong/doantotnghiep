@@ -21,18 +21,17 @@ export const onLoadPrograms = () => {
       .then(res => {
         const programs = res.data.data;
         if (programs === undefined) {
-          dispatch(message.isRight(0));
+          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          dispatch(message.message(chirp));
           dispatch(loadProgramsError(res));
-          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
-          dispatch(message.isRight(1));
           dispatch(loadProgramsSuccess(programs));
         }
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Tải các hệ thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(loadProgramsError(err));
-        dispatch(message.message(new String(`Tải các hệ thất bại`)));
       });
   };
 };

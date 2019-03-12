@@ -18,10 +18,10 @@ export default class DataInputCom extends React.Component {
             padding: "6px",
             cursor: "pointer"
           }}
-          for="file"
-          class="custom-file-upload"
+          htmlFor="file"
+          className="custom-file-upload"
         >
-          <i class="material-icons">cloud_upload</i> Tải file Excel
+          <i className="material-icons">cloud_upload</i> Tải file Excel
         </label>
         <input
           type="file"

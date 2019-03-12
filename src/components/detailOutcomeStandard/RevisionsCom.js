@@ -31,7 +31,7 @@ export default class RevisionsCom extends React.Component {
                   {Array.isArray(this.props.revisions) &&
                   this.props.revisions.length !== 0 ? (
                     this.props.revisions.map((row, i) => (
-                      <tr>
+                      <tr key={i}>
                         <td>{i + 1}</td>
                         <td>{row.NameRevision}</td>
                         <td>{row.NameUser}</td>

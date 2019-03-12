@@ -21,19 +21,19 @@ export const onLoadRevisions = idOutcomeStandard => {
       .then(res => {
         const revisions = res.data.data;
         if (revisions === undefined) {
-          dispatch(message.isRight(0));
+          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          dispatch(message.message(chirp));
           dispatch(loadRevisionsError(res));
-          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
-          dispatch(message.isRight(1));
+          let chirp = { message: `Tải các phiên bản thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadRevisionsSuccess(revisions));
-          dispatch(message.message(new String(`Tải các phiên bản thành công`)));
         }
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Tải các phiên bản thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(loadRevisionsError(err));
-        dispatch(message.message(new String(`Tải các phiên bản thất bại`)));
       });
   };
 };

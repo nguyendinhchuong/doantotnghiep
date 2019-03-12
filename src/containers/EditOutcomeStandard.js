@@ -24,8 +24,9 @@ class EditOutcomeStandardTmp extends Component {
   componentDidMount = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
-    this.props.onLoadDetailOutcomeStandard(id);
+    this.props.onLoadRevisions(id);
     this.props.onLoadOutcomeStandard(id);
+    this.props.onLoadDetailOutcomeStandard(id);
   };
 
   render() {
@@ -65,7 +66,6 @@ class EditOutcomeStandardTmp extends Component {
               onLoadDetailOutcomeStandard={
                 this.props.onLoadDetailOutcomeStandard
               }
-              onLoadRevisions={this.props.onLoadRevisions}
               onSaveDetailOutcomeStandard={
                 this.props.onSaveDetailOutcomeStandard
               }

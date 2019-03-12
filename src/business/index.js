@@ -475,7 +475,7 @@ export const convertArrToKeys = arr => {
         key += `${row[i]}-`
       }
     }
-    if (key != "") {
+    if (key !== "") {
       keys.push(getFormatKey(key));
     }
   });
@@ -557,7 +557,7 @@ export const formatDatetime = date => {
 // Drag
 
 export const checkKeyDrap = keyDrap => {
-  if (keyDrap.length == 1 && Number.isInteger(Number(keyDrap))) {
+  if (keyDrap.length === 1 && Number.isInteger(Number(keyDrap))) {
     return true;
   }
 
