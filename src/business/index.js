@@ -570,8 +570,6 @@ export const dragIntoRoot = (data, node, index) => {
 };
 
 export const dragIntoSubNode = (data, node, index) => {
-  //const parentKey = index.substring(0,index.lastIndexOf('-'));
-  //const parentNode = findNodeByKey(parentKey);
   data = [...deleteNode(data, node)];
   data = [...addAny(data, node, index)];
   return data;
@@ -583,4 +581,35 @@ export const dragIntoAny = (data, node, index) => {
   } else {
     return data = [...dragIntoSubNode(data, node, index)];
   }
+}
+
+export const upSameLevel = (data, node) =>{
+  const lastKeyBro = Number(node.key[node.key.length-1]);
+  if( lastKeyBro > 1){
+    const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro-1).toString();
+    return data = [... dragIntoAny(data,node,keyBro)];
+  }
+  else{
+    alert('Vị trí không thay đổi');
+  }
+  return data ;
+}
+
+export const downSameLevel = (data, node) =>{
+  const lastKeyBro = Number(node.key[node.key.length-1]);
+  let keyParent = node.key;
+  let nodeParent = node;
+
+  if(node.key.length > 1){
+    keyParent = node.key.slice(0,node.key.length -2);
+    nodeParent = findNodeByKey(data, keyParent);
+  }
+  if( lastKeyBro < nodeParent.children.length ){
+    const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
+    return data = [... dragIntoAny(data,node,keyBro)];
+  }
+  else{
+    alert('Vị trí không thay đổi');
+  }
+  return data ;
 }

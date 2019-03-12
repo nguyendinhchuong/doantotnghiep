@@ -220,6 +220,19 @@ class DetailOutcomeStandardCom extends Component {
     return Number(ids[id]) - 1;
   };
 
+  upSameLevel = node =>{
+    data1 = [...logic.upSameLevel(data1,node)];
+
+    this.setState({nodes: [...data1]});
+  }
+
+  downSameLevel = node =>{
+    data1 = [...logic.downSameLevel(data1,node)];
+
+    this.setState({nodes: [...data1]});
+  }
+
+
   actionTemplate = (node, column) => {
     return (
       <div>
@@ -230,6 +243,20 @@ class DetailOutcomeStandardCom extends Component {
           title="Thêm cấp con"
         >
           <i className="material-icons">keyboard_return</i>
+        </Button>
+        <Button
+        onClick = {()=>this.upSameLevel(node)}
+          theme="info"
+          style={{ marginRight: ".5em", padding: "10px" }}
+          title="Lên cùng cấp"
+        >
+        </Button>
+        <Button
+          onClick = {()=>this.downSameLevel(node)}
+          theme="info"
+          style={{ marginRight: ".5em", padding: "10px" }}
+          title="Xuống cùng cấp"
+        >
         </Button>
         <Button
           onClick={() => this.onShowDialogDragNode(node)}
@@ -393,7 +420,7 @@ class DetailOutcomeStandardCom extends Component {
               />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "left", width: "11em" }}
+                style={{ textAlign: "left", width: "15em" }}
               />
             </TreeTable>
           </Col>
