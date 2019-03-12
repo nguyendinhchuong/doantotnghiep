@@ -87,9 +87,11 @@ export const addRoot = (data1, nameOut) => {
 };
 //add any index
 export const addIndexRoot = (data1, node, index) => {
-  const nodeBefore = findNodeByKey(data1, index);
+  let nodeBefore = findNodeByKey(data1, index);
   let root = node;
-  root.key = nodeBefore.key;
+  if(nodeBefore){
+    root.key = nodeBefore.key;
+  }
 
   data1 = [...data1.slice(0, index - 1), ...[root], ...data1.slice(index - 1, data1.length)];
   data1 = [...refreshTreeNodes(data1, Number(index) - 1)];
@@ -599,17 +601,26 @@ export const downSameLevel = (data, node) =>{
   const lastKeyBro = Number(node.key[node.key.length-1]);
   let keyParent = node.key;
   let nodeParent = node;
-
+  if(node.key.length == 1){
+    nodeParent = data;
+    if( lastKeyBro < nodeParent.length ){
+      const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
+      return data = [... dragIntoAny(data,node,keyBro)];
+    }
+    else{
+      alert('Vị trí không thay đổi');
+    }
+  }
   if(node.key.length > 1){
     keyParent = node.key.slice(0,node.key.length -2);
     nodeParent = findNodeByKey(data, keyParent);
+    if( lastKeyBro < nodeParent.children.length ){
+      const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
+      return data = [... dragIntoAny(data,node,keyBro)];
+    }
+    else{
+      alert('Vị trí không thay đổi');
+    }
   }
-  if( lastKeyBro < nodeParent.children.length ){
-    const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
-    return data = [... dragIntoAny(data,node,keyBro)];
-  }
-  else{
-    alert('Vị trí không thay đổi');
-  }
-  return data ;
+  return data ;  
 }
