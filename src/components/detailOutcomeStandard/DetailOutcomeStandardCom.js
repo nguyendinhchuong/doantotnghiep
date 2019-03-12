@@ -178,7 +178,7 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   handleSubmitDragNode = event => {
-    if (this.state.node.key != this.state.keyDrag) {
+    if (this.state.node.key !== this.state.keyDrag) {
       data1 = [
         ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)
       ];
