@@ -21,19 +21,19 @@ export const onLoadOutcomeStandards = () => {
       .then(res => {
         const outcomeStandards = res.data.data;
         if (outcomeStandards === undefined) {
-          dispatch(message.isRight(0));
+          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsError(res));
-          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
-          dispatch(message.isRight(1));
+          let chirp = { message: `Tải các CĐR thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
-          dispatch(message.message(new String(`Tải các CĐR thành công`)));
         }
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Tải các CĐR thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(loadOutcomeStandardsError(err));
-        dispatch(message.message(new String(`Tải các CĐR thất bại`)));
       });
   };
 };
@@ -54,15 +54,15 @@ export const onDeleteOutcomeStandard = id => {
     axios
       .post(req)
       .then(res => {
-        dispatch(message.isRight(1));
-        dispatch(deleteOutcomeStandardSuccess(res));
+        let chirp = { message: `Xóa CĐR thành công`, isRight: 1 };
         dispatch(onLoadOutcomeStandards());
-        dispatch(message.message(new String(`Xóa CĐR thành công`)));
+        dispatch(message.message(chirp));
+        dispatch(deleteOutcomeStandardSuccess(res));
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Xóa CĐR thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(deleteOutcomeStandardError(err));
-        dispatch(message.message(new String(`Xóa CĐR thất bại`)));
       });
   };
 };
@@ -85,15 +85,15 @@ export const onAddOutcomeStandard = data => {
     axios
       .post(link)
       .then(res => {
-        dispatch(message.isRight(1));
-        dispatch(addOutcomeStandardSuccess(res));
         dispatch(onLoadOutcomeStandards());
-        dispatch(message.message(new String(`Tạo CĐR thành công`)));
+        let chirp = { message: `Tạo CĐR thành công`, isRight: 1 };
+        dispatch(message.message(chirp));
+        dispatch(addOutcomeStandardSuccess(res));
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Tạo CĐR thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(addOutcomeStandardError(err));
-        dispatch(message.message(new String(`Tạo CĐR thất bại`)));
       });
   };
 };
@@ -117,19 +117,19 @@ export const onLoadOutcomeStandard = id => {
       .then(res => {
         const infoOutcomeStandard = res.data.data;
         if (infoOutcomeStandard === undefined) {
-          dispatch(message.isRight(0));
+          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardError(res));
-          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
-          dispatch(message.isRight(1));
+          let chirp = { message: `Tải CĐR thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardSuccess(infoOutcomeStandard));
-          dispatch(message.message(new String(`Tải CĐR thành công`)));
         }
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Tải CĐR thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(loadOutcomeStandardError(err));
-        dispatch(message.message(new String(`Tải CĐR thất bại`)));
       });
   };
 };

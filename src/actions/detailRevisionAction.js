@@ -22,20 +22,20 @@ export const onLoadDetailRevision = id => {
       .then(res => {
         const data = res.data.data;
         if (data === undefined) {
-          dispatch(message.isRight(0));
+          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          dispatch(message.message(chirp));
           dispatch(loadDetailRevisionError(res));
-          dispatch(message.message(new String(`Chưa có dữ liệu`)));
         } else {
           let detailRevision = logic.convertDBToTreeNode(data);
-          dispatch(message.isRight(1));
+          let chirp = { message: `Tải phiên bản của cây CĐR thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadDetailRevisionSuccess(detailRevision));
-          dispatch(message.message(new String(`Tải phiên bản của cây CĐR thành công`)));
         }
       })
       .catch(err => {
-        dispatch(message.isRight(0));
+        let chirp = { message: `Tải phiên bản của cây CĐR thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
         dispatch(loadDetailRevisionError(err));
-        dispatch(message.message(new String(`Tải phiên bản của cây CĐR thất bại`)));
       });
   };
 };

@@ -112,7 +112,6 @@ class DetailOutcomeStandardCom extends Component {
 
   // see versions
   onSeeRevisions = () => {
-    this.props.onLoadRevisions(this.props.infoOutcomeStandard.Id);
     this.setState({ revisionsVisible: true });
   };
 

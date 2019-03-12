@@ -172,12 +172,12 @@ export default class OutcomeStandardCom extends Component {
           </Col>
           <Col lg="9" md="9" sm="9">
             <FormSelect onChange={e => this.handleFacultyChange(e)}>
-              <option selected value={0}>
+              <option selected key={0} value={0}>
                 Chọn...
               </option>
               {Array.isArray(this.props.faculties)
                 ? this.props.faculties.map((item, i) => {
-                    return <option value={item.Id}>{item.NameFaculty}</option>;
+                    return <option key={item.Id} value={item.Id}>{item.NameFaculty}</option>;
                   })
                 : null}
             </FormSelect>
@@ -190,12 +190,12 @@ export default class OutcomeStandardCom extends Component {
           </Col>
           <Col lg="9" md="9" sm="9">
             <FormSelect onChange={e => this.handleProgramChange(e)}>
-              <option selected value={0}>
+              <option selected key={0} value={0}>
                 Chọn...
               </option>
               {Array.isArray(this.props.programs)
                 ? this.props.programs.map((item, i) => {
-                    return <option value={item.Id}>{item.NameProgram}</option>;
+                    return <option key={item.Id} value={item.Id}>{item.NameProgram}</option>;
                   })
                 : null}
             </FormSelect>
@@ -225,7 +225,7 @@ export default class OutcomeStandardCom extends Component {
                     {Array.isArray(this.props.outcomeStandards) &&
                     this.props.outcomeStandards.length !== 0 ? (
                       this.props.outcomeStandards.map((row, i) => (
-                        <tr>
+                        <tr key={i}>
                           <td>{i + 1}</td>
                           <td>{row.NameOutcomeStandard}</td>
                           <td>{row.NameFaculty}</td>
