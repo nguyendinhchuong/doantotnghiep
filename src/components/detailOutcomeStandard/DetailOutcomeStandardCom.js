@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { Row, Col, Button, Card } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import {AutoComplete} from 'primereact/autocomplete';
+import { AutoComplete } from "primereact/autocomplete";
 
 import * as logic from "../../business";
 
@@ -31,7 +31,7 @@ class DetailOutcomeStandardCom extends Component {
       DragNodeVisible: false,
       keyDrag: "",
       keySuggestions: null,
-      keys: null,
+      keys: null
     };
   }
 
@@ -112,11 +112,16 @@ class DetailOutcomeStandardCom extends Component {
 
   // see versions
   onSeeRevisions = () => {
-    this.props.onLoadRevisions(1);
+    this.props.onLoadRevisions(this.props.infoOutcomeStandard.Id);
     this.setState({ revisionsVisible: true });
   };
 
   onHideRevisions = () => {
+    this.setState({ revisionsVisible: false });
+  };
+
+  onOpenOutcomStandard = () => {
+    this.props.onLoadDetailOutcomeStandard(this.props.infoOutcomeStandard.Id);
     this.setState({ revisionsVisible: false });
   };
 
@@ -173,14 +178,15 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   handleSubmitDragNode = event => {
-    if(this.state.node.key != this.state.keyDrag){
-      data1 = [ ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)];
+    if (this.state.node.key != this.state.keyDrag) {
+      data1 = [
+        ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)
+      ];
       this.setState({
         nodes: [...data1]
       });
-    }
-    else{
-      alert('Key trùng nhau');
+    } else {
+      alert("Key trùng nhau");
     }
     this.onHideDialogDragNode();
     event.preventDefault();
@@ -200,9 +206,10 @@ class DetailOutcomeStandardCom extends Component {
       data1 = [...logic.convertArrToTreeNode(data1, data)];
       this.setState({ nodes: [...data1] });
       setTimeout(() => {
-        this.setState({ isLoadData: false, 
-                        keys: [...logic.convertArrToKeys(data)] 
-                      });
+        this.setState({
+          isLoadData: false,
+          keys: [...logic.convertArrToKeys(data)]
+        });
       }, 1000);
     };
     if (rABS) reader.readAsBinaryString(file);
@@ -284,13 +291,13 @@ class DetailOutcomeStandardCom extends Component {
 
   suggestKeys = event => {
     setTimeout(() => {
-      let results = this.state.keys.filter((key) => {
-          return key.toLowerCase().startsWith(event.query.toLowerCase());
+      let results = this.state.keys.filter(key => {
+        return key.toLowerCase().startsWith(event.query.toLowerCase());
       });
-      
+
       this.setState({ keySuggestions: results });
-    },250);
-}
+    }, 250);
+  };
 
   render() {
     const footer = (
@@ -458,10 +465,15 @@ class DetailOutcomeStandardCom extends Component {
             footer={footerDragNode}
             onHide={this.onHideDialogDragNode}
           >
-          <AutoComplete dropdown={true} value = {this.state.keyDrag} onChange={(e) => this.setState({keyDrag: e.value})}
-            placeholder="key ..." minLength={1}
-            suggestions={this.state.keySuggestions} completeMethod={this.suggestKeys.bind(this)} />
-
+            <AutoComplete
+              dropdown={true}
+              value={this.state.keyDrag}
+              onChange={e => this.setState({ keyDrag: e.value })}
+              placeholder="key ..."
+              minLength={1}
+              suggestions={this.state.keySuggestions}
+              completeMethod={this.suggestKeys.bind(this)}
+            />
           </Dialog>
         </div>
 
@@ -472,6 +484,11 @@ class DetailOutcomeStandardCom extends Component {
             style={{ width: "60vw" }}
             visible={this.state.revisionsVisible}
             onHide={this.onHideRevisions}
+            footer={
+              <Button onClick={this.onOpenOutcomStandard} theme="success">
+                Chỉnh sửa chuẩn đầu ra
+              </Button>
+            }
           >
             <RevisionsCom
               onEdit={this.onEditRevision}

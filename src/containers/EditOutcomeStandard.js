@@ -32,9 +32,6 @@ class EditOutcomeStandardTmp extends Component {
     const tmp = JSON.stringify(this.props.message);
     const message = tmp.substring(1, tmp.length - 1);
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-
     const infoOS = this.props.infoOutcomeStandard;
     const subtitle = Array.isArray(infoOS)
       ? `Khoa: ${infoOS[0].NameFaculty} | Hệ: ${infoOS[0].NameProgram}`
@@ -63,9 +60,11 @@ class EditOutcomeStandardTmp extends Component {
           <Col lg="12" md="12" sm="12">
             <DetailOutcomeStandardCom
               revisions={this.props.revisions}
-              idOutcomeStandard={id}
               infoOutcomeStandard={Array.isArray(infoOS) ? infoOS[0] : null}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
+              onLoadDetailOutcomeStandard={
+                this.props.onLoadDetailOutcomeStandard
+              }
               onLoadRevisions={this.props.onLoadRevisions}
               onSaveDetailOutcomeStandard={
                 this.props.onSaveDetailOutcomeStandard

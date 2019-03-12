@@ -9,8 +9,8 @@ const EducateProgram = () => (
     <Row noGutters className="page-header py-4">
       <PageTitle
         sm="4"
-        title="Add New Post"
-        subtitle="Blog Posts"
+        title="EducateProgram"
+        subtitle="EducateProgram"
         className="text-sm-left"
       />
     </Row>

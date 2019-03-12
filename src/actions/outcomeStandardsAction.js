@@ -79,11 +79,11 @@ export const addOutcomeStandardError = errorMessage => ({
 
 export const onAddOutcomeStandard = data => {
   return (dispatch, getState) => {
-    let link = `${links.ADD_OUTCOMESTANDARD}`;
-    let req = { link, data };
-    // JSON.stringify
+    let link = `${links.ADD_OUTCOMESTANDARD}?DateCreated=${data.DateCreated}&DateEdited=${data.DateEdited}
+    &IdFaculty=${data.IdFaculty}&IdProgram=${data.IdProgram}&IdUser=${data.IdUser}
+    &NameOutcomeStandard=${data.NameOutcomeStandard}&SchoolYear=${data.SchoolYear}`;
     axios
-      .post(req)
+      .post(link)
       .then(res => {
         dispatch(message.isRight(1));
         dispatch(addOutcomeStandardSuccess(res));
@@ -105,16 +105,17 @@ export const loadOutcomeStandardSuccess = infoOutcomeStandard => ({
 
 export const loadOutcomeStandardError = errorMessage => ({
   type: cst.LOAD_OUTCOMESTANDARD_ERROR,
-  infoOutcomeStandard: {}
+  infoOutcomeStandard: {},
+  errorMessage
 });
 
 export const onLoadOutcomeStandard = id => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_OUTCOMESTANDARD}?idoutcome=${id}`;
+    let req = `${links.LOAD_OUTCOMESTANDARD}?IdOutcome=${id}`;
     axios
       .get(req)
       .then(res => {
-        const infoOutcomeStandard = res.data;
+        const infoOutcomeStandard = res.data.data;
         if (infoOutcomeStandard === undefined) {
           dispatch(message.isRight(0));
           dispatch(loadOutcomeStandardError(res));
