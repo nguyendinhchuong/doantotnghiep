@@ -440,6 +440,24 @@ export const convertArrToTreeNode = (data1, arr) => {
   return data1;
 };
 
+
+export const convertArrToKeys = arr =>{
+  let keys = [];
+  let key ;
+  arr.forEach(row =>{
+    key = "";
+    for(let i=0 ;i<row.length -1 ;i++){
+      if(row[i]){
+        key += `${row[i]}-`
+      }
+    }
+    if(key!=""){
+      keys.push(getFormatKey(key));
+    }
+  });
+  return keys;
+};
+
 export const getRank = key => {
   let rank = 0;
   const x = key.split("-");

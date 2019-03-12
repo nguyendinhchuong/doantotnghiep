@@ -6,6 +6,7 @@ import { Column } from "primereact/column";
 import { Row, Col, Button, Card } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import {AutoComplete} from 'primereact/autocomplete';
 
 import * as logic from "../../business";
 
@@ -28,7 +29,9 @@ class DetailOutcomeStandardCom extends Component {
       nameRevision: "",
       fileName: "",
       DragNodeVisible: false,
-      keyDrag: ""
+      keyDrag: "",
+      keySuggestions: null,
+      keys: null,
     };
   }
 
@@ -197,7 +200,9 @@ class DetailOutcomeStandardCom extends Component {
       data1 = [...logic.convertArrToTreeNode(data1, data)];
       this.setState({ nodes: [...data1] });
       setTimeout(() => {
-        this.setState({ isLoadData: false });
+        this.setState({ isLoadData: false, 
+                        keys: [...logic.convertArrToKeys(data)] 
+                      });
       }, 1000);
     };
     if (rABS) reader.readAsBinaryString(file);
@@ -276,6 +281,16 @@ class DetailOutcomeStandardCom extends Component {
     data1 = nextProps.detailOutcomeStandard;
     this.setState({ nodes: nextProps.detailOutcomeStandard });
   };
+
+  suggestKeys = event => {
+    setTimeout(() => {
+      let results = this.state.keys.filter((key) => {
+          return key.toLowerCase().startsWith(event.query.toLowerCase());
+      });
+      
+      this.setState({ keySuggestions: results });
+    },250);
+}
 
   render() {
     const footer = (
@@ -443,12 +458,10 @@ class DetailOutcomeStandardCom extends Component {
             footer={footerDragNode}
             onHide={this.onHideDialogDragNode}
           >
-            <InputText
-              type="text"
-              value={this.state.keyDrag}
-              onChange={this.handleChangeKeyDrag}
-              style={{ width: "100%" }}
-            />
+          <AutoComplete dropdown={true} value = {this.state.keyDrag} onChange={(e) => this.setState({keyDrag: e.value})}
+            placeholder="key ..." minLength={1}
+            suggestions={this.state.keySuggestions} completeMethod={this.suggestKeys.bind(this)} />
+
           </Dialog>
         </div>
 
