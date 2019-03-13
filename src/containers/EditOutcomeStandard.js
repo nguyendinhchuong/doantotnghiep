@@ -30,9 +30,6 @@ class EditOutcomeStandardTmp extends Component {
   };
 
   render() {
-    const tmp = JSON.stringify(this.props.message);
-    const message = tmp.substring(1, tmp.length - 1);
-
     const infoOS = this.props.infoOutcomeStandard;
     const subtitle = Array.isArray(infoOS)
       ? `Khoa: ${infoOS[0].NameFaculty} | Hệ: ${infoOS[0].NameProgram}`
@@ -54,7 +51,7 @@ class EditOutcomeStandardTmp extends Component {
             />
           </Col>
           <Col lg="4" md="4" sm="4">
-            <AlertCom message={message} />
+            <AlertCom message={this.props.message} />
           </Col>
         </Row>
         <Row>

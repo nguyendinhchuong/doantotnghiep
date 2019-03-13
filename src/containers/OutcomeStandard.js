@@ -24,8 +24,6 @@ class OutcomeStandardTemp extends Component {
   };
 
   render() {
-    const tmp = JSON.stringify(this.props.message);
-    const message = tmp.substring(1, tmp.length - 1);
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
@@ -38,14 +36,13 @@ class OutcomeStandardTemp extends Component {
             />
           </Col>
           <Col lg="4" md="4" sm="4">
-            <AlertCom message={message} />
+            <AlertCom message={this.props.message} />
           </Col>
         </Row>
 
         <OutcomeStandardCom
           history={this.props.history}
           isRight={this.props.isRight}
-          message={message}
           faculties={this.props.faculties}
           programs={this.props.programs}
           infoOutcomeStandard={this.props.infoOutcomeStandard}
@@ -65,7 +62,6 @@ const mapStateToProps = state => ({
   faculties: state.faculties,
   programs: state.programs,
   outcomeStandards: state.outcomeStandards,
-  isRight: state.isRight
 });
 
 export default connect(mapStateToProps, {

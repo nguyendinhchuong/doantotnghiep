@@ -6,7 +6,6 @@ import { infoOutcomeStandard } from "./infoOutcomeStandard";
 import { detailOutcomeStandard } from "./detailOutcomeStandard";
 import { revisions } from "./revisions";
 import { message } from "./message";
-import { isRight } from "./isRight";
 
 const rootReducer = combineReducers({
   faculties,
@@ -15,8 +14,7 @@ const rootReducer = combineReducers({
   infoOutcomeStandard,
   detailOutcomeStandard,
   revisions,
-  message,
-  isRight
+  message
 });
 
 export default rootReducer;
