@@ -15,14 +15,11 @@ export const ADD_OUTCOMESTANDARD = `${LINK}/addoutcomestandard`;
 // detailOutcomeStandard links
 export const LOAD_DETAIL_OUTCOMESTANDARD = `${LINK}/getdetailoutcomestandard`;
 export const SAVE_DETAIL_OUTCOMESTANDARD = `${LINK}/savedetailoutcomestandard`;
-export const ADD_DETAIL_OUTCOMESTANDARD = `${LINK}/adddetailoutcomestandard`;
 
 // revisions links
 export const LOAD_REVISIONS = `${LINK}/getrevision`;
 export const DELETE_REVISION = `${LINK}/deleterevision`;
-export const ADD_REVISION = `${LINK}/addrevision`;
 
 // detailOutcomeStandard links
 export const LOAD_DETAIL_REVISION = `${LINK}/getdetailrevision`;
-export const SAVE_DETAIL_REVISION = `${LINK}/savedetailrevision`;
 export const ADD_DETAIL_REVISION = `${LINK}/adddetaildevision`;

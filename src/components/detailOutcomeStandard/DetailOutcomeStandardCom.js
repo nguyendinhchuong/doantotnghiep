@@ -110,12 +110,17 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ visible: false });
   };
 
-  // see versions
+  // see revisions
   onSeeRevisions = () => {
     this.setState({ revisionsVisible: true });
   };
 
   onHideRevisions = () => {
+    this.setState({ revisionsVisible: false });
+  };
+
+  onEditRevision = idRevision => {
+    this.props.onLoadDetailRevision(idRevision);
     this.setState({ revisionsVisible: false });
   };
 
@@ -191,7 +196,32 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  // handle Import File
+  index = (ids, id) => {
+    return Number(ids[id]) - 1;
+  };
+
+  upSameLevel = node => {
+    data1 = [...logic.upSameLevel(data1, node)];
+
+    this.setState({ nodes: [...data1] });
+  };
+
+  downSameLevel = node => {
+    data1 = [...logic.downSameLevel(data1, node)];
+
+    this.setState({ nodes: [...data1] });
+  };
+
+  suggestKeys = event => {
+    setTimeout(() => {
+      let results = this.state.keys.filter(key => {
+        return key.toLowerCase().startsWith(event.query.toLowerCase());
+      });
+
+      this.setState({ keySuggestions: results });
+    }, 250);
+  };
+
   handleFile = file => {
     this.setState({ isLoadData: true });
     const reader = new FileReader();
@@ -215,69 +245,6 @@ class DetailOutcomeStandardCom extends Component {
     else reader.readAsArrayBuffer(file);
   };
 
-  index = (ids, id) => {
-    return Number(ids[id]) - 1;
-  };
-
-  upSameLevel = node =>{
-    data1 = [...logic.upSameLevel(data1,node)];
-
-    this.setState({nodes: [...data1]});
-  }
-
-  downSameLevel = node =>{
-    data1 = [...logic.downSameLevel(data1,node)];
-
-    this.setState({nodes: [...data1]});
-  }
-
-
-  actionTemplate = (node, column) => {
-    return (
-      <div>
-        <Button
-          onClick={() => this.onClickDialog(node)}
-          theme="success"
-          style={{ marginRight: ".5em", padding: "10px" }}
-          title="Thêm cấp con"
-        >
-          <i className="material-icons">keyboard_return</i>
-        </Button>
-        <Button
-        onClick = {()=>this.upSameLevel(node)}
-          theme="info"
-          style={{ marginRight: ".5em", padding: "10px" }}
-          title="Lên cùng cấp"
-        >
-        </Button>
-        <Button
-          onClick = {()=>this.downSameLevel(node)}
-          theme="info"
-          style={{ marginRight: ".5em", padding: "10px" }}
-          title="Xuống cùng cấp"
-        >
-        </Button>
-        <Button
-          onClick={() => this.onShowDialogDragNode(node)}
-          theme="info"
-          style={{ marginRight: ".5em", padding: "10px" }}
-          title="Chuyển cấp"
-        >
-          <i className="material-icons">swap_vert</i>
-        </Button>
-        <Button
-          onClick={() => this.deleteNode(node)}
-          theme="secondary"
-          style={{ marginRight: ".5em", padding: "10px" }}
-          title="Xóa cấp này"
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
-      </div>
-    );
-  };
-
-  // export file
   onExportFile = event => {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
@@ -293,21 +260,21 @@ class DetailOutcomeStandardCom extends Component {
     event.preventDefault();
   };
 
-  // save outcomestandard
+  // on save outcomestandard
   onSave = () => {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
-    console.log("save OS clicked");
+    this.props.onSaveDetailOutcomeStandard(
+      data,
+      this.state.nodes,
+      this.props.infoOutcomeStandard.Id
+    );
   };
 
   // on save revision
   onSaveRevision = () => {
     console.log("save Re clicked");
-  };
-  onEditRevision = idRevision => {
-    this.props.onLoadDetailRevision(idRevision);
-    this.setState({ revisionsVisible: false });
   };
 
   componentWillReceiveProps = nextProps => {
@@ -315,14 +282,51 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ nodes: nextProps.detailOutcomeStandard });
   };
 
-  suggestKeys = event => {
-    setTimeout(() => {
-      let results = this.state.keys.filter(key => {
-        return key.toLowerCase().startsWith(event.query.toLowerCase());
-      });
-
-      this.setState({ keySuggestions: results });
-    }, 250);
+  actionTemplate = (node, column) => {
+    return (
+      <div>
+        <Button
+          onClick={() => this.onClickDialog(node)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Thêm cấp con"
+        >
+          <i className="material-icons">keyboard_return</i>
+        </Button>
+        <Button
+          onClick={() => this.upSameLevel(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Lên cùng cấp"
+        >
+          <i className="material-icons">arrow_upward</i>
+        </Button>
+        <Button
+          onClick={() => this.downSameLevel(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Xuống cùng cấp"
+        >
+          <i className="material-icons">arrow_downward</i>
+        </Button>
+        <Button
+          onClick={() => this.onShowDialogDragNode(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Chuyển cấp"
+        >
+          <i className="material-icons">swap_vert</i>
+        </Button>
+        <Button
+          onClick={() => this.deleteNode(node)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Xóa cấp này"
+        >
+          <i className="material-icons">delete_sweep</i>
+        </Button>
+      </div>
+    );
   };
 
   render() {

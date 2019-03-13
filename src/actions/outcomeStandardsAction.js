@@ -38,35 +38,6 @@ export const onLoadOutcomeStandards = () => {
   };
 };
 
-export const deleteOutcomeStandardSuccess = successMessage => ({
-  type: cst.DELETE_OUTCOMESTANDARD_SUCCESS,
-  successMessage
-});
-
-export const deleteOutcomeStandardError = errorMessage => ({
-  type: cst.DELETE_OUTCOMESTANDARD_ERROR,
-  errorMessage
-});
-
-export const onDeleteOutcomeStandard = id => {
-  return (dispatch, getState) => {
-    let req = `${links.DELETE_OUTCOMESTANDARD}${id}`;
-    axios
-      .post(req)
-      .then(res => {
-        let chirp = { message: `Xóa CĐR thành công`, isRight: 1 };
-        dispatch(onLoadOutcomeStandards());
-        dispatch(message.message(chirp));
-        dispatch(deleteOutcomeStandardSuccess(res));
-      })
-      .catch(err => {
-        let chirp = { message: `Xóa CĐR thất bại`, isRight: 0 };
-        dispatch(message.message(chirp));
-        dispatch(deleteOutcomeStandardError(err));
-      });
-  };
-};
-
 export const addOutcomeStandardSuccess = successMessage => ({
   type: cst.ADD_OUTCOMESTANDARD_SUCCESS,
   successMessage
@@ -105,7 +76,6 @@ export const loadOutcomeStandardSuccess = infoOutcomeStandard => ({
 
 export const loadOutcomeStandardError = errorMessage => ({
   type: cst.LOAD_OUTCOMESTANDARD_ERROR,
-  infoOutcomeStandard: {},
   errorMessage
 });
 
@@ -130,6 +100,35 @@ export const onLoadOutcomeStandard = id => {
         let chirp = { message: `Tải CĐR thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadOutcomeStandardError(err));
+      });
+  };
+};
+
+export const deleteOutcomeStandardSuccess = successMessage => ({
+  type: cst.DELETE_OUTCOMESTANDARD_SUCCESS,
+  successMessage
+});
+
+export const deleteOutcomeStandardError = errorMessage => ({
+  type: cst.DELETE_OUTCOMESTANDARD_ERROR,
+  errorMessage
+});
+
+export const onDeleteOutcomeStandard = id => {
+  return (dispatch, getState) => {
+    let req = `${links.DELETE_OUTCOMESTANDARD}${id}`;
+    axios
+      .post(req)
+      .then(res => {
+        let chirp = { message: `Xóa CĐR thành công`, isRight: 1 };
+        dispatch(onLoadOutcomeStandards());
+        dispatch(message.message(chirp));
+        dispatch(deleteOutcomeStandardSuccess(res));
+      })
+      .catch(err => {
+        let chirp = { message: `Xóa CĐR thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
+        dispatch(deleteOutcomeStandardError(err));
       });
   };
 };

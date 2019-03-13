@@ -30,13 +30,17 @@ class EditOutcomeStandardTmp extends Component {
   };
 
   render() {
-    const infoOS = this.props.infoOutcomeStandard;
-    const subtitle = Array.isArray(infoOS)
-      ? `Khoa: ${infoOS[0].NameFaculty} | Hệ: ${infoOS[0].NameProgram}`
-      : `Khoa: Chưa tải được | Hệ: Chưa tải được`;
+    const infoOutcomeStandard = Array.isArray(this.props.infoOutcomeStandard)
+      ? this.props.infoOutcomeStandard[0]
+      : null;
 
-    const title = Array.isArray(infoOS)
-      ? `Sửa chuẩn đầu ra: ${infoOS[0].NameOutcomeStandard}`
+    const subtitle = infoOutcomeStandard
+      ? `Khoa: ${infoOutcomeStandard.NameFaculty} | Hệ: ${
+          infoOutcomeStandard.NameProgram
+        }`
+      : `Khoa: Chưa tải được | Hệ: Chưa tải được`;
+    const title = infoOutcomeStandard
+      ? `Sửa chuẩn đầu ra: ${infoOutcomeStandard.NameOutcomeStandard}`
       : `Sửa chuẩn đầu ra: Chưa tải được`;
 
     return (
@@ -54,11 +58,12 @@ class EditOutcomeStandardTmp extends Component {
             <AlertCom message={this.props.message} />
           </Col>
         </Row>
+
         <Row>
           <Col lg="12" md="12" sm="12">
             <DetailOutcomeStandardCom
               revisions={this.props.revisions}
-              infoOutcomeStandard={Array.isArray(infoOS) ? infoOS[0] : null}
+              infoOutcomeStandard={infoOutcomeStandard}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
               onLoadDetailOutcomeStandard={
                 this.props.onLoadDetailOutcomeStandard
@@ -67,6 +72,7 @@ class EditOutcomeStandardTmp extends Component {
                 this.props.onSaveDetailOutcomeStandard
               }
               onLoadDetailRevision={this.props.onLoadDetailRevision}
+              onAddDetailRevision={this.props.onAddDetailRevision}
             />
           </Col>
         </Row>
@@ -76,18 +82,17 @@ class EditOutcomeStandardTmp extends Component {
 }
 
 const mapStateToProps = state => ({
-  infoOutcomeStandard: state.infoOutcomeStandard,
-  detailOutcomeStandard: state.detailOutcomeStandard,
   message: state.message,
-  revisions: state.revisions
+  revisions: state.revisions,
+  infoOutcomeStandard: state.infoOutcomeStandard,
+  detailOutcomeStandard: state.detailOutcomeStandard
 });
 
 export default connect(mapStateToProps, {
-  onSaveDetailOutcomeStandard:
-    detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
-  onLoadDetailOutcomeStandard:
-    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
   onLoadOutcomeStandard: outcomeStandardsAction.onLoadOutcomeStandard,
+  onLoadDetailOutcomeStandard: detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
+  onSaveDetailOutcomeStandard: detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
   onLoadRevisions: revisionsAction.onLoadRevisions,
-  onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision
+  onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision,
+  onAddDetailRevision: detailRevisionAction.onAddDetailRevision
 })(EditOutcomeStandardTmp);

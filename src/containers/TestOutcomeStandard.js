@@ -7,9 +7,7 @@ import "rc-pagination/assets/index.css";
 import PageTitle from "../components/common/PageTitle";
 import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 
-import { connect } from "react-redux";
-
-class TestOutcomeStandardTmp extends Component {
+export default class TestOutcomeStandard extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -32,7 +30,3 @@ class TestOutcomeStandardTmp extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({});
-
-export default connect(mapStateToProps, {})(TestOutcomeStandardTmp);

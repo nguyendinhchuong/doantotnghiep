@@ -4,8 +4,9 @@ import * as links from "../constants/links";
 import * as logic from "../business";
 import * as message from "./message";
 
-export const saveDetailOutcomeStandardSuccess = successMessage => ({
+export const saveDetailOutcomeStandardSuccess = (nodes, successMessage) => ({
   type: cst.SAVE_DETAIL_OUTCOMESTANDARD_SUCCESS,
+  detailOutcomeStandard: nodes,
   successMessage
 });
 
@@ -24,7 +25,7 @@ export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
       .then(res => {
         let chirp = { message: `Lưu cây CĐR thành công`, isRight: 1 };
         dispatch(message.message(chirp));
-        dispatch(saveDetailOutcomeStandardSuccess(res));
+        dispatch(saveDetailOutcomeStandardSuccess(nodes, res));
       })
       .catch(err => {
         let chirp = { message: `Lưu cây CĐR thất bại`, isRight: 0 };
