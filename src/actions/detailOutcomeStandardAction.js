@@ -18,14 +18,25 @@ export const saveDetailOutcomeStandardError = (nodes, errorMessage) => ({
 
 export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
   return (dispatch, getState) => {
-    let link = `${links.SAVE_DETAIL_OUTCOMESTANDARD}${id}`;
-    let req = { link, data };
+    let link = `${links.ADD_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`;
     axios
-      .post(req)
+      .post(`${links.DELETE_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`)
       .then(res => {
-        let chirp = { message: `Lưu cây CĐR thành công`, isRight: 1 };
-        dispatch(message.message(chirp));
-        dispatch(saveDetailOutcomeStandardSuccess(nodes, res));
+        if (res.data.code === 1) {
+          // return axios.post(link, data);
+          return axios({
+            method: 'post',
+            url: link,
+            data: data
+          });
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          let chirp = { message: `Lưu cây CĐR thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
+          dispatch(saveDetailOutcomeStandardSuccess(nodes, res));
+        }
       })
       .catch(err => {
         let chirp = { message: `Lưu cây CĐR thất bại`, isRight: 0 };

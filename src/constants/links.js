@@ -14,7 +14,8 @@ export const ADD_OUTCOMESTANDARD = `${LINK}/addoutcomestandard`;
 
 // detailOutcomeStandard links
 export const LOAD_DETAIL_OUTCOMESTANDARD = `${LINK}/getdetailoutcomestandard`;
-export const SAVE_DETAIL_OUTCOMESTANDARD = `${LINK}/savedetailoutcomestandard`;
+export const DELETE_DETAIL_OUTCOMESTANDARD = `${LINK}/deldetailoutcomestandard`;
+export const ADD_DETAIL_OUTCOMESTANDARD = `${LINK}/adddetailoutcomestandard`;
 
 // revisions links
 export const LOAD_REVISIONS = `${LINK}/getrevision`;
