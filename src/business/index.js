@@ -608,7 +608,7 @@ export const downSameLevel = (data, node) =>{
   const lastKeyBro = Number(node.key[node.key.length-1]);
   let keyParent = node.key;
   let nodeParent = node;
-  if(node.key.length == 1){
+  if(node.key.length === 1){
     nodeParent = data;
     if( lastKeyBro < nodeParent.length ){
       const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
