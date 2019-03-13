@@ -89,7 +89,7 @@ export const addRoot = (data1, nameOut) => {
 export const addIndexRoot = (data1, node, index) => {
   let nodeBefore = findNodeByKey(data1, index);
   let root = node;
-  if (nodeBefore) {
+  if(nodeBefore){
     root.key = nodeBefore.key;
   }
 
@@ -585,39 +585,42 @@ export const dragIntoAny = (data, node, index) => {
   }
 }
 
-export const upSameLevel = (data, node) => {
-  const lastKeyBro = Number(node.key[node.key.length - 1]);
-  if (lastKeyBro > 1) {
-    const keyBro = node.key.slice(0, node.key.length - 1) + (lastKeyBro - 1).toString();
-    return data = [...dragIntoAny(data, node, keyBro)];
-  } else {
+export const upSameLevel = (data, node) =>{
+  const lastKeyBro = Number(node.key[node.key.length-1]);
+  if( lastKeyBro > 1){
+    const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro-1).toString();
+    return data = [... dragIntoAny(data,node,keyBro)];
+  }
+  else{
     alert('Vị trí không thay đổi');
   }
-  return data;
+  return data ;
 }
 
-export const downSameLevel = (data, node) => {
-  const lastKeyBro = Number(node.key[node.key.length - 1]);
+export const downSameLevel = (data, node) =>{
+  const lastKeyBro = Number(node.key[node.key.length-1]);
   let keyParent = node.key;
   let nodeParent = node;
-  if (node.key.length === 1) {
+  if(node.key.length == 1){
     nodeParent = data;
-    if (lastKeyBro < nodeParent.length) {
-      const keyBro = node.key.slice(0, node.key.length - 1) + (lastKeyBro + 1).toString();
-      return data = [...dragIntoAny(data, node, keyBro)];
-    } else {
+    if( lastKeyBro < nodeParent.length ){
+      const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
+      return data = [... dragIntoAny(data,node,keyBro)];
+    }
+    else{
       alert('Vị trí không thay đổi');
     }
   }
-  if (node.key.length > 1) {
-    keyParent = node.key.slice(0, node.key.length - 2);
+  if(node.key.length > 1){
+    keyParent = node.key.slice(0,node.key.length -2);
     nodeParent = findNodeByKey(data, keyParent);
-    if (lastKeyBro < nodeParent.children.length) {
-      const keyBro = node.key.slice(0, node.key.length - 1) + (lastKeyBro + 1).toString();
-      return data = [...dragIntoAny(data, node, keyBro)];
-    } else {
+    if( lastKeyBro < nodeParent.children.length ){
+      const keyBro = node.key.slice(0, node.key.length-1) + (lastKeyBro+1).toString();
+      return data = [... dragIntoAny(data,node,keyBro)];
+    }
+    else{
       alert('Vị trí không thay đổi');
     }
   }
-  return data;
+  return data ;  
 }

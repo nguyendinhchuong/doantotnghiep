@@ -213,6 +213,11 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   suggestKeys = event => {
+    let level = logic.getMaxLevel(this.state.nodes);
+    let data  = [];
+    logic.createExportData(this.state.nodes, data, level);
+    const keys = [...logic.convertArrToKeys(data)];
+    this.setState({keys: [...keys]});
     setTimeout(() => {
       let results = this.state.keys.filter(key => {
         return key.toLowerCase().startsWith(event.query.toLowerCase());
@@ -236,8 +241,7 @@ class DetailOutcomeStandardCom extends Component {
       this.setState({ nodes: [...data1] });
       setTimeout(() => {
         this.setState({
-          isLoadData: false,
-          keys: [...logic.convertArrToKeys(data)]
+          isLoadData: false
         });
       }, 1000);
     };
