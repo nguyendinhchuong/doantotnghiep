@@ -578,6 +578,13 @@ export const dragIntoSubNode = (data, node, index) => {
 }
 
 export const dragIntoAny = (data, node, index) => {
+
+  const ck1 = new RegExp(node.key);
+  if(ck1.test(index)){
+    alert('Không thể thêm cha vào node con');
+    return data;
+  }
+
   if (index.length <= 1) {
     return data = [...dragIntoRoot(data, node, index)];
   } else {
