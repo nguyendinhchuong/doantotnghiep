@@ -23,12 +23,14 @@ export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
       .post(`${links.DELETE_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`)
       .then(res => {
         if (res.data.code === 1) {
-          // return axios.post(link, data);
-          return axios({
-            method: 'post',
-            url: link,
-            data: data
-          });
+          console.log(JSON.stringify(data));
+          // let body = JSON.stringify(data);
+          return axios.post(link, { body: JSON.stringify(data) });
+          // return axios({
+          //   method: 'post',
+          //   url: link,
+          //   body: JSON.stringify(data)
+          // });
         }
       })
       .then(res => {
