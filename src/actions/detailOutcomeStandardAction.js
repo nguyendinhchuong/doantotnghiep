@@ -23,14 +23,11 @@ export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
       .post(`${links.DELETE_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`)
       .then(res => {
         if (res.data.code === 1) {
-          console.log(JSON.stringify(data));
-          // let body = JSON.stringify(data);
-          return axios.post(link, { body: JSON.stringify(data) });
-          // return axios({
-          //   method: 'post',
-          //   url: link,
-          //   body: JSON.stringify(data)
-          // });
+          let params = {};
+          params.data = JSON.stringify(data);
+          return axios.post(link, params, {
+            headers: { 'Content-Type': 'application/json' }
+          });
         }
       })
       .then(res => {
@@ -38,6 +35,10 @@ export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
           let chirp = { message: `Lưu cây CĐR thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(saveDetailOutcomeStandardSuccess(nodes, res));
+        } else {
+          let chirp = { message: `Lưu cây CĐR thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(saveDetailOutcomeStandardError(nodes, res));
         }
       })
       .catch(err => {
