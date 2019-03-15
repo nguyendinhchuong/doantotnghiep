@@ -90,8 +90,10 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onLoadOutcomeStandard: outcomeStandardsAction.onLoadOutcomeStandard,
-  onLoadDetailOutcomeStandard: detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
-  onSaveDetailOutcomeStandard: detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
+  onLoadDetailOutcomeStandard:
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
+  onSaveDetailOutcomeStandard:
+    detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
   onLoadRevisions: revisionsAction.onLoadRevisions,
   onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision,
   onAddDetailRevision: detailRevisionAction.onAddDetailRevision

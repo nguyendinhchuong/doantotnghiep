@@ -5,7 +5,7 @@ export const revisions = (state = {}, action) => {
     case types.LOAD_REVISIONS_SUCCESS:
       return [...action.revisions];
     case types.LOAD_REVISIONS_ERROR:
-      return {};
+      return [];
     default:
       return state;
   }

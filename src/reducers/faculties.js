@@ -5,7 +5,7 @@ export const faculties = (state = {}, action) => {
     case types.LOAD_FACULTIES_SUCCESS:
       return [...action.faculties];
     case types.LOAD_FACULTIES_ERROR:
-      return {};
+      return [];
     default:
       return state;
   }

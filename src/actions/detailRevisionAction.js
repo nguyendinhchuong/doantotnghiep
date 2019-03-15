@@ -3,6 +3,7 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as logic from "../business";
 import * as message from "./message";
+import { onLoadRevisions } from "./revisionsAction";
 
 export const addDetailRevisionSuccess = (nodes, successMessage) => ({
   type: cst.ADD_DETAIL_REVISION_SUCCESS,
@@ -18,18 +19,52 @@ export const addDetailRevisionError = (nodes, errorMessage) => ({
 
 export const onAddDetailRevision = (data, nodes, info) => {
   return (dispatch, getState) => {
-    let link = `${links.ADD_DETAIL_REVISION}$?IdOutcome=${info.IdOutcome}
-    &IdUser=${info.IdUser}&Name=${info.Name}&DateUpdated=${info.DateUpdated}`;
-    let req = { link, data };
+    let link1 = `${links.ADD_REVISION}?idoutcome=${info.idoutcome}
+    &iduser=${info.iduser}&name=${info.name}&dateupdated=${info.dateupdated}`;
     axios
-      .post(req)
+      .post(link1)
       .then(res => {
-        let chirp = { message: `Lưu phiên bản của cây CĐR thành công`, isRight: 1 };
-        dispatch(message.message(chirp));
-        dispatch(addDetailRevisionSuccess(nodes, res));
+        if (res.data.code === 1) {
+          let params = {};
+          params.data = JSON.stringify(data);
+          let link2 = `${links.ADD_DETAIL_REVISION}?idrevision=${
+            res.data.idrevision
+          }`;
+          return axios.post(link2, params, {
+            headers: { "Content-Type": "application/json" }
+          });
+        } else {
+          let chirp = {
+            message: `Thêm phiên bản của cây CĐR thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(addDetailRevisionError(nodes, res));
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          let chirp = {
+            message: `Thêm phiên bản của cây CĐR thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+          dispatch(onLoadRevisions(info.idoutcome));
+          dispatch(addDetailRevisionSuccess(nodes, res));
+        } else {
+          let chirp = {
+            message: `Thêm phiên bản của cây CĐR thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(addDetailRevisionError(nodes, res));
+        }
       })
       .catch(err => {
-        let chirp = { message: `Lưu phiên bản của cây CĐR thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm phiên bản của cây CĐR thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addDetailRevisionError(nodes, err));
       });
@@ -59,13 +94,19 @@ export const onLoadDetailRevision = id => {
           dispatch(loadDetailRevisionError(res));
         } else {
           let detailRevision = logic.convertDBToTreeNode(data);
-          let chirp = { message: `Tải phiên bản của cây CĐR thành công`, isRight: 1 };
+          let chirp = {
+            message: `Tải phiên bản của cây CĐR thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(loadDetailRevisionSuccess(detailRevision));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải phiên bản của cây CĐR thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải phiên bản của cây CĐR thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadDetailRevisionError(err));
       });

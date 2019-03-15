@@ -105,7 +105,7 @@ export default class OutcomeStandardCom extends Component {
   };
 
   onDelete = IdOutcome => {
-    this.props.onDeleteOutcomeStandard(IdOutcome);
+    console.log("onDelete Clicked");
   };
 
   render() {
@@ -218,7 +218,7 @@ export default class OutcomeStandardCom extends Component {
           <Col lg="12" md="12" sm="12">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">add</i> Thêm
+                <i className="material-icons">playlist_add</i> Thêm chuẩn đầu ra
               </Button>
             </p>
           </Col>
@@ -246,6 +246,7 @@ export default class OutcomeStandardCom extends Component {
                             <Button
                               title="Chỉnh sửa"
                               onClick={() => this.onEdit(row.Id)}
+                              theme="success"
                             >
                               <i className="material-icons">edit</i>
                             </Button>
@@ -254,6 +255,7 @@ export default class OutcomeStandardCom extends Component {
                             <Button
                               title="Xóa"
                               onClick={() => this.onDelete(row.Id)}
+                              theme="secondary"
                             >
                               <i className="material-icons">delete</i>
                             </Button>

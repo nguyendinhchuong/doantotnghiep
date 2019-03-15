@@ -5,7 +5,7 @@ export const outcomeStandards = (state = {}, action) => {
     case types.LOAD_OUTCOMESTANDARDS_SUCCESS:
       return [...action.outcomeStandards];
     case types.LOAD_OUTCOMESTANDARDS_ERROR:
-      return {};
+      return [];
     default:
       return state;
   }

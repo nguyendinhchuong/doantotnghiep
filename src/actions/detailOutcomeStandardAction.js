@@ -26,8 +26,12 @@ export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
           let params = {};
           params.data = JSON.stringify(data);
           return axios.post(link, params, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { "Content-Type": "application/json" }
           });
+        } else {
+          let chirp = { message: `Lưu cây CĐR thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(saveDetailOutcomeStandardError(nodes, res));
         }
       })
       .then(res => {

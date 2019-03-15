@@ -5,7 +5,7 @@ export const programs = (state = {}, action) => {
     case types.LOAD_PROGRAMS_SUCCESS:
       return [...action.programs];
     case types.LOAD_PROGRAMS_ERROR:
-      return {};
+      return [];
     default:
       return state;
   }

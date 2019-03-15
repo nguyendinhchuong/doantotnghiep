@@ -50,16 +50,28 @@ export const addOutcomeStandardError = errorMessage => ({
 
 export const onAddOutcomeStandard = data => {
   return (dispatch, getState) => {
-    let link = `${links.ADD_OUTCOMESTANDARD}?DateCreated=${data.DateCreated}&DateEdited=${data.DateEdited}
-    &IdFaculty=${data.IdFaculty}&IdProgram=${data.IdProgram}&IdUser=${data.IdUser}
-    &NameOutcomeStandard=${data.NameOutcomeStandard}&SchoolYear=${data.SchoolYear}`;
+    let link = `${links.ADD_OUTCOMESTANDARD}?DateCreated=${
+      data.DateCreated
+    }&DateEdited=${data.DateEdited}
+    &IdFaculty=${data.IdFaculty}&IdProgram=${data.IdProgram}&IdUser=${
+      data.IdUser
+    }
+    &NameOutcomeStandard=${data.NameOutcomeStandard}&SchoolYear=${
+      data.SchoolYear
+    }`;
     axios
       .post(link)
       .then(res => {
-        dispatch(onLoadOutcomeStandards());
-        let chirp = { message: `Tạo CĐR thành công`, isRight: 1 };
-        dispatch(message.message(chirp));
-        dispatch(addOutcomeStandardSuccess(res));
+        if (res.data.code === 1) {
+          dispatch(onLoadOutcomeStandards());
+          let chirp = { message: `Tạo CĐR thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
+          dispatch(addOutcomeStandardSuccess(res));
+        } else {
+          let chirp = { message: `Tạo CĐR thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(addOutcomeStandardError(res));
+        }
       })
       .catch(err => {
         let chirp = { message: `Tạo CĐR thất bại`, isRight: 0 };
@@ -104,31 +116,37 @@ export const onLoadOutcomeStandard = id => {
   };
 };
 
-export const deleteOutcomeStandardSuccess = successMessage => ({
-  type: cst.DELETE_OUTCOMESTANDARD_SUCCESS,
-  successMessage
-});
+// export const deleteOutcomeStandardSuccess = successMessage => ({
+//   type: cst.DELETE_OUTCOMESTANDARD_SUCCESS,
+//   successMessage
+// });
 
-export const deleteOutcomeStandardError = errorMessage => ({
-  type: cst.DELETE_OUTCOMESTANDARD_ERROR,
-  errorMessage
-});
+// export const deleteOutcomeStandardError = errorMessage => ({
+//   type: cst.DELETE_OUTCOMESTANDARD_ERROR,
+//   errorMessage
+// });
 
-export const onDeleteOutcomeStandard = id => {
-  return (dispatch, getState) => {
-    let req = `${links.DELETE_OUTCOMESTANDARD}${id}`;
-    axios
-      .post(req)
-      .then(res => {
-        let chirp = { message: `Xóa CĐR thành công`, isRight: 1 };
-        dispatch(onLoadOutcomeStandards());
-        dispatch(message.message(chirp));
-        dispatch(deleteOutcomeStandardSuccess(res));
-      })
-      .catch(err => {
-        let chirp = { message: `Xóa CĐR thất bại`, isRight: 0 };
-        dispatch(message.message(chirp));
-        dispatch(deleteOutcomeStandardError(err));
-      });
-  };
-};
+// export const onDeleteOutcomeStandard = id => {
+//   return (dispatch, getState) => {
+//     let req = `${links.DELETE_OUTCOMESTANDARD}${id}`;
+//     axios
+//       .post(req)
+//       .then(res => {
+//         if (res.data.code === 1) {
+//           let chirp = { message: `Xóa CĐR thành công`, isRight: 1 };
+//           dispatch(onLoadOutcomeStandards());
+//           dispatch(message.message(chirp));
+//           dispatch(deleteOutcomeStandardSuccess(res));
+//         } else {
+//           let chirp = { message: `Xóa CĐR thất bại`, isRight: 0 };
+//           dispatch(message.message(chirp));
+//           dispatch(deleteOutcomeStandardError(res));
+//         }
+//       })
+//       .catch(err => {
+//         let chirp = { message: `Xóa CĐR thất bại`, isRight: 0 };
+//         dispatch(message.message(chirp));
+//         dispatch(deleteOutcomeStandardError(err));
+//       });
+//   };
+// };

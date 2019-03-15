@@ -124,6 +124,11 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ revisionsVisible: false });
   };
 
+  onDeleteRevision = idRevision => {
+    console.log("onDeleteRevision clicked");
+    this.setState({ revisionsVisible: false });
+  };
+
   onOpenOutcomStandard = () => {
     this.props.onLoadDetailOutcomeStandard(this.props.infoOutcomeStandard.Id);
     this.setState({ revisionsVisible: false });
@@ -214,10 +219,10 @@ class DetailOutcomeStandardCom extends Component {
 
   suggestKeys = event => {
     let level = logic.getMaxLevel(this.state.nodes);
-    let data  = [];
+    let data = [];
     logic.createExportData(this.state.nodes, data, level);
     const keys = [...logic.convertArrToKeys(data)];
-    this.setState({keys: [...keys]});
+    this.setState({ keys: [...keys] });
     setTimeout(() => {
       let results = this.state.keys.filter(key => {
         return key.toLowerCase().startsWith(event.query.toLowerCase());
@@ -278,7 +283,16 @@ class DetailOutcomeStandardCom extends Component {
 
   // on save revision
   onSaveRevision = () => {
-    console.log("save Re clicked");
+    let data = [];
+    let level = logic.getMaxLevel(this.state.nodes);
+    logic.createSaveData(this.state.nodes, data, 1, level);
+    let idoutcome = this.props.infoOutcomeStandard.Id;
+    let iduser = 1;
+    let name = this.state.nameRevision;
+    let dateupdated = new Date();
+    let info = { idoutcome, iduser, name, dateupdated };
+    this.props.onAddDetailRevision(data, this.state.nodes, info);
+    this.setState({ saveRevisionVisible: false });
   };
 
   componentWillReceiveProps = nextProps => {
@@ -446,8 +460,7 @@ class DetailOutcomeStandardCom extends Component {
                         onClick={() => this.onClickDialogRoot()}
                         theme="success"
                       >
-                        <i className="material-icons">add_circle_outline</i>
-                        Thêm Node
+                        <i className="material-icons">library_add</i> Thêm cấp
                       </Button>
                     </td>
                   </tr>
@@ -520,12 +533,13 @@ class DetailOutcomeStandardCom extends Component {
             onHide={this.onHideRevisions}
             footer={
               <Button onClick={this.onOpenOutcomStandard} theme="success">
-                Chỉnh sửa chuẩn đầu ra
+                <i className="material-icons">edit</i> Chỉnh sửa chuẩn đầu ra
               </Button>
             }
           >
             <RevisionsCom
               onEdit={this.onEditRevision}
+              onDelete={this.onDeleteRevision}
               revisions={this.props.revisions}
             />
           </Dialog>
