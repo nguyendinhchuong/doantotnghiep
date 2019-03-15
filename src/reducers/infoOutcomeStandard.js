@@ -5,7 +5,7 @@ export const infoOutcomeStandard = (state = {}, action) => {
     case types.LOAD_OUTCOMESTANDARD_SUCCESS:
       return action.infoOutcomeStandard;
     case types.LOAD_OUTCOMESTANDARD_ERROR:
-      return [];
+      return {};
     default:
       return state;
   }

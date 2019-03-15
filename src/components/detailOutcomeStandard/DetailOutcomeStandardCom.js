@@ -187,6 +187,10 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   handleSubmitDragNode = event => {
+    if(!logic.checkKeyDrap(this.state.keyDrag)){
+      alert('Key chưa phù hợp');
+      return;
+    }
     if (this.state.node.key !== this.state.keyDrag) {
       data1 = [
         ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)
@@ -220,7 +224,8 @@ class DetailOutcomeStandardCom extends Component {
   suggestKeys = event => {
     let level = logic.getMaxLevel(this.state.nodes);
     let data = [];
-    logic.createExportData(this.state.nodes, data, level);
+    logic.convertTreeNodeToArrKeys(this.state.nodes, data, level);
+    console.log(data);
     const keys = [...logic.convertArrToKeys(data)];
     this.setState({ keys: [...keys] });
     setTimeout(() => {
@@ -508,12 +513,12 @@ class DetailOutcomeStandardCom extends Component {
           <Dialog
             header="Khóa cấp chuyển tới"
             visible={this.state.DragNodeVisible}
-            style={{ width: "50vw" }}
+            style={{ width: "25vw" }}
             footer={footerDragNode}
             onHide={this.onHideDialogDragNode}
           >
             <AutoComplete
-              dropdown={true}
+              dropdown={false}
               value={this.state.keyDrag}
               onChange={e => this.setState({ keyDrag: e.value })}
               placeholder="key ..."

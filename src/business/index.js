@@ -38,6 +38,31 @@ export const createExportData = function themseft(nodes, data, level) {
   }
 };
 
+export const convertTreeNodeToArrKeys = function themseft(nodes, data, level) {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    let tmpArr = [];
+    for (let i in nodes) {
+      let str = "" + nodes[i].key;
+      if (str.length === 1) tmpArr[0] = parseInt(str.charAt(0));
+
+      if (nodes[i].children !== undefined && nodes[i].children.length !== 0) {
+        for (var j = 0; j < level - 1; j++) {
+          if (str.length > 2 * j) tmpArr[j] = parseInt(str.charAt(2 * j));
+        }
+      }
+
+      tmpArr[level - 1] = nodes[i].key;
+
+      data.push(tmpArr);
+      tmpArr = [];
+
+      let children = nodes[i].children;
+      createExportData(children, data, level);
+    }
+  }
+};
+
 export const createSaveData = function itseft(nodes, data, id, level) {
   if (nodes === undefined || nodes.length === 0) return;
   else {
@@ -477,13 +502,11 @@ export const convertArrToKeys = arr => {
   let key;
   arr.forEach(row => {
     key = "";
-    for (let i = 0; i < row.length - 1; i++) {
-      if (row[i]) {
-        key += `${row[i]}-`;
-      }
+    if(row[0]){
+      key = row[0];
     }
     if (key !== "") {
-      keys.push(getFormatKey(key));
+      keys.push(key);
     }
   });
   return keys;
@@ -564,7 +587,18 @@ export const formatDatetime = date => {
 // Drag
 
 export const checkKeyDrap = keyDrap => {
+  if(keyDrap[keyDrap.length-1] === '-'){
+    return false;
+  }
   if (keyDrap.length === 1 && Number.isInteger(Number(keyDrap))) {
+    return true;
+  }
+  else{
+    const arr = keyDrap.split('-');
+    if(arr.find(item => !Number.isInteger(Number(item))))
+    {
+      return false;
+    }
     return true;
   }
 };
