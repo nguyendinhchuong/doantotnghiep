@@ -227,7 +227,7 @@ class DetailOutcomeStandardCom extends Component {
     logic.convertTreeNodeToArrKeys(this.state.nodes, data, level);
     console.log(data);
     const keys = [...logic.convertArrToKeys(data)];
-    this.setState({ keys: [...keys] });
+    this.setState({ keys: keys });
     setTimeout(() => {
       let results = this.state.keys.filter(key => {
         return key.toLowerCase().startsWith(event.query.toLowerCase());
@@ -518,7 +518,7 @@ class DetailOutcomeStandardCom extends Component {
             onHide={this.onHideDialogDragNode}
           >
             <AutoComplete
-              dropdown={false}
+              dropdown={true}
               value={this.state.keyDrag}
               onChange={e => this.setState({ keyDrag: e.value })}
               placeholder="key ..."
