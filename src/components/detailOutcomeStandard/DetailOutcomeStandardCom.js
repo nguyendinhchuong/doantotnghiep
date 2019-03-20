@@ -198,7 +198,6 @@ class DetailOutcomeStandardCom extends Component {
       alert("Key chưa phù hợp");
       return;
     }
-    const key = this.state.keyDrag;
     const node = logic.findNodeByKey(data1,this.state.keyDrag);
     if(!node){
       alert('Không tìm thấy node');

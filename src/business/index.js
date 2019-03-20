@@ -616,7 +616,7 @@ export const checkKeyDrap = keyDrag => {
 };
 
 export const checkIndexInsert = (currentKey, keyInsert) =>{
-  return keyInsert.includes(currentKey);
+  return keyInsert.startsWith(currentKey);
 }
 
 export const dragIntoRoot = (data, node, index) => {
