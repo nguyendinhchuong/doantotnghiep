@@ -1,11 +1,18 @@
 import React from "react";
 import { Row, Col, Card, CardBody, Button } from "shards-react";
 
+import { formatDate } from "../../business";
+
 export default class RevisionsCom extends React.Component {
   render() {
     return (
       <Row>
-        <Col lg="12" md="12" sm="12" style={{ overflowY: "scroll", height: "320px" }}>
+        <Col
+          lg="12"
+          md="12"
+          sm="12"
+          style={{ overflowY: "scroll", height: "320px" }}
+        >
           <Card small className="mb-4">
             <CardBody className="p-0 pb-3">
               <table className="table mb-0">
@@ -35,7 +42,7 @@ export default class RevisionsCom extends React.Component {
                         <td>{i + 1}</td>
                         <td>{row.NameRevision}</td>
                         <td>{row.NameUser}</td>
-                        <td>{row.DateUpdated}</td>
+                        <td>{formatDate(row.DateUpdated)}</td>
                         <td>
                           <Button
                             title="Chỉnh sửa"

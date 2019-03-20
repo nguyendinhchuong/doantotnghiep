@@ -125,7 +125,7 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   onDeleteRevision = idRevision => {
-    console.log("onDeleteRevision clicked");
+    this.props.onDeleteRevision(idRevision, this.state.nodes);
     this.setState({ revisionsVisible: false });
   };
 
@@ -136,7 +136,11 @@ class DetailOutcomeStandardCom extends Component {
 
   // save version
   onShowSaveRevision = () => {
-    this.setState({ saveRevisionVisible: true });
+    this.setState({
+      saveRevisionVisible: true,
+      nameRevision:
+        this.props.infoOutcomeStandard.NameOutcomeStandard + " phiên bản: "
+    });
   };
 
   onHideSaveRevision = () => {
@@ -148,7 +152,10 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   onShowExportCom = () => {
-    this.setState({ exportVisible: true });
+    this.setState({
+      exportVisible: true,
+      fileName: this.props.infoOutcomeStandard.NameOutcomeStandard
+    });
   };
 
   onShowDialogDragNode = node => {
@@ -187,8 +194,8 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   handleSubmitDragNode = event => {
-    if(!logic.checkKeyDrap(this.state.keyDrag)){
-      alert('Key chưa phù hợp');
+    if (!logic.checkKeyDrap(this.state.keyDrag)) {
+      alert("Key chưa phù hợp");
       return;
     }
     if (this.state.node.key !== this.state.keyDrag) {
@@ -294,7 +301,7 @@ class DetailOutcomeStandardCom extends Component {
     let idoutcome = this.props.infoOutcomeStandard.Id;
     let iduser = 1;
     let name = this.state.nameRevision;
-    let dateupdated = new Date();
+    let dateupdated = new Date().toISOString();
     let info = { idoutcome, iduser, name, dateupdated };
     this.props.onAddDetailRevision(data, this.state.nodes, info);
     this.setState({ saveRevisionVisible: false });

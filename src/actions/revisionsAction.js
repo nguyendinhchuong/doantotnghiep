@@ -25,8 +25,8 @@ export const onLoadRevisions = idOutcomeStandard => {
           dispatch(message.message(chirp));
           dispatch(loadRevisionsError(res));
         } else {
-          let chirp = { message: `Tải các phiên bản thành công`, isRight: 1 };
-          dispatch(message.message(chirp));
+          // let chirp = { message: `Tải các phiên bản thành công`, isRight: 1 };
+          // dispatch(message.message(chirp));
           dispatch(loadRevisionsSuccess(revisions));
         }
       })
@@ -34,6 +34,42 @@ export const onLoadRevisions = idOutcomeStandard => {
         let chirp = { message: `Tải các phiên bản thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadRevisionsError(err));
+      });
+  };
+};
+
+export const deleteRevisionSuccess = (successMessage, nodes) => ({
+  type: cst.DELETE_REVISION_SUCCESS,
+  detailOutcomeStandard: nodes,
+  successMessage
+});
+
+export const deleteRevisionError = errorMessage => ({
+  type: cst.DELETE_REVISION_ERROR,
+  errorMessage
+});
+
+export const onDeleteRevision = (idRevision, nodes) => {
+  return (dispatch, getState) => {
+    let req = `${links.DELETE_REVISION}?idrevision=${idRevision}`;
+    axios
+      .post(req)
+      .then(res => {
+        if (res.data.code === 1) {
+          let chirp = { message: `Xóa phiên bản thành công`, isRight: 1 };
+          dispatch(onLoadRevisions());
+          dispatch(message.message(chirp));
+          dispatch(deleteRevisionSuccess(res, nodes));
+        } else {
+          let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(deleteRevisionError(res));
+        }
+      })
+      .catch(err => {
+        let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
+        dispatch(deleteRevisionError(err));
       });
   };
 };
