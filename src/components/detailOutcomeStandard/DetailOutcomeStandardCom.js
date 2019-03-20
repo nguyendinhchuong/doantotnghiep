@@ -191,16 +191,28 @@ class DetailOutcomeStandardCom extends Component {
       alert('Key chưa phù hợp');
       return;
     }
-    if (this.state.node.key !== this.state.keyDrag) {
-      data1 = [
-        ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)
-      ];
-      this.setState({
-        nodes: [...data1]
-      });
-    } else {
-      alert("Key trùng nhau");
+    const key = this.state.keyDrag;
+    const node = logic.findNodeByKey(data1,this.state.keyDrag);
+    if(!node){
+      alert('Không tìm thấy node');
+      return;
     }
+    if(this.state.node.key === this.state.keyDrag){
+      alert("Key trùng nhau");
+      return;
+    }
+    if(logic.checkIndexInsert(this.state.node.key,this.state.keyDrag)){
+      alert('Node cha không được insert vào node con');
+      return;
+    }
+
+    data1 = [
+      ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)
+    ];
+    this.setState({
+      nodes: [...data1]
+    });
+  
     this.onHideDialogDragNode();
     event.preventDefault();
   };

@@ -404,13 +404,16 @@ export const updateNode = (data1, node) => {
 export const findNodeByKey = (nodes, key) => {
   let path = [...key];
   if (key.length > 1) {
-    path = [...key.split("-")];
+    path = key.split("-");
   }
   let node;
 
-  while (path.length) {
+  while(path.length){
     let list = node ? node.children : nodes;
     node = list[Number(path[0]) - 1];
+    if(!node){
+      return undefined;
+    }
     path.shift();
   }
   return node;
@@ -606,6 +609,10 @@ export const checkKeyDrap = keyDrag => {
   }
   return false;
 };
+
+export const checkIndexInsert = (currentKey, keyInsert) =>{
+  return keyInsert.includes(currentKey);
+}
 
 export const dragIntoRoot = (data, node, index) => {
   data = [...deleteNode(data, node)];
