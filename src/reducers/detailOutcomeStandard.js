@@ -19,6 +19,9 @@ export const detailOutcomeStandard = (state = {}, action) => {
       return action.detailOutcomeStandard;
     case types.ADD_DETAIL_REVISION_ERROR:
       return action.detailOutcomeStandard;
+
+    case types.DELETE_REVISION_SUCCESS:
+      return action.detailOutcomeStandard;
     default:
       return state;
   }

@@ -73,6 +73,7 @@ class EditOutcomeStandardTmp extends Component {
               }
               onLoadDetailRevision={this.props.onLoadDetailRevision}
               onAddDetailRevision={this.props.onAddDetailRevision}
+              onDeleteRevision={this.props.onDeleteRevision}
             />
           </Col>
         </Row>
@@ -96,5 +97,6 @@ export default connect(mapStateToProps, {
     detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
   onLoadRevisions: revisionsAction.onLoadRevisions,
   onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision,
-  onAddDetailRevision: detailRevisionAction.onAddDetailRevision
+  onAddDetailRevision: detailRevisionAction.onAddDetailRevision,
+  onDeleteRevision: revisionsAction.onDeleteRevision
 })(EditOutcomeStandardTmp);

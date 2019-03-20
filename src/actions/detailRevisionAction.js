@@ -28,7 +28,7 @@ export const onAddDetailRevision = (data, nodes, info) => {
           let params = {};
           params.data = JSON.stringify(data);
           let link2 = `${links.ADD_DETAIL_REVISION}?idrevision=${
-            res.data.idrevision
+            res.data.data.Id
           }`;
           return axios.post(link2, params, {
             headers: { "Content-Type": "application/json" }

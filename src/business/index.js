@@ -503,29 +503,29 @@ export const convertArrToTreeNode = (data1, arr) => {
 export const convertArrToKeys = arr => {
   let keys = [];
   let key;
-  keys = arr.reduce((acc,cur)=>{
+  keys = arr.reduce((acc, cur) => {
     key = itemToKey(cur);
-    if(key){
+    if (key) {
       return acc.concat(key);
     }
     return acc;
-  },[])
+  }, []);
   return keys;
 };
 
-const itemToKey = item =>{
+const itemToKey = item => {
   const length = item.length;
-  let result = item.reduce((acc,cur, index) =>{
-    if(cur && index !== length - 1){
-      return acc += (cur+'-');
+  let result = item.reduce((acc, cur, index) => {
+    if (cur && index !== length - 1) {
+      return (acc += cur + "-");
     }
     return acc;
-  },'');
-  if(result[result.length -1] === '-'){
-    return result.slice(0,result.length-1);
+  }, "");
+  if (result[result.length - 1] === "-") {
+    return result.slice(0, result.length - 1);
   }
   return result;
-} 
+};
 
 export const getRank = key => {
   let rank = 0;
@@ -599,12 +599,17 @@ export const formatDatetime = date => {
   }:${dateTime[5]}`;
 };
 
+export const formatDate = date => {
+  const d = new Date(date);
+  return d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+};
+
 // Drag
 
 export const checkKeyDrap = keyDrag => {
   let regex1 = /\D/;
   let regex2 = /(\d-\d)+/i;
-  if(!regex1.test(keyDrag) || regex2.test(keyDrag)){
+  if (!regex1.test(keyDrag) || regex2.test(keyDrag)) {
     return true;
   }
   return false;

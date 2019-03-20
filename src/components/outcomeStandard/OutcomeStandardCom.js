@@ -85,11 +85,10 @@ export default class OutcomeStandardCom extends Component {
         IdProgram,
         IdUser: 1,
         NameOutcomeStandard,
-        SchoolYear,
-        DateCreated: new Date(),
-        DateEdited: new Date()
+        DateCreated: new Date().toISOString(),
+        DateEdited: new Date(),
+        SchoolYear
       };
-      console.log(data);
       this.props.onAddOutcomeStandard(data);
       this.setState({
         visible: false
@@ -105,7 +104,7 @@ export default class OutcomeStandardCom extends Component {
   };
 
   onDelete = IdOutcome => {
-    console.log("onDelete Clicked");
+    this.props.onDeleteOutcomeStandard(IdOutcome);
   };
 
   render() {
@@ -240,8 +239,8 @@ export default class OutcomeStandardCom extends Component {
                           <td>{row.NameProgram}</td>
                           <td>{row.NameUser}</td>
                           <td>{row.SchoolYear}</td>
-                          <td>{logic.formatDatetime(row.DateCreated)}</td>
-                          <td>{logic.formatDatetime(row.DateEdited)}</td>
+                          <td>{logic.formatDate(row.DateCreated)}</td>
+                          <td>{logic.formatDate(row.DateEdited)}</td>
                           <td>
                             <Button
                               title="Chỉnh sửa"
