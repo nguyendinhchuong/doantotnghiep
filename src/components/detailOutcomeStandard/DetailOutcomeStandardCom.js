@@ -138,8 +138,9 @@ class DetailOutcomeStandardCom extends Component {
   onShowSaveRevision = () => {
     this.setState({
       saveRevisionVisible: true,
-      nameRevision:
-        this.props.infoOutcomeStandard.NameOutcomeStandard + " phiên bản: "
+      nameRevision: this.props.infoOutcomeStandard
+        ? this.props.infoOutcomeStandard.NameOutcomeStandard + " phiên bản: "
+        : ""
     });
   };
 
@@ -154,7 +155,9 @@ class DetailOutcomeStandardCom extends Component {
   onShowExportCom = () => {
     this.setState({
       exportVisible: true,
-      fileName: this.props.infoOutcomeStandard.NameOutcomeStandard
+      fileName: this.props.infoOutcomeStandard
+        ? this.props.infoOutcomeStandard.NameOutcomeStandard
+        : ""
     });
   };
 
@@ -198,27 +201,25 @@ class DetailOutcomeStandardCom extends Component {
       alert("Key chưa phù hợp");
       return;
     }
-    const node = logic.findNodeByKey(data1,this.state.keyDrag);
-    if(!node){
-      alert('Không tìm thấy node');
+    const node = logic.findNodeByKey(data1, this.state.keyDrag);
+    if (!node) {
+      alert("Không tìm thấy node");
       return;
     }
-    if(this.state.node.key === this.state.keyDrag){
+    if (this.state.node.key === this.state.keyDrag) {
       alert("Key trùng nhau");
       return;
     }
-    if(logic.checkIndexInsert(this.state.node.key,this.state.keyDrag)){
-      alert('Node cha không được insert vào node con');
+    if (logic.checkIndexInsert(this.state.node.key, this.state.keyDrag)) {
+      alert("Node cha không được insert vào node con");
       return;
     }
 
-    data1 = [
-      ...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)
-    ];
+    data1 = [...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)];
     this.setState({
       nodes: [...data1]
     });
-  
+
     this.onHideDialogDragNode();
     event.preventDefault();
   };
@@ -332,7 +333,7 @@ class DetailOutcomeStandardCom extends Component {
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Thêm cấp con"
         >
-          <i className="material-icons">keyboard_return</i>
+          <i className="material-icons">add</i>
         </Button>
         <Button
           onClick={() => this.upSameLevel(node)}
@@ -419,20 +420,13 @@ class DetailOutcomeStandardCom extends Component {
       <div className="p-grid content-section implementation">
         <hr />
         <Row>
-          <Col lg="10" md="10" sm="10">
+          <Col lg="8" md="8" sm="8">
             <Button
               style={{ margin: "0 10px" }}
               theme="success"
               onClick={this.onSave}
             >
               <i className="material-icons">save</i> Lưu cây CĐR
-            </Button>
-            <Button
-              style={{ margin: "0 10px" }}
-              theme="success"
-              onClick={this.onShowExportCom}
-            >
-              <i className="material-icons">save_alt</i> Tạo file Excel
             </Button>
             <Button
               style={{ margin: "0 10px" }}
@@ -450,6 +444,22 @@ class DetailOutcomeStandardCom extends Component {
             </Button>
           </Col>
           <Col lg="2" md="2" sm="2">
+            <label
+              onClick={this.onShowExportCom}
+              style={{
+                float: "right",
+                borderRadius: "8px",
+                border: "1px solid #17C671",
+                display: "inline-block",
+                color: "#17C671",
+                padding: "6px",
+                cursor: "pointer"
+              }}
+            >
+              <i className="material-icons">save_alt</i> Tạo file Excel
+            </label>
+          </Col>
+          <Col lg="2" md="2" sm="2">
             <DataInputCom handleFile={this.handleFile} />
           </Col>
         </Row>
@@ -463,33 +473,18 @@ class DetailOutcomeStandardCom extends Component {
                 expander
               />
               <Column
+                header={
+                  <Button
+                    onClick={() => this.onClickDialogRoot()}
+                    theme="success"
+                  >
+                    <i className="material-icons">open_with</i> Thêm cấp
+                  </Button>
+                }
                 body={this.actionTemplate}
                 style={{ textAlign: "left", width: "15em" }}
               />
             </TreeTable>
-          </Col>
-          <Col lg="12" md="12" sm="12">
-            <Card small className="mb-4">
-              <table className="table mb-0">
-                <tbody>
-                  <tr>
-                    <td>
-                      <Button
-                        style={{
-                          float: "right",
-                          paddingRight: "10px",
-                          paddingLeft: "10px"
-                        }}
-                        onClick={() => this.onClickDialogRoot()}
-                        theme="success"
-                      >
-                        <i className="material-icons">library_add</i> Thêm cấp
-                      </Button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </Card>
           </Col>
         </Row>
 
