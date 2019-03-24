@@ -9,9 +9,8 @@ import EducateProgram from "./containers/EducateProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
 import TestOutcomeStandard from "./containers/TestOutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
-import CourseRegister from "./containers/CourseRegister";
+import SubjectManage from "./containers/SubjectManage";
 import Errors from "./containers/Errors";
-import CourseMaps from "./containers/CourseMaps";
 
 export default [{
     path: "/",
@@ -44,16 +43,10 @@ export default [{
     component: EditOutcomeStandard
   },
   {
-    path: "/course-register",
+    path: "/subject-manage",
     exact: true,
     layout: DefaultLayout,
-    component: CourseRegister
-  },
-  {
-    path: "/course-maps",
-    exact: true,
-    layout: DefaultLayout,
-    component: CourseMaps
+    component: SubjectManage
   },
   {
     path: "/errors",

@@ -3,7 +3,7 @@ import XLSX from "xlsx";
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { Row, Col, Button, Card } from "shards-react";
+import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { AutoComplete } from "primereact/autocomplete";

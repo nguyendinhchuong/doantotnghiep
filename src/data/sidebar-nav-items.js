@@ -10,14 +10,9 @@ export default function() {
       to: "/outcome-standard",
     },
     {
-      title: "Đăng kí môn học",
-      htmlBefore: '<i class="material-icons">note_add</i>',
-      to: "/course-register",
-    },
-    {
-      title: "Course maps",
-      htmlBefore: '<i class="material-icons">map</i>',
-      to: "/course-maps",
+      title: "Quản lý học phần",
+      htmlBefore: '<i class="material-icons">rate_review</i>',
+      to: "/subject-manage",
     },
     {
       title: "Errors",
