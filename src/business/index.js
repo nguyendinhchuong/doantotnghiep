@@ -183,7 +183,7 @@ export const addAny = (data1, node, indexNode) => {
   subNode.key = indexNode;
   const lenKey = x.length;
   // index of position insert
-  const index = Number(x[x.length - 1]);
+  const index = Number(x[x.length - 1]) ;
   let dataCacul;
   switch (lenKey - 1) {
     case 1: {
