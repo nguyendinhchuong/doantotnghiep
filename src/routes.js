@@ -10,7 +10,6 @@ import EditEducationProgram from "./containers/EditEducationProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
-import Errors from "./containers/Errors";
 
 export default [
   {
@@ -39,7 +38,7 @@ export default [
   },
   {
     path: "/outcome-standard/edit",
-    exact: false,
+    exact: true,
     layout: DefaultLayout,
     component: EditOutcomeStandard
   },
@@ -48,10 +47,5 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: SubjectManage
-  },
-  {
-    path: "/errors",
-    layout: DefaultLayout,
-    component: Errors
   }
 ];

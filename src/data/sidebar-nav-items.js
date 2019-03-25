@@ -14,11 +14,6 @@ export default function() {
       title: "Quản lý học phần",
       htmlBefore: '<i class="material-icons">rate_review</i>',
       to: "/subject-manage"
-    },
-    {
-      title: "Errors",
-      htmlBefore: '<i class="material-icons">error</i>',
-      to: "/errors"
     }
   ];
 }
