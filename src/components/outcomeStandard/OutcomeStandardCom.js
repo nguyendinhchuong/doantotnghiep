@@ -212,7 +212,7 @@ export default class OutcomeStandardCom extends Component {
     );
 
     return (
-      <div>
+      <div className="p-grid content-section implementation">
         <Row>
           <Col lg="12" md="12" sm="12">
             <p align="left">

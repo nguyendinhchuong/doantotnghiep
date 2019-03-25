@@ -418,7 +418,6 @@ class DetailOutcomeStandardCom extends Component {
 
     return (
       <div className="p-grid content-section implementation">
-        <hr />
         <Row>
           <Col lg="8" md="8" sm="8">
             <Button

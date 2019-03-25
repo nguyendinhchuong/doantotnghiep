@@ -40,16 +40,21 @@ class OutcomeStandardTemp extends Component {
           </Col>
         </Row>
 
-        <OutcomeStandardCom
-          history={this.props.history}
-          faculties={this.props.faculties}
-          programs={this.props.programs}
-          outcomeStandards={this.props.outcomeStandards}
-          onLoadFaculties={this.props.onLoadFaculties}
-          onLoadPrograms={this.props.onLoadPrograms}
-          onAddOutcomeStandard={this.props.onAddOutcomeStandard}
-          onDeleteOutcomeStandard={this.props.onDeleteOutcomeStandard}
-        />
+        <hr />
+        <Row>
+          <Col lg="12" md="12">
+            <OutcomeStandardCom
+              history={this.props.history}
+              faculties={this.props.faculties}
+              programs={this.props.programs}
+              outcomeStandards={this.props.outcomeStandards}
+              onLoadFaculties={this.props.onLoadFaculties}
+              onLoadPrograms={this.props.onLoadPrograms}
+              onAddOutcomeStandard={this.props.onAddOutcomeStandard}
+              onDeleteOutcomeStandard={this.props.onDeleteOutcomeStandard}
+            />
+          </Col>
+        </Row>
       </Container>
     );
   }
