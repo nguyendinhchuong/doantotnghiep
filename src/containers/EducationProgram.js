@@ -1,22 +1,17 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
-import SubjectManageCom from "../components/subjectManage/SubjectManageCom";
+import EducationProgramCom from "../components/educationProgram/EducationProgramCom";
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
 
-class SubjectManageTemp extends Component {
+class EducationProgramTmp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
-  componentDidMount = () => {};
 
   render() {
     return (
@@ -25,7 +20,7 @@ class SubjectManageTemp extends Component {
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="8"
-              title="HỌC PHẦN"
+              title="CHƯƠNG TRÌNH ĐÀO TẠO"
               subtitle="danh sách"
               className="text-sm-left"
             />
@@ -34,10 +29,11 @@ class SubjectManageTemp extends Component {
             <AlertCom message={this.props.message} />
           </Col>
         </Row>
+
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <SubjectManageCom />
+            <EducationProgramCom history={this.props.history} />
           </Col>
         </Row>
       </Container>
@@ -49,4 +45,4 @@ const mapStateToProps = state => ({
   message: state.message
 });
 
-export default connect(mapStateToProps, {})(SubjectManageTemp);
+export default connect(mapStateToProps, {})(EducationProgramTmp);

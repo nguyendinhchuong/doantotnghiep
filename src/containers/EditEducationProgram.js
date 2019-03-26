@@ -5,18 +5,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
 import PageTitle from "../components/common/PageTitle";
-import SubjectManageCom from "../components/subjectManage/SubjectManageCom";
+import DetailEducationProgramCom from "../components/detailEducationProgram/DetailEducationProgramCom";
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
 
-class SubjectManageTemp extends Component {
+class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
-  componentDidMount = () => {};
 
   render() {
     return (
@@ -25,8 +23,8 @@ class SubjectManageTemp extends Component {
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="8"
-              title="HỌC PHẦN"
-              subtitle="danh sách"
+              title="Chương trình đào tạo"
+              subtitle="Chỉnh sửa"
               className="text-sm-left"
             />
           </Col>
@@ -34,10 +32,11 @@ class SubjectManageTemp extends Component {
             <AlertCom message={this.props.message} />
           </Col>
         </Row>
+
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <SubjectManageCom />
+            <DetailEducationProgramCom />
           </Col>
         </Row>
       </Container>
@@ -49,4 +48,4 @@ const mapStateToProps = state => ({
   message: state.message
 });
 
-export default connect(mapStateToProps, {})(SubjectManageTemp);
+export default connect(mapStateToProps, {})(DetailEducationProgramTmp);
