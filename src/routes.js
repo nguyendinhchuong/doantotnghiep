@@ -5,24 +5,30 @@ import { Redirect } from "react-router-dom";
 import { DefaultLayout } from "./layouts";
 
 // Route Views
-import EducateProgram from "./containers/EducateProgram";
+import EducationProgram from "./containers/EducationProgram";
+import EditEducationProgram from "./containers/EditEducationProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
-import TestOutcomeStandard from "./containers/TestOutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
-import Errors from "./containers/Errors";
 
-export default [{
+export default [
+  {
     path: "/",
     exact: true,
     layout: DefaultLayout,
-    component: () => <Redirect to="/educate-program" />
+    component: () => <Redirect to="/education-program" />
   },
   {
-    path: "/educate-program",
+    path: "/education-program",
     exact: true,
     layout: DefaultLayout,
-    component: EducateProgram
+    component: EducationProgram
+  },
+  {
+    path: "/education-program/edit",
+    exact: true,
+    layout: DefaultLayout,
+    component: EditEducationProgram
   },
   {
     path: "/outcome-standard",
@@ -31,14 +37,8 @@ export default [{
     component: OutcomeStandard
   },
   {
-    path: "/outcome-standard/test",
-    exact: true,
-    layout: DefaultLayout,
-    component: TestOutcomeStandard
-  },
-  {
     path: "/outcome-standard/edit",
-    exact: false,
+    exact: true,
     layout: DefaultLayout,
     component: EditOutcomeStandard
   },
@@ -47,10 +47,5 @@ export default [{
     exact: true,
     layout: DefaultLayout,
     component: SubjectManage
-  },
-  {
-    path: "/errors",
-    layout: DefaultLayout,
-    component: Errors
   }
 ];
