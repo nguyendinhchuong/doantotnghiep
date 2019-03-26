@@ -23,7 +23,7 @@ class DetailEducationProgramTmp extends Component {
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="8"
-              title="Chương trình đào tạo"
+              title="CHƯƠNG TRÌNH ĐÀO TẠO"
               subtitle="Chỉnh sửa"
               className="text-sm-left"
             />
