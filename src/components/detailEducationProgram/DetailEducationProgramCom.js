@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
-import * as logic from "../../business/logicEducationProgram";
+import TitleCom from "./TitleCom";
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -73,6 +73,7 @@ export default class DetailEducationProgramCom extends React.Component {
               onTabChange={e => this.setState({ activeTab: e.index })}
             >
               <TabPanel header="First">
+                <TitleCom />
                 <Button
                   label="Next"
                   icon="pi pi-check"
