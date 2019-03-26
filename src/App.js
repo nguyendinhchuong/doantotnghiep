@@ -6,7 +6,6 @@ import withTracker from "./withTracker";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
-import Errors from "./containers/Errors";
 
 export default () => (
   <Router basename={process.env.REACT_APP_BASENAME}>
@@ -27,7 +26,6 @@ export default () => (
           />
         );
       })}
-      <Route component={Errors} path="*" />
     </div>
   </Router>
 );

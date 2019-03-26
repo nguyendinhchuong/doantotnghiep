@@ -1,6 +1,6 @@
 import React from "react";
 import { TabView, TabPanel } from "primereact/tabview";
-import { Container, Row, Col } from "shards-react";
+import { Row, Col } from "shards-react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
@@ -65,7 +65,7 @@ export default class DetailEducationProgramCom extends React.Component {
     );
 
     return (
-      <Container fluid className="main-content-container px-4">
+      <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
             <TabView
@@ -128,7 +128,7 @@ export default class DetailEducationProgramCom extends React.Component {
             />
           </Dialog>
         </div>
-      </Container>
+      </div>
     );
   }
 }

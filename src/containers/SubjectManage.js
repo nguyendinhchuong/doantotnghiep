@@ -34,6 +34,7 @@ class SubjectManageTemp extends Component {
             <AlertCom message={this.props.message} />
           </Col>
         </Row>
+        
         <hr />
         <Row>
           <Col lg="12" md="12">
