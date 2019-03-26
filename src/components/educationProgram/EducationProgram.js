@@ -72,7 +72,11 @@ export default class EducationProgram extends React.Component{
                             <Button label="Next" icon="pi pi-check" iconPos="right" onClick={() => this.nextTab()}/>
                         </TabPanel>
                         <TabPanel header="Second">
+<<<<<<< ours
                             <Button label="Thêm mục" icon="fas fa-plus-circle" iconPos="right" onClick={() => this.onShowAddRoot()}/>
+=======
+                            <Button label="ThÃªm má»¥c" icon="fas fa-plus-circle" iconPos="right" onClick={() => this.onShowAddRoot()}/>
+>>>>>>> theirs
                             <hr></hr>
                             <Button label="Previous" icon="pi pi-check" iconPos="right" onClick={() => this.preTab()}/>
                             <Button label="Next" icon="pi pi-check" iconPos="right" onClick={() => this.nextTab()}/>
@@ -84,7 +88,11 @@ export default class EducationProgram extends React.Component{
                 </Col>
             </Row>
             <div className="content-section implementation">
+<<<<<<< ours
                 <Dialog header="Tên mục" visible={this.state.visibleAddRoot} style={{width: '50vw'}}
+=======
+                <Dialog header="TÃªn má»¥c" visible={this.state.visibleAddRoot} style={{width: '50vw'}}
+>>>>>>> theirs
                     footer={footerAddRoot} maximizable>
                     <InputText
                         type="text"
