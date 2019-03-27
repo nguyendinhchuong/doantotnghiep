@@ -1,0 +1,20 @@
+.targetEducationNumber{
+    font-size: 25px;
+}
+.targetEducationTitle{
+    font-size: 25px;
+    text-decoration: underline;
+}
+
+.targetEducationCommon{
+    font-size: 25px;
+}
+
+.targetEducationContent{
+    font-size: 20px;
+    padding-left: 42px;
+}
+
+.targetEducationDetail{
+    padding-left: 63px;
+}

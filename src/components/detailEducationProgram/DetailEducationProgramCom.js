@@ -3,6 +3,7 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { Row, Col, Button } from "shards-react";
 
 import TitleCom from "./TitleCom";
+import TargetEducation from './TargetEducation'
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -39,7 +40,7 @@ export default class DetailEducationProgramCom extends React.Component {
                 </Button>
               </TabPanel>
               <TabPanel header="Mục tiêu đào tạo">
-                <div>component here</div>
+                <TargetEducation />
                 <hr />
                 <div>
                   <Button
