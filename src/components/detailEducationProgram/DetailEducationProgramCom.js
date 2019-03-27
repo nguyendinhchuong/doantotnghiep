@@ -40,7 +40,13 @@ export default class DetailEducationProgramCom extends React.Component {
                 </Button>
               </TabPanel>
               <TabPanel header="Mục tiêu đào tạo">
-                <TargetEducationCom outcomeStandards={this.props.outcomeStandards} />
+                <TargetEducationCom
+                  outcomeStandards={this.props.outcomeStandards}
+                  detailOutcomeStandard={this.props.detailOutcomeStandard}
+                  onLoadDetailOutcomeStandard={
+                    this.props.onLoadDetailOutcomeStandard
+                  }
+                />
                 <hr />
                 <div>
                   <Button

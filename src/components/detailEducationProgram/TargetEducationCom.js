@@ -96,7 +96,7 @@ export default class TargetEducationCom extends React.Component {
                     Lưu
                   </Button>
                   <Button
-                    theme="secondary"
+                    theme="light"
                     onClick={() => this.onChangeEditTargetCancel(val)}
                   >
                     Hủy
@@ -131,7 +131,11 @@ export default class TargetEducationCom extends React.Component {
             Chuẩn đầu ra của chương trình giáo dục
           </label>
         </Row>
-        <OSCom outcomeStandards={this.props.outcomeStandards} />
+        <OSCom
+          outcomeStandards={this.props.outcomeStandards}
+          detailOutcomeStandard={this.props.detailOutcomeStandard}
+          onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
+        />
       </Container>
     );
   }

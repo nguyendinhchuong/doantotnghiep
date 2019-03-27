@@ -9,6 +9,7 @@ import DetailEducationProgramCom from "../components/detailEducationProgram/Deta
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
+import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 
 class DetailEducationProgramTmp extends Component {
@@ -43,6 +44,10 @@ class DetailEducationProgramTmp extends Component {
           <Col lg="12" md="12">
             <DetailEducationProgramCom
               outcomeStandards={this.props.outcomeStandards}
+              detailOutcomeStandard={this.props.detailOutcomeStandard}
+              onLoadDetailOutcomeStandard={
+                this.props.onLoadDetailOutcomeStandard
+              }
             />
           </Col>
         </Row>
@@ -53,9 +58,12 @@ class DetailEducationProgramTmp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  outcomeStandards: state.outcomeStandards
+  outcomeStandards: state.outcomeStandards,
+  detailOutcomeStandard: state.detailOutcomeStandard
 });
 
 export default connect(mapStateToProps, {
-  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards
+  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
+  onLoadDetailOutcomeStandard:
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard
 })(DetailEducationProgramTmp);
