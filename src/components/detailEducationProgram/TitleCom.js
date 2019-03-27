@@ -31,7 +31,7 @@ export default class TitleCom extends React.Component {
           </Col>
           <Col lg="12" md="12" sm="12">
             <p className=" font-italic h4 my-4 text-center">
-              <input type="" name="" readonly="true" />
+              <input type="" name="" readOnly={true} />
             </p>
           </Col>
         </Row>

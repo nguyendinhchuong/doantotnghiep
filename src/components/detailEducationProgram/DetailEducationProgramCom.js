@@ -3,7 +3,7 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { Row, Col, Button } from "shards-react";
 
 import TitleCom from "./TitleCom";
-import TargetEducation from './TargetEducation'
+import TargetEducationCom from "./TargetEducationCom";
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -35,31 +35,31 @@ export default class DetailEducationProgramCom extends React.Component {
               <TabPanel header="Tiêu đề CTĐT">
                 <TitleCom />
                 <hr />
-                <Button iconPos="right" onClick={() => this.nextTab()}>
-                  Tiếp theo <i class="material-icons">navigate_next</i>
+                <Button iconpos="right" onClick={() => this.nextTab()}>
+                  Tiếp theo <i className="material-icons">navigate_next</i>
                 </Button>
               </TabPanel>
               <TabPanel header="Mục tiêu đào tạo">
-                <TargetEducation />
+                <TargetEducationCom outcomeStandards={this.props.outcomeStandards} />
                 <hr />
                 <div>
                   <Button
                     style={{ marginRight: "1em" }}
-                    iconPos="right"
+                    iconpos="right"
                     onClick={() => this.preTab()}
                   >
-                    <i class="material-icons">navigate_before</i>Trở lại
+                    <i className="material-icons">navigate_before</i>Trở lại
                   </Button>
-                  <Button iconPos="right" onClick={() => this.nextTab()}>
-                    Tiếp theo <i class="material-icons">navigate_next</i>
+                  <Button iconpos="right" onClick={() => this.nextTab()}>
+                    Tiếp theo <i className="material-icons">navigate_next</i>
                   </Button>
                 </div>
               </TabPanel>
               <TabPanel header="Quy trình và điều kiện">
                 <div>component here</div>
                 <hr />
-                <Button iconPos="right" onClick={() => this.preTab()}>
-                  <i class="material-icons">navigate_before</i>Trở lại
+                <Button iconpos="right" onClick={() => this.preTab()}>
+                  <i className="material-icons">navigate_before</i>Trở lại
                 </Button>
               </TabPanel>
             </TabView>
