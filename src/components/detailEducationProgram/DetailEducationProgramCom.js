@@ -5,6 +5,8 @@ import {Button} from 'primereact/button';
 
 import '../../assets/target-education.css'
 
+import * as logic from '../../business/logicEducationProgram'
+
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -45,9 +47,10 @@ export default class DetailEducationProgramCom extends React.Component {
     return  "edu"+educations[index].key;
   }
 
-  addValue = (educations) =>{
-    const key = educations.key;
-    console.log(key);
+  addValue = (educations,index) =>{
+    this.setState({educations1: logic.addNew(educations,index,'abc')});
+    const x = logic.getItemOfIndex(educations,index);
+    console.log(x);
   }
 
   render() {
@@ -62,7 +65,16 @@ export default class DetailEducationProgramCom extends React.Component {
               <Fieldset legend={this.displayKeyValue(this.state.educations1,1)} toggleable={true} collapsed={true}>
                 <label>{this.state.educations1[1].title}</label>
                 <Row style={{'paddingLeft':'20px'}}>
-                  <Button label="Add New" icon="fas fa-plus" iconPos="right" onClick={()=>this.addValue(this.state.educations1[1])}/>
+                  <Button label="Add New" icon="fas fa-plus" iconPos="right" onClick={()=>this.addValue(this.state.educations1,1)}/>
+                </Row>
+                <Row style={{'paddingLeft':'20px'}}>
+                  <ul>
+                  {
+                    logic.getItemOfIndex(this.state.educations1,1).map((item)=>{
+                      return <li key={item.key}>{item.value}</li>
+                    })
+                  }
+                  </ul>
                 </Row>
               </Fieldset>
               {/* row 1.2 */}
