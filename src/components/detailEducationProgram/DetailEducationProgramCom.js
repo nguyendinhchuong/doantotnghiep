@@ -1,75 +1,100 @@
 import React from "react";
-import { TabView, TabPanel } from "primereact/tabview";
-import { Row, Col, Button } from "shards-react";
+import { Row, Col } from "shards-react";
+import {Fieldset} from 'primereact/fieldset';
+import {Button} from 'primereact/button';
 
-import TitleCom from "./TitleCom";
-import TargetEducationCom from "./TargetEducationCom";
-import ProAndConCom from "./ProAndConCom";
+import '../../assets/target-education.css'
+
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 0
+      educations1:[
+        {id:1, key:'1',value:'Mục Tiêu Đào Tạo',title:''},
+        {id:2, key:'1.1',value:'Mục Tiêu Chung',
+          title:'Mục tiêu của chương trình đào tạo nhằm đào tạo ra các sinh viên tốt nghiệp:'},
+        {id:3, key:'1.2',value:'MỤC TIÊU CỤ THỂ – CHUẨN ĐẦU RA CỦA CHƯƠNG TRÌNH ĐÀO TẠO',title:''},
+        {id:4, key:'1.2.1',value:'Mục tiêu cụ thể',title:''},
+        {id:5, key:'1.2.2',value:'Chuẩn đầu ra của chương trình giáo dục',title:'',idOutcome:''},
+        {id:6, key:'1.3',value:'Cơ hội nghề nghiệp',title:'Sinh viên sau khi tốt nghiệp có thể có các cơ hội nghề nghiệp sau:'}
+      ],
+      educations2: [
+        {id:1, key:'2',value:'Thời gian đào tạo',title:''}
+      ],
+      educations3: [
+        {id:1, key:'3',value:'Khối kiến thức toàn khóa',title:''}
+      ],
+      educations4: [
+        {id:1, key:'4',value:'Đối tượng tuyển sinh',
+          title:'Theo Quy chế tuyển sinh đại học, cao đẳng hệ chính quy của Bộ Giáo dục và Đào tạo'},
+      ],
+      educations5: [
+        {id:1, key:'5',value:'Quy trình đào tạo , Điều kiện tốt nghiệp',title:''},
+        {id:2, key:'5.1',value:'Quy Trình Đào Tạo',title:'abc'},
+        {id:3, key:'5.2',value:'Điều Kiện Tốt Nghiệp',title:'abc'}
+      ]
     };
   }
 
-  nextTab = () => {
-    const index = this.state.activeTab;
-    this.setState({ activeTab: index + 1 });
-  };
+  displayKeyValue = (educations,index) =>{
+    return educations[index].key+'. ' +educations[index].value ;
+  }
 
-  preTab = () => {
-    const index = this.state.activeTab;
-    this.setState({ activeTab: index - 1 });
-  };
+  classNameEdu = (educations,index)=>{
+    return  "edu"+educations[index].key;
+  }
+
+  addValue = (educations) =>{
+    const key = educations.key;
+    console.log(key);
+  }
 
   render() {
     return (
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
-            <TabView
-              activeIndex={this.state.activeTab}
-              onTabChange={e => this.setState({ activeTab: e.index })}
-            >
-              <TabPanel header="Tiêu đề CTĐT">
-                <TitleCom />
-                <hr />
-                <Button iconpos="right" onClick={() => this.nextTab()}>
-                  Tiếp theo <i className="material-icons">navigate_next</i>
-                </Button>
-              </TabPanel>
-              <TabPanel header="Mục tiêu đào tạo">
-                <TargetEducationCom
-                  outcomeStandards={this.props.outcomeStandards}
-                  detailOutcomeStandard={this.props.detailOutcomeStandard}
-                  onLoadDetailOutcomeStandard={
-                    this.props.onLoadDetailOutcomeStandard
-                  }
-                />
-                <hr />
-                <div>
-                  <Button
-                    style={{ marginRight: "1em" }}
-                    iconpos="right"
-                    onClick={() => this.preTab()}
-                  >
-                    <i className="material-icons">navigate_before</i>Trở lại
-                  </Button>
-                  <Button iconpos="right" onClick={() => this.nextTab()}>
-                    Tiếp theo <i className="material-icons">navigate_next</i>
-                  </Button>
-                </div>
-              </TabPanel>
-              <TabPanel header="Quy trình và điều kiện">
-                <ProAndConCom />
-                <hr />
-                <Button iconpos="right" onClick={() => this.preTab()}>
-                  <i className="material-icons">navigate_before</i>Trở lại
-                </Button>
-              </TabPanel>
-            </TabView>
+            {/* Row 1 */}
+            <Fieldset legend={this.displayKeyValue(this.state.educations1,0)}
+              toggleable={true} collapsed={true} className={this.classNameEdu(this.state.educations1,0)}>
+              {/* row 1.1 */}
+              <Fieldset legend={this.displayKeyValue(this.state.educations1,1)} toggleable={true} collapsed={true}>
+                <label>{this.state.educations1[1].title}</label>
+                <Row style={{'paddingLeft':'20px'}}>
+                  <Button label="Add New" icon="fas fa-plus" iconPos="right" onClick={()=>this.addValue(this.state.educations1[1])}/>
+                </Row>
+              </Fieldset>
+              {/* row 1.2 */}
+              <Fieldset legend={this.displayKeyValue(this.state.educations1,2)} toggleable={true} collapsed={true}>
+                <Fieldset legend={this.displayKeyValue(this.state.educations1,3)} toggleable={true} collapsed={true}>
+
+                </Fieldset>
+                <Fieldset legend={this.displayKeyValue(this.state.educations1,4)} toggleable={true} collapsed={true}>
+
+                </Fieldset>
+              </Fieldset>
+              {/* row 1.3 */}
+              <Fieldset legend={this.displayKeyValue(this.state.educations1,5)} toggleable={true} collapsed={true}>
+
+              </Fieldset>
+            </Fieldset>
+            {/* Row 2 */}
+            <Fieldset legend={this.displayKeyValue(this.state.educations2,0)} toggleable={true} collapsed={true}>
+
+            </Fieldset>
+            {/* Row 3 */}
+            <Fieldset legend={this.displayKeyValue(this.state.educations3,0)} toggleable={true} collapsed={true}>
+
+            </Fieldset>
+            {/* Row 4 */}
+            <Fieldset legend={this.displayKeyValue(this.state.educations4,0)} toggleable={true} collapsed={true}>
+
+            </Fieldset>
+            {/* Row 5 */}
+            <Fieldset legend={this.displayKeyValue(this.state.educations5,0)} toggleable={true} collapsed={true}>
+
+            </Fieldset>
           </Col>
         </Row>
       </div>
