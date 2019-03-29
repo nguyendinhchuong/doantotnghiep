@@ -5,9 +5,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 
 import * as logic from "../../business/logicEducationProgram";
 
-import OSCom from "./OSCom";
-
-export default class TargetEducationCom extends React.Component {
+export default class ProAndConCom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -199,18 +197,12 @@ export default class TargetEducationCom extends React.Component {
     return (
       <Container>
         <Row>
-          <label className="targetEducationNumber">1.</label>
-          <label className="targetEducationTitle"> Mục Tiêu Đào Tạo</label>
+          <label className="targetEducationNumber">5.</label>
+          <label className="targetEducationTitle"> Quy trình đào tạo và điều kiện tốt nghiệp</label>
         </Row>
         <Row>
-          <label className="targetEducationNumber">1.1.</label>
-          <label className="targetEducationCommon"> Mục Tiêu Chung</label>
-        </Row>
-        <Row>
-          <label className="targetEducationContent">
-            Mục tiêu của chương trình đào tạo nhằm đào tào tạo ra các sinh viên
-            tốt nghiệp:
-          </label>
+          <label className="targetEducationNumber">5.1.</label>
+          <label className="targetEducationCommon"> Quy trình đạo tạo</label>
         </Row>
         <Row>
           <ul className="targetEducationDetail">
@@ -247,108 +239,7 @@ export default class TargetEducationCom extends React.Component {
             })}
           </ul>
         </Row>
-        <Row>
-          <label className="targetEducationNumber">1.2.</label>
-          <label className="targetEducationCommon">
-            {" "}
-            Mục Tiêu Cụ Thể - Chuẩn đầu ra của chương trình đào tạo
-          </label>
-        </Row>
-        <Row>
-          <label className="targetEducationNumber">1.2.1.</label>
-          <label className="targetEducationCommon"> Mục Tiêu Cụ Thể</label>
-        </Row>
-        <Row>
-          <ul className="targetEducationDetail">
-            {this.state.specificallyTarget.map((val, id) => {
-              return val.isEdit ? (
-                <div key={val.id}>
-                  <InputTextarea
-                    rows={2}
-                    cols={150}
-                    value={val.oldValue}
-                    onChange={e => this.onChangeTextTargetSpecific(val, e)}
-                  />
-                  <Button
-                    style={{ marginRight: "1em" }}
-                    onClick={() => this.onChangeEditTargetSpecific(val)}
-                  >
-                    Lưu
-                  </Button>
-                  <Button
-                    theme="light"
-                    onClick={() => this.onChangeEditTargetCancelSpecific(val)}
-                  >
-                    Hủy
-                  </Button>
-                </div>
-              ) : (
-                <li
-                  key={val.id}
-                  onDoubleClick={() => this.onDoubleClickTargetSpecific(val)}
-                >
-                  {val.value}
-                </li>
-              );
-            })}
-          </ul>
-        </Row>
-        <Row>
-          <label className="targetEducationNumber">1.2.2.</label>
-          <label className="targetEducationCommon">
-            {" "}
-            Chuẩn đầu ra của chương trình giáo dục
-          </label>
-        </Row>
-        <OSCom
-          outcomeStandards={this.props.outcomeStandards}
-          detailOutcomeStandard={this.props.detailOutcomeStandard}
-          onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
-        />
-        <Row>
-          <label className="targetEducationNumber">1.3.</label>
-          <label className="targetEducationCommon"> Cơ Hội Nghề Nghiệp</label>
-        </Row>
-        <Row>
-          <label className="targetEducationContent">
-            Sinh viên sau khi ra trường có các cơ hội nghề nghiệp sau
-          </label>
-        </Row>
-        <Row>
-          <ul className="targetEducationDetail">
-            {this.state.opportunityJobs.map((val, id) => {
-              return val.isEdit ? (
-                <div key={val.id}>
-                  <InputTextarea
-                    rows={5}
-                    cols={150}
-                    value={val.oldValue}
-                    onChange={e => this.onChangeTextTargetJob(val, e)}
-                  />
-                  <Button
-                    style={{ marginRight: "1em" }}
-                    onClick={() => this.onChangeEditTargetJob(val)}
-                  >
-                    Lưu
-                  </Button>
-                  <Button
-                    theme="light"
-                    onClick={() => this.onChangeEditTargetCancelJob(val)}
-                  >
-                    Hủy
-                  </Button>
-                </div>
-              ) : (
-                <li
-                  key={val.id}
-                  onDoubleClick={() => this.onDoubleClickTargetJob(val)}
-                >
-                  {val.value}
-                </li>
-              );
-            })}
-          </ul>
-        </Row>
+      
       </Container>
     );
   }

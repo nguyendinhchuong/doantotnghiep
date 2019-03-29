@@ -79,8 +79,8 @@ export default class OSCom extends React.Component {
 
     return (
       <Row>
-        <Col className="font-weight-bold" lg="2" md="2" sm="2">
-          Chọn chuẩn đầu ra:
+        <Col className="h5 font-weight-bold" lg="2" md="2" sm="2">
+          Chuẩn đầu ra:
         </Col>
         <Col lg="5" md="5" sm="5">
           <FormSelect onChange={e => this.handleOutcomeStandardChange(e)}>

@@ -4,6 +4,7 @@ import { Row, Col, Button } from "shards-react";
 
 import TitleCom from "./TitleCom";
 import TargetEducationCom from "./TargetEducationCom";
+import ProAndConCom from "./ProAndConCom";
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ export default class DetailEducationProgramCom extends React.Component {
                 </div>
               </TabPanel>
               <TabPanel header="Quy trình và điều kiện">
-                <div>component here</div>
+                <ProAndConCom />
                 <hr />
                 <Button iconpos="right" onClick={() => this.preTab()}>
                   <i className="material-icons">navigate_before</i>Trở lại
