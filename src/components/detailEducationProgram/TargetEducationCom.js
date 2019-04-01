@@ -44,10 +44,10 @@ class TargetEducationCom extends Component {
   };
 
   addOS = () => {
-    // const data = logic.addOS(this.state.nodes, this.state.node, this.state.os);
-    // this.setState({
-    //   nodes: data
-    // });
+    const data = logic.addOS(this.state.nodes, this.state.node, this.state.os);
+    this.setState({
+      nodes: data
+    });
   };
 
   // delete
@@ -202,7 +202,6 @@ class TargetEducationCom extends Component {
   };
 
   render() {
-    console.log(this.props.outcomeStandards);
     const footer = (
       <div>
         {!this.state.isData ? (
@@ -317,7 +316,7 @@ class TargetEducationCom extends Component {
                                 <td>{row.SchoolYear}</td>
                                 <td>
                                   <Button
-                                    title="Chỉnh sửa"
+                                    title="Xem chi tiết"
                                     onClick={() => this.onShowDetailOS(row.Id)}
                                     theme="success"
                                   >

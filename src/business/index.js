@@ -183,7 +183,7 @@ export const addAny = (data1, node, indexNode) => {
   subNode.key = indexNode;
   const lenKey = x.length;
   // index of position insert
-  const index = Number(x[x.length - 1]) ;
+  const index = Number(x[x.length - 1]);
   let dataCacul;
   switch (lenKey - 1) {
     case 1: {
@@ -408,10 +408,10 @@ export const findNodeByKey = (nodes, key) => {
   }
   let node;
 
-  while(path.length){
+  while (path.length) {
     let list = node ? node.children : nodes;
     node = list[Number(path[0]) - 1];
-    if(!node){
+    if (!node) {
       return undefined;
     }
     path.shift();
@@ -615,9 +615,9 @@ export const checkKeyDrap = keyDrag => {
   return false;
 };
 
-export const checkIndexInsert = (currentKey, keyInsert) =>{
+export const checkIndexInsert = (currentKey, keyInsert) => {
   return keyInsert.startsWith(currentKey);
-}
+};
 
 export const dragIntoRoot = (data, node, index) => {
   data = [...deleteNode(data, node)];
@@ -677,4 +677,55 @@ export const downSameLevel = (data, node) => {
     }
   }
   return data;
+};
+
+export const changeKeys = (nodes, key) => {
+  if (nodes === undefined || nodes.length === 0) {
+    return 0;
+  } else {
+    for (let i in nodes) {
+      nodes[i].key = `${key}-${nodes[i].key}`;
+      nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
+      changeKeys(nodes[i].children, key);
+    }
+  }
+};
+
+export const addOS = (nodes, node, os) => {
+  changeKeys(os, node.key);
+  const x = node.key.split("-");
+  const lenKey = x.length;
+  switch (lenKey) {
+    case 1: {
+      nodes[indexOfNode(x, 0)].children.push(...os);
+      break;
+    }
+    case 2: {
+      nodes[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children.push(...os);
+      break;
+    }
+    case 3: {
+      nodes[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+        indexOfNode(x, 2)
+      ].children.push(...os);
+      break;
+    }
+    case 4: {
+      nodes[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
+        indexOfNode(x, 2)
+      ].children[indexOfNode(x, 3)].children.push(...os);
+      break;
+    }
+    case 5: {
+      nodes[Number(x[0])].children[Number(x[1])].children[
+        Number(x[2])
+      ].children[Number(x[3])].children[Number(x[4])].children.push(...os);
+      break;
+    }
+    default:
+      alert("Cannot insert");
+      break;
+  }
+
+  return nodes;
 };
