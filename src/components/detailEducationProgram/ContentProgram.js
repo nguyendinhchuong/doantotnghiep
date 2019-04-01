@@ -1,6 +1,6 @@
 import React from 'react';
 import {TreeTable} from 'primereact/treetable';
-import {DataTable} from 'primereact/datatable';
+import {DataTable,ColumnGroup} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {Button} from 'primereact/button'
 import {Dialog} from 'primereact/dialog';
@@ -9,16 +9,18 @@ import {Checkbox} from 'primereact/checkbox';
 import { Row, Col } from "shards-react";
 import {Spinner} from 'primereact/spinner';
 
+import * as logic from '../../business/logicEducationProgram';
+
 class ContentProgram extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             nodes: [
                 { 
-                    key:'7', 
+                    key:'7.1', 
                     data:{
                         name:'Nội Dung Chương Trình',
-                        displayName:'7. Nội Dung Chương Trình'
+                        displayName:'7.1. Nội Dung Chương Trình'
                     },
                     children:[]
                 }
@@ -31,16 +33,13 @@ class ContentProgram extends React.Component {
             isRequired: true,
             isAccumulation: true
         }
+        //this.footerTemplate = this.footerTemplate.bind(this);
     }
     isShowDialogRoot = node =>{
         this.setState({ 
             isDialogRoot:true ,
             node: node
         })
-    }
-    
-    test = () =>{
-        console.log('asd');
     }
 
     onHideDialogRoot = ()=>{
@@ -64,7 +63,52 @@ class ContentProgram extends React.Component {
     }
 
     handleAdd = () =>{
-       
+       if(this.state.isTable){
+           const data = this.state.nodes;
+           this.setState({nodes: logic.addNodeTable(data,'')});
+       }
+       else{
+           alert('Add title');
+       }
+       this.onHideDialogRoot();
+    }
+
+    headerTemplate = (data) => {
+        return data.vin;
+    }
+
+    footerTemplate = (data, index) => {
+        return ([
+                    <td key={data.vin + '_footerTotalLabel'} colSpan="1" style={{textAlign: 'right'}}>Total Price</td>,
+                    <td key={data.vin + '_footerTotalValue'}>{this.calculateGroupTotal(data.vin)}</td>
+            ]
+        );
+    }
+
+    calculateGroupTotal(vin) {
+        let total = 0;
+        
+        if(cars) {
+            for(let car of cars) {
+                if(car.vin === vin) {
+                    total += car.year;
+                }
+            }
+        }
+
+        return total;
+    }
+
+    footerGroup = () =>{
+        return(
+            <ColumnGroup>
+                            <Row>
+                                <Column footer="Totals:" colSpan={1} />
+                                <Column footer="$506,202" />
+                                <Column footer="$531,020" />
+                            </Row>
+                         </ColumnGroup>
+        );
     }
 
     render(){
@@ -77,10 +121,20 @@ class ContentProgram extends React.Component {
         return(
             <div>
                 <hr />
-                <TreeTable value={this.state.nodes}>
+                {/* <TreeTable value={this.state.nodes}>
                     <Column field="displayName" header="Name" expander></Column>
                     <Column body={()=>this.actionTemplate()} style={{textAlign:'center', width: '8em'}}/>
-                </TreeTable>
+                </TreeTable> */}
+                 <DataTable value={cars} 
+                    groupField="vin"
+                    rowGroupMode="subheader"
+                    sortField="vin"
+                    rowGroupHeaderTemplate={this.headerTemplate} 
+                    rowGroupFooterTemplate={this.footerTemplate}
+                    >
+                    <Column field="year" header="Year" />
+                    <Column field="year" header="Year" />
+                </DataTable>
                 {/* Dialog Root */}
                 <Dialog header="Thêm Nội Dung Chương Trình" 
                     visible={this.state.isDialogRoot} 
@@ -156,6 +210,11 @@ class ContentProgram extends React.Component {
     }
 }
 
-let cars = [{vin:'Kaka',year:2017}]
+let cars = [
+    {vin:'ABC',year:2017},
+    {vin:'ABC',year:2018},
+    {vin:'ABC',year:2019},
+    {vin:'DEF',year:2017}
+]
 
 export default ContentProgram
