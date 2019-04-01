@@ -105,7 +105,8 @@ class TargetEducationCom extends Component {
       visible: true,
       root: true,
       nameOut: "",
-      isData: false
+      isData: false,
+      node: ""
     });
   };
 

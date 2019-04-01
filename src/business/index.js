@@ -692,6 +692,11 @@ export const changeKeys = (nodes, key) => {
 };
 
 export const addOS = (nodes, node, os) => {
+  console.log(node);
+  if (node === "" || node.children.length !== 0) {
+    alert("Không thể thêm chuẩn đầ ra");
+    return nodes;
+  }
   changeKeys(os, node.key);
   const x = node.key.split("-");
   const lenKey = x.length;
