@@ -477,7 +477,7 @@ class DetailOutcomeStandardCom extends Component {
                     onClick={() => this.onClickDialogRoot()}
                     theme="success"
                   >
-                    <i className="material-icons">open_with</i> Thêm cấp
+                    <i className="material-icons">add</i> Thêm cấp
                   </Button>
                 }
                 body={this.actionTemplate}

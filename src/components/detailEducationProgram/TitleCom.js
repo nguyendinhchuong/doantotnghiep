@@ -101,23 +101,6 @@ export default class TitleCom extends React.Component {
           </Col>
         </Row>
 
-        <Row>
-          <Col className="font-weight-bold" lg="3" md="3" sm="3">
-            Thời gian đào tạo:
-          </Col>
-          <Col lg="9" md="9" sm="9">
-            <FormInput type="text" className="mb-2" />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col className="font-weight-bold" lg="3" md="3" sm="3">
-            Đối tượng tuyển sinh:
-          </Col>
-          <Col lg="9" md="9" sm="9">
-            <FormInput type="text" className="mb-2" />
-          </Col>
-        </Row>
       </div>
     );
   }

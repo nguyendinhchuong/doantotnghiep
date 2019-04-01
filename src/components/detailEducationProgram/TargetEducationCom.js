@@ -1,355 +1,369 @@
-import React from "react";
-import { Row, Container, Button } from "shards-react";
-import "../../assets/target-education.css";
-import { InputTextarea } from "primereact/inputtextarea";
+import React, { Component } from "react";
 
-import * as logic from "../../business/logicEducationProgram";
+import { TreeTable } from "primereact/treetable";
+import { Column } from "primereact/column";
+import { Row, Col, Button, Card, CardBody } from "shards-react";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Checkbox } from "primereact/checkbox";
 
-import OSCom from "./OSCom";
+import * as logic from "../../business";
 
-export default class TargetEducationCom extends React.Component {
+import TableHeaderCom from "./TableHeaderCom";
+import TdsCom from "./TdsCom";
+
+class TargetEducationCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      targetList: [
-        {
-          id: 1,
-          isEdit: false,
-          value: `Có kiến thức kỹ thuật vững chắc; hiểu được các trách nhiệm và đạo đức nghề nghiệp để
-            áp dụng các công nghệ, kỹ thuật mới nhất của ngành công nghệ thông tin (CNTT) vào
-            việc giải quyết các vấn đề trên thực tế; có thể áp dụng các phương pháp khoa học trong
-            việc thực hiện các nghiên cứu trong lĩnh vực CNTT`,
-          oldValue: ""
-        },
-        {
-          id: 2,
-          isEdit: false,
-          value: `Trang bị cho sinh viên những kỹ năng cá nhân, kỹ năng nhóm/giao tiếp và kỹ năng theo
-            chuẩn CDIO (Conceive, Design, Implement, Operate) để nhận biết và giải quyết các vấn
-            đề thực tế một cách có hệ thống, có logic và sáng tạo`,
-          oldValue: ""
-        }
-      ],
-      specificallyTarget: [
-        {
-          id: 1,
-          isEdit: false,
-          value: `Biết được trách nhiệm, đạo đức nghề nghiệp, và hiện trạng kinh tế, môi trường và xã hội`,
-          oldValue: ""
-        },
-        {
-          id: 2,
-          isEdit: false,
-          value: `Có đầy đủ các kỹ năng cá nhân, kỹ năng nhóm/ giao tiếp và kỹ năng CDIO.`,
-          oldValue: ""
-        },
-        {
-          id: 3,
-          isEdit: false,
-          value: `Có khả năng kế thừa và phát triển các kiến thức, kỹ năng chuyên môn`,
-          oldValue: ""
-        },
-        {
-          id: 4,
-          isEdit: false,
-          value: `Có khả năng áp dụng các kiến thức chuyên môn trong quá trình giải quyết các vấn đề
-          thực tế hay nghiên cứu`,
-          oldValue: ""
-        }
-      ],
-      opportunityJobs: [
-        {
-          id: 1,
-          isEdit: false,
-          value: `Các vị trí thuộc nhóm Phát triển sản phẩm phần mềm: vị trí Phân tích nghiệp vụ/ phân
-          tích yêu cầu người dùng, Thiết kế phần mềm, Lập trình phần mềm, Kiểm thử sản phẩm,
-          Quản lý quy trình phát triển phần mềm, Quản lý dự án, Tư vấn, v.v...`,
-          oldValue: ""
-        },
-        {
-          id: 2,
-          isEdit: false,
-          value: `Các vị trí thuộc nhóm Hệ thống thông tin: Quản trị cơ sở dữ liệu, Quản trị hệ thống
-          CNTT cho doanh nghiệp, Tư vấn hệ thống CNTT, Quản trị thông tin, Quản trị an
-          ninh/bảo mật, v.v...`,
-          oldValue: ""
-        }
-      ],
-      textTartgetChange: ""
+      nodes: [],
+      node: "",
+      visible: false,
+      nameOut: "",
+      root: false,
+      osVisible: false,
+      isData: false,
+      detailOsVisible: false,
+      os: []
     };
   }
 
-  onDoubleClickTarget = val => {
+  // add
+  addRoot = () => {
+    const data = logic.addRoot(this.state.nodes, this.state.nameOut);
     this.setState({
-      targetList: logic.doubleClickTarget(this.state.targetList, val)
+      nodes: data
     });
   };
 
-  onDoubleClickTargetSpecific = val => {
+  add = node => {
+    const data = logic.add(this.state.nodes, node, this.state.nameOut);
     this.setState({
-      specificallyTarget: logic.doubleClickTarget(
-        this.state.specificallyTarget,
-        val
-      )
+      nodes: data
     });
   };
 
-  onDoubleClickTargetJob = val => {
+  addOS = () => {
+    // const data = logic.addOS(this.state.nodes, this.state.node, this.state.os);
+    // this.setState({
+    //   nodes: data
+    // });
+  };
+
+  // delete
+  deleteNode = node => {
+    const data = logic.deleteNode(this.state.nodes, node);
     this.setState({
-      opportunityJobs: logic.doubleClickTarget(this.state.opportunityJobs, val)
+      nodes: data
     });
   };
 
-  onChangeEditTarget = val => {
+  // update
+  nameEditor = props => {
+    return this.inputTextEditor(props, "name");
+  };
+
+  inputTextEditor = (props, field) => {
+    return (
+      <InputText
+        style={{ width: "80%" }}
+        type="text"
+        value={props.node.data[field]}
+        onChange={e => this.onEditorValueChange(props, e.target.value)}
+      />
+    );
+  };
+
+  onEditorValueChange = (props, value) => {
+    let editedNode = logic.findNodeByKey(this.state.nodes, props.node.key);
+    editedNode.data.name = value;
+    editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
+    this.updateNode(editedNode);
+  };
+
+  // update node after edit node
+  updateNode = node => {
+    const data = logic.updateNode(this.state.nodes, node);
     this.setState({
-      targetList: logic.updateTargetList(this.state.targetList, val)
+      nodes: data
     });
   };
 
-  onChangeEditTargetSpecific = val => {
+  // event
+  onClickDialog = node => {
     this.setState({
-      specificallyTarget: logic.updateTargetList(
-        this.state.specificallyTarget,
-        val
-      )
+      visible: true,
+      root: false,
+      node: node,
+      nameOut: "",
+      isData: false
     });
   };
 
-  onChangeEditTargetJob = val => {
+  onClickDialogRoot = () => {
     this.setState({
-      opportunityJobs: logic.updateTargetList(this.state.opportunityJobs, val)
+      visible: true,
+      root: true,
+      nameOut: "",
+      isData: false
     });
   };
 
-  onChangeTextTarget = (val, e) => {
+  onHideDialog = () => {
+    this.setState({ visible: false });
+  };
+
+  onShowDetailOS = IdOutcome => {
+    this.props.onLoadDetailOutcomeStandard(IdOutcome);
     this.setState({
-      targetList: logic.onChangeTextTarget(this.state.targetList, val, e)
+      detailOsVisible: true,
+      os: this.props.detailOutcomeStandard
     });
   };
 
-  onChangeTextTargetSpecific = (val, e) => {
-    this.setState({
-      specificallyTarget: logic.onChangeTextTarget(
-        this.state.specificallyTarget,
-        val,
-        e
-      )
-    });
+  onHideDetailOS = () => {
+    this.setState({ detailOsVisible: false });
   };
 
-  onChangeTextTargetJob = (val, e) => {
-    this.setState({
-      opportunityJobs: logic.onChangeTextTarget(
-        this.state.opportunityJobs,
-        val,
-        e
-      )
-    });
+  handleChangeTitle = event => {
+    this.setState({ nameOut: event.target.value });
   };
 
-  onChangeEditTargetCancel = val => {
-    this.setState({
-      targetList: logic.onChangeEditTargetCancel(this.state.targetList, val)
-    });
+  handleSubmit = event => {
+    if (this.state.root) {
+      this.addRoot();
+    } else {
+      this.add(this.state.node);
+    }
+    this.onHideDialog();
+
+    event.preventDefault();
   };
 
-  onChangeEditTargetCancelSpecific = val => {
-    this.setState({
-      specificallyTarget: logic.onChangeEditTargetCancel(
-        this.state.specificallyTarget,
-        val
-      )
-    });
+  onSubmit = () => {
+    this.addOS();
+    this.onHideDialog();
+    this.onHideDetailOS();
   };
 
-  onChangeEditTargetCancelJob = val => {
-    this.setState({
-      opportunityJobs: logic.onChangeEditTargetCancel(
-        this.state.opportunityJobs,
-        val
-      )
-    });
+  index = (ids, id) => {
+    return Number(ids[id]) - 1;
   };
 
-  saveChangeEditTarget = val => {
-    this.setState({
-      targetList: logic.saveChangeEditTarget(this.state.targetList, val)
-    });
+  upSameLevel = node => {
+    const data = [...logic.upSameLevel(this.state.nodes, node)];
+
+    this.setState({ nodes: [...data] });
   };
 
-  saveChangeEditTargetSpecific = val => {
-    this.setState({
-      specificallyTarget: logic.saveChangeEditTarget(
-        this.state.specificallyTarget,
-        val
-      )
-    });
+  downSameLevel = node => {
+    const data = [...logic.downSameLevel(this.state.nodes, node)];
+
+    this.setState({ nodes: [...data] });
   };
 
-  saveChangeEditTargetJob = val => {
-    this.setState({
-      opportunityJobs: logic.saveChangeEditTarget(
-        this.state.opportunityJobs,
-        val
-      )
-    });
+  actionTemplate = (node, column) => {
+    return (
+      <div>
+        <Button
+          onClick={() => this.onClickDialog(node)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Thêm cấp con"
+        >
+          <i className="material-icons">add</i>
+        </Button>
+        <Button
+          onClick={() => this.upSameLevel(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Lên cùng cấp"
+        >
+          <i className="material-icons">arrow_upward</i>
+        </Button>
+        <Button
+          onClick={() => this.downSameLevel(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Xuống cùng cấp"
+        >
+          <i className="material-icons">arrow_downward</i>
+        </Button>
+        <Button
+          onClick={() => this.deleteNode(node)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Xóa cấp này"
+        >
+          <i className="material-icons">delete_sweep</i>
+        </Button>
+      </div>
+    );
   };
 
   render() {
+    console.log(this.props.outcomeStandards);
+    const footer = (
+      <div>
+        {!this.state.isData ? (
+          <Button onClick={this.handleSubmit} theme="success">
+            Thêm
+          </Button>
+        ) : null}
+        <Button onClick={this.onHideDialog} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
+    const detailFooter = (
+      <div>
+        <Button onClick={this.onSubmit} theme="success">
+          Thêm
+        </Button>
+        <Button onClick={this.onHideDetailOS} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
     return (
-      <Container>
+      <div className="p-grid content-section implementation">
         <Row>
-          <label className="targetEducationNumber">1.</label>
-          <label className="targetEducationTitle"> Mục Tiêu Đào Tạo</label>
-        </Row>
-        <Row>
-          <label className="targetEducationNumber">1.1.</label>
-          <label className="targetEducationCommon"> Mục Tiêu Chung</label>
-        </Row>
-        <Row>
-          <label className="targetEducationContent">
-            Mục tiêu của chương trình đào tạo nhằm đào tào tạo ra các sinh viên
-            tốt nghiệp:
-          </label>
-        </Row>
-        <Row>
-          <ul className="targetEducationDetail">
-            {this.state.targetList.map((val, id) => {
-              return val.isEdit ? (
-                <div key={val.id}>
-                  <InputTextarea
-                    rows={5}
-                    cols={150}
-                    value={val.oldValue}
-                    onChange={e => this.onChangeTextTarget(val, e)}
-                  />
+          <Col lg="12" md="12" sm="12">
+            <TreeTable value={this.state.nodes}>
+              <Column
+                field="displayName"
+                header="Tên dòng"
+                editor={this.nameEditor}
+                expander
+              />
+              <Column
+                header={
                   <Button
-                    style={{ marginRight: "1em" }}
-                    onClick={() => this.onChangeEditTarget(val)}
+                    onClick={() => this.onClickDialogRoot()}
+                    theme="success"
                   >
-                    Lưu
+                    <i className="material-icons">add</i> Thêm cấp
                   </Button>
-                  <Button
-                    theme="light"
-                    onClick={() => this.onChangeEditTargetCancel(val)}
-                  >
-                    Hủy
-                  </Button>
-                </div>
-              ) : (
-                <li
-                  key={val.id}
-                  onDoubleClick={() => this.onDoubleClickTarget(val)}
+                }
+                body={this.actionTemplate}
+                style={{ textAlign: "left", width: "15em" }}
+              />
+            </TreeTable>
+          </Col>
+        </Row>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="Thêm cấp..."
+            visible={this.state.visible}
+            style={{ width: "50vw" }}
+            footer={footer}
+            onHide={this.onHideDialog}
+          >
+            <Row>
+              <Col lg="6" md="6" sm="6">
+                <Checkbox
+                  checked={!this.state.isData}
+                  onChange={e => this.setState({ isData: false })}
+                />
+                <label htmlFor="cb2" className="p-checkbox-label">
+                  Thêm cấp
+                </label>
+              </Col>
+              <Col lg="6" md="6" sm="6">
+                <Checkbox
+                  checked={this.state.isData}
+                  onChange={e => this.setState({ isData: true })}
+                />
+                <label htmlFor="cb2" className="p-checkbox-label">
+                  Thêm chuẩn đầu ra
+                </label>
+              </Col>
+            </Row>
+            <br />
+            {!this.state.isData ? (
+              <InputText
+                type="text"
+                value={this.state.nameOut}
+                onChange={this.handleChangeTitle}
+                placeholder="Tên"
+                style={{ width: "100%" }}
+              />
+            ) : (
+              <Row>
+                <Col
+                  lg="12"
+                  md="12"
+                  sm="12"
+                  style={{ overflowY: "scroll", height: "240px" }}
                 >
-                  {val.value}
-                </li>
-              );
-            })}
-          </ul>
-        </Row>
-        <Row>
-          <label className="targetEducationNumber">1.2.</label>
-          <label className="targetEducationCommon">
-            {" "}
-            Mục Tiêu Cụ Thể - Chuẩn đầu ra của chương trình đào tạo
-          </label>
-        </Row>
-        <Row>
-          <label className="targetEducationNumber">1.2.1.</label>
-          <label className="targetEducationCommon"> Mục Tiêu Cụ Thể</label>
-        </Row>
-        <Row>
-          <ul className="targetEducationDetail">
-            {this.state.specificallyTarget.map((val, id) => {
-              return val.isEdit ? (
-                <div key={val.id}>
-                  <InputTextarea
-                    rows={2}
-                    cols={150}
-                    value={val.oldValue}
-                    onChange={e => this.onChangeTextTargetSpecific(val, e)}
-                  />
-                  <Button
-                    style={{ marginRight: "1em" }}
-                    onClick={() => this.onChangeEditTargetSpecific(val)}
-                  >
-                    Lưu
-                  </Button>
-                  <Button
-                    theme="light"
-                    onClick={() => this.onChangeEditTargetCancelSpecific(val)}
-                  >
-                    Hủy
-                  </Button>
-                </div>
-              ) : (
-                <li
-                  key={val.id}
-                  onDoubleClick={() => this.onDoubleClickTargetSpecific(val)}
-                >
-                  {val.value}
-                </li>
-              );
-            })}
-          </ul>
-        </Row>
-        <Row>
-          <label className="targetEducationNumber">1.2.2.</label>
-          <label className="targetEducationCommon">
-            {" "}
-            Chuẩn đầu ra của chương trình giáo dục
-          </label>
-        </Row>
-        <OSCom
-          outcomeStandards={this.props.outcomeStandards}
-          detailOutcomeStandard={this.props.detailOutcomeStandard}
-          onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
-        />
-        <Row>
-          <label className="targetEducationNumber">1.3.</label>
-          <label className="targetEducationCommon"> Cơ Hội Nghề Nghiệp</label>
-        </Row>
-        <Row>
-          <label className="targetEducationContent">
-            Sinh viên sau khi ra trường có các cơ hội nghề nghiệp sau
-          </label>
-        </Row>
-        <Row>
-          <ul className="targetEducationDetail">
-            {this.state.opportunityJobs.map((val, id) => {
-              return val.isEdit ? (
-                <div key={val.id}>
-                  <InputTextarea
-                    rows={5}
-                    cols={150}
-                    value={val.oldValue}
-                    onChange={e => this.onChangeTextTargetJob(val, e)}
-                  />
-                  <Button
-                    style={{ marginRight: "1em" }}
-                    onClick={() => this.onChangeEditTargetJob(val)}
-                  >
-                    Lưu
-                  </Button>
-                  <Button
-                    theme="light"
-                    onClick={() => this.onChangeEditTargetCancelJob(val)}
-                  >
-                    Hủy
-                  </Button>
-                </div>
-              ) : (
-                <li
-                  key={val.id}
-                  onDoubleClick={() => this.onDoubleClickTargetJob(val)}
-                >
-                  {val.value}
-                </li>
-              );
-            })}
-          </ul>
-        </Row>
-      </Container>
+                  <Card small className="mb-4">
+                    <CardBody className="p-0 pb-3">
+                      <table className="table mb-0">
+                        <thead className="bg-light">
+                          <TableHeaderCom />
+                        </thead>
+                        <tbody>
+                          {Array.isArray(this.props.outcomeStandards) &&
+                          this.props.outcomeStandards.length !== 0 ? (
+                            this.props.outcomeStandards.map((row, i) => (
+                              <tr key={i}>
+                                <td>{i + 1}</td>
+                                <td>{row.NameOutcomeStandard}</td>
+                                <td>{row.NameFaculty}</td>
+                                <td>{row.NameProgram}</td>
+                                <td>{row.SchoolYear}</td>
+                                <td>
+                                  <Button
+                                    title="Chỉnh sửa"
+                                    onClick={() => this.onShowDetailOS(row.Id)}
+                                    theme="success"
+                                  >
+                                    <i className="material-icons">search</i>
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <TdsCom />
+                          )}
+                        </tbody>
+                      </table>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            )}
+          </Dialog>
+        </div>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="Chi tiết chuẩn đầu ra"
+            visible={this.state.detailOsVisible}
+            style={{ width: "50vw" }}
+            footer={detailFooter}
+            onHide={this.onHideDetailOS}
+          >
+            <Row>
+              <Col
+                lg="12"
+                md="12"
+                sm="12"
+                style={{ overflowY: "scroll", height: "320px" }}
+              >
+                <TreeTable value={this.state.os}>
+                  <Column field="displayName" header="Tên dòng" expander />
+                </TreeTable>
+              </Col>
+            </Row>
+          </Dialog>
+        </div>
+      </div>
     );
   }
 }
+
+export default TargetEducationCom;
