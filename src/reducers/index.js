@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { faculties } from "./faculties";
 import { programs } from "./programs";
+import { subjects } from "./subjects";
 import { outcomeStandards } from "./outcomeStandards";
 import { infoOutcomeStandard } from "./infoOutcomeStandard";
 import { detailOutcomeStandard } from "./detailOutcomeStandard";
@@ -10,6 +11,7 @@ import { message } from "./message";
 const rootReducer = combineReducers({
   faculties,
   programs,
+  subjects,
   outcomeStandards,
   infoOutcomeStandard,
   detailOutcomeStandard,

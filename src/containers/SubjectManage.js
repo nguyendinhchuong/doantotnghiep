@@ -9,6 +9,7 @@ import SubjectManageCom from "../components/subjectManage/SubjectManageCom";
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
+import * as subjectsAction from "../actions/subjectsAction";
 
 class SubjectManageTemp extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ class SubjectManageTemp extends Component {
     this.state = {};
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    this.props.onLoadSubjects();
+  };
 
   render() {
     return (
@@ -34,11 +37,15 @@ class SubjectManageTemp extends Component {
             <AlertCom message={this.props.message} />
           </Col>
         </Row>
-        
+
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <SubjectManageCom />
+            <SubjectManageCom
+              subjects={this.props.subjects}
+              onDeleteSubject={this.props.onDeleteSubject}
+              onAddSubject={this.props.onAddSubject}
+            />
           </Col>
         </Row>
       </Container>
@@ -47,7 +54,12 @@ class SubjectManageTemp extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.message
+  message: state.message,
+  subjects: state.subjects
 });
 
-export default connect(mapStateToProps, {})(SubjectManageTemp);
+export default connect(mapStateToProps, {
+  onLoadSubjects: subjectsAction.onLoadSubjects,
+  onDeleteSubject: subjectsAction.onDeleteSubject,
+  onAddSubject: subjectsAction.onAddSubject
+})(SubjectManageTemp);

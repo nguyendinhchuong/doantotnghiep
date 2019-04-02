@@ -25,9 +25,8 @@ export default class TableHeaderCom extends React.Component {
         <th scope="col" className="border-0">
           Tiết bài tập
         </th>
-        <th scope="col" className="border-0">
-          Loại học phần
-        </th>
+        <th scope="col" className="border-0" />
+        <th scope="col" className="border-0" />
       </tr>
     );
   }

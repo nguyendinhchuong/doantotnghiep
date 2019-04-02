@@ -25,8 +25,8 @@ export const onLoadOutcomeStandards = () => {
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsError(res));
         } else {
-          // let chirp = { message: `Tải các CĐR thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
+          let chirp = { message: `Tải các CĐR thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
         }
       })

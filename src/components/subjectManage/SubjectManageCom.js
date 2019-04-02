@@ -6,15 +6,14 @@ import {
   Card,
   CardBody,
   Button,
-  FormSelect,
-  FormInput
+  FormInput,
+  FormTextarea
 } from "shards-react";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 
-import * as logic from "../../business";
-
+import DataInputCom from "./DataInputCom";
 import TableHeaderCom from "./TableHeaderCom";
 import TdsCom from "./TdsCom";
 
@@ -29,7 +28,7 @@ export default class SubjectManageCom extends Component {
       theory: "",
       practice: "",
       exercise: "",
-      type: { id: "0" }
+      description: ""
     };
   }
 
@@ -61,13 +60,8 @@ export default class SubjectManageCom extends Component {
     this.setState({ exercise: event.target.value });
   };
 
-  handleTypeChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const index = event.nativeEvent.target.selectedIndex;
-      const nameType = event.nativeEvent.target[index].text;
-      this.setState({ type: { id, nameType } });
-    }
+  handleDescription = event => {
+    this.setState({ description: event.target.value });
   };
 
   onCloseAdd = () => {
@@ -78,35 +72,44 @@ export default class SubjectManageCom extends Component {
 
   onCloseAndCreate = () => {
     if (
+      !isNaN(parseInt(this.state.credits, 10)) &&
+      !isNaN(parseInt(this.state.theory, 10)) &&
+      !isNaN(parseInt(this.state.practice, 10)) &&
+      !isNaN(parseInt(this.state.exercise, 10)) &&
       this.state.subjectCode !== "" &&
       this.state.nameSubject !== "" &&
-      !isNaN(this.state.credits) &&
-      !isNaN(this.state.theory) &&
-      !isNaN(this.state.practice) &&
-      !isNaN(this.state.exercise) &&
-      this.state.type.id !== "0"
+      this.state.description !== ""
     ) {
-      let SubjectCode = this.state.subjectCode;
-      let NameSubject = this.state.nameSubject;
-      let Credits = parseInt(this.state.credits, 10);
-      let Theory = parseInt(this.state.theory, 10);
-      let Practice = parseInt(this.state.practice, 10);
-      let Exercise = parseInt(this.state.exercise, 10);
-      let NameType = this.state.type.nameType;
+      let subjectcode = this.state.subjectCode;
+      let subjectname = this.state.nameSubject;
+      let credit = parseInt(this.state.credits, 10);
+      let theoryperiod = parseInt(this.state.theory, 10);
+      let practiceperiod = parseInt(this.state.practice, 10);
+      let exerciseperiod = parseInt(this.state.exercise, 10);
+      let description = this.state.description;
+      let datecreated = new Date();
+      let dateedited = new Date();
       let data = {
-        SubjectCode,
-        NameSubject,
-        Credits,
-        Theory,
-        Practice,
-        Exercise,
-        NameType
+        subjectcode,
+        subjectname,
+        subjectengname: "",
+        credit,
+        theoryperiod,
+        practiceperiod,
+        exerciseperiod,
+        description,
+        datecreated,
+        dateedited
       };
       this.props.onAddSubject(data);
       this.setState({
         visible: false
       });
     }
+  };
+
+  onShowDetail = IdSubject => {
+    // this.props.onDeleteSubject(IdSubject);
   };
 
   onDelete = IdSubject => {
@@ -148,8 +151,8 @@ export default class SubjectManageCom extends Component {
           <Col lg="8" md="8" sm="8">
             <FormInput
               type="text"
-              value={this.state.nameOutcome}
-              onChange={this.handleNameOutcomeChange}
+              value={this.state.subjectCode}
+              onChange={this.handleSubjectCode}
               placeholder="MTH003"
               className="mb-2"
             />
@@ -163,8 +166,8 @@ export default class SubjectManageCom extends Component {
           <Col lg="8" md="8" sm="8">
             <FormInput
               type="text"
-              value={this.state.name}
-              onChange={this.handleSchoolYearChange}
+              value={this.state.nameSubject}
+              onChange={this.handleNameSubject}
               placeholder="Tên..."
               className="mb-2"
             />
@@ -233,20 +236,13 @@ export default class SubjectManageCom extends Component {
         <br />
         <Row>
           <Col lg="4" md="4" sm="4">
-            Loại học phần:
+            Mô tả môn học:
           </Col>
           <Col lg="8" md="8" sm="8">
-            <FormSelect onChange={e => this.handleTypeChange(e)}>
-              <option defaultValue key={0} value={0}>
-                Chọn...
-              </option>
-              <option key={1} value={"BB"}>
-                Bắt buộc
-              </option>
-              <option key={2} value={"TC"}>
-                Tự chọn
-              </option>
-            </FormSelect>
+            <FormTextarea
+              value={this.state.description}
+              onChange={this.handleDescription}
+            />
           </Col>
         </Row>
       </Dialog>
@@ -255,12 +251,32 @@ export default class SubjectManageCom extends Component {
     return (
       <div>
         <Row>
-          <Col lg="12" md="12" sm="12">
+          <Col lg="2" md="2" sm="2">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
                 <i className="material-icons">playlist_add</i> Thêm học phần
               </Button>
             </p>
+          </Col>
+          <Col lg="6" md="6" sm="6" />
+          <Col lg="2" md="2" sm="2">
+            <label
+              onClick={this.onShowExportCom}
+              style={{
+                float: "right",
+                borderRadius: "8px",
+                border: "1px solid #17C671",
+                display: "inline-block",
+                color: "#17C671",
+                padding: "6px",
+                cursor: "pointer"
+              }}
+            >
+              <i className="material-icons">save_alt</i> Tạo file Excel
+            </label>
+          </Col>
+          <Col lg="2" md="2" sm="2">
+            <DataInputCom handleFile={this.handleFile} />
           </Col>
           <Col lg="12" md="12" sm="12">
             <Card small className="mb-4">
@@ -270,18 +286,26 @@ export default class SubjectManageCom extends Component {
                     <TableHeaderCom />
                   </thead>
                   <tbody>
-                    {Array.isArray(this.props.outcomeStandards) &&
-                    this.props.outcomeStandards.length !== 0 ? (
-                      this.props.outcomeStandards.map((row, i) => (
+                    {Array.isArray(this.props.subjects) &&
+                    this.props.subjects.length !== 0 ? (
+                      this.props.subjects.map((row, i) => (
                         <tr key={i}>
                           <td>{i + 1}</td>
-                          <td>{row.NameOutcomeStandard}</td>
-                          <td>{row.NameFaculty}</td>
-                          <td>{row.NameProgram}</td>
-                          <td>{row.NameUser}</td>
-                          <td>{row.SchoolYear}</td>
-                          <td>{logic.formatDate(row.DateCreated)}</td>
-                          <td>{logic.formatDate(row.DateEdited)}</td>
+                          <td>{row.SubjectCode}</td>
+                          <td>{row.SubjectName}</td>
+                          <td>{row.Credit}</td>
+                          <td>{row.TheoryPeriod}</td>
+                          <td>{row.PracticePeriod}</td>
+                          <td>{row.ExercisePeriod}</td>
+                          <td>
+                            <Button
+                              title="Xem chi tiết"
+                              onClick={() => this.onShowDetail(row.Id)}
+                              theme="success"
+                            >
+                              <i className="material-icons">search</i>
+                            </Button>
+                          </td>
                           <td>
                             <Button
                               title="Xóa"
