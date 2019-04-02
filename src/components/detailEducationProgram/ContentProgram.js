@@ -15,18 +15,10 @@ class ContentProgram extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nodes: [
-                { 
-                    key:'7.1', 
-                    data:{
-                        name:'Nội Dung Chương Trình',
-                        displayName:'7.1. Nội Dung Chương Trình'
-                    },
-                    children:[]
-                }
-            ],
+            nodes: [],
             node: [],
             isDialogRoot: false,
+            isDialogChild: false,
             nameValue:'',
             isTable: false,
             credit: 0,
@@ -35,25 +27,53 @@ class ContentProgram extends React.Component {
         }
         //this.footerTemplate = this.footerTemplate.bind(this);
     }
-    isShowDialogRoot = node =>{
+    isShowDialogRoot = () =>{
         this.setState({ 
             isDialogRoot:true ,
+        })
+    }
+
+    isShowDialogChild = node =>{
+        this.setState({ 
+            isDialogChild:true ,
             node: node
         })
     }
 
     onHideDialogRoot = ()=>{
-        this.setState({ isDialogRoot:false });
+        this.setState({ isDialogRoot: false });
     }
+    onHideDialogChild = () =>{
+        this.setState({ isDialogChild: false });
+    }
+
     handleChangeValue = (e) =>{
         this.setState({ nameValue: e.target.value });
     }
-    // Templatre
-    actionTemplate(node, column) {
+   
+
+    handleAddRoot = () =>{
+       const data = logic.addRoot(this.state.nodes, this.state.nameValue);
+       this.setState({nodes: data});
+       this.onHideDialogRoot();
+    }
+
+    handleAddChild = () =>{
+        if(!this.state.isTable){
+            const data = logic.addChildTitle(this.state.nodes, this.state.node, this.state.nameValue);            
+        }
+        else{
+
+        }
+        this.onHideDialogChild();
+    };
+
+     // Templatre
+     actionTemplate(node, column) {
         return(
         <div>
             <Button icon="pi pi-search" 
-                onClick={()=>this.isShowDialogRoot(node)}
+                onClick={()=>this.isShowDialogChild(node)}
                 className="p-button-success" 
                 style={{marginRight: '.5em'}} 
             />
@@ -62,85 +82,60 @@ class ContentProgram extends React.Component {
         );
     }
 
-    handleAdd = () =>{
-       if(this.state.isTable){
-           const data = this.state.nodes;
-           this.setState({nodes: logic.addNodeTable(data,'')});
-       }
-       else{
-           alert('Add title');
-       }
-       this.onHideDialogRoot();
-    }
-
-    headerTemplate = (data) => {
-        return data.vin;
-    }
-
-    footerTemplate = (data, index) => {
-        return ([
-                    <td key={data.vin + '_footerTotalLabel'} colSpan="1" style={{textAlign: 'right'}}>Total Price</td>,
-                    <td key={data.vin + '_footerTotalValue'}>{this.calculateGroupTotal(data.vin)}</td>
-            ]
-        );
-    }
-
-    calculateGroupTotal(vin) {
-        let total = 0;
-        
-        if(cars) {
-            for(let car of cars) {
-                if(car.vin === vin) {
-                    total += car.year;
-                }
-            }
-        }
-
-        return total;
-    }
-
-    footerGroup = () =>{
-        return(
-            <ColumnGroup>
-                            <Row>
-                                <Column footer="Totals:" colSpan={1} />
-                                <Column footer="$506,202" />
-                                <Column footer="$531,020" />
-                            </Row>
-                         </ColumnGroup>
-        );
-    }
 
     render(){
         const footerRoot = (
             <div>
-              <Button onClick={this.handleAdd} label="Save" theme="success" />
+              <Button onClick={this.handleAddRoot} label="Save" theme="success" />
               <Button onClick={this.onHideDialogRoot} label="Cancel" theme="secondary" />
             </div>
           );
+
+          const footerChild = (
+            <div>
+              <Button onClick={this.handleAddChild} label="Save" theme="success" />
+              <Button onClick={this.onHideDialogChild} label="Cancel" theme="secondary" />
+            </div>
+          ); 
         return(
             <div>
                 <hr />
-                {/* <TreeTable value={this.state.nodes}>
+                <TreeTable value={this.state.nodes}>
                     <Column field="displayName" header="Name" expander></Column>
-                    <Column body={()=>this.actionTemplate()} style={{textAlign:'center', width: '8em'}}/>
-                </TreeTable> */}
-                 <DataTable value={cars} 
-                    groupField="vin"
-                    rowGroupMode="subheader"
-                    sortField="vin"
-                    rowGroupHeaderTemplate={this.headerTemplate} 
-                    rowGroupFooterTemplate={this.footerTemplate}
-                    >
-                    <Column field="year" header="Year" />
-                    <Column field="year" header="Year" />
-                </DataTable>
+                    <Column 
+                        header={
+                            <Button
+                              label="Thêm Cấp"
+                              onClick={() => this.isShowDialogRoot(null)}
+                            />
+                          }
+                        body={(node, column)=>this.actionTemplate(node, column)} 
+                        style={{textAlign:'center', width: '8em'}}/>
+                </TreeTable> 
+
                 {/* Dialog Root */}
-                <Dialog header="Thêm Nội Dung Chương Trình" 
+                <Dialog
+                    header="Thêm Nội Dung Chương Trình" 
                     visible={this.state.isDialogRoot} 
-                    onHide={()=>this.onHideDialog()}
+                    onHide={()=>this.onHideDialogRoot()}
                     style={{ width: "50vw" }}
-                    footer={footerRoot}>
+                    footer={footerRoot}
+                    >
+                    <Col>
+                        <InputText
+                            type="text"
+                            value={this.state.nameValue}
+                            onChange={this.handleChangeValue}
+                            style={{ width: "100%" }}
+                            />
+                    </Col>
+                </Dialog>
+                {/* Dialog Child */}
+                <Dialog header="Thêm Nội Dung Chương Trình" 
+                    visible={this.state.isDialogChild} 
+                    onHide={()=>this.onHideDialogChild()}
+                    style={{ width: "50vw" }}
+                    footer={footerChild}>
                     {/* Checked */}
                     <Row>
                         <Col lg="2" md="2" sm="4">
