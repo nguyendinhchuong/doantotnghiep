@@ -50,13 +50,6 @@ export const addSubjectError = errorMessage => ({
 
 export const onAddSubject = data => {
   return (dispatch, getState) => {
-    // let link = `${links.ADD_SUBJECT}?subjectcode=${data.subjectcode}
-    // &subjectname=${data.subjectname}&subjectengname=${data.subjectengname}
-    // &credit=${data.credit}&theoryperiod=${data.theoryperiod}
-    // &practiceperiod=${data.practiceperiod}&exerciseperiod=${data.exerciseperiod}
-    // &description=${data.description}&datecreated=${data.datecreated}
-    // &dateedited=${data.dateedited}`;
-
     let link = links.ADD_SUBJECT;
     let body = {};
     body.data = JSON.stringify(data);
@@ -78,6 +71,43 @@ export const onAddSubject = data => {
         let chirp = { message: `Thêm môn học thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(addSubjectError(err));
+      });
+  };
+};
+
+export const addSubjectBulkSuccess = successMessage => ({
+  type: cst.ADD_SUBJECT_BULK_SUCCESS,
+  successMessage
+});
+
+export const addSubjectBulkError = errorMessage => ({
+  type: cst.ADD_SUBJECT_BULK_ERROR,
+  errorMessage
+});
+
+export const onAddSubjectBulk = data => {
+  return (dispatch, getState) => {
+    let link = links.ADD_SUBJECT_BULK;
+    let body = {};
+    body.data = JSON.stringify(data);
+    axios
+      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .then(res => {
+        if (res.data.code === 1) {
+          dispatch(onLoadSubjects());
+          let chirp = { message: `Thêm danh sách môn học thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
+          dispatch(addSubjectBulkSuccess(res));
+        } else {
+          let chirp = { message: `Thêm danh sách môn học thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(addSubjectBulkError(res));
+        }
+      })
+      .catch(err => {
+        let chirp = { message: `Thêm danh sách môn học thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
+        dispatch(addSubjectBulkError(err));
       });
   };
 };

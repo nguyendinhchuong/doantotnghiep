@@ -45,6 +45,7 @@ class SubjectManageTemp extends Component {
               subjects={this.props.subjects}
               onDeleteSubject={this.props.onDeleteSubject}
               onAddSubject={this.props.onAddSubject}
+              onAddSubjectBulk={this.props.onAddSubjectBulk}
             />
           </Col>
         </Row>
@@ -61,5 +62,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onLoadSubjects: subjectsAction.onLoadSubjects,
   onDeleteSubject: subjectsAction.onDeleteSubject,
-  onAddSubject: subjectsAction.onAddSubject
+  onAddSubject: subjectsAction.onAddSubject,
+  onAddSubjectBulk: subjectsAction.onAddSubjectBulk
 })(SubjectManageTemp);

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import XLSX from "xlsx";
 
 import {
   Row,
@@ -13,6 +14,8 @@ import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 
+import * as logic from "../../business";
+
 import DataInputCom from "./DataInputCom";
 import TableHeaderCom from "./TableHeaderCom";
 import TdsCom from "./TdsCom";
@@ -22,13 +25,15 @@ export default class SubjectManageCom extends Component {
     super(props);
     this.state = {
       visible: false,
+      reviewVisible: false,
       subjectCode: "",
       nameSubject: "",
       credits: "",
       theory: "",
       practice: "",
       exercise: "",
-      description: ""
+      description: "",
+      tmpSubjects: []
     };
   }
 
@@ -108,8 +113,53 @@ export default class SubjectManageCom extends Component {
     }
   };
 
+  onClose = () => {
+    this.setState({
+      reviewVisible: false
+    });
+  };
+
+  onCloseAndAddSubjects = () => {
+    this.props.onAddSubjectBulk(this.state.tmpSubjects);
+    this.setState({
+      reviewVisible: false,
+      tmpSubjects: []
+    });
+  };
+
+  onExport = () => {
+    const data = logic.createExportSubject(this.props.subjects);
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Subject List");
+    XLSX.writeFile(wb, `dsmonhoc.xlsx`);
+  };
+
+  importFile = file => {
+    const reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = e => {
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      const subjects = logic.convertToSubjects(data);
+      this.setState({
+        reviewVisible: true,
+        tmpSubjects: subjects
+      });
+    };
+    if (rABS) reader.readAsBinaryString(file);
+    else reader.readAsArrayBuffer(file);
+  };
+
   onShowDetail = IdSubject => {
-    // this.props.onDeleteSubject(IdSubject);
+    const row = this.props.subjects.filter(row => row.Id === IdSubject)[0];
+    const description = row.Description
+      ? "Mô tả môn học: " + row.Description
+      : "Chưa có mô tả môn học!!";
+    alert(description);
   };
 
   onDelete = IdSubject => {
@@ -248,6 +298,65 @@ export default class SubjectManageCom extends Component {
       </Dialog>
     );
 
+    const reviewDialog = (
+      <Dialog
+        visible={this.state.reviewVisible}
+        onClose={this.onClose}
+        style={{ width: 800 }}
+        title={<div>Danh sách môn từ file:</div>}
+        footer={[
+          <Button
+            type="button"
+            className="btn btn-default"
+            key="close"
+            onClick={this.onClose}
+            theme="light"
+          >
+            Hủy
+          </Button>,
+          <Button
+            type="button"
+            className="btn btn-primary"
+            key="save"
+            onClick={this.onCloseAndAddSubjects}
+            theme="success"
+          >
+            Tạo
+          </Button>
+        ]}
+      >
+        <Col lg="12" md="12" sm="12">
+          <Card small className="mb-4">
+            <CardBody className="p-0 pb-3">
+              <table className="table mb-0">
+                <thead className="bg-light">
+                  <TableHeaderCom />
+                </thead>
+                <tbody>
+                  {Array.isArray(this.state.tmpSubjects) &&
+                  this.state.tmpSubjects.length !== 0 ? (
+                    this.state.tmpSubjects.map((row, i) => (
+                      <tr key={i}>
+                        <td>{i + 1}</td>
+                        <td>{row.subjectcode}</td>
+                        <td>{row.subjectname}</td>
+                        <td>{row.credit}</td>
+                        <td>{row.theoryperiod}</td>
+                        <td>{row.practiceperiod}</td>
+                        <td>{row.exerciseperiod}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <TdsCom />
+                  )}
+                </tbody>
+              </table>
+            </CardBody>
+          </Card>
+        </Col>
+      </Dialog>
+    );
+
     return (
       <div>
         <Row>
@@ -261,7 +370,7 @@ export default class SubjectManageCom extends Component {
           <Col lg="6" md="6" sm="6" />
           <Col lg="2" md="2" sm="2">
             <label
-              onClick={this.onShowExportCom}
+              onClick={this.onExport}
               style={{
                 float: "right",
                 borderRadius: "8px",
@@ -276,7 +385,7 @@ export default class SubjectManageCom extends Component {
             </label>
           </Col>
           <Col lg="2" md="2" sm="2">
-            <DataInputCom handleFile={this.handleFile} />
+            <DataInputCom importFile={this.importFile} />
           </Col>
           <Col lg="12" md="12" sm="12">
             <Card small className="mb-4">
@@ -327,6 +436,7 @@ export default class SubjectManageCom extends Component {
           </Col>
         </Row>
         {dialog}
+        {reviewDialog}
       </div>
     );
   }

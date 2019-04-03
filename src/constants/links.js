@@ -6,9 +6,10 @@ export const LOAD_FACULTIES = `${LINK}/getfacultyinfo`;
 // programs links
 export const LOAD_PROGRAMS = `${LINK}/getprograminfo`;
 
-// programs links
+// subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;
 export const ADD_SUBJECT = `${LINK}/subject/add/`;
+export const ADD_SUBJECT_BULK = `${LINK}/subject/addlist/`;
 export const DELETE_SUBJECT = `${LINK}/subject/delete/`;
 
 // outcomeStandards links

@@ -692,7 +692,6 @@ export const changeKeys = (nodes, key) => {
 };
 
 export const addOS = (nodes, node, os) => {
-  console.log(node);
   if (node === "" || node.children.length !== 0) {
     alert("Không thể thêm chuẩn đầ ra");
     return nodes;
@@ -733,4 +732,50 @@ export const addOS = (nodes, node, os) => {
   }
 
   return nodes;
+};
+
+export const createExportSubject = subjects => {
+  let data = [];
+  data[0] = [
+    "Mã học phần",
+    "Tên học phần",
+    "Số tín chỉ",
+    "Số tiết lý thuyết",
+    "Số tiết thực hành",
+    "Số tiết bài tập",
+    "Mô tả"
+  ];
+
+  let tmp = subjects.map(row => {
+    return [
+      row.SubjectCode,
+      row.SubjectName,
+      row.Credit,
+      row.TheoryPeriod,
+      row.PracticePeriod,
+      row.ExercisePeriod,
+      row.Description
+    ];
+  });
+  data.push(...tmp);
+  return data;
+};
+
+export const convertToSubjects = data => {
+  let subjects = data.map(row => {
+    return {
+      subjectcode: row[0],
+      subjectname: row[1],
+      credit: row[2],
+      theoryperiod: row[3],
+      practiceperiod: row[4],
+      exerciseperiod: row[5],
+      description: row[6] ? row[6] : "",
+      subjectengname: "",
+      datecreated: new Date().toISOString(),
+      dateedited: new Date().toISOString()
+    };
+  });
+  subjects.splice(0, 1);
+  return subjects;
 };

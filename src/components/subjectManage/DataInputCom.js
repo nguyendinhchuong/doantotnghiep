@@ -1,9 +1,9 @@
 import React from "react";
 
 export default class DataInputCom extends React.Component {
-  ImportFile = e => {
+  handleFile = e => {
     const files = e.target.files;
-    if (files && files[0]) this.props.handleFile(files[0]);
+    if (files && files[0]) this.props.importFile(files[0]);
   };
   render() {
     return (
@@ -28,7 +28,7 @@ export default class DataInputCom extends React.Component {
           style={{ visibility: "hidden" }}
           className="form-control"
           id="file"
-          onChange={this.ImportFile}
+          onChange={this.handleFile}
         />
       </form>
     );
