@@ -17,15 +17,16 @@ class ContentProgram extends React.Component {
         this.state = {
             nodes: [],
             node: [],
+            nodeTables:[],
             isDialogRoot: false,
             isDialogChild: false,
+            isDialogTable: false,
             nameValue:'',
             isTable: false,
             credit: 0,
             isRequired: true,
             isAccumulation: true
         }
-        //this.footerTemplate = this.footerTemplate.bind(this);
     }
     isShowDialogRoot = () =>{
         this.setState({ 
@@ -40,11 +41,22 @@ class ContentProgram extends React.Component {
         })
     }
 
+    isShowDialogTable = () =>{
+        this.setState({ 
+            isDialogTable:true ,
+        })
+    }
+
     onHideDialogRoot = ()=>{
         this.setState({ isDialogRoot: false });
     }
+
     onHideDialogChild = () =>{
         this.setState({ isDialogChild: false });
+    }
+
+    onHideDialogTable = () =>{
+        this.setState({ isDialogTable: false });
     }
 
     handleChangeValue = (e) =>{
@@ -58,16 +70,89 @@ class ContentProgram extends React.Component {
        this.onHideDialogRoot();
     }
 
+    
+    footer =
+        <div className="p-clearfix" style={{width:'100%'}}>
+            <Button style={{float:'left'}} label="Add" icon="pi pi-plus" onClick={()=>this.isShowDialogTable()}/>
+        </div>;
+
+    convertNodeToDataTable = node =>{
+        if(!node.data.isTable){
+            return node;
+        }
+        const subjects = node.data.subjects;
+        const table = 
+            <DataTable 
+                value={subjects}
+                headerColumnGroup = {logic.headerGroup}
+                rowGroupMode="rowspan"
+                sortField="option" sortOrder={1}
+                groupField="option" 
+                footerColumnGroup={logic.footerGroup}
+                footer = {this.footer}
+                >
+                <Column field="stt" header="STT" />
+                <Column field="option" header="Loại Học Phần" />
+                <Column field="code" header="Mã Môn Học" />
+                <Column field="name" header="Tên Môn Học" />
+                <Column field="credit" header="Số Tín Chỉ" />
+                <Column field="theory" header="Lý Thuyết" />
+                <Column field="practise" header="Thực Hành" />
+                <Column field="exercise" header="Bài Tập" />
+                <Column field="description" header="Descriptoin" />
+            </DataTable>
+        node.data.displayName = table;
+        return node;
+    }
+
+    addChildTable = (data, nodeParent) => {
+        const length = nodeParent.children.length;
+        const key = `${nodeParent.key}.${length+1}`;
+        const subject = {stt:1,code: 'BAA00001',name: 'Toán CC',credit: 4, option: 'BB',description:'',theory:75,practise:5,exercise:10};
+        let node = {
+            key: key,
+            data:{
+                isTable: true,
+                subjects:[],
+                displayName:''
+            },
+            children:[]
+        };
+        this.setState({nodeTables: node});
+        node = this.convertNodeToDataTable(node);
+        nodeParent.children.push(node);
+        data =  logic.updateNode(data, nodeParent);
+        return data;
+    };
+    
     handleAddChild = () =>{
         const data = [...this.state.nodes];
         if(!this.state.isTable){
             this.setState({nodes: logic.addChildTitle(data, this.state.node, this.state.nameValue)});
         }
         else{
-            this.setState({nodes: logic.addChildTable(data, this.state.node)});
+            this.setState({nodes: this.addChildTable(data, this.state.node)});
         }
         this.onHideDialogChild();
     };
+
+    addRowTableLogic = (data, node, subject) => {
+        if(!node.data.isTable){
+            return data;
+        }
+        subject = {stt:1,code: 'BAA00001',name: 'Toán CC',credit: 4, option: 'BB',description:'',theory:75,practise:5,exercise:10};
+        node.data.subjects.push(subject);
+        node = this.convertNodeToDataTable(node);
+        data = logic.updateNode(data, node);
+        return data;
+    };
+
+    addRowTable = () =>{  
+        let data = [...this.state.nodes];
+        data = this.addRowTableLogic(data, this.state.nodeTables,{});
+        this.setState({nodes: data});
+        this.onHideDialogTable();
+    }
 
      // Templatre
      actionTemplate(node, column) {
@@ -98,6 +183,14 @@ class ContentProgram extends React.Component {
               <Button onClick={this.onHideDialogChild} label="Cancel" theme="secondary" />
             </div>
           ); 
+
+          const footerDialogTable = (
+            <div>
+              <Button  label="Save" theme="success" onClick={()=>this.addRowTable()}/>
+              <Button onClick={this.onHideDialogTable} label="Cancel" theme="secondary" />
+            </div>
+          ); 
+
         return(
             <div>
                 <hr />
@@ -180,17 +273,21 @@ class ContentProgram extends React.Component {
 
                     </Row>
                 </Dialog>
-
+                {/* Dialog of dataTable */}
+                <Dialog
+                    header="Thêm Nội Dung Môn Học" 
+                    visible={this.state.isDialogTable} 
+                    onHide={()=>this.onHideDialogTable()}
+                    style={{ width: "50vw" }}
+                    footer={footerDialogTable}
+                    >
+                    <Col>
+                     
+                    </Col>
+                </Dialog>
             </div>
         )
     }
 }
-
-let cars = [
-    {vin:'ABC',year:2017},
-    {vin:'ABC',year:2018},
-    {vin:'ABC',year:2019},
-    {vin:'DEF',year:2017}
-]
 
 export default ContentProgram
