@@ -87,8 +87,8 @@ export default class SubjectManageCom extends Component {
       let practiceperiod = parseInt(this.state.practice, 10);
       let exerciseperiod = parseInt(this.state.exercise, 10);
       let description = this.state.description;
-      let datecreated = new Date();
-      let dateedited = new Date();
+      let datecreated = new Date().toISOString();
+      let dateedited = new Date().toISOString();
       let data = {
         subjectcode,
         subjectname,

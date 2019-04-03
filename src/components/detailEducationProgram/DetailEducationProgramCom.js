@@ -51,7 +51,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">
-            <ContentProgram />
+            <ContentProgram isShow={this.props.isShow} visible={this.props.visible} />
           </Col>
         </Row>
       </div>

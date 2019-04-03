@@ -25,8 +25,8 @@ export const onLoadSubjects = () => {
           dispatch(message.message(chirp));
           dispatch(loadSubjectsError(res));
         } else {
-          let chirp = { message: `Tải các môn học thành công`, isRight: 1 };
-          dispatch(message.message(chirp));
+          // let chirp = { message: `Tải các môn học thành công`, isRight: 1 };
+          // dispatch(message.message(chirp));
           dispatch(loadSubjectsSuccess(subjects));
         }
       })
@@ -58,10 +58,10 @@ export const onAddSubject = data => {
     // &dateedited=${data.dateedited}`;
 
     let link = links.ADD_SUBJECT;
-    let params = {};
-    params.data = JSON.stringify(data);
+    let body = {};
+    body.data = JSON.stringify(data);
     axios
-      .post(link, params, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, { headers: { "Content-Type": "application/json" } })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadSubjects());

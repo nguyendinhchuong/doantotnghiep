@@ -1,5 +1,6 @@
 // message actions
 export const MESSAGE = "MESSAGE";
+export const VISIBLE = "VISIBLE";
 
 // faculties actions
 export const LOAD_FACULTIES_SUCCESS = "LOAD_FACULTIES_SUCCESS";

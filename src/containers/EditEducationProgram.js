@@ -11,6 +11,7 @@ import AlertCom from "../components/AlertCom";
 import { connect } from "react-redux";
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
+import * as visibleAction from "../actions/visibleAction";
 
 class DetailEducationProgramTmp extends Component {
   constructor(props) {
@@ -48,6 +49,8 @@ class DetailEducationProgramTmp extends Component {
               onLoadDetailOutcomeStandard={
                 this.props.onLoadDetailOutcomeStandard
               }
+              isShow={this.props.isShow}
+              visible={this.props.visible}
             />
           </Col>
         </Row>
@@ -58,6 +61,7 @@ class DetailEducationProgramTmp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
+  visible: state.visible,
   outcomeStandards: state.outcomeStandards,
   detailOutcomeStandard: state.detailOutcomeStandard
 });
@@ -65,5 +69,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onLoadDetailOutcomeStandard:
-    detailOutcomeStandardAction.onLoadDetailOutcomeStandard
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
+  isShow: visibleAction.isShow
 })(DetailEducationProgramTmp);
