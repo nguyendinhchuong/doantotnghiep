@@ -59,11 +59,12 @@ class ContentProgram extends React.Component {
     }
 
     handleAddChild = () =>{
+        const data = [...this.state.nodes];
         if(!this.state.isTable){
-            const data = logic.addChildTitle(this.state.nodes, this.state.node, this.state.nameValue);            
+            this.setState({nodes: logic.addChildTitle(data, this.state.node, this.state.nameValue)});
         }
         else{
-
+            this.setState({nodes: logic.addChildTable(data, this.state.node)});
         }
         this.onHideDialogChild();
     };
@@ -134,7 +135,7 @@ class ContentProgram extends React.Component {
                 <Dialog header="Thêm Nội Dung Chương Trình" 
                     visible={this.state.isDialogChild} 
                     onHide={()=>this.onHideDialogChild()}
-                    style={{ width: "50vw" }}
+                    style={{ width: "60vw" }}
                     footer={footerChild}>
                     {/* Checked */}
                     <Row>
@@ -161,42 +162,22 @@ class ContentProgram extends React.Component {
                     </Col>
                     </Row>
                     {/* is table if accumulation true: Có, else Không. if isRequired true => BB*/}
-                    <Row >
-                    <Col lg="12" md="12" sm="12">
-                        <div hidden={!this.state.isTable}>
-                        <Row>
-                            <Col lg="2" md="2" sm="12"><label>Loại học phần:</label></Col>
-                            <Col lg="2" md="2" sm="12">
-                                <Checkbox checked={this.state.isRequired} onChange={e => this.setState({isRequired: true})} />
-                                <label htmlFor="cb2" className="p-checkbox-label">Bắt buộc</label>
-                            </Col>
-                            <Col lg="2" md="2" sm="12">
-                                <Checkbox checked={!this.state.isRequired} onChange={e => this.setState({isRequired: false})} />
-                                <label htmlFor="cb2" className="p-checkbox-label">Tự chọn</label>
-                            </Col>
-                        </Row>
-                        <Row style={{marginTop:'15px'}}>
-                            <Col lg="2" md="2" sm="12"><label>Tổng tín chỉ:</label></Col>
-                            <Col lg="10" md="10" sm="12">
-                                <Spinner value={this.state.credit} 
-                                    onChange={(e) => this.setState({credit: e.value})} 
-                                    min={0} max = {100}
-                                    />
-                            </Col>
-                        </Row>
-                        <Row style={{marginTop:'15px'}}>
-                        <Col lg="2" md="2" sm="12"><label>Tích lũy:</label></Col>
-                        <Col lg="2" md="2" sm="6">
-                            <Checkbox checked={this.state.isAccumulation} onChange={e => this.setState({isAccumulation: true})} />
-                            <label htmlFor="cb2" className="p-checkbox-label">Có</label>
-                        </Col>
-                        <Col lg="2" md="2" sm="6">
-                            <Checkbox checked={!this.state.isAccumulation} onChange={e => this.setState({isAccumulation: false})} />
-                            <label htmlFor="cb2" className="p-checkbox-label">Không</label>
-                        </Col>
-                        </Row>
+                    <Row>
+                        <div hidden = {!this.state.isTable}>
+                        <DataTable 
+                            headerColumnGroup={logic.headerGroup}>
+                            <Column header="STT" />
+                            <Column header="Loại Học Phần" />
+                            <Column header="Mã Môn Học" />
+                            <Column header="Tên Môn Học" />
+                            <Column header="Số Tín Chỉ" />
+                            <Column header="Lý Thuyết" />
+                            <Column header="Thực Hành" />
+                            <Column header="Bài Tập" />
+                            <Column header="Descriptoin" />
+                        </DataTable>
                         </div>
-                    </Col>
+
                     </Row>
                 </Dialog>
 
