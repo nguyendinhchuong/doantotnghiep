@@ -1,0 +1,351 @@
+import React from "react";
+import { TreeTable } from "primereact/treetable";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Checkbox } from "primereact/checkbox";
+import { Row, Col, Button } from "shards-react";
+
+import * as logic from "../../business/logicEducationProgram";
+
+class ContentProgramCom extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nodes: [],
+      node: [],
+      nodeTables: [],
+      isDialogRoot: false,
+      isDialogChild: false,
+      isDialogTable: false,
+      nameValue: "",
+      isTable: false,
+      credit: 0,
+      isRequired: true,
+      isAccumulation: true
+    };
+  }
+  isShowDialogRoot = () => {
+    this.setState({
+      isDialogRoot: true
+    });
+  };
+
+  isShowDialogChild = node => {
+    this.setState({
+      isDialogChild: true,
+      node: node
+    });
+  };
+
+  isShowDialogTable = () => {
+    this.setState({
+      isDialogTable: true
+    });
+  };
+
+  onHideDialogRoot = () => {
+    this.setState({ isDialogRoot: false });
+  };
+
+  onHideDialogChild = () => {
+    this.setState({ isDialogChild: false });
+  };
+
+  onHideDialogTable = () => {
+    this.setState({ isDialogTable: false });
+  };
+
+  handleChangeValue = e => {
+    this.setState({ nameValue: e.target.value });
+  };
+
+  handleAddRoot = () => {
+    const data = logic.addRoot(this.state.nodes, this.state.nameValue);
+    this.setState({ nodes: data });
+    this.onHideDialogRoot();
+  };
+
+  footer = (
+    <div className="p-clearfix" style={{ width: "100%" }}>
+      <Button
+        onClick={this.isShowDialogTable}
+        theme="success"
+        style={{ float: "left" }}
+        title="Thêm môn học"
+      >
+        <i className="material-icons">add</i>
+      </Button>
+    </div>
+  );
+
+  convertNodeToDataTable = node => {
+    if (!node.data.isTable) {
+      return node;
+    }
+    const subjects = node.data.subjects;
+    const table = (
+      <DataTable
+        value={subjects}
+        headerColumnGroup={logic.headerGroup}
+        rowGroupMode="rowspan"
+        sortField="option"
+        sortOrder={1}
+        groupField="option"
+        footerColumnGroup={logic.footerGroup}
+        footer={this.footer}
+      >
+        <Column field="stt" header="STT" />
+        <Column field="option" header="Loại Học Phần" />
+        <Column field="code" header="Mã Môn Học" />
+        <Column field="name" header="Tên Môn Học" />
+        <Column field="credit" header="Số Tín Chỉ" />
+        <Column field="theory" header="Lý Thuyết" />
+        <Column field="practise" header="Thực Hành" />
+        <Column field="exercise" header="Bài Tập" />
+        <Column field="description" header="Descriptoin" />
+      </DataTable>
+    );
+    node.data.displayName = table;
+    return node;
+  };
+
+  addChildTable = (data, nodeParent) => {
+    const length = nodeParent.children.length;
+    const key = `${nodeParent.key}.${length + 1}`;
+    const subject = {
+      stt: 1,
+      code: "BAA00001",
+      name: "Toán CC",
+      credit: 4,
+      option: "BB",
+      description: "",
+      theory: 75,
+      practise: 5,
+      exercise: 10
+    };
+    let node = {
+      key: key,
+      data: {
+        isTable: true,
+        subjects: [],
+        displayName: ""
+      },
+      children: []
+    };
+    this.setState({ nodeTables: node });
+    node = this.convertNodeToDataTable(node);
+    nodeParent.children.push(node);
+    data = logic.updateNode(data, nodeParent);
+    return data;
+  };
+
+  handleAddChild = () => {
+    const data = [...this.state.nodes];
+    if (!this.state.isTable) {
+      this.setState({
+        nodes: logic.addChildTitle(data, this.state.node, this.state.nameValue)
+      });
+    } else {
+      this.setState({ nodes: this.addChildTable(data, this.state.node) });
+    }
+    this.onHideDialogChild();
+  };
+
+  addRowTableLogic = (data, node, subject) => {
+    if (!node.data.isTable) {
+      return data;
+    }
+    subject = {
+      stt: 1,
+      code: "BAA00001",
+      name: "Toán CC",
+      credit: 4,
+      option: "BB",
+      description: "",
+      theory: 75,
+      practise: 5,
+      exercise: 10
+    };
+    node.data.subjects.push(subject);
+    node = this.convertNodeToDataTable(node);
+    data = logic.updateNode(data, node);
+    return data;
+  };
+
+  addRowTable = () => {
+    let data = [...this.state.nodes];
+    data = this.addRowTableLogic(data, this.state.nodeTables, {});
+    this.setState({ nodes: data });
+    this.onHideDialogTable();
+  };
+
+  // Templatre
+  actionTemplate(node, column) {
+    return (
+      <div>
+        <Button
+          onClick={() => this.isShowDialogChild(node)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Thêm cấp con"
+        >
+          <i className="material-icons">add</i>
+        </Button>
+        <Button
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title="Xóa cấp này"
+        >
+          <i className="material-icons">delete_sweep</i>
+        </Button>
+      </div>
+    );
+  }
+
+  render() {
+    const footerRoot = (
+      <div>
+        <Button onClick={this.handleAddRoot} theme="success">
+          Thêm
+        </Button>
+        <Button onClick={this.onHideDialogRoot} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
+    const footerChild = (
+      <div>
+        <Button onClick={this.handleAddChild} theme="success">
+          Thêm
+        </Button>
+        <Button onClick={this.onHideDialogChild} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
+    const footerDialogTable = (
+      <div>
+        <Button onClick={this.addRowTable} theme="success">
+          Thêm
+        </Button>
+        <Button onClick={this.onHideDialogTable} theme="secondary">
+          Hủy
+        </Button>
+      </div>
+    );
+
+    return (
+      <div>
+        <hr />
+        <TreeTable value={this.state.nodes}>
+          <Column field="displayName" header="Tên dòng" expander />
+          <Column
+            header={
+              <Button
+                onClick={() => this.isShowDialogRoot(null)}
+                theme="success"
+              >
+                <i className="material-icons">add</i> Thêm cấp
+              </Button>
+            }
+            body={(node, column) => this.actionTemplate(node, column)}
+            style={{ textAlign: "center", width: "10em" }}
+          />
+        </TreeTable>
+
+        {/* Dialog Root */}
+        <Dialog
+          header="Thêm Nội Dung Chương Trình"
+          visible={this.state.isDialogRoot}
+          onHide={() => this.onHideDialogRoot()}
+          style={{ width: "50vw" }}
+          footer={footerRoot}
+        >
+          <Col>
+            <InputText
+              type="text"
+              value={this.state.nameValue}
+              onChange={this.handleChangeValue}
+              style={{ width: "100%" }}
+            />
+          </Col>
+        </Dialog>
+        {/* Dialog Child */}
+        <Dialog
+          header="Thêm Nội Dung Chương Trình"
+          visible={this.state.isDialogChild}
+          onHide={() => this.onHideDialogChild()}
+          style={{ width: "60vw" }}
+          footer={footerChild}
+        >
+          {/* Checked */}
+          <Row>
+            <Col lg="2" md="2" sm="4">
+              <Checkbox
+                checked={!this.state.isTable}
+                onChange={e => this.setState({ isTable: false })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Title
+              </label>
+            </Col>
+            <Col lg="2" md="2" sm="4">
+              <Checkbox
+                checked={this.state.isTable}
+                onChange={e => this.setState({ isTable: true })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Table
+              </label>
+            </Col>
+          </Row>
+          <hr />
+          {/* is title */}
+          <Row>
+            <Col>
+              <InputText
+                hidden={this.state.isTable}
+                type="text"
+                value={this.state.nameValue}
+                onChange={this.handleChangeValue}
+                style={{ width: "100%" }}
+              />
+            </Col>
+          </Row>
+          {/* is table if accumulation true: Có, else Không. if isRequired true => BB*/}
+          <Row>
+            <div hidden={!this.state.isTable}>
+              <DataTable headerColumnGroup={logic.headerGroup}>
+                <Column header="STT" />
+                <Column header="Loại Học Phần" />
+                <Column header="Mã Môn Học" />
+                <Column header="Tên Môn Học" />
+                <Column header="Số Tín Chỉ" />
+                <Column header="Lý Thuyết" />
+                <Column header="Thực Hành" />
+                <Column header="Bài Tập" />
+                <Column header="Descriptoin" />
+              </DataTable>
+            </div>
+          </Row>
+        </Dialog>
+        {/* Dialog of dataTable */}
+        <Dialog
+          header="Thêm Nội Dung Môn Học"
+          visible={this.state.isDialogTable}
+          onHide={() => this.onHideDialogTable()}
+          style={{ width: "50vw" }}
+          footer={footerDialogTable}
+        >
+          <Col />
+        </Dialog>
+      </div>
+    );
+  }
+}
+
+export default ContentProgramCom;

@@ -3,7 +3,7 @@ import { Row, Col } from "shards-react";
 
 import "../../assets/target-education.css";
 
-import ContentProgram from "../detailEducationProgram/ContentProgram";
+import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
 import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
 import TitleCom from "../detailEducationProgram/TitleCom";
 
@@ -43,7 +43,9 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">3. Khối lượng kiến thức toàn khóa: 137 chỉ</h4>
+            <h4 className="font-weight-bold">
+              3. Khối lượng kiến thức toàn khóa: 137 chỉ
+            </h4>
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">
@@ -51,7 +53,24 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">
-            <ContentProgram isShow={this.props.isShow} visible={this.props.visible} />
+            <h4 className="font-weight-bold">
+              5. Quy trình đào tạo, điều kiện tốt nghiệp:
+            </h4>
+          </Col>
+          <br />
+          <Col lg="12" md="12" sm="12">
+            <h4 className="font-weight-bold">6. Cấu trúc chương trình:</h4>
+          </Col>
+          <br />
+          <Col lg="12" md="12" sm="12">
+            <h4 className="font-weight-bold">7. Nội dung chương trình:</h4>
+          </Col>
+          <br />
+          <Col lg="12" md="12" sm="12">
+            <ContentProgramCom />
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <h4 className="font-weight-bold">8. Kế hoạch giảng dạy dự kiến:</h4>
           </Col>
         </Row>
       </div>
