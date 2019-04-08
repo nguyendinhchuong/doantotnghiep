@@ -6,6 +6,9 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { Row, Col, Button } from "shards-react";
+import { AutoComplete } from 'primereact/autocomplete';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Spinner } from 'primereact/spinner';
 
 import * as logic from "../../business/logicEducationProgram";
 
@@ -15,17 +18,25 @@ class ContentProgramCom extends React.Component {
     this.state = {
       nodes: [],
       node: [],
-      nodeTables: [],
+      nodeTables: [], // list subject of blockSubject
       isDialogRoot: false,
       isDialogChild: false,
       isDialogTable: false,
-      nameValue: "",
-      isTable: false,
-      credit: 0,
+      nameValue: "", // title of row
+      isTable: false, // check is table,
+      subjects: [
+        {index: 1, code: "BAA00001", name: "Toán CC", credit: 4, theory: 75, practise: 5, exercise: 10},
+        {index: 2, code: "BAA00002", name: "Toán RR", credit: 4, theory: 75, practise: 5, exercise: 10},
+        {index: 3, code: "BAA00003", name: "Toán BB", credit: 4, theory: 75, practise: 5, exercise: 10}
+      ],
+      filterSubjects: [],
+      optionSubjects:[],
       isRequired: true,
-      isAccumulation: true
+      note: '',
+      optionalCredit: 0
     };
   }
+
   isShowDialogRoot = () => {
     this.setState({
       isDialogRoot: true
@@ -96,15 +107,15 @@ class ContentProgramCom extends React.Component {
         footerColumnGroup={logic.footerGroup}
         footer={this.footer}
       >
-        <Column field="stt" header="STT" />
         <Column field="option" header="Loại Học Phần" />
+        <Column field="index" header="STT" />
         <Column field="code" header="Mã Môn Học" />
         <Column field="name" header="Tên Môn Học" />
         <Column field="credit" header="Số Tín Chỉ" />
         <Column field="theory" header="Lý Thuyết" />
         <Column field="practise" header="Thực Hành" />
         <Column field="exercise" header="Bài Tập" />
-        <Column field="description" header="Descriptoin" />
+        <Column field="note" header="Ghi chú" />
       </DataTable>
     );
     node.data.displayName = table;
@@ -114,17 +125,6 @@ class ContentProgramCom extends React.Component {
   addChildTable = (data, nodeParent) => {
     const length = nodeParent.children.length;
     const key = `${nodeParent.key}.${length + 1}`;
-    const subject = {
-      stt: 1,
-      code: "BAA00001",
-      name: "Toán CC",
-      credit: 4,
-      option: "BB",
-      description: "",
-      theory: 75,
-      practise: 5,
-      exercise: 10
-    };
     let node = {
       key: key,
       data: {
@@ -157,18 +157,9 @@ class ContentProgramCom extends React.Component {
     if (!node.data.isTable) {
       return data;
     }
-    subject = {
-      stt: 1,
-      code: "BAA00001",
-      name: "Toán CC",
-      credit: 4,
-      option: "BB",
-      description: "",
-      theory: 75,
-      practise: 5,
-      exercise: 10
-    };
     node.data.subjects.push(subject);
+    node.data.subjects = logic.sortSubject(node.data.subjects);
+    node.data.subjects = logic.indexSubjects(node.data.subjects);
     node = this.convertNodeToDataTable(node);
     data = logic.updateNode(data, node);
     return data;
@@ -176,10 +167,18 @@ class ContentProgramCom extends React.Component {
 
   addRowTable = () => {
     let data = [...this.state.nodes];
-    data = this.addRowTableLogic(data, this.state.nodeTables, {});
+    const subject = {...this.state.optionSubjects};
+    subject.option = this.state.isRequired ? "BB":"TC";
+    subject.note = this.state.note;
+
+    data = this.addRowTableLogic(data, this.state.nodeTables, subject);
     this.setState({ nodes: data });
     this.onHideDialogTable();
   };
+
+  filterSubjects = (e) =>{
+    this.setState({ filterSubjects: logic.filterSubjects(e, this.state.subjects) });
+  }
 
   // Templatre
   actionTemplate(node, column) {
@@ -341,8 +340,72 @@ class ContentProgramCom extends React.Component {
           style={{ width: "50vw" }}
           footer={footerDialogTable}
         >
-          <Col />
+          <Row>
+            <Col lg="2" md="2" sm="6">
+            <span>Môn Học:</span>
+            </Col>
+            <Col lg="6" md="6" sm="12">
+              <AutoComplete 
+                field='name'
+                value={this.state.optionSubjects}
+                dropdown={true}
+                onChange={(e) => this.setState({optionSubjects: e.value})}  
+                size = {30}
+                placeholder = 'Môn học'
+                minLength = {1}
+                suggestions = {this.state.filterSubjects}
+                completeMethod = {(e) => this.filterSubjects(e)}
+              />
+            </Col>
+          </Row>
+          <Row style={{marginTop:'15px',marginBottom:'15px'}}>
+            <Col lg="2" md="2" sm="6">
+            <label>Loại Học Phần</label>
+            </Col>
+            <Col lg="2" md="2" sm="6">
+              <Checkbox
+                checked={this.state.isRequired}
+                onChange={e => this.setState({ isRequired: true })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Bắt Buộc
+              </label>
+            </Col>
+            <Col lg="2" md="2" sm="6">
+              <Checkbox
+                checked={!this.state.isRequired}
+                onChange={e => this.setState({ isRequired: false })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Tự Chọn
+              </label>
+            </Col>
+          </Row>
+          <Row>
+          <div hidden={this.state.isRequired}>
+              <Col lg="3" md="3" sm="6">
+              <label>Số chỉ: </label>
+              </Col>
+              <Col lg="6" md="6" sm="12">
+              
+                <Spinner value={this.state.optionalCredit} onChange={(e) => this.setState({optionalCredit: e.value})} />
+              </Col>
+            </div>
+          </Row>
+          <Row>
+            <Col lg="2" md="2" sm="6">
+            <label>Ghi chú: </label>
+            </Col>
+            <Col lg="10" md="10" sm="12">
+            <InputTextarea rows={3} cols={30} 
+              value={this.state.note} 
+              onChange={(e) => this.setState({note: e.target.value})} 
+              />
+            </Col>
+          </Row >
         </Dialog>
+        
+        
       </div>
     );
   }

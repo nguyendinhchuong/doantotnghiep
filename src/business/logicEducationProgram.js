@@ -38,7 +38,6 @@ export const addChildTitle = (data, nodeParent, name) => {
 };
 
 export const addRowTable = (data, node, subject) => {
-  debugger;
   if (!node.data.isTable) {
     return data;
   }
@@ -57,6 +56,14 @@ export const addRowTable = (data, node, subject) => {
   data = updateNode(data, node);
   return data;
 };
+
+export const filterSubjects = (e, subjects) =>{
+  const re = new RegExp(e.query.toLowerCase());
+  const results = subjects.filter((item) => {
+      return re.test(item.name.toLowerCase());
+  });
+  return results;
+}
 
 // private
 
@@ -83,8 +90,8 @@ export const updateNode = (data, node) => {
 export const headerGroup = (
   <ColumnGroup>
     <Row>
-      <Column header="STT" rowSpan={2} />
       <Column header="Loại Học Phần" rowSpan={2} />
+      <Column header="STT" rowSpan={2} />
       <Column header="Mã Học Phần" rowSpan={2} />
       <Column header="Tên Học Phần" rowSpan={2} />
       <Column header="Số Tín Chỉ" rowSpan={2} />
@@ -107,3 +114,24 @@ export const footerGroup = (
     </Row>
   </ColumnGroup>
 );
+
+export const sortSubject = data =>{
+  return data.sort((a,b)=>{
+    const option1 = a.option;
+    const option2 = b.option;
+    if(option1 === option2){
+      const code1 = a.code;
+      const code2 = b.code;
+      return code1.localeCompare(code2);
+    }
+    return option1.localeCompare(option2);
+  })
+}
+
+export const indexSubjects = data =>{
+  const results =  data.reduce((acc, cur, index) => {
+    cur.index = index + 1;
+    return acc.concat(cur);
+  },[]);
+  return results;
+}

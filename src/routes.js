@@ -10,6 +10,7 @@ import EditEducationProgram from "./containers/EditEducationProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
+import ContentProgramCom from './components/detailEducationProgram/ContentProgramCom'
 
 export default [
   {
@@ -47,5 +48,11 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: SubjectManage
+  },
+  {
+    path: "/outcome-standard/test",
+    exact: true,
+    layout: DefaultLayout,
+    component: ContentProgramCom
   }
 ];
