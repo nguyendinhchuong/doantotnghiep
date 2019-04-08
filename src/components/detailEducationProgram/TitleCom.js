@@ -5,71 +5,9 @@ export default class TitleCom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
-      nameEduProgram: "",
-      level: { id: "0" },
-      program: { id: "0" },
-      major: { Id: "0" },
-      facultyId: 0,
-      schoolYear: ""
+      visible: false
     };
   }
-
-  handleNameEduProgramChange = event => {
-    this.setState({ nameEduProgram: event.target.value });
-  };
-
-  handleLevelChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const index = event.nativeEvent.target.selectedIndex;
-      const name = event.nativeEvent.target[index].text;
-      this.setState({ level: { id, name } });
-    }
-  };
-
-  handleFacultyChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const faculty = this.props.faculties.filter(
-        row => row.Id === parseInt(id, 10)
-      )[0];
-      this.setState({ facultyId: faculty ? parseInt(faculty.Id, 10) : 0 });
-    }
-  };
-
-  handleMajorCodeChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const major = this.props.majors.filter(
-        row => row.Id === parseInt(id, 10)
-      )[0];
-      this.setState({ major: major ? major : { Id: "0" } });
-    }
-  };
-
-  handleMajorNameChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const major = this.props.majors.filter(
-        row => row.Id === parseInt(id, 10)
-      )[0];
-      this.setState({ major: major ? major : { Id: "0" } });
-    }
-  };
-
-  handleProgramChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const index = event.nativeEvent.target.selectedIndex;
-      const name = event.nativeEvent.target[index].text;
-      this.setState({ program: { id, name } });
-    }
-  };
-
-  handleSchoolYearChange = event => {
-    this.setState({ schoolYear: event.target.value });
-  };
 
   render() {
     return (
@@ -99,8 +37,15 @@ export default class TitleCom extends React.Component {
             </p>
           </Col>
           <Col lg="12" md="12" sm="12">
-            <p className=" font-italic h4 my-4 text-center">
-              <input type="" name="" readOnly={true} />
+            <p className=" font-italic h4 text-center">
+              <input
+                value={`${
+                  this.props.major && this.props.major.MajorName
+                    ? "NGÀNH " + this.props.major.MajorName.toUpperCase()
+                    : ""
+                }`}
+                readOnly={true}
+              />
             </p>
           </Col>
         </Row>
@@ -124,8 +69,8 @@ export default class TitleCom extends React.Component {
           <Col lg="6" md="6" sm="6">
             <FormInput
               type="text"
-              value={this.state.nameEduPrograme}
-              onChange={this.handleNameEduProgramChange}
+              value={this.props.nameEduProgram}
+              onChange={this.props.handleNameEduProgramChange}
               placeholder="Tên..."
               className="mb-2"
             />
@@ -138,7 +83,7 @@ export default class TitleCom extends React.Component {
             Trình độ đào tạo:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.handleLevelChange(e)}>
+            <FormSelect onChange={e => this.props.handleLevelChange(e)}>
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -161,7 +106,7 @@ export default class TitleCom extends React.Component {
             Ngành đào tạo:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.handleMajorNameChange(e)}>
+            <FormSelect onChange={e => this.props.handleMajorNameChange(e)}>
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -169,15 +114,17 @@ export default class TitleCom extends React.Component {
                 ? this.props.majors
                     .filter(
                       row =>
-                        this.state.facultyId !== 0
-                          ? row.IdFaculty === this.state.facultyId
+                        this.props.facultyId !== 0
+                          ? row.IdFaculty === this.props.facultyId
                           : row
                     )
                     .map((item, i) => {
                       return (
                         <option
                           selected={
-                            item.Id === parseInt(this.state.major.Id, 10)
+                            item.Id === this.props.major
+                              ? parseInt(this.props.major.Id, 10)
+                              : -1
                           }
                           key={item.Id}
                           value={item.Id}
@@ -197,7 +144,7 @@ export default class TitleCom extends React.Component {
             Mã ngành:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.handleMajorCodeChange(e)}>
+            <FormSelect onChange={e => this.props.handleMajorCodeChange(e)}>
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -205,15 +152,17 @@ export default class TitleCom extends React.Component {
                 ? this.props.majors
                     .filter(
                       row =>
-                        this.state.facultyId !== 0
-                          ? row.IdFaculty === this.state.facultyId
+                        this.props.facultyId !== 0
+                          ? row.IdFaculty === this.props.facultyId
                           : row
                     )
                     .map((item, i) => {
                       return (
                         <option
                           selected={
-                            item.Id === parseInt(this.state.major.Id, 10)
+                            item.Id === this.props.major
+                              ? parseInt(this.props.major.Id, 10)
+                              : -1
                           }
                           key={item.Id}
                           value={item.Id}
@@ -233,7 +182,7 @@ export default class TitleCom extends React.Component {
             Loại hình đào tạo:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.handleProgramChange(e)}>
+            <FormSelect onChange={e => this.props.handleProgramChange(e)}>
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -258,8 +207,8 @@ export default class TitleCom extends React.Component {
           <Col lg="6" md="6" sm="6">
             <FormInput
               type="text"
-              value={this.state.schoolYear}
-              onChange={this.handleSchoolYearChange}
+              value={this.props.schoolYear}
+              onChange={this.props.handleSchoolYearChange}
               placeholder="2015"
               className="mb-2"
             />

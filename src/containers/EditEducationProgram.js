@@ -13,6 +13,8 @@ import * as levelsAction from "../actions/levelsAction";
 import * as majorsAction from "../actions/majorsAction";
 import * as programsAction from "../actions/programsAction";
 import * as eduProgramsAction from "../actions/eduProgramsAction";
+import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
+import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 
 class DetailEducationProgramTmp extends Component {
   constructor(props) {
@@ -26,6 +28,7 @@ class DetailEducationProgramTmp extends Component {
     this.props.onLoadLevels();
     this.props.onLoadMajors();
     this.props.onLoadPrograms();
+    this.props.onLoadOutcomeStandards();
     this.props.onLoadEduProgram(id);
   };
 
@@ -43,7 +46,7 @@ class DetailEducationProgramTmp extends Component {
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle
-              sm="8"
+              sm="12"
               title={title}
               subtitle="Chỉnh sửa"
               className="text-sm-left"
@@ -61,7 +64,12 @@ class DetailEducationProgramTmp extends Component {
               levels={this.props.levels}
               majors={this.props.majors}
               programs={this.props.programs}
-              infoEduProgram={this.props.infoEduProgram}
+              infoEduProgram={this.props.infoEduProgram[0]}
+              outcomeStandards={this.props.outcomeStandards}
+              detailOutcomeStandard={this.props.detailOutcomeStandard}
+              onLoadDetailOutcomeStandard={
+                this.props.onLoadDetailOutcomeStandard
+              }
             />
           </Col>
         </Row>
@@ -84,5 +92,8 @@ export default connect(mapStateToProps, {
   onLoadLevels: levelsAction.onLoadLevels,
   onLoadMajors: majorsAction.onLoadMajors,
   onLoadPrograms: programsAction.onLoadPrograms,
-  onLoadEduProgram: eduProgramsAction.onLoadEduProgram
+  onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
+  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
+  onLoadDetailOutcomeStandard:
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard
 })(DetailEducationProgramTmp);

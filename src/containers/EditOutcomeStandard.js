@@ -48,7 +48,7 @@ class EditOutcomeStandardTmp extends Component {
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle
-              sm="8"
+              sm="12"
               title={title}
               subtitle={subtitle}
               className="text-sm-left"
