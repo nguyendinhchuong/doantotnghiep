@@ -1,6 +1,13 @@
 // message actions
 export const MESSAGE = "MESSAGE";
-export const VISIBLE = "VISIBLE";
+
+// majors actions
+export const LOAD_MAJORS_SUCCESS = "LOAD_MAJORS_SUCCESS";
+export const LOAD_MAJORS_ERROR = "LOAD_MAJORS_ERROR";
+
+// levels actions
+export const LOAD_LEVELS_SUCCESS = "LOAD_LEVELS_SUCCESS";
+export const LOAD_LEVELS_ERROR = "LOAD_LEVELS_ERROR";
 
 // faculties actions
 export const LOAD_FACULTIES_SUCCESS = "LOAD_FACULTIES_SUCCESS";
@@ -9,6 +16,16 @@ export const LOAD_FACULTIES_ERROR = "LOAD_FACULTIES_ERROR";
 // programs actions
 export const LOAD_PROGRAMS_SUCCESS = "LOAD_PROGRAMS_SUCCESS";
 export const LOAD_PROGRAMS_ERROR = "LOAD_PROGRAMS_ERROR";
+
+// eduPrograms actions
+export const LOAD_EDUPROGRAMS_SUCCESS = "LOAD_EDUPROGRAMS_SUCCESS";
+export const LOAD_EDUPROGRAMS_ERROR = "LOAD_EDUPROGRAMS_ERROR";
+
+export const ADD_EDUPROGRAM_SUCCESS = "ADD_EDUPROGRAM_SUCCESS";
+export const ADD_EDUPROGRAM_ERROR = "ADD_EDUPROGRAM_ERROR";
+
+export const LOAD_EDUPROGRAM_SUCCESS = "LOAD_EDUPROGRAM_SUCCESS";
+export const LOAD_EDUPROGRAM_ERROR = "LOAD_EDUPROGRAM_ERROR";
 
 // subjects actions
 export const LOAD_SUBJECTS_SUCCESS = "LOAD_SUBJECTS_SUCCESS";

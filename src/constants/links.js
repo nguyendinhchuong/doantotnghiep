@@ -1,10 +1,21 @@
 export const LINK = "http://localhost:3001";
 
+// levels links
+export const LOAD_LEVELS = `${LINK}/level/getlist/`;
+
+// majors links
+export const LOAD_MAJORS = `${LINK}/major/getlist/`;
+
 // faculties links
-export const LOAD_FACULTIES = `${LINK}/getfacultyinfo`;
+export const LOAD_FACULTIES = `${LINK}/getfacultyinfo/`;
 
 // programs links
-export const LOAD_PROGRAMS = `${LINK}/getprograminfo`;
+export const LOAD_PROGRAMS = `${LINK}/getprograminfo/`;
+
+// eduPrograms links
+export const LOAD_EDUPROGRAMS = `${LINK}/eduprogram/getlist/`;
+export const ADD_EDUPROGRAM = `${LINK}/eduprogram/add/`;
+export const LOAD_EDUPROGRAM = `${LINK}/eduprogram/getbyid/`;
 
 // subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;

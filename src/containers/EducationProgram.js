@@ -6,12 +6,21 @@ import EducationProgramCom from "../components/educationProgram/EducationProgram
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
+import * as eduProgramsAction from "../actions/eduProgramsAction";
+import * as facultiesAction from "../actions/facultiesAction";
+import * as programsAction from "../actions/programsAction";
+import * as levelsAction from "../actions/levelsAction";
+import * as majorsAction from "../actions/majorsAction";
 
 class EducationProgramTmp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
+  componentDidMount = () => {
+    this.props.onLoadEduPrograms();
+  };
 
   render() {
     return (
@@ -33,7 +42,19 @@ class EducationProgramTmp extends Component {
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <EducationProgramCom history={this.props.history} />
+            <EducationProgramCom
+              history={this.props.history}
+              eduPrograms={this.props.eduPrograms}
+              faculties={this.props.faculties}
+              programs={this.props.programs}
+              levels={this.props.levels}
+              majors={this.props.majors}
+              onLoadFaculties={this.props.onLoadFaculties}
+              onLoadPrograms={this.props.onLoadPrograms}
+              onLoadLevels={this.props.onLoadLevels}
+              onLoadMajors={this.props.onLoadMajors}
+              onAddEduProgram={this.props.onAddEduProgram}
+            />
           </Col>
         </Row>
       </Container>
@@ -42,7 +63,19 @@ class EducationProgramTmp extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.message
+  message: state.message,
+  eduPrograms: state.eduPrograms,
+  faculties: state.faculties,
+  programs: state.programs,
+  levels: state.levels,
+  majors: state.majors
 });
 
-export default connect(mapStateToProps, {})(EducationProgramTmp);
+export default connect(mapStateToProps, {
+  onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
+  onAddEduProgram: eduProgramsAction.onAddEduProgram,
+  onLoadFaculties: facultiesAction.onLoadFaculties,
+  onLoadPrograms: programsAction.onLoadPrograms,
+  onLoadLevels: levelsAction.onLoadLevels,
+  onLoadMajors: majorsAction.onLoadMajors
+})(EducationProgramTmp);

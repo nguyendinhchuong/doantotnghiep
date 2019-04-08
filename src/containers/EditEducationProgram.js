@@ -9,9 +9,10 @@ import DetailEducationProgramCom from "../components/detailEducationProgram/Deta
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
-import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
-import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
-import * as visibleAction from "../actions/visibleAction";
+import * as levelsAction from "../actions/levelsAction";
+import * as majorsAction from "../actions/majorsAction";
+import * as programsAction from "../actions/programsAction";
+import * as eduProgramsAction from "../actions/eduProgramsAction";
 
 class DetailEducationProgramTmp extends Component {
   constructor(props) {
@@ -20,17 +21,30 @@ class DetailEducationProgramTmp extends Component {
   }
 
   componentDidMount = () => {
-    this.props.onLoadOutcomeStandards();
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+    this.props.onLoadLevels();
+    this.props.onLoadMajors();
+    this.props.onLoadPrograms();
+    this.props.onLoadEduProgram(id);
   };
 
   render() {
+    const infoEduProgram = Array.isArray(this.props.infoEduProgram)
+      ? this.props.infoEduProgram[0]
+      : null;
+
+    const title = infoEduProgram
+      ? `${infoEduProgram.EduName}`
+      : `Chưa tải được`;
+
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="8"
-              title="CHƯƠNG TRÌNH ĐÀO TẠO"
+              title={title}
               subtitle="Chỉnh sửa"
               className="text-sm-left"
             />
@@ -44,13 +58,10 @@ class DetailEducationProgramTmp extends Component {
         <Row>
           <Col lg="12" md="12">
             <DetailEducationProgramCom
-              outcomeStandards={this.props.outcomeStandards}
-              detailOutcomeStandard={this.props.detailOutcomeStandard}
-              onLoadDetailOutcomeStandard={
-                this.props.onLoadDetailOutcomeStandard
-              }
-              isShow={this.props.isShow}
-              visible={this.props.visible}
+              levels={this.props.levels}
+              majors={this.props.majors}
+              programs={this.props.programs}
+              infoEduProgram={this.props.infoEduProgram}
             />
           </Col>
         </Row>
@@ -61,14 +72,17 @@ class DetailEducationProgramTmp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  visible: state.visible,
   outcomeStandards: state.outcomeStandards,
-  detailOutcomeStandard: state.detailOutcomeStandard
+  detailOutcomeStandard: state.detailOutcomeStandard,
+  levels: state.levels,
+  majors: state.majors,
+  programs: state.programs,
+  infoEduProgram: state.infoEduProgram
 });
 
 export default connect(mapStateToProps, {
-  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
-  onLoadDetailOutcomeStandard:
-    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
-  isShow: visibleAction.isShow
+  onLoadLevels: levelsAction.onLoadLevels,
+  onLoadMajors: majorsAction.onLoadMajors,
+  onLoadPrograms: programsAction.onLoadPrograms,
+  onLoadEduProgram: eduProgramsAction.onLoadEduProgram
 })(DetailEducationProgramTmp);
