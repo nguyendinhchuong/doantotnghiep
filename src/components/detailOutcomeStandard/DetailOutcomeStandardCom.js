@@ -13,12 +13,12 @@ import * as logic from "../../business";
 import DataInputCom from "./DataInputCom";
 import RevisionsCom from "./RevisionsCom";
 
-class DetailOutcomeStandardCom extends Component {
+export default class DetailOutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataImport: [],
-      nodes: data1,
+      nodes: [],
       node: "",
       visible: false,
       nameOut: "",
@@ -37,14 +37,14 @@ class DetailOutcomeStandardCom extends Component {
 
   // add
   addRoot = () => {
-    data1 = logic.addRoot(data1, this.state.nameOut);
+    const data1 = logic.addRoot(this.state.nodes, this.state.nameOut);
     this.setState({
       nodes: data1
     });
   };
 
   add = node => {
-    data1 = logic.add(data1, node, this.state.nameOut);
+    const data1 = logic.add(this.state.nodes, node, this.state.nameOut);
     this.setState({
       nodes: data1
     });
@@ -52,7 +52,7 @@ class DetailOutcomeStandardCom extends Component {
 
   // delete
   deleteNode = node => {
-    data1 = logic.deleteNode(data1, node);
+    const data1 = logic.deleteNode(this.state.nodes, node);
     this.setState({
       nodes: data1
     });
@@ -84,7 +84,7 @@ class DetailOutcomeStandardCom extends Component {
 
   // update node after edit node
   updateNode = node => {
-    data1 = logic.updateNode(data1, node);
+    const data1 = logic.updateNode(this.state.nodes, node);
     this.setState({
       nodes: data1
     });
@@ -125,7 +125,8 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   onDeleteRevision = idRevision => {
-    this.props.onDeleteRevision(idRevision, this.state.nodes);
+    const idOutcome = this.props.infoOutcomeStandard.Id;
+    this.props.onDeleteRevision(idRevision, idOutcome, this.state.nodes);
     this.setState({ revisionsVisible: false });
   };
 
@@ -201,7 +202,7 @@ class DetailOutcomeStandardCom extends Component {
       alert("Key chưa phù hợp");
       return;
     }
-    const node = logic.findNodeByKey(data1, this.state.keyDrag);
+    const node = logic.findNodeByKey(this.state.nodes, this.state.keyDrag);
     if (!node) {
       alert("Không tìm thấy node");
       return;
@@ -215,7 +216,7 @@ class DetailOutcomeStandardCom extends Component {
       return;
     }
 
-    data1 = [...logic.dragIntoAny(data1, this.state.node, this.state.keyDrag)];
+    const data1 = [...logic.dragIntoAny(this.state.nodes, this.state.node, this.state.keyDrag)];
     this.setState({
       nodes: [...data1]
     });
@@ -229,13 +230,13 @@ class DetailOutcomeStandardCom extends Component {
   };
 
   upSameLevel = node => {
-    data1 = [...logic.upSameLevel(data1, node)];
+    const data1 = [...logic.upSameLevel(this.state.nodes, node)];
 
     this.setState({ nodes: [...data1] });
   };
 
   downSameLevel = node => {
-    data1 = [...logic.downSameLevel(data1, node)];
+    const data1 = [...logic.downSameLevel(this.state.nodes, node)];
 
     this.setState({ nodes: [...data1] });
   };
@@ -266,7 +267,7 @@ class DetailOutcomeStandardCom extends Component {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      data1 = [...logic.convertArrToTreeNode(data1, data)];
+      const data1 = [...logic.convertArrToTreeNode(this.state.nodes, data)];
       this.setState({ nodes: [...data1] });
       setTimeout(() => {
         this.setState({
@@ -319,11 +320,6 @@ class DetailOutcomeStandardCom extends Component {
     this.setState({ saveRevisionVisible: false });
   };
 
-  componentWillReceiveProps = nextProps => {
-    data1 = nextProps.detailOutcomeStandard;
-    this.setState({ nodes: nextProps.detailOutcomeStandard });
-  };
-
   actionTemplate = (node, column) => {
     return (
       <div>
@@ -370,6 +366,18 @@ class DetailOutcomeStandardCom extends Component {
       </div>
     );
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.detailOutcomeStandard !== prevState.nodes) {
+      return { nodes: nextProps.detailOutcomeStandard };
+    } else return null;
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.message !== this.props.message) {
+  //     this.showAlert();
+  //   }
+  // }
 
   render() {
     const footer = (
@@ -582,7 +590,3 @@ class DetailOutcomeStandardCom extends Component {
     );
   }
 }
-
-let data1 = [];
-
-export default DetailOutcomeStandardCom;

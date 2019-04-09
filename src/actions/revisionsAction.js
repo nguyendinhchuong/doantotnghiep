@@ -49,7 +49,7 @@ export const deleteRevisionError = errorMessage => ({
   errorMessage
 });
 
-export const onDeleteRevision = (idRevision, nodes) => {
+export const onDeleteRevision = (idRevision, idOutcome, nodes) => {
   return (dispatch, getState) => {
     let req = `${links.DELETE_REVISION}?idrevision=${idRevision}`;
     axios
@@ -57,7 +57,7 @@ export const onDeleteRevision = (idRevision, nodes) => {
       .then(res => {
         if (res.data.code === 1) {
           let chirp = { message: `Xóa phiên bản thành công`, isRight: 1 };
-          dispatch(onLoadRevisions());
+          dispatch(onLoadRevisions(idOutcome));
           dispatch(message.message(chirp));
           dispatch(deleteRevisionSuccess(res, nodes));
         } else {

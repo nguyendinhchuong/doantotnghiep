@@ -28,6 +28,10 @@ export default class TableHeaderCom extends React.Component {
         <th scope="col" className="border-0">
           Ngày sửa
         </th>
+        <th scope="col" className="border-0">
+        </th>
+        <th scope="col" className="border-0">
+        </th>
       </tr>
     );
   }

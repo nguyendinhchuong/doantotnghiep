@@ -38,11 +38,6 @@ export default class AlertCom extends React.Component {
     this.interval = null;
   };
 
-  // componentWillReceiveProps = nextProps => {
-  //   this.setState({ message: nextProps.message.message });
-  //   this.showAlert();
-  // };
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.message.message !== prevState.message) {
       return { message: nextProps.message.message };
