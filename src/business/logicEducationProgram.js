@@ -60,7 +60,7 @@ export const addRowTable = (data, node, subject) => {
 export const filterSubjects = (e, subjects) =>{
   const re = new RegExp(e.query.toLowerCase());
   const results = subjects.filter((item) => {
-      return re.test(item.name.toLowerCase());
+      return re.test(item.SubjectName.toLowerCase());
   });
   return results;
 }

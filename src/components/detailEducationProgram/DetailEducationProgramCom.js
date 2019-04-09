@@ -18,6 +18,10 @@ export default class DetailEducationProgramCom extends React.Component {
       major: { Id: "0" },
       schoolYear: ""
       // end states for Title
+
+      // states for 2 to 4 item
+
+      // end states for 2 to 4 item
     };
   }
 
@@ -95,7 +99,7 @@ export default class DetailEducationProgramCom extends React.Component {
       major: major,
       level: level,
       program: program,
-      schoolYear: nextProps.infoEduProgram.SchoolYear
+      // schoolYear: nextProps.infoEduProgram.SchoolYear
     });
   };
 
@@ -171,7 +175,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">
-            <ContentProgramCom />
+            <ContentProgramCom subjects={this.props.subjects} />
           </Col>
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">8. Kế hoạch giảng dạy dự kiến:</h4>

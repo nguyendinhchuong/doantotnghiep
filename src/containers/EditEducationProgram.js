@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import * as levelsAction from "../actions/levelsAction";
 import * as majorsAction from "../actions/majorsAction";
 import * as programsAction from "../actions/programsAction";
+import * as subjectsAction from "../actions/subjectsAction";
 import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
@@ -28,6 +29,7 @@ class DetailEducationProgramTmp extends Component {
     this.props.onLoadLevels();
     this.props.onLoadMajors();
     this.props.onLoadPrograms();
+    this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
     this.props.onLoadEduProgram(id);
   };
@@ -64,6 +66,7 @@ class DetailEducationProgramTmp extends Component {
               levels={this.props.levels}
               majors={this.props.majors}
               programs={this.props.programs}
+              subjects={this.props.subjects}
               infoEduProgram={this.props.infoEduProgram[0]}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
@@ -85,6 +88,7 @@ const mapStateToProps = state => ({
   levels: state.levels,
   majors: state.majors,
   programs: state.programs,
+  subjects: state.subjects,
   infoEduProgram: state.infoEduProgram
 });
 
@@ -92,6 +96,7 @@ export default connect(mapStateToProps, {
   onLoadLevels: levelsAction.onLoadLevels,
   onLoadMajors: majorsAction.onLoadMajors,
   onLoadPrograms: programsAction.onLoadPrograms,
+  onLoadSubjects: subjectsAction.onLoadSubjects,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onLoadDetailOutcomeStandard:

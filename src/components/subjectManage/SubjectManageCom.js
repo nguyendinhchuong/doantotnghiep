@@ -27,7 +27,7 @@ export default class SubjectManageCom extends Component {
       visible: false,
       reviewVisible: false,
       subjectCode: "",
-      nameSubject: "",
+      subjectName: "",
       credits: "",
       theory: "",
       practice: "",
@@ -45,8 +45,8 @@ export default class SubjectManageCom extends Component {
     this.setState({ subjectCode: event.target.value });
   };
 
-  handleNameSubject = event => {
-    this.setState({ nameSubject: event.target.value });
+  handleSubjectName = event => {
+    this.setState({ subjectName: event.target.value });
   };
 
   handleCredits = event => {
@@ -82,11 +82,11 @@ export default class SubjectManageCom extends Component {
       !isNaN(parseInt(this.state.practice, 10)) &&
       !isNaN(parseInt(this.state.exercise, 10)) &&
       this.state.subjectCode !== "" &&
-      this.state.nameSubject !== "" &&
+      this.state.subjectName !== "" &&
       this.state.description !== ""
     ) {
       let subjectcode = this.state.subjectCode;
-      let subjectname = this.state.nameSubject;
+      let subjectname = this.state.subjectName;
       let credit = parseInt(this.state.credits, 10);
       let theoryperiod = parseInt(this.state.theory, 10);
       let practiceperiod = parseInt(this.state.practice, 10);
@@ -216,8 +216,8 @@ export default class SubjectManageCom extends Component {
           <Col lg="8" md="8" sm="8">
             <FormInput
               type="text"
-              value={this.state.nameSubject}
-              onChange={this.handleNameSubject}
+              value={this.state.subjectName}
+              onChange={this.handleSubjectName}
               placeholder="Tên..."
               className="mb-2"
             />

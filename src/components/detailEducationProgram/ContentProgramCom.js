@@ -6,13 +6,13 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { Row, Col, Button } from "shards-react";
-import { AutoComplete } from 'primereact/autocomplete';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Spinner } from 'primereact/spinner';
+import { AutoComplete } from "primereact/autocomplete";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Spinner } from "primereact/spinner";
 
 import * as logic from "../../business/logicEducationProgram";
 
-class ContentProgramCom extends React.Component {
+export default class ContentProgramCom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,15 +24,10 @@ class ContentProgramCom extends React.Component {
       isDialogTable: false,
       nameValue: "", // title of row
       isTable: false, // check is table,
-      subjects: [
-        {index: 1, code: "BAA00001", name: "Toán CC", credit: 4, theory: 75, practise: 5, exercise: 10},
-        {index: 2, code: "BAA00002", name: "Toán RR", credit: 4, theory: 75, practise: 5, exercise: 10},
-        {index: 3, code: "BAA00003", name: "Toán BB", credit: 4, theory: 75, practise: 5, exercise: 10}
-      ],
       filterSubjects: [],
-      optionSubjects:[],
+      optionSubjects: [],
       isRequired: true,
-      note: '',
+      note: "",
       optionalCredit: 0
     };
   }
@@ -109,12 +104,12 @@ class ContentProgramCom extends React.Component {
       >
         <Column field="option" header="Loại Học Phần" />
         <Column field="index" header="STT" />
-        <Column field="code" header="Mã Môn Học" />
-        <Column field="name" header="Tên Môn Học" />
-        <Column field="credit" header="Số Tín Chỉ" />
-        <Column field="theory" header="Lý Thuyết" />
-        <Column field="practise" header="Thực Hành" />
-        <Column field="exercise" header="Bài Tập" />
+        <Column field="SubjectCode" header="Mã Môn Học" />
+        <Column field="SubjectName" header="Tên Môn Học" />
+        <Column field="Credit" header="Số Tín Chỉ" />
+        <Column field="TheoryPeriod" header="Lý Thuyết" />
+        <Column field="PracticePeriod" header="Thực Hành" />
+        <Column field="ExercisePeriod" header="Bài Tập" />
         <Column field="note" header="Ghi chú" />
       </DataTable>
     );
@@ -167,8 +162,8 @@ class ContentProgramCom extends React.Component {
 
   addRowTable = () => {
     let data = [...this.state.nodes];
-    const subject = {...this.state.optionSubjects};
-    subject.option = this.state.isRequired ? "BB":"TC";
+    const subject = { ...this.state.optionSubjects };
+    subject.option = this.state.isRequired ? "BB" : "TC";
     subject.note = this.state.note;
 
     data = this.addRowTableLogic(data, this.state.nodeTables, subject);
@@ -176,9 +171,11 @@ class ContentProgramCom extends React.Component {
     this.onHideDialogTable();
   };
 
-  filterSubjects = (e) =>{
-    this.setState({ filterSubjects: logic.filterSubjects(e, this.state.subjects) });
-  }
+  filterSubjects = e => {
+    this.setState({
+      filterSubjects: logic.filterSubjects(e, this.props.subjects)
+    });
+  };
 
   // Templatre
   actionTemplate(node, column) {
@@ -327,7 +324,7 @@ class ContentProgramCom extends React.Component {
                 <Column header="Lý Thuyết" />
                 <Column header="Thực Hành" />
                 <Column header="Bài Tập" />
-                <Column header="Descriptoin" />
+                <Column header="Description" />
               </DataTable>
             </div>
           </Row>
@@ -341,28 +338,28 @@ class ContentProgramCom extends React.Component {
           footer={footerDialogTable}
         >
           <Row>
-            <Col lg="2" md="2" sm="6">
-            <span>Môn Học:</span>
+            <Col lg="2" md="2" sm="2">
+              <span>Môn Học:</span>
             </Col>
             <Col lg="6" md="6" sm="12">
-              <AutoComplete 
-                field='name'
+              <AutoComplete
+                field="SubjectName"
                 value={this.state.optionSubjects}
                 dropdown={true}
-                onChange={(e) => this.setState({optionSubjects: e.value})}  
-                size = {30}
-                placeholder = 'Môn học'
-                minLength = {1}
-                suggestions = {this.state.filterSubjects}
-                completeMethod = {(e) => this.filterSubjects(e)}
+                onChange={e => this.setState({ optionSubjects: e.value })}
+                size={30}
+                placeholder="Môn học"
+                minLength={1}
+                suggestions={this.state.filterSubjects}
+                completeMethod={e => this.filterSubjects(e)}
               />
             </Col>
           </Row>
-          <Row style={{marginTop:'15px',marginBottom:'15px'}}>
-            <Col lg="2" md="2" sm="6">
-            <label>Loại Học Phần</label>
+          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+            <Col lg="2" md="2" sm="2">
+              <label>Loại Học Phần:</label>
             </Col>
-            <Col lg="2" md="2" sm="6">
+            <Col lg="3" md="3" sm="3">
               <Checkbox
                 checked={this.state.isRequired}
                 onChange={e => this.setState({ isRequired: true })}
@@ -371,7 +368,7 @@ class ContentProgramCom extends React.Component {
                 Bắt Buộc
               </label>
             </Col>
-            <Col lg="2" md="2" sm="6">
+            <Col lg="2" md="2" sm="2">
               <Checkbox
                 checked={!this.state.isRequired}
                 onChange={e => this.setState({ isRequired: false })}
@@ -380,35 +377,35 @@ class ContentProgramCom extends React.Component {
                 Tự Chọn
               </label>
             </Col>
-          </Row>
-          <Row>
-          <div hidden={this.state.isRequired}>
-              <Col lg="3" md="3" sm="6">
-              <label>Số chỉ: </label>
-              </Col>
-              <Col lg="6" md="6" sm="12">
-              
-                <Spinner value={this.state.optionalCredit} onChange={(e) => this.setState({optionalCredit: e.value})} />
-              </Col>
-            </div>
+            <Col lg="5" md="5" sm="5" hidden={this.state.isRequired}>
+              <Row>
+                <Col lg="2" md="2" sm="2">
+                  <label>Số chỉ: </label>
+                </Col>
+                <Col lg="4" md="4" sm="4">
+                  <Spinner
+                    value={this.state.optionalCredit}
+                    onChange={e => this.setState({ optionalCredit: e.value })}
+                  />
+                </Col>
+              </Row>
+            </Col>
           </Row>
           <Row>
             <Col lg="2" md="2" sm="6">
-            <label>Ghi chú: </label>
+              <label>Ghi chú: </label>
             </Col>
             <Col lg="10" md="10" sm="12">
-            <InputTextarea rows={3} cols={30} 
-              value={this.state.note} 
-              onChange={(e) => this.setState({note: e.target.value})} 
+              <InputTextarea
+                rows={3}
+                cols={30}
+                value={this.state.note}
+                onChange={e => this.setState({ note: e.target.value })}
               />
             </Col>
-          </Row >
+          </Row>
         </Dialog>
-        
-        
       </div>
     );
   }
 }
-
-export default ContentProgramCom;
