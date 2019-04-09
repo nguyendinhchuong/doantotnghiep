@@ -83,25 +83,27 @@ export default class DetailEducationProgramCom extends React.Component {
   };
   // end functions for Title
 
-  componentWillReceiveProps = nextProps => {
-    const MajorId = nextProps.infoEduProgram.MajorId;
-    const MajorCode = nextProps.infoEduProgram.MajorCode;
-    const MajorName = nextProps.infoEduProgram.MajorName;
-    const major = { MajorId, MajorName, MajorCode };
-    const LevelId = nextProps.infoEduProgram.LevelId;
-    const LevelName = nextProps.infoEduProgram.LevelName;
-    const level = { LevelId, LevelName };
-    const ProgramId = nextProps.infoEduProgram.ProgramId;
-    const ProgramName = nextProps.infoEduProgram.ProgramName;
-    const program = { ProgramId, ProgramName };
-    this.setState({
-      nameEduProgram: nextProps.infoEduProgram.EduName,
-      major: major,
-      level: level,
-      program: program,
-      // schoolYear: nextProps.infoEduProgram.SchoolYear
-    });
-  };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.infoEduProgram) {
+      const MajorId = nextProps.infoEduProgram.MajorId;
+      const MajorCode = nextProps.infoEduProgram.MajorCode;
+      const MajorName = nextProps.infoEduProgram.MajorName;
+      const major = { MajorId, MajorName, MajorCode };
+      const LevelId = nextProps.infoEduProgram.LevelId;
+      const LevelName = nextProps.infoEduProgram.LevelName;
+      const level = { LevelId, LevelName };
+      const ProgramId = nextProps.infoEduProgram.ProgramId;
+      const ProgramName = nextProps.infoEduProgram.ProgramName;
+      const program = { ProgramId, ProgramName };
+      return {
+        nameEduProgram: nextProps.infoEduProgram.EduName,
+        major: major,
+        level: level,
+        program: program
+        // schoolYear: nextProps.infoEduProgram.SchoolYear
+      };
+    } else return null;
+  }
 
   render() {
     return (

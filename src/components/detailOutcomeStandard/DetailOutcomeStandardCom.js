@@ -373,12 +373,6 @@ export default class DetailOutcomeStandardCom extends Component {
     } else return null;
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.message !== this.props.message) {
-  //     this.showAlert();
-  //   }
-  // }
-
   render() {
     const footer = (
       <div>
