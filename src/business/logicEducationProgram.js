@@ -120,8 +120,8 @@ export const sortSubject = data =>{
     const option1 = a.option;
     const option2 = b.option;
     if(option1 === option2){
-      const code1 = a.code;
-      const code2 = b.code;
+      const code1 = a.SubjectCode;
+      const code2 = b.SubjectCode;
       return code1.localeCompare(code2);
     }
     return option1.localeCompare(option2);

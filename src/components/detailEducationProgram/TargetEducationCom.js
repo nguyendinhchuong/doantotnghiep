@@ -248,7 +248,7 @@ class TargetEducationCom extends Component {
                   </Button>
                 }
                 body={this.actionTemplate}
-                style={{ textAlign: "left", width: "15em" }}
+                style={{ textAlign: "center", width: "12em" }}
               />
             </TreeTable>
           </Col>

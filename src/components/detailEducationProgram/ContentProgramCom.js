@@ -249,7 +249,7 @@ export default class ContentProgramCom extends React.Component {
               </Button>
             }
             body={(node, column) => this.actionTemplate(node, column)}
-            style={{ textAlign: "center", width: "10em" }}
+            style={{ textAlign: "center", width: "12em" }}
           />
         </TreeTable>
 

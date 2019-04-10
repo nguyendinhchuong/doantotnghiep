@@ -17,6 +17,10 @@ export const LOAD_EDUPROGRAMS = `${LINK}/eduprogram/getlist/`;
 export const ADD_EDUPROGRAM = `${LINK}/eduprogram/add/`;
 export const LOAD_EDUPROGRAM = `${LINK}/eduprogram/getbyid/`;
 
+// detail eduProgram links
+export const LOAD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/get/`;
+export const LOAD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/get/`;
+
 // subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;
 export const ADD_SUBJECT = `${LINK}/subject/add/`;

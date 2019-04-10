@@ -11,6 +11,8 @@ import { levels } from "./levels";
 import { majors } from "./majors";
 import { eduPrograms } from "./eduPrograms";
 import { infoEduProgram } from "./infoEduProgram";
+import { detailEduProgram } from "./detailEduProgram";
+import { targetEduProgram } from "./targetEduProgram";
 
 const rootReducer = combineReducers({
   faculties,
@@ -24,6 +26,8 @@ const rootReducer = combineReducers({
   majors,
   eduPrograms,
   infoEduProgram,
+  detailEduProgram,
+  targetEduProgram,
   message
 });
 

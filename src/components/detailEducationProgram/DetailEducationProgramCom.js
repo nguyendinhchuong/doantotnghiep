@@ -3,6 +3,8 @@ import { Row, Col } from "shards-react";
 
 import "../../assets/target-education.css";
 
+import { FormTextarea } from "shards-react";
+
 import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
 import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
 import TitleCom from "../detailEducationProgram/TitleCom";
@@ -13,15 +15,12 @@ export default class DetailEducationProgramCom extends React.Component {
     this.state = {
       // states for Title
       nameEduProgram: "",
-      level: { id: "0" },
-      program: { id: "0" },
-      major: { Id: "0" },
-      schoolYear: ""
+      level: { LevelId: 0, LevelName: "" },
+      program: { ProgramId: 0, ProgramName: "" },
+      major: { MajorId: 0, MajorName: "", MajorCode: "" },
+      schoolYear: "",
+      detailEduProgram: {}
       // end states for Title
-
-      // states for 2 to 4 item
-
-      // end states for 2 to 4 item
     };
   }
 
@@ -31,51 +30,37 @@ export default class DetailEducationProgramCom extends React.Component {
   };
 
   handleLevelChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const index = event.nativeEvent.target.selectedIndex;
-      const name = event.nativeEvent.target[index].text;
-      this.setState({ level: { id, name } });
-    }
-  };
-
-  handleFacultyChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const faculty = this.props.faculties.filter(
-        row => row.Id === parseInt(id, 10)
-      )[0];
-      this.setState({ facultyId: faculty ? parseInt(faculty.Id, 10) : 0 });
-    }
+    const LevelId = parseInt(event.currentTarget.value, 10);
+    const index = event.nativeEvent.target.selectedIndex;
+    const LevelName = event.nativeEvent.target[index].text;
+    this.setState({ level: { LevelId, LevelName } });
   };
 
   handleMajorCodeChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const major = this.props.majors.filter(
-        row => row.Id === parseInt(id, 10)
-      )[0];
-      this.setState({ major: major ? major : { Id: "0" } });
+    const MajorId = parseInt(event.currentTarget.value, 10);
+    if (MajorId !== 0) {
+      const major = this.props.majors.filter(row => row.Id === MajorId)[0];
+      const MajorName = major.MajorName;
+      const MajorCode = major.MajorCode;
+      this.setState({ major: { MajorId, MajorName, MajorCode } });
     }
   };
 
   handleMajorNameChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const major = this.props.majors.filter(
-        row => row.Id === parseInt(id, 10)
-      )[0];
-      this.setState({ major: major ? major : { Id: "0" } });
+    const MajorId = parseInt(event.currentTarget.value, 10);
+    if (MajorId !== 0) {
+      const major = this.props.majors.filter(row => row.Id === MajorId)[0];
+      const MajorName = major.MajorName;
+      const MajorCode = major.MajorCode;
+      this.setState({ major: { MajorId, MajorName, MajorCode } });
     }
   };
 
   handleProgramChange = event => {
-    const id = event.currentTarget.value;
-    if (id !== 0) {
-      const index = event.nativeEvent.target.selectedIndex;
-      const name = event.nativeEvent.target[index].text;
-      this.setState({ program: { id, name } });
-    }
+    const ProgramId = parseInt(event.currentTarget.value, 10);
+    const index = event.nativeEvent.target.selectedIndex;
+    const ProgramName = event.nativeEvent.target[index].text;
+    this.setState({ program: { ProgramId, ProgramName } });
   };
 
   handleSchoolYearChange = event => {
@@ -83,26 +68,57 @@ export default class DetailEducationProgramCom extends React.Component {
   };
   // end functions for Title
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.infoEduProgram) {
-      const MajorId = nextProps.infoEduProgram.MajorId;
-      const MajorCode = nextProps.infoEduProgram.MajorCode;
-      const MajorName = nextProps.infoEduProgram.MajorName;
-      const major = { MajorId, MajorName, MajorCode };
-      const LevelId = nextProps.infoEduProgram.LevelId;
-      const LevelName = nextProps.infoEduProgram.LevelName;
-      const level = { LevelId, LevelName };
-      const ProgramId = nextProps.infoEduProgram.ProgramId;
-      const ProgramName = nextProps.infoEduProgram.ProgramName;
-      const program = { ProgramId, ProgramName };
-      return {
-        nameEduProgram: nextProps.infoEduProgram.EduName,
-        major: major,
-        level: level,
-        program: program
-        // schoolYear: nextProps.infoEduProgram.SchoolYear
-      };
-    } else return null;
+  // functions for detailEduProgram
+  handleEnrollmentChange = event => {
+    this.setState({
+      detailEduProgram: {
+        EnrollmentTarget: event.target.value,
+        EduProcess: this.state.detailEduProgram.EduProcess,
+        GraduatedCon: this.state.GraduatedCon
+      }
+    });
+  };
+
+  handleEduProcessChange = event => {
+    this.setState({
+      detailEduProgram: {
+        EnrollmentTarget: this.state.EnrollmentTarget,
+        EduProcess: event.target.value,
+        GraduatedCon: this.state.GraduatedCon
+      }
+    });
+  };
+
+  handleGraduatedConChange = event => {
+    this.setState({
+      detailEduProgram: {
+        EnrollmentTarget: this.state.EnrollmentTarget,
+        EduProcess: this.state.detailEduProgram.EduProcess,
+        GraduatedCon: event.target.value
+      }
+    });
+  };
+  // end functions for detailEduProgram
+
+  componentWillReceiveProps(nextProps) {
+    const MajorId = nextProps.infoEduProgram.IdMajor;
+    const MajorCode = nextProps.infoEduProgram.MajorCode;
+    const MajorName = nextProps.infoEduProgram.MajorName;
+    const major = { MajorId, MajorName, MajorCode };
+    const LevelId = nextProps.infoEduProgram.IdLevel;
+    const LevelName = nextProps.infoEduProgram.LevelName;
+    const level = { LevelId, LevelName };
+    const ProgramId = nextProps.infoEduProgram.IdProgram;
+    const ProgramName = nextProps.infoEduProgram.NameProgram;
+    const program = { ProgramId, ProgramName };
+    this.setState({
+      nameEduProgram: nextProps.infoEduProgram.EduName,
+      major: major,
+      level: level,
+      program: program,
+      schoolYear: nextProps.infoEduProgram.SchoolYear,
+      detailEduProgram: nextProps.detailEduProgram
+    });
   }
 
   render() {
@@ -110,7 +126,7 @@ export default class DetailEducationProgramCom extends React.Component {
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">THÔNG TIN CHUNG</h4>
+            <h4 className="font-weight-bold">*** THÔNG TIN CHUNG</h4>
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">
@@ -123,11 +139,9 @@ export default class DetailEducationProgramCom extends React.Component {
               level={this.state.level}
               program={this.state.program}
               major={this.state.major}
-              facultyId={this.state.facultyId}
               schoolYear={this.state.schoolYear}
               handleNameEduProgramChange={this.handleNameEduProgramChange}
               handleLevelChange={this.handleLevelChange}
-              handleFacultyChange={this.handleFacultyChange}
               handleMajorCodeChange={this.handleMajorCodeChange}
               handleMajorNameChange={this.handleMajorNameChange}
               handleProgramChange={this.handleProgramChange}
@@ -161,11 +175,35 @@ export default class DetailEducationProgramCom extends React.Component {
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">4. Đối tượng tuyển sinh:</h4>
           </Col>
+          <Col lg="12" md="12" sm="12">
+            <FormTextarea
+              value={this.state.detailEduProgram.EnrollmentTarget}
+              onChange={this.handleEnrollmentChange}
+            />
+          </Col>
           <br />
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">
               5. Quy trình đào tạo, điều kiện tốt nghiệp:
             </h4>
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <h5 className="font-weight-bold">5.1 Quy trình đào tạo:</h5>
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <FormTextarea
+              value={this.state.detailEduProgram.EduProcess}
+              onChange={this.handleEduProcessChange}
+            />
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <h5 className="font-weight-bold">5.2 Điều kiện tốt nghiệp:</h5>
+          </Col>
+          <Col lg="12" md="12" sm="12">
+            <FormTextarea
+              value={this.state.detailEduProgram.GraduatedCon}
+              onChange={this.handleGraduatedConChange}
+            />
           </Col>
           <br />
           <Col lg="12" md="12" sm="12">

@@ -70,7 +70,7 @@ export default class TitleCom extends React.Component {
             <FormInput
               type="text"
               value={this.props.nameEduProgram}
-              onChange={this.props.handleNameEduProgramChange}
+              onChange={e => this.props.handleNameEduProgramChange(e)}
               placeholder="Tên..."
               className="mb-2"
             />
@@ -90,7 +90,13 @@ export default class TitleCom extends React.Component {
               {Array.isArray(this.props.levels)
                 ? this.props.levels.map((item, i) => {
                     return (
-                      <option key={item.Id} value={item.Id}>
+                      <option
+                        selected={
+                          item.Id === parseInt(this.props.level.LevelId, 10)
+                        }
+                        key={item.Id}
+                        value={item.Id}
+                      >
                         {item.LevelName}
                       </option>
                     );
@@ -111,28 +117,19 @@ export default class TitleCom extends React.Component {
                 Chọn...
               </option>
               {Array.isArray(this.props.majors)
-                ? this.props.majors
-                    .filter(
-                      row =>
-                        this.props.facultyId !== 0
-                          ? row.IdFaculty === this.props.facultyId
-                          : row
-                    )
-                    .map((item, i) => {
-                      return (
-                        <option
-                          selected={
-                            item.Id === this.props.major
-                              ? parseInt(this.props.major.Id, 10)
-                              : -1
-                          }
-                          key={item.Id}
-                          value={item.Id}
-                        >
-                          {item.MajorName}
-                        </option>
-                      );
-                    })
+                ? this.props.majors.map((item, i) => {
+                    return (
+                      <option
+                        selected={
+                          item.Id === parseInt(this.props.major.MajorId, 10)
+                        }
+                        key={item.Id}
+                        value={item.Id}
+                      >
+                        {item.MajorName}
+                      </option>
+                    );
+                  })
                 : null}
             </FormSelect>
           </Col>
@@ -149,28 +146,19 @@ export default class TitleCom extends React.Component {
                 Chọn...
               </option>
               {Array.isArray(this.props.majors)
-                ? this.props.majors
-                    .filter(
-                      row =>
-                        this.props.facultyId !== 0
-                          ? row.IdFaculty === this.props.facultyId
-                          : row
-                    )
-                    .map((item, i) => {
-                      return (
-                        <option
-                          selected={
-                            item.Id === this.props.major
-                              ? parseInt(this.props.major.Id, 10)
-                              : -1
-                          }
-                          key={item.Id}
-                          value={item.Id}
-                        >
-                          {item.MajorCode}
-                        </option>
-                      );
-                    })
+                ? this.props.majors.map((item, i) => {
+                    return (
+                      <option
+                        selected={
+                          item.Id === parseInt(this.props.major.MajorId, 10)
+                        }
+                        key={item.Id}
+                        value={item.Id}
+                      >
+                        {item.MajorCode}
+                      </option>
+                    );
+                  })
                 : null}
             </FormSelect>
           </Col>
@@ -189,7 +177,13 @@ export default class TitleCom extends React.Component {
               {Array.isArray(this.props.programs)
                 ? this.props.programs.map((item, i) => {
                     return (
-                      <option key={item.Id} value={item.Id}>
+                      <option
+                        selected={
+                          item.Id === parseInt(this.props.program.ProgramId, 10)
+                        }
+                        key={item.Id}
+                        value={item.Id}
+                      >
                         {item.NameProgram}
                       </option>
                     );
@@ -208,7 +202,7 @@ export default class TitleCom extends React.Component {
             <FormInput
               type="text"
               value={this.props.schoolYear}
-              onChange={this.props.handleSchoolYearChange}
+              onChange={e => this.props.handleSchoolYearChange(e)}
               placeholder="2015"
               className="mb-2"
             />
