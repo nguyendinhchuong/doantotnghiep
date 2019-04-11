@@ -81,7 +81,7 @@ export default class ContentProgramCom extends React.Component {
         style={{ float: "left" }}
         title="Thêm môn học"
       >
-        <i className="material-icons">add</i>
+        <i className="material-icons">playlist_add</i>
       </Button>
     </div>
   );

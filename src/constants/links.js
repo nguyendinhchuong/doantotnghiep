@@ -26,6 +26,7 @@ export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;
 export const ADD_SUBJECT = `${LINK}/subject/add/`;
 export const ADD_SUBJECT_BULK = `${LINK}/subject/addlist/`;
 export const DELETE_SUBJECT = `${LINK}/subject/delete/`;
+export const LOAD_USING_EDUPRO = `${LINK}/subjecteduprog/geteduprog/`;
 
 // outcomeStandards links
 export const LOAD_OUTCOMESTANDARDS = `${LINK}/getoutcomestandard`;

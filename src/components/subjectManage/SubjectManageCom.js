@@ -26,6 +26,7 @@ export default class SubjectManageCom extends Component {
     this.state = {
       visible: false,
       reviewVisible: false,
+      detailVisible: false,
       subjectCode: "",
       subjectName: "",
       credits: "",
@@ -118,6 +119,11 @@ export default class SubjectManageCom extends Component {
       reviewVisible: false
     });
   };
+  onCloseDetail = () => {
+    this.setState({
+      detailVisible: false
+    });
+  };
 
   onCloseAndAddSubjects = () => {
     this.props.onAddSubjectBulk(this.state.tmpSubjects);
@@ -155,16 +161,26 @@ export default class SubjectManageCom extends Component {
   };
 
   onShowDetail = IdSubject => {
+    this.props.onLoadUsingEduPro(IdSubject);
     const row = this.props.subjects.filter(row => row.Id === IdSubject)[0];
     const description = row.Description
       ? "Mô tả môn học: " + row.Description
       : "Chưa có mô tả môn học!!";
-    alert(description);
+    this.setState({
+      detailVisible: true,
+      showDescription: description
+    });
   };
 
   onDelete = IdSubject => {
     this.props.onDeleteSubject(IdSubject);
   };
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.usingEduPro !== prevState.usingEduPro) {
+  //     return { usingEduPro: nextProps.usingEduPro };
+  //   } else return null;
+  // }
 
   render() {
     const dialog = (
@@ -357,6 +373,75 @@ export default class SubjectManageCom extends Component {
       </Dialog>
     );
 
+    const detailDialog = (
+      <Dialog
+        visible={this.state.detailVisible}
+        onClose={this.onCloseDetail}
+        style={{ width: 800 }}
+        title={<div>Mô tả môn học:</div>}
+        footer={[
+          <Button
+            type="button"
+            className="btn btn-default"
+            key="close"
+            onClick={this.onCloseDetail}
+            theme="success"
+          >
+            Đóng
+          </Button>
+        ]}
+      >
+        <Row>
+          <Col lg="12" md="12" sm="12">
+            <div>{this.state.showDescription}</div>
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col lg="12" md="12" sm="12">
+            <div>Danh sách các CTĐT sử dụng môn học:</div>
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col lg="12" md="12" sm="12">
+            <Card small className="mb-4">
+              <CardBody className="p-0 pb-3">
+                <table className="table mb-0">
+                  <thead className="bg-light">
+                    <tr>
+                      <th scope="col" className="border-0">
+                        STT
+                      </th>
+                      <th scope="col" className="border-0">
+                        Tên
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.isArray(this.props.usingEduPro) &&
+                    this.props.usingEduPro.length !== 0 ? (
+                      this.props.usingEduPro.map((row, i) => (
+                        <tr key={i}>
+                          <td>{i + 1}</td>
+                          <td>{row.Name}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td />
+                        <td>Chưa có dữ liệu</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Dialog>
+    );
+
     return (
       <div>
         <Row>
@@ -437,6 +522,7 @@ export default class SubjectManageCom extends Component {
         </Row>
         {dialog}
         {reviewDialog}
+        {detailDialog}
       </div>
     );
   }

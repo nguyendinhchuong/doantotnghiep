@@ -43,9 +43,11 @@ class SubjectManageTemp extends Component {
           <Col lg="12" md="12">
             <SubjectManageCom
               subjects={this.props.subjects}
+              usingEduPro={this.props.usingEduPro}
               onDeleteSubject={this.props.onDeleteSubject}
               onAddSubject={this.props.onAddSubject}
               onAddSubjectBulk={this.props.onAddSubjectBulk}
+              onLoadUsingEduPro={this.props.onLoadUsingEduPro}
             />
           </Col>
         </Row>
@@ -56,12 +58,14 @@ class SubjectManageTemp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  subjects: state.subjects
+  subjects: state.subjects,
+  usingEduPro: state.usingEduPro
 });
 
 export default connect(mapStateToProps, {
   onLoadSubjects: subjectsAction.onLoadSubjects,
   onDeleteSubject: subjectsAction.onDeleteSubject,
   onAddSubject: subjectsAction.onAddSubject,
-  onAddSubjectBulk: subjectsAction.onAddSubjectBulk
+  onAddSubjectBulk: subjectsAction.onAddSubjectBulk,
+  onLoadUsingEduPro: subjectsAction.onLoadUsingEduPro,
 })(SubjectManageTemp);

@@ -1,9 +1,7 @@
 import React from "react";
-import { Row, Col } from "shards-react";
+import { Row, Col, Button, FormTextarea } from "shards-react";
 
 import "../../assets/target-education.css";
-
-import { FormTextarea } from "shards-react";
 
 import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
 import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
@@ -100,35 +98,52 @@ export default class DetailEducationProgramCom extends React.Component {
   };
   // end functions for detailEduProgram
 
-  componentWillReceiveProps(nextProps) {
-    const MajorId = nextProps.infoEduProgram.IdMajor;
-    const MajorCode = nextProps.infoEduProgram.MajorCode;
-    const MajorName = nextProps.infoEduProgram.MajorName;
-    const major = { MajorId, MajorName, MajorCode };
-    const LevelId = nextProps.infoEduProgram.IdLevel;
-    const LevelName = nextProps.infoEduProgram.LevelName;
-    const level = { LevelId, LevelName };
-    const ProgramId = nextProps.infoEduProgram.IdProgram;
-    const ProgramName = nextProps.infoEduProgram.NameProgram;
-    const program = { ProgramId, ProgramName };
-    this.setState({
-      nameEduProgram: nextProps.infoEduProgram.EduName,
-      major: major,
-      level: level,
-      program: program,
-      schoolYear: nextProps.infoEduProgram.SchoolYear,
-      detailEduProgram: nextProps.detailEduProgram
-    });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.infoEduProgram &&
+      nextProps.infoEduProgram.EduName !== prevState.nameEduProgram
+    ) {
+      const MajorId = nextProps.infoEduProgram.IdMajor;
+      const MajorCode = nextProps.infoEduProgram.MajorCode;
+      const MajorName = nextProps.infoEduProgram.MajorName;
+      const major = { MajorId, MajorName, MajorCode };
+      const LevelId = nextProps.infoEduProgram.IdLevel;
+      const LevelName = nextProps.infoEduProgram.LevelName;
+      const level = { LevelId, LevelName };
+      const ProgramId = nextProps.infoEduProgram.IdProgram;
+      const ProgramName = nextProps.infoEduProgram.NameProgram;
+      const program = { ProgramId, ProgramName };
+      return {
+        nameEduProgram: nextProps.infoEduProgram.EduName,
+        major: major,
+        level: level,
+        program: program,
+        schoolYear: nextProps.infoEduProgram.SchoolYear,
+        detailEduProgram: nextProps.detailEduProgram
+      };
+    } else return null;
   }
 
   render() {
     return (
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
-          <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">*** THÔNG TIN CHUNG</h4>
+          <Col lg="8" md="8" sm="8">
+            <div className="text-left">
+              <h4 className="font-weight-bold">*** THÔNG TIN CHUNG</h4>
+            </div>
           </Col>
-          <br />
+          <Col lg="4" md="4" sm="4">
+            <div className="text-center">
+              <Button
+                theme="info"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">done</i> Lưu thông tin chung
+              </Button>
+            </div>
+          </Col>
+
           <Col lg="12" md="12" sm="12">
             <TitleCom
               levels={this.props.levels}
@@ -148,10 +163,27 @@ export default class DetailEducationProgramCom extends React.Component {
               handleSchoolYearChange={this.handleSchoolYearChange}
             />
           </Col>
-          <br />
+
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">1. Mục tiêu đào tạo:</h4>
+            <hr />
           </Col>
+
+          <Col lg="8" md="8" sm="8">
+            <div className="text-left">
+              <h4 className="font-weight-bold">1. Mục tiêu đào tạo:</h4>
+            </div>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <div className="text-center">
+              <Button
+                theme="info"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">done</i> Lưu mục tiêu đào tạo
+              </Button>
+            </div>
+          </Col>
+
           <Col lg="12" md="12" sm="12">
             <TargetEducationCom
               outcomeStandards={this.props.outcomeStandards}
@@ -161,64 +193,136 @@ export default class DetailEducationProgramCom extends React.Component {
               }
             />
           </Col>
-          <br />
+
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">2. Thời gian đào tạo: 4 năm</h4>
           </Col>
-          <br />
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">
               3. Khối lượng kiến thức toàn khóa: 137 chỉ
             </h4>
           </Col>
-          <br />
+
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">4. Đối tượng tuyển sinh:</h4>
+            <hr />
           </Col>
+
+          <Col lg="8" md="8" sm="8">
+            <div className="text-left">
+              <h4 className="font-weight-bold">4. Đối tượng tuyển sinh:</h4>
+            </div>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <div className="text-center">
+              <Button
+                theme="info"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">done</i> Lưu đối tượng tuyển sinh
+              </Button>
+            </div>
+          </Col>
+
           <Col lg="12" md="12" sm="12">
             <FormTextarea
               value={this.state.detailEduProgram.EnrollmentTarget}
               onChange={this.handleEnrollmentChange}
             />
           </Col>
-          <br />
+
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">
-              5. Quy trình đào tạo, điều kiện tốt nghiệp:
-            </h4>
+            <hr />
           </Col>
+
+          <Col lg="8" md="8" sm="8">
+            <div className="text-left">
+              <h4 className="font-weight-bold">
+                5. Quy trình đào tạo, điều kiện tốt nghiệp:
+              </h4>
+            </div>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <div className="text-center">
+              <Button
+                theme="info"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">done</i> Lưu quy trình và điều
+                kiện
+              </Button>
+            </div>
+          </Col>
+
           <Col lg="12" md="12" sm="12">
             <h5 className="font-weight-bold">5.1 Quy trình đào tạo:</h5>
           </Col>
+
           <Col lg="12" md="12" sm="12">
             <FormTextarea
               value={this.state.detailEduProgram.EduProcess}
               onChange={this.handleEduProcessChange}
             />
           </Col>
+
           <Col lg="12" md="12" sm="12">
             <h5 className="font-weight-bold">5.2 Điều kiện tốt nghiệp:</h5>
           </Col>
+
           <Col lg="12" md="12" sm="12">
             <FormTextarea
               value={this.state.detailEduProgram.GraduatedCon}
               onChange={this.handleGraduatedConChange}
             />
           </Col>
-          <br />
+
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">6. Cấu trúc chương trình:</h4>
+            <hr />
           </Col>
-          <br />
+
+          <Col lg="8" md="8" sm="8">
+            <div className="text-left">
+              <h4 className="font-weight-bold">6. Cấu trúc chương trình:</h4>
+            </div>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <div className="text-center">
+              <Button
+                theme="info"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">done</i> Lưu cấu trúc chương trình
+              </Button>
+            </div>
+          </Col>
+
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">7. Nội dung chương trình:</h4>
           </Col>
-          <br />
+
           <Col lg="12" md="12" sm="12">
             <ContentProgramCom subjects={this.props.subjects} />
           </Col>
+
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">8. Kế hoạch giảng dạy dự kiến:</h4>
+            <hr />
+          </Col>
+
+          <Col lg="8" md="8" sm="8">
+            <div className="text-left">
+              <h4 className="font-weight-bold">
+                8. Kế hoạch giảng dạy dự kiến:
+              </h4>
+            </div>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <div className="text-center">
+              <Button
+                theme="info"
+                onClick={this.onSave}
+              >
+                <i className="material-icons">done</i> Lưu kế hoạch giảng dạy
+              </Button>
+            </div>
           </Col>
         </Row>
       </div>

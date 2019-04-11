@@ -3,6 +3,7 @@ import { message } from "./message";
 import { faculties } from "./faculties";
 import { programs } from "./programs";
 import { subjects } from "./subjects";
+import { usingEduPro } from "./usingEduPro";
 import { outcomeStandards } from "./outcomeStandards";
 import { infoOutcomeStandard } from "./infoOutcomeStandard";
 import { detailOutcomeStandard } from "./detailOutcomeStandard";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   faculties,
   programs,
   subjects,
+  usingEduPro,
   outcomeStandards,
   infoOutcomeStandard,
   detailOutcomeStandard,

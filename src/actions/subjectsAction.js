@@ -146,3 +146,38 @@ export const onDeleteSubject = id => {
       });
   };
 };
+
+export const loadUsingEduProSuccess = usingEduPro => ({
+  type: cst.LOAD_USING_EDUPRO_SUCCESS,
+  usingEduPro: usingEduPro
+});
+
+export const loadUsingEduProError = errorMessage => ({
+  type: cst.LOAD_USING_EDUPRO_ERROR,
+  errorMessage
+});
+
+export const onLoadUsingEduPro = id => {
+  return (dispatch, getState) => {
+    let req = `${links.LOAD_USING_EDUPRO}?idsubject=${id}`;
+    axios
+      .get(req)
+      .then(res => {
+        const usingEduPro = res.data.data;
+        if (usingEduPro === undefined) {
+          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(loadUsingEduProError(res));
+        } else {
+          // let chirp = { message: `Tải các môn học thành công`, isRight: 1 };
+          // dispatch(message.message(chirp));
+          dispatch(loadUsingEduProSuccess(usingEduPro));
+        }
+      })
+      .catch(err => {
+        let chirp = { message: `Tải các CTĐT sử dụng môn học thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
+        dispatch(loadUsingEduProError(err));
+      });
+  };
+};

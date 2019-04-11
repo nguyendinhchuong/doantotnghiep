@@ -347,14 +347,14 @@ export default class DetailOutcomeStandardCom extends Component {
         >
           <i className="material-icons">arrow_downward</i>
         </Button>
-        <Button
+        {/*<Button
           onClick={() => this.onShowDialogDragNode(node)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Chuyển cấp"
         >
           <i className="material-icons">swap_vert</i>
-        </Button>
+        </Button>*/}
         <Button
           onClick={() => this.deleteNode(node)}
           theme="secondary"
@@ -483,7 +483,7 @@ export default class DetailOutcomeStandardCom extends Component {
                   </Button>
                 }
                 body={this.actionTemplate}
-                style={{ textAlign: "left", width: "15em" }}
+                style={{ textAlign: "center", width: "12em" }}
               />
             </TreeTable>
           </Col>
