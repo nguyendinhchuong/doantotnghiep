@@ -679,61 +679,6 @@ export const downSameLevel = (data, node) => {
   return data;
 };
 
-export const changeKeys = (nodes, key) => {
-  if (nodes === undefined || nodes.length === 0) {
-    return 0;
-  } else {
-    for (let i in nodes) {
-      nodes[i].key = `${key}-${nodes[i].key}`;
-      nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
-      changeKeys(nodes[i].children, key);
-    }
-  }
-};
-
-export const addOS = (nodes, node, os) => {
-  if (node === "" || node.children.length !== 0) {
-    alert("Không thể thêm chuẩn đầ ra");
-    return nodes;
-  }
-  changeKeys(os, node.key);
-  const x = node.key.split("-");
-  const lenKey = x.length;
-  switch (lenKey) {
-    case 1: {
-      nodes[indexOfNode(x, 0)].children.push(...os);
-      break;
-    }
-    case 2: {
-      nodes[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children.push(...os);
-      break;
-    }
-    case 3: {
-      nodes[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children.push(...os);
-      break;
-    }
-    case 4: {
-      nodes[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children.push(...os);
-      break;
-    }
-    case 5: {
-      nodes[Number(x[0])].children[Number(x[1])].children[
-        Number(x[2])
-      ].children[Number(x[3])].children[Number(x[4])].children.push(...os);
-      break;
-    }
-    default:
-      alert("Cannot insert");
-      break;
-  }
-
-  return nodes;
-};
-
 export const createExportSubject = subjects => {
   let data = [];
   data[0] = [

@@ -7,6 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 
+import * as logicTargetEdu from "../../business/logicTargetEducation";
 import * as logic from "../../business";
 
 import TableHeaderCom from "./TableHeaderCom";
@@ -30,21 +31,21 @@ class TargetEducationCom extends Component {
 
   // add
   addRoot = () => {
-    const data = logic.addRoot(this.state.nodes, this.state.nameOut);
+    const data = logicTargetEdu.addRoot(this.state.nodes, this.state.nameOut);
     this.setState({
       nodes: data
     });
   };
 
   add = node => {
-    const data = logic.add(this.state.nodes, node, this.state.nameOut);
+    const data = logicTargetEdu.addChild(this.state.nodes, node, this.state.nameOut);
     this.setState({
       nodes: data
     });
   };
 
   addOS = () => {
-    const data = logic.addOS(this.state.nodes, this.state.node, this.state.os);
+    const data = logicTargetEdu.addOS(this.state.nodes, this.state.node, this.state.os);
     this.setState({
       nodes: data
     });
