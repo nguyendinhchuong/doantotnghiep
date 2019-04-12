@@ -636,10 +636,11 @@ export const addOS = (nodes, node, os) => {
     return nodes;
   }
   let data = [...nodes];
-  changeKeys(os, node.key);
+  let thisNode = { ...node };
+  changeKeys(os, thisNode.key);
 
-  node.children.push(...os);
-  data = updateNode(data, node);
+  thisNode.children.push(...os);
+  data = updateNode(data, thisNode);
   return data;
 };
 

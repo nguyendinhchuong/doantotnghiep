@@ -76,7 +76,6 @@ export default class TargetEducationCom extends Component {
 
   onEditorValueChange = (props, value) => {
     let editedNode = logic.findNodeByKey(this.state.nodes, props.node.key);
-    console.log(editedNode)
     editedNode.data.name = value;
     editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
     this.updateNode(editedNode);

@@ -17,7 +17,9 @@ export default class DetailEducationProgramCom extends React.Component {
       program: { ProgramId: 0, ProgramName: "" },
       major: { MajorId: 0, MajorName: "", MajorCode: "" },
       schoolYear: "",
-      detailEduProgram: {}
+      EnrollmentTarget: "",
+      EduProcess: "",
+      GraduatedCon: ""
       // end states for Title
     };
   }
@@ -69,31 +71,19 @@ export default class DetailEducationProgramCom extends React.Component {
   // functions for detailEduProgram
   handleEnrollmentChange = event => {
     this.setState({
-      detailEduProgram: {
-        EnrollmentTarget: event.target.value,
-        EduProcess: this.state.detailEduProgram.EduProcess,
-        GraduatedCon: this.state.GraduatedCon
-      }
+      EnrollmentTarget: event.target.value
     });
   };
 
   handleEduProcessChange = event => {
     this.setState({
-      detailEduProgram: {
-        EnrollmentTarget: this.state.EnrollmentTarget,
-        EduProcess: event.target.value,
-        GraduatedCon: this.state.GraduatedCon
-      }
+      EduProcess: event.target.value
     });
   };
 
   handleGraduatedConChange = event => {
     this.setState({
-      detailEduProgram: {
-        EnrollmentTarget: this.state.EnrollmentTarget,
-        EduProcess: this.state.detailEduProgram.EduProcess,
-        GraduatedCon: event.target.value
-      }
+      GraduatedCon: event.target.value
     });
   };
   // end functions for detailEduProgram
@@ -119,12 +109,15 @@ export default class DetailEducationProgramCom extends React.Component {
         level: level,
         program: program,
         schoolYear: nextProps.infoEduProgram.SchoolYear,
-        detailEduProgram: nextProps.detailEduProgram
+        EnrollmentTarget: nextProps.detailEduProgram.EnrollmentTarget,
+        EduProcess: nextProps.detailEduProgram.EduProcess,
+        GraduatedCon: nextProps.detailEduProgram.GraduatedCon
       };
     } else return null;
   }
 
   render() {
+    console.log(this.state);
     return (
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
@@ -135,10 +128,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button
-                theme="info"
-                onClick={this.onSave}
-              >
+              <Button theme="info" onClick={this.onSave}>
                 <i className="material-icons">done</i> Lưu thông tin chung
               </Button>
             </div>
@@ -175,10 +165,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button
-                theme="info"
-                onClick={this.onSave}
-              >
+              <Button theme="info" onClick={this.onSave}>
                 <i className="material-icons">done</i> Lưu mục tiêu đào tạo
               </Button>
             </div>
@@ -214,10 +201,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button
-                theme="info"
-                onClick={this.onSave}
-              >
+              <Button theme="info" onClick={this.onSave}>
                 <i className="material-icons">done</i> Lưu đối tượng tuyển sinh
               </Button>
             </div>
@@ -225,7 +209,7 @@ export default class DetailEducationProgramCom extends React.Component {
 
           <Col lg="12" md="12" sm="12">
             <FormTextarea
-              value={this.state.detailEduProgram.EnrollmentTarget}
+              value={this.state.EnrollmentTarget}
               onChange={this.handleEnrollmentChange}
             />
           </Col>
@@ -243,10 +227,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button
-                theme="info"
-                onClick={this.onSave}
-              >
+              <Button theme="info" onClick={this.onSave}>
                 <i className="material-icons">done</i> Lưu quy trình và điều
                 kiện
               </Button>
@@ -259,7 +240,7 @@ export default class DetailEducationProgramCom extends React.Component {
 
           <Col lg="12" md="12" sm="12">
             <FormTextarea
-              value={this.state.detailEduProgram.EduProcess}
+              value={this.state.EduProcess}
               onChange={this.handleEduProcessChange}
             />
           </Col>
@@ -270,7 +251,7 @@ export default class DetailEducationProgramCom extends React.Component {
 
           <Col lg="12" md="12" sm="12">
             <FormTextarea
-              value={this.state.detailEduProgram.GraduatedCon}
+              value={this.state.GraduatedCon}
               onChange={this.handleGraduatedConChange}
             />
           </Col>
@@ -286,10 +267,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button
-                theme="info"
-                onClick={this.onSave}
-              >
+              <Button theme="info" onClick={this.onSave}>
                 <i className="material-icons">done</i> Lưu cấu trúc chương trình
               </Button>
             </div>
@@ -316,10 +294,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button
-                theme="info"
-                onClick={this.onSave}
-              >
+              <Button theme="info" onClick={this.onSave}>
                 <i className="material-icons">done</i> Lưu kế hoạch giảng dạy
               </Button>
             </div>
