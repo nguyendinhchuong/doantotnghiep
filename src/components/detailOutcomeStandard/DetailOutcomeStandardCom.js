@@ -81,7 +81,8 @@ export default class DetailOutcomeStandardCom extends Component {
 
   // update node after edit node
   updateNode = node => {
-    const data1 = logic.updateNode1(this.state.nodes, node);
+    debugger;
+    const data1 = logic.updateNode(this.state.nodes, node);
     this.setState({
       nodes: data1
     });
@@ -233,15 +234,16 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   upSameLevel = node => {
-    const data1 = [...logic.upSameLevel(this.state.nodes, node)];
-
-    this.setState({ nodes: [...data1] });
+    this.setState({ 
+      nodes: logic.upSameLevel(this.state.nodes, node) 
+    });
   };
 
   downSameLevel = node => {
-    const data1 = [...logic.downSameLevel(this.state.nodes, node)];
 
-    this.setState({ nodes: [...data1] });
+    this.setState({
+       nodes: logic.downSameLevel(this.state.nodes, node) 
+    });
   };
 
   suggestKeys = event => {

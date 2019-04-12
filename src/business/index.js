@@ -1,10 +1,3 @@
-const indexRoot = key => {
-  if (getRank(key) === 1) {
-    return Number(key);
-  }
-  return key.split(".")[0];
-};
-
 export const updateNode = (nodes, node) => {
   const root = [...nodes];
 
@@ -110,14 +103,7 @@ export const createSaveData = (nodes, data, id, level) => {
   }
 };
 
-export const getKeyAndName = element => {
-  let key, name;
-  key = element[0];
-  if (element[1]) key += `.${element[1]}`;
-  if (element[2]) key += `.${element[2]}`;
-  if (element[3]) name = `${element[3]}`;
-  return [key, name];
-};
+// add
 
 export const addRoot = (nodes, nameOut) => {
   let data = [...nodes];
@@ -132,23 +118,6 @@ export const addRoot = (nodes, nameOut) => {
   };
   data.push(root);
   return data;
-};
-
-//add any index
-export const addIndexRoot = (data1, node, index) => {
-  let nodeBefore = findNodeByKey(data1, index);
-  let root = node;
-  if (nodeBefore) {
-    root.key = nodeBefore.key;
-  }
-
-  data1 = [
-    ...data1.slice(0, index - 1),
-    ...[root],
-    ...data1.slice(index - 1, data1.length)
-  ];
-  data1 = [...refreshTreeNodes(data1, Number(index) - 1)];
-  return data1;
 };
 
 // add subnode last index
@@ -169,113 +138,38 @@ export const addChild = (data1, node, nameOut) => {
   return updateNode(root, child);
 };
 
-// add subnode any index
-export const addAny = (data1, node, indexNode) => {
-  const x = indexNode.split(".");
-  const subNode = node;
-  subNode.key = indexNode;
-  const lenKey = x.length;
-  // index of position insert
-  const index = Number(x[x.length - 1]);
-  let dataCacul;
-  switch (lenKey - 1) {
-    case 1: {
-      dataCacul = [...data1[indexOfNode(x, 0)].children];
-      dataCacul = [
-        ...dataCacul.slice(0, index - 1),
-        ...[subNode],
-        ...dataCacul.slice(index - 1, dataCacul.length)
-      ];
-      data1[indexOfNode(x, 0)].children = [...dataCacul];
-      break;
-    }
-    case 2: {
-      dataCacul = data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children;
-      dataCacul = [
-        ...dataCacul.slice(0, index - 1),
-        ...[subNode],
-        ...dataCacul.slice(index - 1, dataCacul.length)
-      ];
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children = [
-        ...dataCacul
-      ];
-      break;
-    }
-    case 3: {
-      dataCacul =
-        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-          indexOfNode(x, 2)
-        ].children;
 
-      dataCacul = [
-        ...dataCacul.slice(0, index - 1),
-        ...[subNode],
-        ...dataCacul.slice(index - 1, dataCacul.length)
-      ];
-
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children = [...dataCacul];
-      break;
-    }
-    case 4: {
-      dataCacul =
-        data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-          indexOfNode(x, 2)
-        ].children[indexOfNode(x, 3)].children;
-
-      dataCacul = [
-        ...dataCacul.slice(0, index - 1),
-        ...[subNode],
-        ...dataCacul.slice(index - 1, dataCacul.length)
-      ];
-
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children = [...dataCacul];
-      break;
-    }
-    case 5: {
-      dataCacul =
-        data1[Number(x[0])].children[Number(x[1])].children[Number(x[2])]
-          .children[Number(x[3])].children[Number(x[4])].children;
-
-      dataCacul = [
-        ...dataCacul.slice(0, index - 1),
-        ...[subNode],
-        ...dataCacul.slice(index - 1, dataCacul.length)
-      ];
-
-      data1[Number(x[0])].children[Number(x[1])].children[
-        Number(x[2])
-      ].children[Number(x[3])].children[Number(x[4])].children = [...dataCacul];
-      break;
-    }
-    default:
-      alert("Cannot insert");
-      break;
+//add any index
+export const addIndexRoot = (data1, node, index) => {
+  let nodeBefore = findNodeByKey(data1, index);
+  let root = node;
+  if (nodeBefore) {
+    root.key = nodeBefore.key;
   }
-  data1 = [...refreshTreeNodes(data1, Number(x[0]) - 1)];
+
+  data1 = [
+    ...data1.slice(0, index - 1),
+    ...[root],
+    ...data1.slice(index - 1, data1.length)
+  ];
+  data1 = [...refreshTreeNodes(data1, Number(index) - 1)];
   return data1;
 };
 
-export const indexOfNode = (ids, id) => {
-  return Number(ids[id]) - 1;
+
+// add subnode any index
+export const addAny = (nodes, node, keySwap) => {
+  debugger;
+  let root = [...nodes];
+  const x = keySwap.split(".");
+  const subNode = {...node};
+  subNode.key = keySwap;
+  root = addAnyChild(root, subNode, Number(x[x.length-1]) - 1);
+  root = [...refreshTreeNodes(root, Number(x[0]) - 1)];
+  return root;
 };
 
 // delete
-const indexNode = key => {
-  if (getRank(key) === 1) {
-    return Number(key) - 1;
-  }
-  const arr = key.split(".");
-  return Number(arr[arr.length - 1]) - 1;
-};
-
-const parentKey = key => {
-  const lastIndexDot = key.lastIndexOf(".");
-  return key.slice(0, lastIndexDot);
-};
 
 export const deleteNode = (nodes, node) => {
   let data = [...nodes];
@@ -294,32 +188,7 @@ export const deleteNode = (nodes, node) => {
   return data;
 };
 
-export const dateAfterDeleted = (data, index) => {
-  if (index === data.length) {
-    data = [...data.slice(0, index - 1)];
-  } else if (index <= 1) {
-    data = [...data.slice(index, data.length + 1)];
-  } else {
-    data = [...data.slice(0, index - 1), ...data.slice(index, data.length)];
-  }
-  return data;
-};
-
 // update sub node after delete
-export const updateSubNode = (iParent, node) => {
-  if (node.children) {
-    const length = node.children.length;
-    for (let i = 0; i < length; i++) {
-      node.children[i].key = `${iParent}.${i + 1}`;
-      node.children[i].data.displayName = `${node.children[i].key}. ${
-        node.children[i].data.name
-      }`;
-      if (node.children[i].children)
-        updateSubNode(node.children[i].key, node.children[i]);
-    }
-  }
-};
-
 export const refreshTreeNodes = (nodes, indexRefresh) => {
   const data = [...nodes];
   const length = data.length;
@@ -331,44 +200,6 @@ export const refreshTreeNodes = (nodes, indexRefresh) => {
   }
 
   return data;
-};
-
-//update node after edit node
-export const updateNode1 = (data1, node) => {
-  const x = node.key.split("-");
-  const rankNode = x.length;
-  switch (rankNode) {
-    case 1: {
-      data1[indexOfNode(x, 0)] = node;
-      break;
-    }
-    case 2: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)] = node;
-      break;
-    }
-    case 3: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ] = node;
-      break;
-    }
-    case 4: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)] = node;
-      break;
-    }
-    case 5: {
-      data1[indexOfNode(x, 0)].children[indexOfNode(x, 1)].children[
-        indexOfNode(x, 2)
-      ].children[indexOfNode(x, 3)].children[indexOfNode(x, 4)] = node;
-      break;
-    }
-    default:
-      break;
-  }
-
-  return data1;
 };
 
 export const findNodeByKey = (nodes, key) => {
@@ -390,20 +221,6 @@ export const findNodeByKey = (nodes, key) => {
 };
 
 // import
-export const addImport = (nodes, node) => {
-  const root = [...nodes];
-  const keyParent = parentKey(node.key);
-  const nodeParent = findNodeByKey(root, keyParent);
-  nodeParent.children.push(node);
-  return updateNode(root, nodeParent);
-};
-
-export const addRootImport = (nodes, node) => {
-  const root = [...nodes];
-  root.push(node);
-  return root;
-};
-
 export const convertArrToTreeNode = arr => {
   let data1 = [];
   let keyParentNode;
@@ -452,41 +269,6 @@ export const convertArrToKeys = arr => {
   return keys;
 };
 
-const itemToKey = item => {
-  const length = item.length;
-  let result = item.reduce((acc, cur, index) => {
-    if (cur && index !== length - 1) {
-      return (acc += cur + ".");
-    }
-    return acc;
-  }, "");
-  if (result[result.length - 1] === ".") {
-    return result.slice(0, result.length - 1);
-  }
-  return result;
-};
-
-export const getRank = key => {
-  let countDot = 0;
-  for (let i = 0; i < key.length; i++) {
-    if (key[i] === ".") {
-      countDot++;
-    }
-  }
-  return countDot + 1;
-};
-
-export const lastNumberOfKey = str => {
-  const length = str.length;
-  for (let i = length - 1; i >= 0; i--) {
-    if (Number.isInteger(Number(str[i]))) return i;
-  }
-};
-
-export const getFormatKey = key => {
-  return key.slice(0, lastNumberOfKey(key) + 1);
-};
-
 export const convertDBToTreeNode = arrDB => {
   let data1 = [];
   arrDB.forEach(el => {
@@ -509,35 +291,6 @@ export const convertDBToTreeNode = arrDB => {
   return data1;
 };
 
-export const getCurDate = () => {
-  let today = new Date();
-  let dd = today.getDate();
-  let mm = today.getMonth() + 1;
-  let yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-  return dd + "/" + mm + "/" + yyyy;
-};
-
-export const formatDatetime = date => {
-  const d = new Date(date);
-  const dateTime = [
-    d.getFullYear(),
-    d.getMonth(),
-    d.getDay(),
-    d.getUTCHours(),
-    d.getUTCMinutes(),
-    d.getUTCSeconds()
-  ];
-  return `${dateTime[0]}-${dateTime[1]}-${dateTime[2]} ${dateTime[3]}:${
-    dateTime[4]
-  }:${dateTime[5]}`;
-};
-
 export const formatDate = date => {
   const d = new Date(date);
   return d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -557,17 +310,7 @@ export const checkIndexInsert = (currentKey, keyInsert) => {
   return keyInsert.startsWith(currentKey);
 };
 
-export const dragIntoRoot = (data, node, index) => {
-  data = [...deleteNode(data, node)];
-  data = [...addIndexRoot(data, node, index)];
-  return data;
-};
-
-export const dragIntoSubNode = (data, node, index) => {
-  data = [...deleteNode(data, node)];
-  data = [...addAny(data, node, index)];
-  return data;
-};
+// drag
 
 export const dragIntoAny = (data, node, index) => {
   if (index.length <= 1) {
@@ -689,3 +432,118 @@ export const convertToSubjects = data => {
   subjects.splice(0, 1);
   return subjects;
 };
+
+// private
+
+const indexRoot = key => {
+  if (getRank(key) === 1) {
+    return Number(key);
+  }
+  return key.split(".")[0];
+};
+
+const getKeyAndName = element => {
+  let key, name;
+  key = element[0];
+  if (element[1]) key += `.${element[1]}`;
+  if (element[2]) key += `.${element[2]}`;
+  if (element[3]) name = `${element[3]}`;
+  return [key, name];
+};
+
+const addAnyChild = (nodes, node, index) => {
+  const root = [...nodes];
+  const keyParent = parentKey(node.key);
+  const nodeParent = findNodeByKey(root, keyParent);
+  nodeParent.children.splice(index, 0, node);
+  return updateNode(root, nodeParent);
+};
+
+const indexNode = key => {
+  if (getRank(key) === 1) {
+    return Number(key) - 1;
+  }
+  const arr = key.split(".");
+  return Number(arr[arr.length - 1]) - 1;
+};
+
+const parentKey = key => {
+  const lastIndexDot = key.lastIndexOf(".");
+  return key.slice(0, lastIndexDot);
+};
+
+const itemToKey = item => {
+  const length = item.length;
+  let result = item.reduce((acc, cur, index) => {
+    if (cur && index !== length - 1) {
+      return (acc += cur + ".");
+    }
+    return acc;
+  }, "");
+  if (result[result.length - 1] === ".") {
+    return result.slice(0, result.length - 1);
+  }
+  return result;
+};
+
+const updateSubNode = (iParent, node) => {
+  if (node.children) {
+    const length = node.children.length;
+    for (let i = 0; i < length; i++) {
+      node.children[i].key = `${iParent}.${i + 1}`;
+      node.children[i].data.displayName = `${node.children[i].key}. ${
+        node.children[i].data.name
+      }`;
+      if (node.children[i].children)
+        updateSubNode(node.children[i].key, node.children[i]);
+    }
+  }
+};
+
+const addImport = (nodes, node) => {
+  const root = [...nodes];
+  const keyParent = parentKey(node.key);
+  const nodeParent = findNodeByKey(root, keyParent);
+  nodeParent.children.push(node);
+  return updateNode(root, nodeParent);
+};
+
+const addRootImport = (nodes, node) => {
+  const root = [...nodes];
+  root.push(node);
+  return root;
+};
+
+const getRank = key => {
+  let countDot = 0;
+  for (let i = 0; i < key.length; i++) {
+    if (key[i] === ".") {
+      countDot++;
+    }
+  }
+  return countDot + 1;
+};
+
+const lastNumberOfKey = str => {
+  const length = str.length;
+  for (let i = length - 1; i >= 0; i--) {
+    if (Number.isInteger(Number(str[i]))) return i;
+  }
+};
+
+const getFormatKey = key => {
+  return key.slice(0, lastNumberOfKey(key) + 1);
+};
+
+const dragIntoRoot = (data, node, index) => {
+  data = [...deleteNode(data, node)];
+  data = [...addIndexRoot(data, node, index)];
+  return data;
+};
+
+const dragIntoSubNode = (data, node, index) => {
+  data = [...deleteNode(data, node)];
+  data = [...addAny(data, node, index)];
+  return data;
+};
+
