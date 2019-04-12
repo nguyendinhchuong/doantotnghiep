@@ -17,7 +17,6 @@ export default class DetailOutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataImport: [],
       nodes: [],
       node: "",
       visible: false,
@@ -37,16 +36,14 @@ export default class DetailOutcomeStandardCom extends Component {
 
   // add
   addRoot = () => {
-    const data1 = logic.addRoot(this.state.nodes, this.state.nameOut);
     this.setState({
-      nodes: data1
+      nodes: logic.addRoot(this.state.nodes, this.state.nameOut)
     });
   };
 
   add = node => {
-    const data1 = logic.add(this.state.nodes, node, this.state.nameOut);
     this.setState({
-      nodes: data1
+      nodes: logic.addChild(this.state.nodes, node, this.state.nameOut)
     });
   };
 
@@ -84,7 +81,7 @@ export default class DetailOutcomeStandardCom extends Component {
 
   // update node after edit node
   updateNode = node => {
-    const data1 = logic.updateNode(this.state.nodes, node);
+    const data1 = logic.updateNode1(this.state.nodes, node);
     this.setState({
       nodes: data1
     });
@@ -245,7 +242,6 @@ export default class DetailOutcomeStandardCom extends Component {
     let level = logic.getMaxLevel(this.state.nodes);
     let data = [];
     logic.convertTreeNodeToArrKeys(this.state.nodes, data, level);
-    console.log(data);
     const keys = [...logic.convertArrToKeys(data)];
     this.setState({ keys: keys });
     setTimeout(() => {
@@ -258,7 +254,6 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   handleFile = file => {
-    this.setState({ isLoadData: true });
     const reader = new FileReader();
     const rABS = !!reader.readAsBinaryString;
     reader.onload = e => {
@@ -267,13 +262,7 @@ export default class DetailOutcomeStandardCom extends Component {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      const data1 = [...logic.convertArrToTreeNode(this.state.nodes, data)];
-      this.setState({ nodes: [...data1] });
-      setTimeout(() => {
-        this.setState({
-          isLoadData: false
-        });
-      }, 1000);
+      this.setState({ nodes: [...logic.convertArrToTreeNode(data)] });
     };
     if (rABS) reader.readAsBinaryString(file);
     else reader.readAsArrayBuffer(file);
@@ -367,11 +356,11 @@ export default class DetailOutcomeStandardCom extends Component {
     );
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.detailOutcomeStandard !== prevState.nodes) {
-      return { nodes: nextProps.detailOutcomeStandard };
-    } else return null;
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.detailOutcomeStandard !== prevState.nodes) {
+  //     return { nodes: nextProps.detailOutcomeStandard };
+  //   } else return null;
+  // }
 
   render() {
     const footer = (
