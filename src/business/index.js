@@ -360,33 +360,6 @@ export const downSameLevel = (data, node) => {
   return data;
 };
 
-// add outcomeStandard
-export const changeKeys = (nodes, key) => {
-  if (nodes === undefined || nodes.length === 0) {
-    return 0;
-  } else {
-    for (let i in nodes) {
-      nodes[i].key = `${key}.${nodes[i].key}`;
-      nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
-      changeKeys(nodes[i].children, key);
-    }
-  }
-};
-
-export const addOS = (nodes, node, os) => {
-  if (node === "" || node.children.length !== 0 || os.length === 0) {
-    alert("Không thể thêm chuẩn đầ ra");
-    return nodes;
-  }
-  let data = [...nodes];
-  let thisNode = { ...node };
-  changeKeys(os, thisNode.key);
-
-  thisNode.children.push(...os);
-  data = updateNode(data, thisNode);
-  return data;
-};
-
 export const createExportSubject = subjects => {
   let data = [];
   data[0] = [

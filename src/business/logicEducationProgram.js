@@ -57,16 +57,18 @@ export const addRowTable = (data, node, subject) => {
   return data;
 };
 
-export const filterSubjects = (e, subjects) =>{
+export const filterSubjects = (e, subjects) => {
   const re = new RegExp(e.query.toLowerCase());
-  const results = subjects.filter((item) => {
-      return re.test(item.SubjectName.toLowerCase());
-  });
+  const results =
+    subjects
+      ? subjects.filter(item => {
+          return re.test(item.SubjectName.toLowerCase());
+        })
+      : [];
   return results;
-}
+};
 
 // private
-
 const indexRoot = key => {
   return key.split(".")[1];
 };
@@ -115,23 +117,23 @@ export const footerGroup = (
   </ColumnGroup>
 );
 
-export const sortSubject = data =>{
-  return data.sort((a,b)=>{
+export const sortSubject = data => {
+  return data.sort((a, b) => {
     const option1 = a.option;
     const option2 = b.option;
-    if(option1 === option2){
+    if (option1 === option2) {
       const code1 = a.SubjectCode;
       const code2 = b.SubjectCode;
       return code1.localeCompare(code2);
     }
     return option1.localeCompare(option2);
-  })
-}
+  });
+};
 
-export const indexSubjects = data =>{
-  const results =  data.reduce((acc, cur, index) => {
+export const indexSubjects = data => {
+  const results = data.reduce((acc, cur, index) => {
     cur.index = index + 1;
     return acc.concat(cur);
-  },[]);
+  }, []);
   return results;
-}
+};

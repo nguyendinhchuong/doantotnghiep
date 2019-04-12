@@ -10,8 +10,9 @@ import EditEducationProgram from "./containers/EditEducationProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
-import ContentProgramCom from './components/detailEducationProgram/ContentProgramCom'
-import DetailOutcomeStandardCom from './components/detailOutcomeStandard/DetailOutcomeStandardCom'
+
+import ContentProgramCom from "./components/detailEducationProgram/ContentProgramCom";
+import DetailOutcomeStandardCom from "./components/detailOutcomeStandard/DetailOutcomeStandardCom";
 
 export default [
   {
@@ -51,13 +52,13 @@ export default [
     component: SubjectManage
   },
   {
-    path: "/outcome-standard/test",
+    path: "/cp/test",
     exact: true,
     layout: DefaultLayout,
     component: ContentProgramCom
   },
   {
-    path: "/test",
+    path: "/dos/test",
     exact: true,
     layout: DefaultLayout,
     component: DetailOutcomeStandardCom

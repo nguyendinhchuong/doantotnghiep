@@ -7,7 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 
-import * as logic from "../../business";
+import * as logic from "../../business/logicTargetEducation";
 
 import TableHeaderCom from "./TableHeaderCom";
 import TdsCom from "./TdsCom";
