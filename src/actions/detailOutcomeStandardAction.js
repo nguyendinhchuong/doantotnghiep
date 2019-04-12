@@ -75,6 +75,7 @@ export const onLoadDetailOutcomeStandard = id => {
           dispatch(message.message(chirp));
           dispatch(loadDetailOutcomeStandardError(res));
         } else {
+          console.log(data);
           let detailOutcomeStandard = logic.convertDBToTreeNode(data);
           let chirp = { message: `Tải cây CĐR thành công`, isRight: 1 };
           dispatch(message.message(chirp));

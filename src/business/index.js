@@ -1,10 +1,9 @@
 const indexRoot = key => {
-  if(getRank(key) ===1){
+  if (getRank(key) === 1) {
     return Number(key);
   }
   return key.split(".")[0];
 };
-
 
 export const updateNode = (nodes, node) => {
   const root = [...nodes];
@@ -24,9 +23,7 @@ export const updateNode = (nodes, node) => {
   return root;
 };
 
-
-
-export const getMaxLevel = function myself(nodes) {
+export const getMaxLevel = nodes => {
   if (nodes === undefined || nodes.length === 0) {
     return 0;
   } else {
@@ -41,7 +38,7 @@ export const getMaxLevel = function myself(nodes) {
   }
 };
 
-export const createExportData = function themseft(nodes, data, level) {
+export const createExportData = (nodes, data, level) => {
   if (nodes === undefined || nodes.length === 0) return;
   else {
     let tmpArr = [];
@@ -66,7 +63,7 @@ export const createExportData = function themseft(nodes, data, level) {
   }
 };
 
-export const convertTreeNodeToArrKeys = function themseft(nodes, data, level) {
+export const convertTreeNodeToArrKeys = (nodes, data, level) => {
   if (nodes === undefined || nodes.length === 0) return;
   else {
     let tmpArr = [];
@@ -91,7 +88,7 @@ export const convertTreeNodeToArrKeys = function themseft(nodes, data, level) {
   }
 };
 
-export const createSaveData = function itseft(nodes, data, id, level) {
+export const createSaveData = (nodes, data, id, level) => {
   if (nodes === undefined || nodes.length === 0) return;
   else {
     let tmpObj = {};
@@ -99,7 +96,7 @@ export const createSaveData = function itseft(nodes, data, id, level) {
       let length = level - nodes[i].key.length / 2 - 1;
       let KeyRow = nodes[i].key;
       for (var j = 0; j < length; j++) {
-        KeyRow = KeyRow + "-";
+        KeyRow = KeyRow + ".";
       }
       let NameRow = nodes[i].data.name;
       tmpObj = { KeyRow, NameRow };
@@ -122,8 +119,6 @@ export const getKeyAndName = element => {
   return [key, name];
 };
 
-// add node
-//add last
 export const addRoot = (nodes, nameOut) => {
   let data = [...nodes];
   const key = data.length + 1;
@@ -138,6 +133,7 @@ export const addRoot = (nodes, nameOut) => {
   data.push(root);
   return data;
 };
+
 //add any index
 export const addIndexRoot = (data1, node, index) => {
   let nodeBefore = findNodeByKey(data1, index);
@@ -158,7 +154,7 @@ export const addIndexRoot = (data1, node, index) => {
 // add subnode last index
 export const addChild = (data1, node, nameOut) => {
   const root = [...data1];
-  const child = {...node};
+  const child = { ...node };
 
   const key = `${child.key}.${child.children.length + 1}`;
   const subNodeChild = {
@@ -172,9 +168,10 @@ export const addChild = (data1, node, nameOut) => {
   child.children.push(subNodeChild);
   return updateNode(root, child);
 };
+
 // add subnode any index
 export const addAny = (data1, node, indexNode) => {
-  const x = indexNode.split("-");
+  const x = indexNode.split(".");
   const subNode = node;
   subNode.key = indexNode;
   const lenKey = x.length;
@@ -267,27 +264,24 @@ export const indexOfNode = (ids, id) => {
 };
 
 // delete
-
-const indexNode = key =>{
-  if(getRank(key) === 1){
+const indexNode = key => {
+  if (getRank(key) === 1) {
     return Number(key) - 1;
   }
-  const arr = key.split('.');
-  return Number(arr[arr.length-1]) - 1;
-}
+  const arr = key.split(".");
+  return Number(arr[arr.length - 1]) - 1;
+};
 
-const parentKey = key =>{
-  const lastIndexDot = key.lastIndexOf('.');
+const parentKey = key => {
+  const lastIndexDot = key.lastIndexOf(".");
   return key.slice(0, lastIndexDot);
-}
+};
 
-export const deleteNode = (nodes, node) => {  
-  debugger;
+export const deleteNode = (nodes, node) => {
   let data = [...nodes];
   const idRoot = indexRoot(node.key);
-  const x = getRank(node.key);
   // ROOT
-  if(getRank(node.key) === 1){
+  if (getRank(node.key) === 1) {
     data.splice(Number(node.key) - 1, 1);
     data = refreshTreeNodes(data, idRoot - 1);
     return data;
@@ -312,7 +306,6 @@ export const dateAfterDeleted = (data, index) => {
 };
 
 // update sub node after delete
-
 export const updateSubNode = (iParent, node) => {
   if (node.children) {
     const length = node.children.length;
@@ -341,7 +334,6 @@ export const refreshTreeNodes = (nodes, indexRefresh) => {
 };
 
 //update node after edit node
-
 export const updateNode1 = (data1, node) => {
   const x = node.key.split("-");
   const rankNode = x.length;
@@ -394,11 +386,10 @@ export const findNodeByKey = (nodes, key) => {
     }
     path.shift();
   }
-  return {...node};
+  return { ...node };
 };
 
 // import
-
 export const addImport = (nodes, node) => {
   const root = [...nodes];
   const keyParent = parentKey(node.key);
@@ -413,7 +404,7 @@ export const addRootImport = (nodes, node) => {
   return root;
 };
 
-export const convertArrToTreeNode = (arr) => {
+export const convertArrToTreeNode = arr => {
   let data1 = [];
   let keyParentNode;
   let count = 0;
@@ -465,11 +456,11 @@ const itemToKey = item => {
   const length = item.length;
   let result = item.reduce((acc, cur, index) => {
     if (cur && index !== length - 1) {
-      return (acc += cur + "-");
+      return (acc += cur + ".");
     }
     return acc;
   }, "");
-  if (result[result.length - 1] === "-") {
+  if (result[result.length - 1] === ".") {
     return result.slice(0, result.length - 1);
   }
   return result;
@@ -477,10 +468,9 @@ const itemToKey = item => {
 
 export const getRank = key => {
   let countDot = 0;
-  for(let i = 0 ; i< key.length ; i++){
-    if(key[i] === '.')
-    {
-      countDot ++;
+  for (let i = 0; i < key.length; i++) {
+    if (key[i] === ".") {
+      countDot++;
     }
   }
   return countDot + 1;
@@ -493,7 +483,6 @@ export const lastNumberOfKey = str => {
   }
 };
 
-// 1-- => '1' , 1-1- => '1-1'
 export const getFormatKey = key => {
   return key.slice(0, lastNumberOfKey(key) + 1);
 };
@@ -511,7 +500,7 @@ export const convertDBToTreeNode = arrDB => {
       },
       children: []
     };
-    if (getRank(el.KeyRow) <= 1) {
+    if (getRank(key) <= 1) {
       data1 = addRootImport(data1, subNode);
     } else {
       data1 = addImport(data1, subNode);
@@ -555,7 +544,6 @@ export const formatDate = date => {
 };
 
 // Drag
-
 export const checkKeyDrap = keyDrag => {
   let regex1 = /\D/;
   let regex2 = /(\d-\d)+/i;
@@ -626,6 +614,32 @@ export const downSameLevel = (data, node) => {
       alert("Vị trí không thay đổi");
     }
   }
+  return data;
+};
+
+// add outcomeStandard
+export const changeKeys = (nodes, key) => {
+  if (nodes === undefined || nodes.length === 0) {
+    return 0;
+  } else {
+    for (let i in nodes) {
+      nodes[i].key = `${key}.${nodes[i].key}`;
+      nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
+      changeKeys(nodes[i].children, key);
+    }
+  }
+};
+
+export const addOS = (nodes, node, os) => {
+  if (node === "" || node.children.length !== 0 || os.length === 0) {
+    alert("Không thể thêm chuẩn đầ ra");
+    return nodes;
+  }
+  let data = [...nodes];
+  changeKeys(os, node.key);
+
+  node.children.push(...os);
+  data = updateNode(data, node);
   return data;
 };
 

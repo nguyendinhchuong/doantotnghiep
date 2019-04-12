@@ -57,7 +57,6 @@ export const onLoadTargetEduProgram = id => {
       .get(req)
       .then(res => {
         const data = res.data.data;
-        console.log(data);
         if (data === undefined) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));

@@ -213,7 +213,13 @@ export default class DetailOutcomeStandardCom extends Component {
       return;
     }
 
-    const data1 = [...logic.dragIntoAny(this.state.nodes, this.state.node, this.state.keyDrag)];
+    const data1 = [
+      ...logic.dragIntoAny(
+        this.state.nodes,
+        this.state.node,
+        this.state.keyDrag
+      )
+    ];
     this.setState({
       nodes: [...data1]
     });
@@ -361,6 +367,10 @@ export default class DetailOutcomeStandardCom extends Component {
   //     return { nodes: nextProps.detailOutcomeStandard };
   //   } else return null;
   // }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ nodes: nextProps.detailOutcomeStandard });
+  }
 
   render() {
     const footer = (

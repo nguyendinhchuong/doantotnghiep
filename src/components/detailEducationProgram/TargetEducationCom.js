@@ -7,13 +7,12 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 
-import * as logicTargetEdu from "../../business/logicTargetEducation";
 import * as logic from "../../business";
 
 import TableHeaderCom from "./TableHeaderCom";
 import TdsCom from "./TdsCom";
 
-class TargetEducationCom extends Component {
+export default class TargetEducationCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,21 +30,21 @@ class TargetEducationCom extends Component {
 
   // add
   addRoot = () => {
-    const data = logicTargetEdu.addRoot(this.state.nodes, this.state.nameOut);
+    const data = logic.addRoot(this.state.nodes, this.state.nameOut);
     this.setState({
       nodes: data
     });
   };
 
   add = node => {
-    const data = logicTargetEdu.addChild(this.state.nodes, node, this.state.nameOut);
+    const data = logic.addChild(this.state.nodes, node, this.state.nameOut);
     this.setState({
       nodes: data
     });
   };
 
   addOS = () => {
-    const data = logicTargetEdu.addOS(this.state.nodes, this.state.node, this.state.os);
+    const data = logic.addOS(this.state.nodes, this.state.node, this.state.os);
     this.setState({
       nodes: data
     });
@@ -77,6 +76,7 @@ class TargetEducationCom extends Component {
 
   onEditorValueChange = (props, value) => {
     let editedNode = logic.findNodeByKey(this.state.nodes, props.node.key);
+    console.log(editedNode)
     editedNode.data.name = value;
     editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
     this.updateNode(editedNode);
@@ -366,5 +366,3 @@ class TargetEducationCom extends Component {
     );
   }
 }
-
-export default TargetEducationCom;
