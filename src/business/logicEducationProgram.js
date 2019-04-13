@@ -2,8 +2,11 @@ import React from "react";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
+import * as common from './commonEducation'
 
-// public
+
+
+// Add root
 export const addRoot = (data, name) => {
   let nodes = [...data];
   const length = nodes.length;
@@ -20,6 +23,7 @@ export const addRoot = (data, name) => {
   return nodes;
 };
 
+// Add sub
 export const addChildTitle = (data, nodeParent, name) => {
   const length = nodeParent.children.length;
   const key = `${nodeParent.key}.${length + 1}`;
@@ -33,29 +37,39 @@ export const addChildTitle = (data, nodeParent, name) => {
     children: []
   };
   nodeParent.children.push(node);
-  data = updateNode(data, nodeParent);
+  data = common.updateNode(data, nodeParent);
   return data;
 };
 
-export const addRowTable = (data, node, subject) => {
-  if (!node.data.isTable) {
-    return data;
+// Delete Node
+
+export const deleteNode = (nodes, node) =>{
+  debugger;
+  let root = [...nodes];
+  // index of root
+  const idRoot = common.indexRoot(node.key);
+  const index = common.indexNode(node.key);
+
+  // ROOT
+  if (common.getRank(node.key) === 2) {
+    root.splice(index, 1);
+    root = common.refreshTreeNodes(root, node.key, idRoot - 1);
+    return root;
   }
-  subject = {
-    stt: 1,
-    code: "BAA00001",
-    name: "Toán CC",
-    credit: 4,
-    option: "BB",
-    description: "",
-    theory: 75,
-    practise: 5,
-    exercise: 10
-  };
-  node.data.subjects.push(subject);
-  data = updateNode(data, node);
-  return data;
-};
+  let parentKey = common.parentKey(node.key);
+  let rootKey = common.keyRoot(node.key);
+  // case root = 7.1.... => 1.1...
+  if(nodes[0].key[0] === '7'){
+    const firstDot = parentKey.indexOf('.');
+    parentKey = parentKey.slice(firstDot + 1, parentKey.length);
+  }
+  const parentNode = common.findNodeByKey(root, parentKey);
+  parentNode.children.splice(index, 1);
+  root = common.updateNode(root, parentNode);
+  root = common.refreshTreeNodes(root, rootKey, idRoot - 1);
+  return root;
+}
+
 
 export const filterSubjects = (e, subjects) => {
   const re = new RegExp(e.query.toLowerCase());
@@ -68,26 +82,6 @@ export const filterSubjects = (e, subjects) => {
   return results;
 };
 
-// private
-const indexRoot = key => {
-  return key.split(".")[1];
-};
-
-export const updateNode = (data, node) => {
-  const key = node.key;
-  const index = indexRoot(key);
-  const length = data.length;
-  for (let i = index - 1; i < length; i++) {
-    if (data[i].key === key) {
-      data[i] = node;
-      return data;
-    }
-    if (data[i].children) {
-      updateNode(data[i].children, node);
-    }
-  }
-  return data;
-};
 
 export const headerGroup = (
   <ColumnGroup>
@@ -137,3 +131,5 @@ export const indexSubjects = data => {
   }, []);
   return results;
 };
+
+// error ham refresh cho key line 52

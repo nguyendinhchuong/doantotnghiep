@@ -11,6 +11,8 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Spinner } from "primereact/spinner";
 
 import * as logic from "../../business/logicEducationProgram";
+import * as common from "../../business/commonEducation"
+
 
 export default class ContentProgramCom extends React.Component {
   constructor(props) {
@@ -32,6 +34,74 @@ export default class ContentProgramCom extends React.Component {
     };
   }
 
+   // Add
+  handleAddRoot = () => {
+    const data = logic.addRoot(this.state.nodes, this.state.nameValue);
+    this.setState({ nodes: data });
+    this.onHideDialogRoot();
+  };
+
+  handleAddChild = () => {
+    const data = [...this.state.nodes];
+    if (!this.state.isTable) {
+      this.setState({
+        nodes: logic.addChildTitle(data, this.state.node, this.state.nameValue)
+      });
+    } else {
+      this.setState({ nodes: this.addChildTable(data, this.state.node) });
+    }
+    this.onHideDialogChild();
+  };
+
+  addChildTable = (data, nodeParent) => {
+    const length = nodeParent.children.length;
+    const key = `${nodeParent.key}.${length + 1}`;
+    let node = {
+      key: key,
+      data: {
+        isTable: true,
+        subjects: [],
+        displayName: ""
+      },
+      children: []
+    };
+    this.setState({ nodeTables: node });
+    node = this.convertNodeToDataTable(node);
+    nodeParent.children.push(node);
+    data = common.updateNode(data, nodeParent);
+    return data;
+  };
+ 
+  addRowTableLogic = (data, node, subject) => {
+    if (!node.data.isTable) {
+      return data;
+    }
+    node.data.subjects.push(subject);
+    node.data.subjects = logic.sortSubject(node.data.subjects);
+    node.data.subjects = logic.indexSubjects(node.data.subjects);
+    node = this.convertNodeToDataTable(node);
+    data = common.updateNode(data, node);
+    return data;
+  };
+
+  addRowTable = () => {
+    let data = [...this.state.nodes];
+    const subject = { ...this.state.optionSubjects };
+    subject.option = this.state.isRequired ? "BB" : "TC";
+    subject.note = this.state.note;
+
+    data = this.addRowTableLogic(data, this.state.nodeTables, subject);
+    this.setState({ nodes: data });
+    this.onHideDialogTable();
+  };
+
+  // Delete
+  deleteNode = (node) =>{
+    const root = logic.deleteNode(this.state.nodes, node);
+    this.setState({nodes: root});
+  }
+
+  // show/hidden Dialong
   isShowDialogRoot = () => {
     this.setState({
       isDialogRoot: true
@@ -67,12 +137,8 @@ export default class ContentProgramCom extends React.Component {
     this.setState({ nameValue: e.target.value });
   };
 
-  handleAddRoot = () => {
-    const data = logic.addRoot(this.state.nodes, this.state.nameValue);
-    this.setState({ nodes: data });
-    this.onHideDialogRoot();
-  };
 
+  // supporting
   footer = (
     <div className="p-clearfix" style={{ width: "100%" }}>
       <Button
@@ -117,60 +183,6 @@ export default class ContentProgramCom extends React.Component {
     return node;
   };
 
-  addChildTable = (data, nodeParent) => {
-    const length = nodeParent.children.length;
-    const key = `${nodeParent.key}.${length + 1}`;
-    let node = {
-      key: key,
-      data: {
-        isTable: true,
-        subjects: [],
-        displayName: ""
-      },
-      children: []
-    };
-    this.setState({ nodeTables: node });
-    node = this.convertNodeToDataTable(node);
-    nodeParent.children.push(node);
-    data = logic.updateNode(data, nodeParent);
-    return data;
-  };
-
-  handleAddChild = () => {
-    const data = [...this.state.nodes];
-    if (!this.state.isTable) {
-      this.setState({
-        nodes: logic.addChildTitle(data, this.state.node, this.state.nameValue)
-      });
-    } else {
-      this.setState({ nodes: this.addChildTable(data, this.state.node) });
-    }
-    this.onHideDialogChild();
-  };
-
-  addRowTableLogic = (data, node, subject) => {
-    if (!node.data.isTable) {
-      return data;
-    }
-    node.data.subjects.push(subject);
-    node.data.subjects = logic.sortSubject(node.data.subjects);
-    node.data.subjects = logic.indexSubjects(node.data.subjects);
-    node = this.convertNodeToDataTable(node);
-    data = logic.updateNode(data, node);
-    return data;
-  };
-
-  addRowTable = () => {
-    let data = [...this.state.nodes];
-    const subject = { ...this.state.optionSubjects };
-    subject.option = this.state.isRequired ? "BB" : "TC";
-    subject.note = this.state.note;
-
-    data = this.addRowTableLogic(data, this.state.nodeTables, subject);
-    this.setState({ nodes: data });
-    this.onHideDialogTable();
-  };
-
   filterSubjects = e => {
     this.setState({
       filterSubjects: logic.filterSubjects(e, this.props.subjects)
@@ -190,6 +202,7 @@ export default class ContentProgramCom extends React.Component {
           <i className="material-icons">add</i>
         </Button>
         <Button
+          onClick = {() => this.deleteNode(node)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Xóa cấp này"
