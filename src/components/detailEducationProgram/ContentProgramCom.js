@@ -109,14 +109,19 @@ export default class ContentProgramCom extends React.Component {
   };
 
   inputTextEditor = (props, field) => {
-    return (
-      <InputText
-        style={{ width: "80%" }}
-        type="text"
-        value={props.node.data[field]}
-        onChange={e => this.onEditorValueChange(props, e.target.value)}
-      />
-    );
+    if(props.node.data.isTable){
+      //
+    }
+    else{
+      return (
+        <InputText
+          style={{ width: "80%" }}
+          type="text"
+          value={props.node.data[field]}
+          onChange={e => this.onEditorValueChange(props, e.target.value)}
+        />
+      );
+    }
   };
 
   onEditorValueChange = (props, value) => {
