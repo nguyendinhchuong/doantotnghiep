@@ -30,7 +30,9 @@ export default class ContentProgramCom extends React.Component {
       optionSubjects: [],
       isRequired: true,
       note: "",
-      optionalCredit: 0
+      optionalCredit: 0,
+      // hover
+      nodeHover: ''
     };
   }
 
@@ -100,6 +102,64 @@ export default class ContentProgramCom extends React.Component {
     const root = logic.deleteNode(this.state.nodes, node);
     this.setState({nodes: root});
   }
+
+  // update
+  nameEditor = props => {
+    return this.inputTextEditor(props, "name");
+  };
+
+  inputTextEditor = (props, field) => {
+    return (
+      <InputText
+        style={{ width: "80%" }}
+        type="text"
+        value={props.node.data[field]}
+        onChange={e => this.onEditorValueChange(props, e.target.value)}
+      />
+    );
+  };
+
+  onEditorValueChange = (props, value) => {
+    debugger;
+    let key = props.node.key;
+    // case root = 7.1.... => 1.1...
+    if(this.state.nodes[0].key[0] === '7'){
+      const firstDot = key.indexOf('.');
+      key = key.slice(firstDot + 1, key.length);
+    }
+    const editedNode = {...common.findNodeByKey(this.state.nodes,key)};
+    editedNode.data.name = value;
+    editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
+    const data = common.updateNode(this.state.nodes, editedNode);
+    this.setState({
+      nodes: data
+    });
+  };
+
+  // up/down node
+  upSameLevel = (node)=>{
+    console.log('UP');
+  }
+
+  downSameLevel = (node) =>{
+    console.log('DOWN');
+  }
+
+  // mouseOver
+  mouseOver = (node) =>{
+    this.setState({nodeHover: node.key})    
+  }
+
+  // hover up level
+  mouseOverUp = (node) =>{
+    this.setState({nodeHover: common.hoverUpLevel(node)})    
+  }
+
+  // hover down level
+  mouseOverDown = (node) =>{
+    this.setState({nodeHover: common.hoverDownLevel(this.state.nodes, node)})    
+  }
+
 
   // show/hidden Dialong
   isShowDialogRoot = () => {
@@ -195,19 +255,39 @@ export default class ContentProgramCom extends React.Component {
       <div>
         <Button
           onClick={() => this.isShowDialogChild(node)}
+          onMouseOver = {() => this.mouseOver(node)}
           theme="success"
           style={{ marginRight: ".3em", padding: "8px" }}
-          title="Thêm cấp con"
+          title={`Thêm cấp con của ${this.state.nodeHover}`}
         >
           <i className="material-icons">add</i>
         </Button>
         <Button
           onClick = {() => this.deleteNode(node)}
+          onMouseOver = {() => this.mouseOver(node)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
-          title="Xóa cấp này"
+          title={`Xóa cấp ${this.state.nodeHover}`}
         >
           <i className="material-icons">delete_sweep</i>
+        </Button>
+        <Button
+          onClick={() => this.upSameLevel(node)}
+          onMouseOver = {() => this.mouseOverUp(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title={`Lên cấp ${this.state.nodeHover}`}
+        >
+          <i className="material-icons">arrow_upward</i>
+        </Button>
+        <Button
+          onClick={() => this.downSameLevel(node)}
+          // onMouseOver = {() => this.mouseOverDown(node)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title={`Xuống xấp ${this.state.nodeHover}`}
+        >
+          <i className="material-icons">arrow_downward</i>
         </Button>
       </div>
     );
@@ -251,7 +331,10 @@ export default class ContentProgramCom extends React.Component {
       <div>
         <hr />
         <TreeTable value={this.state.nodes}>
-          <Column field="displayName" header="Tên dòng" expander />
+          <Column field="displayName" 
+          header="Tên dòng" 
+          editor={this.nameEditor}
+          expander />
           <Column
             header={
               <Button
@@ -264,6 +347,7 @@ export default class ContentProgramCom extends React.Component {
             body={(node, column) => this.actionTemplate(node, column)}
             style={{ textAlign: "center", width: "12em" }}
           />
+          
         </TreeTable>
 
         {/* Dialog Root */}

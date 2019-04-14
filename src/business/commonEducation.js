@@ -100,3 +100,35 @@ export const getRank = key => {
     result = arr[0] +"."+arr[1];
     return result;
   }
+
+  export const hoverUpLevel = node =>{
+    const child = {...node};
+    const lastDot = child.key.lastIndexOf('.');
+    const length = child.key.length;
+    const key = child.key;
+
+    const index = Number(key.slice(lastDot+1, length));
+    return index === 1 ? child.key : key.slice(0, lastDot+1) + (index-1).toString();
+  }
+
+  // error
+  export const hoverDownLevel = (nodes ,node) =>{
+    debugger;
+    const root = [...nodes];
+    const child = {...node};
+    const lastDot = child.key.indexOf('.');
+    const length = child.key.length;
+    const key = child.key;
+
+    let keyParent = parentKey(node.key);
+    // case root = 7.1.... => 1.1...
+    if(nodes[0].key[0] === '7'){
+      const firstDot = keyParent.indexOf('.');
+      keyParent = keyParent.slice(firstDot + 1, keyParent.length);
+    }
+    const parentNode = findNodeByKey(root, keyParent);
+    const count = parentNode.children.length;
+
+    const index = Number(key.slice(lastDot+1, length));
+    return index === count ? child.key : key.slice(0, lastDot+1) + (index-1).toString();
+  }

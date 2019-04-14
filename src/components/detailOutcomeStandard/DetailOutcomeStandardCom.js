@@ -12,6 +12,7 @@ import * as logic from "../../business";
 
 import DataInputCom from "./DataInputCom";
 import RevisionsCom from "./RevisionsCom";
+import { testModeAPI } from "react-ga";
 
 export default class DetailOutcomeStandardCom extends Component {
   constructor(props) {
@@ -81,7 +82,6 @@ export default class DetailOutcomeStandardCom extends Component {
 
   // update node after edit node
   updateNode = node => {
-    debugger;
     const data1 = logic.updateNode(this.state.nodes, node);
     this.setState({
       nodes: data1
