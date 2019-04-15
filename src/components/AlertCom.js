@@ -1,6 +1,8 @@
 import React from "react";
 import { Growl } from "primereact/components/growl/Growl";
 
+import "../assets/growl.css";
+
 export default class AlertCom extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,7 @@ export default class AlertCom extends React.Component {
   render() {
     return (
       <Growl
-        position="bottomright"
+        className="my-growl"
         ref={el => {
           this.growl = el;
         }}
