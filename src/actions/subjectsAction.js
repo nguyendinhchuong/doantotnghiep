@@ -25,8 +25,6 @@ export const onLoadSubjects = () => {
           dispatch(message.message(chirp));
           dispatch(loadSubjectsError(res));
         } else {
-          // let chirp = { message: `Tải các môn học thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
           dispatch(loadSubjectsSuccess(subjects));
         }
       })
@@ -134,7 +132,7 @@ export const onDeleteSubject = id => {
           dispatch(message.message(chirp));
           dispatch(deleteSubjectSuccess(res));
         } else {
-          let chirp = { message: `Xóa môn thất bại`, isRight: 0 };
+          let chirp = { message: `Xóa môn học thất bại`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(deleteSubjectError(res));
         }
@@ -169,8 +167,6 @@ export const onLoadUsingEduPro = id => {
           dispatch(message.message(chirp));
           dispatch(loadUsingEduProError(res));
         } else {
-          // let chirp = { message: `Tải các môn học thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
           dispatch(loadUsingEduProSuccess(usingEduPro));
         }
       })

@@ -11,6 +11,8 @@ export default class TdsCom extends React.Component {
         <td />
         <td />
         <td />
+        <td />
+        <td />
       </tr>
     );
   }

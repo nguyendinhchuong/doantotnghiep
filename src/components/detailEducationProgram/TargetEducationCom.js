@@ -8,6 +8,7 @@ import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 
 import * as logic from "../../business/logicTargetEducation";
+import * as commonLogic from "../../business/commonEducation";
 
 import TableHeaderCom from "./TableHeaderCom";
 import TdsCom from "./TdsCom";
@@ -83,7 +84,7 @@ export default class TargetEducationCom extends Component {
 
   // update node after edit node
   updateNode = node => {
-    const data = logic.updateNode(this.state.nodes, node);
+    const data = commonLogic.updateNode(this.state.nodes, node);
     this.setState({
       nodes: data
     });

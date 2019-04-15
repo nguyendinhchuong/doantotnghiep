@@ -19,8 +19,11 @@ export default class DetailEducationProgramCom extends React.Component {
       schoolYear: "",
       EnrollmentTarget: "",
       EduProcess: "",
-      GraduatedCon: ""
+      GraduatedCon: "",
       // end states for Title
+
+      eduYear: 0,
+      sumCredit: 0
     };
   }
 
@@ -88,11 +91,45 @@ export default class DetailEducationProgramCom extends React.Component {
   };
   // end functions for detailEduProgram
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      nextProps.infoEduProgram &&
-      nextProps.infoEduProgram.EduName !== prevState.nameEduProgram
-    ) {
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.infoEduProgram) {
+  //     const MajorId = nextProps.infoEduProgram.IdMajor;
+  //     const MajorCode = nextProps.infoEduProgram.MajorCode;
+  //     const MajorName = nextProps.infoEduProgram.MajorName;
+  //     const major = { MajorId, MajorName, MajorCode };
+  //     const LevelId = nextProps.infoEduProgram.IdLevel;
+  //     const LevelName = nextProps.infoEduProgram.LevelName;
+  //     const level = { LevelId, LevelName };
+  //     const ProgramId = nextProps.infoEduProgram.IdProgram;
+  //     const ProgramName = nextProps.infoEduProgram.NameProgram;
+  //     const program = { ProgramId, ProgramName };
+  //     return {
+  //       nameEduProgram: nextProps.infoEduProgram.EduName,
+  //       major: major,
+  //       level: level,
+  //       program: program,
+  //       schoolYear: nextProps.infoEduProgram.SchoolYear,
+  //       EnrollmentTarget: nextProps.detailEduProgram.EnrollmentTarget,
+  //       EduProcess: nextProps.detailEduProgram.EduProcess,
+  //       GraduatedCon: nextProps.detailEduProgram.GraduatedCon
+  //     };
+  //   } else return null;
+  // }
+
+  // fuctions for redux
+
+  onSaveEduProgram = () => {
+    this.props.onSaveEduProgram(1);
+  };
+
+  onSaveDetailEduProgram = () => {
+    this.props.onSaveDetailEduProgram(1);
+  };
+
+  // end fucntions for redux
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.infoEduProgram && nextProps.detailEduProgram) {
       const MajorId = nextProps.infoEduProgram.IdMajor;
       const MajorCode = nextProps.infoEduProgram.MajorCode;
       const MajorName = nextProps.infoEduProgram.MajorName;
@@ -103,7 +140,7 @@ export default class DetailEducationProgramCom extends React.Component {
       const ProgramId = nextProps.infoEduProgram.IdProgram;
       const ProgramName = nextProps.infoEduProgram.NameProgram;
       const program = { ProgramId, ProgramName };
-      return {
+      this.setState({
         nameEduProgram: nextProps.infoEduProgram.EduName,
         major: major,
         level: level,
@@ -112,12 +149,11 @@ export default class DetailEducationProgramCom extends React.Component {
         EnrollmentTarget: nextProps.detailEduProgram.EnrollmentTarget,
         EduProcess: nextProps.detailEduProgram.EduProcess,
         GraduatedCon: nextProps.detailEduProgram.GraduatedCon
-      };
-    } else return null;
+      });
+    }
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
@@ -128,7 +164,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button theme="info" onClick={this.onSave}>
+              <Button theme="info" onClick={this.onSaveEduProgram}>
                 <i className="material-icons">done</i> Lưu thông tin chung
               </Button>
             </div>
@@ -182,11 +218,13 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
 
           <Col lg="12" md="12" sm="12">
-            <h4 className="font-weight-bold">2. Thời gian đào tạo: 4 năm</h4>
+            <h4 className="font-weight-bold">{`2. Thời gian đào tạo: ${
+              this.state.eduYear
+            } năm`}</h4>
           </Col>
           <Col lg="12" md="12" sm="12">
             <h4 className="font-weight-bold">
-              3. Khối lượng kiến thức toàn khóa: 137 chỉ
+              {`3. Khối lượng kiến thức toàn khóa: ${this.state.sumCredit} chỉ`}
             </h4>
           </Col>
 
@@ -201,7 +239,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button theme="info" onClick={this.onSave}>
+              <Button theme="info" onClick={this.onSaveDetailEduProgram}>
                 <i className="material-icons">done</i> Lưu đối tượng tuyển sinh
               </Button>
             </div>
@@ -227,7 +265,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="4" md="4" sm="4">
             <div className="text-center">
-              <Button theme="info" onClick={this.onSave}>
+              <Button theme="info" onClick={this.onSaveDetailEduProgram}>
                 <i className="material-icons">done</i> Lưu quy trình và điều
                 kiện
               </Button>

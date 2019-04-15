@@ -73,6 +73,8 @@ class DetailEducationProgramTmp extends Component {
               detailEduProgram={this.props.detailEduProgram}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
+              onSaveEduProgram={this.props.onSaveEduProgram}
+              onSaveDetailEduProgram={this.props.onSaveDetailEduProgram}
               onLoadDetailOutcomeStandard={
                 this.props.onLoadDetailOutcomeStandard
               }
@@ -93,7 +95,7 @@ const mapStateToProps = state => ({
   programs: state.programs,
   subjects: state.subjects,
   infoEduProgram: state.infoEduProgram,
-  detailEduProgram: state.detailEduProgram,
+  detailEduProgram: state.detailEduProgram
 });
 
 export default connect(mapStateToProps, {
@@ -102,7 +104,9 @@ export default connect(mapStateToProps, {
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadSubjects: subjectsAction.onLoadSubjects,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
+  onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+  onSaveDetailEduProgram: detailEduProgramAction.onSaveDetailEduProgram,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onLoadDetailOutcomeStandard:
     detailOutcomeStandardAction.onLoadDetailOutcomeStandard

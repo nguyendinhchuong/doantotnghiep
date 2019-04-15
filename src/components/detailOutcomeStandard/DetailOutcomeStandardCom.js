@@ -12,7 +12,6 @@ import * as logic from "../../business";
 
 import DataInputCom from "./DataInputCom";
 import RevisionsCom from "./RevisionsCom";
-import { testModeAPI } from "react-ga";
 
 export default class DetailOutcomeStandardCom extends Component {
   constructor(props) {
