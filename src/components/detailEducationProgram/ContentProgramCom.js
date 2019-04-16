@@ -73,7 +73,22 @@ export default class ContentProgramCom extends React.Component {
     data = common.updateNode(data, nodeParent);
     return data;
   };
- 
+
+
+  addRowTable = () => {
+    debugger;
+    let data = [...this.state.nodes];
+    const subject = { ...this.state.optionSubjects };
+    subject.option = this.state.isRequired ? "BB" : "TC";
+    subject.note = this.state.note;
+    // test
+    subject.SubjectCode = '123';
+
+    data = this.addRowTableLogic(data, this.state.nodeTables, subject);
+    this.setState({ nodes: data });
+    this.onHideDialogTable();
+  };
+
   addRowTableLogic = (data, node, subject) => {
     if (!node.data.isTable) {
       return data;
@@ -86,16 +101,6 @@ export default class ContentProgramCom extends React.Component {
     return data;
   };
 
-  addRowTable = () => {
-    let data = [...this.state.nodes];
-    const subject = { ...this.state.optionSubjects };
-    subject.option = this.state.isRequired ? "BB" : "TC";
-    subject.note = this.state.note;
-
-    data = this.addRowTableLogic(data, this.state.nodeTables, subject);
-    this.setState({ nodes: data });
-    this.onHideDialogTable();
-  };
 
   // Delete
   deleteNode = (node) =>{
@@ -125,7 +130,6 @@ export default class ContentProgramCom extends React.Component {
   };
 
   onEditorValueChange = (props, value) => {
-    debugger;
     let key = props.node.key;
     // case root = 7.1.... => 1.1...
     if(this.state.nodes[0].key[0] === '7'){
@@ -140,6 +144,15 @@ export default class ContentProgramCom extends React.Component {
       nodes: data
     });
   };
+
+  // edit table
+  codeSubjectEditor = props =>{
+    return this.inputTextTableEditor(props, 'SubjectCode');
+  }
+
+  inputTextTableEditor = (props, field) =>{
+    return <InputText type="text" value={props.rowData.SubjectCode}/>;
+  }
 
   // up/down node
   upSameLevel = (node)=>{
@@ -232,10 +245,13 @@ export default class ContentProgramCom extends React.Component {
         groupField="option"
         footerColumnGroup={logic.footerGroup}
         footer={this.footer}
+        editable={true}
       >
         <Column field="option" header="Loại Học Phần" />
         <Column field="index" header="STT" />
-        <Column field="SubjectCode" header="Mã Môn Học" />
+        <Column field="SubjectCode" 
+          editor={this.codeSubjectEditor}
+          header="Mã Môn Học" />
         <Column field="SubjectName" header="Tên Môn Học" />
         <Column field="Credit" header="Số Tín Chỉ" />
         <Column field="TheoryPeriod" header="Lý Thuyết" />
@@ -338,7 +354,7 @@ export default class ContentProgramCom extends React.Component {
         <TreeTable value={this.state.nodes}>
           <Column field="displayName" 
           header="Tên dòng" 
-          editor={this.nameEditor}
+          //editor={this.nameEditor}
           expander />
           <Column
             header={
