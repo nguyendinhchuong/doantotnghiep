@@ -43,6 +43,7 @@ class SubjectManageTemp extends Component {
           <Col lg="12" md="12">
             <SubjectManageCom
               subjects={this.props.subjects}
+              eduPrograms={this.props.eduPrograms}
               usingEduPro={this.props.usingEduPro}
               onDeleteSubject={this.props.onDeleteSubject}
               onAddSubject={this.props.onAddSubject}
@@ -59,6 +60,7 @@ class SubjectManageTemp extends Component {
 const mapStateToProps = state => ({
   message: state.message,
   subjects: state.subjects,
+  eduPrograms: state.eduPrograms,
   usingEduPro: state.usingEduPro
 });
 

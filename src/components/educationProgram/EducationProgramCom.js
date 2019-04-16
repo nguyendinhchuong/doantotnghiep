@@ -3,18 +3,15 @@ import React, { Component } from "react";
 import {
   Row,
   Col,
-  Card,
-  CardBody,
   Button,
   FormSelect,
   FormInput
 } from "shards-react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
-
-import TableHeaderCom from "./TableHeaderCom";
-import TdsCom from "./TdsCom";
 
 export default class EduProgramCom extends Component {
   constructor(props) {
@@ -141,6 +138,29 @@ export default class EduProgramCom extends Component {
 
   onDelete = IdEdu => {
     this.props.onDeleteEduProgram(IdEdu);
+  };
+
+  actionTemplate = (data, column) => {
+    return (
+      <div>
+        <Button
+          title="Chỉnh sửa"
+          onClick={() => this.onEdit(data.Id)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">edit</i>
+        </Button>
+        <Button
+          title="Xóa"
+          onClick={() => this.onDelete(data.Id)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">delete</i>
+        </Button>
+      </div>
+    );
   };
 
   render() {
@@ -351,51 +371,18 @@ export default class EduProgramCom extends Component {
             </p>
           </Col>
           <Col lg="12" md="12" sm="12">
-            <Card small className="mb-4">
-              <CardBody className="p-0 pb-3">
-                <table className="table mb-0">
-                  <thead className="bg-light">
-                    <TableHeaderCom />
-                  </thead>
-                  <tbody>
-                    {Array.isArray(this.props.eduPrograms) &&
-                    this.props.eduPrograms.length !== 0 ? (
-                      this.props.eduPrograms.map((row, i) => (
-                        <tr key={i}>
-                          <td>{i + 1}</td>
-                          <td>{row.EduName}</td>
-                          <td>{row.LevelName}</td>
-                          <td>{row.MajorCode}</td>
-                          <td>{row.MajorName}</td>
-                          <td>{row.NameProgram}</td>
-                          <td>{row.SchoolYear}</td>
-                          <td>
-                            <Button
-                              title="Chỉnh sửa"
-                              onClick={() => this.onEdit(row.Id)}
-                              theme="success"
-                            >
-                              <i className="material-icons">edit</i>
-                            </Button>
-                          </td>
-                          <td>
-                            <Button
-                              title="Xóa"
-                              onClick={() => this.onDelete(row.Id)}
-                              theme="secondary"
-                            >
-                              <i className="material-icons">delete</i>
-                            </Button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <TdsCom />
-                    )}
-                  </tbody>
-                </table>
-              </CardBody>
-            </Card>
+            <DataTable value={this.props.eduPrograms}>
+              <Column field="EduName" header="Tên" />
+              <Column field="LevelName" header="Trình độ" />
+              <Column field="MajorCode" header="Mã ngành" />
+              <Column field="MajorName" header="Ngành" />
+              <Column field="NameProgram" header="Loại hình" />
+              <Column field="SchoolYear" header="Khóa tuyển" />
+              <Column
+                body={this.actionTemplate}
+                style={{ textAlign: "center", width: "8em" }}
+              />
+            </DataTable>
           </Col>
         </Row>
         {dialog}

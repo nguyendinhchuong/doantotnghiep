@@ -3,20 +3,15 @@ import React, { Component } from "react";
 import {
   Row,
   Col,
-  Card,
-  CardBody,
   Button,
   FormSelect,
   FormInput
 } from "shards-react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
-
-import * as logic from "../../business";
-
-import TableHeaderCom from "./TableHeaderCom";
-import TdsCom from "./TdsCom";
 
 export default class OutcomeStandardCom extends Component {
   constructor(props) {
@@ -105,6 +100,29 @@ export default class OutcomeStandardCom extends Component {
 
   onDelete = IdOutcome => {
     this.props.onDeleteOutcomeStandard(IdOutcome);
+  };
+
+  actionTemplate = (data, column) => {
+    return (
+      <div>
+        <Button
+          title="Chỉnh sửa"
+          onClick={() => this.onEdit(data.Id)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">edit</i>
+        </Button>
+        <Button
+          title="Xóa"
+          onClick={() => this.onDelete(data.Id)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">delete</i>
+        </Button>
+      </div>
+    );
   };
 
   render() {
@@ -222,52 +240,19 @@ export default class OutcomeStandardCom extends Component {
             </p>
           </Col>
           <Col lg="12" md="12" sm="12">
-            <Card small className="mb-4">
-              <CardBody className="p-0 pb-3">
-                <table className="table mb-0">
-                  <thead className="bg-light">
-                    <TableHeaderCom />
-                  </thead>
-                  <tbody>
-                    {Array.isArray(this.props.outcomeStandards) &&
-                    this.props.outcomeStandards.length !== 0 ? (
-                      this.props.outcomeStandards.map((row, i) => (
-                        <tr key={i}>
-                          <td>{i + 1}</td>
-                          <td>{row.NameOutcomeStandard}</td>
-                          <td>{row.NameFaculty}</td>
-                          <td>{row.NameProgram}</td>
-                          <td>{row.NameUser}</td>
-                          <td>{row.SchoolYear}</td>
-                          <td>{logic.formatDate(row.DateCreated)}</td>
-                          <td>{logic.formatDate(row.DateEdited)}</td>
-                          <td>
-                            <Button
-                              title="Chỉnh sửa"
-                              onClick={() => this.onEdit(row.Id)}
-                              theme="success"
-                            >
-                              <i className="material-icons">edit</i>
-                            </Button>
-                          </td>
-                          <td>
-                            <Button
-                              title="Xóa"
-                              onClick={() => this.onDelete(row.Id)}
-                              theme="secondary"
-                            >
-                              <i className="material-icons">delete</i>
-                            </Button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <TdsCom />
-                    )}
-                  </tbody>
-                </table>
-              </CardBody>
-            </Card>
+            <DataTable value={this.props.outcomeStandards}>
+              <Column field="NameOutcomeStandard" header="Tên" />
+              <Column field="NameFaculty" header="Khoa" />
+              <Column field="NameProgram" header="Hệ" />
+              <Column field="NameUser" header="Người tạo" />
+              <Column field="SchoolYear" header="Năm học" />
+              <Column field="SchoolYear" header="Tiết bài tập" />
+              <Column field="SchoolYear" header="Tiết bài tập" />
+              <Column
+                body={this.actionTemplate}
+                style={{ textAlign: "center", width: "8em" }}
+              />
+            </DataTable>
           </Col>
         </Row>
         {dialog}

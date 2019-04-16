@@ -2,16 +2,14 @@ import React, { Component } from "react";
 
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { Row, Col, Button, Card, CardBody } from "shards-react";
+import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
+import { DataTable } from "primereact/datatable";
 
 import * as logic from "../../business/logicTargetEducation";
 import * as commonLogic from "../../business/commonEducation";
-
-import TableHeaderCom from "./TableHeaderCom";
-import TdsCom from "./TdsCom";
 
 export default class TargetEducationCom extends Component {
   constructor(props) {
@@ -203,6 +201,21 @@ export default class TargetEducationCom extends Component {
     );
   };
 
+  osActionTemplate = (data, column) => {
+    return (
+      <div>
+        <Button
+          title="Xem chi tiết"
+          onClick={() => this.onShowDetailOS(data.Id)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">search</i>
+        </Button>
+      </div>
+    );
+  };
+
   render() {
     const footer = (
       <div>
@@ -300,40 +313,16 @@ export default class TargetEducationCom extends Component {
                   sm="12"
                   style={{ overflowY: "scroll", height: "240px" }}
                 >
-                  <Card small className="mb-4">
-                    <CardBody className="p-0 pb-3">
-                      <table className="table mb-0">
-                        <thead className="bg-light">
-                          <TableHeaderCom />
-                        </thead>
-                        <tbody>
-                          {Array.isArray(this.props.outcomeStandards) &&
-                          this.props.outcomeStandards.length !== 0 ? (
-                            this.props.outcomeStandards.map((row, i) => (
-                              <tr key={i}>
-                                <td>{i + 1}</td>
-                                <td>{row.NameOutcomeStandard}</td>
-                                <td>{row.NameFaculty}</td>
-                                <td>{row.NameProgram}</td>
-                                <td>{row.SchoolYear}</td>
-                                <td>
-                                  <Button
-                                    title="Xem chi tiết"
-                                    onClick={() => this.onShowDetailOS(row.Id)}
-                                    theme="success"
-                                  >
-                                    <i className="material-icons">search</i>
-                                  </Button>
-                                </td>
-                              </tr>
-                            ))
-                          ) : (
-                            <TdsCom />
-                          )}
-                        </tbody>
-                      </table>
-                    </CardBody>
-                  </Card>
+                  <DataTable value={this.props.outcomeStandards}>
+                    <Column field="NameOutcomeStandard" header="Tên" />
+                    <Column field="NameFaculty" header="Khoa" />
+                    <Column field="NameProgram" header="Hệ" />
+                    <Column field="SchoolYear" header="Năm học" />
+                    <Column
+                      body={this.osActionTemplate}
+                      style={{ textAlign: "center", width: "4em" }}
+                    />
+                  </DataTable>
                 </Col>
               </Row>
             )}

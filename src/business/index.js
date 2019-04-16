@@ -138,7 +138,6 @@ export const addChild = (data1, node, nameOut) => {
   return updateNode(root, child);
 };
 
-
 //add any index
 export const addIndexRoot = (data1, node, index) => {
   let nodeBefore = findNodeByKey(data1, index);
@@ -156,15 +155,14 @@ export const addIndexRoot = (data1, node, index) => {
   return data1;
 };
 
-
 // add subnode any index
 export const addAny = (nodes, node, keySwap) => {
   debugger;
   let root = [...nodes];
   const x = keySwap.split(".");
-  const subNode = {...node};
+  const subNode = { ...node };
   subNode.key = keySwap;
-  root = addAnyChild(root, subNode, Number(x[x.length-1]) - 1);
+  root = addAnyChild(root, subNode, Number(x[x.length - 1]) - 1);
   root = [...refreshTreeNodes(root, Number(x[0]) - 1)];
   return root;
 };
@@ -520,3 +518,14 @@ const dragIntoSubNode = (data, node, index) => {
   return data;
 };
 
+export const filterToArrays = (array1, array2) => {
+  let result = [];
+  for (let i = 0; i < array1.length; i++) {
+    for (let j = 0; j < array2.length; j++) {
+      if (array1[i].Id === array2[j].IdEduProg) {
+        result.push(array1[i]);
+      }
+    }
+  }
+  return result;
+};

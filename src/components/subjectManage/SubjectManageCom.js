@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import XLSX from "xlsx";
 
-import {
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Button,
-  FormInput,
-  FormTextarea
-} from "shards-react";
+import { Row, Col, Button, FormInput, FormTextarea } from "shards-react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -17,8 +11,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import * as logic from "../../business";
 
 import DataInputCom from "./DataInputCom";
-import TableHeaderCom from "./TableHeaderCom";
-import TdsCom from "./TdsCom";
 
 export default class SubjectManageCom extends Component {
   constructor(props) {
@@ -162,13 +154,14 @@ export default class SubjectManageCom extends Component {
 
   onShowDetail = IdSubject => {
     this.props.onLoadUsingEduPro(IdSubject);
+
     const row = this.props.subjects.filter(row => row.Id === IdSubject)[0];
     const description = row.Description
       ? "Mô tả môn học: " + row.Description
       : "Chưa có mô tả môn học!!";
     this.setState({
-      detailVisible: true,
-      showDescription: description
+      showDescription: description,
+      detailVisible: true
     });
   };
 
@@ -181,6 +174,29 @@ export default class SubjectManageCom extends Component {
   //     return { usingEduPro: nextProps.usingEduPro };
   //   } else return null;
   // }
+
+  actionTemplate = (data, column) => {
+    return (
+      <div>
+        <Button
+          title="Xem chi tiết"
+          onClick={() => this.onShowDetail(data.Id)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">search</i>
+        </Button>
+        <Button
+          title="Xóa"
+          onClick={() => this.onDelete(data.Id)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">delete</i>
+        </Button>
+      </div>
+    );
+  };
 
   render() {
     const dialog = (
@@ -318,7 +334,7 @@ export default class SubjectManageCom extends Component {
       <Dialog
         visible={this.state.reviewVisible}
         onClose={this.onClose}
-        style={{ width: 800 }}
+        style={{ width: "60vw" }}
         title={<div>Danh sách môn từ file:</div>}
         footer={[
           <Button
@@ -342,33 +358,17 @@ export default class SubjectManageCom extends Component {
         ]}
       >
         <Col lg="12" md="12" sm="12">
-          <Card small className="mb-4">
-            <CardBody className="p-0 pb-3">
-              <table className="table mb-0">
-                <thead className="bg-light">
-                  <TableHeaderCom />
-                </thead>
-                <tbody>
-                  {Array.isArray(this.state.tmpSubjects) &&
-                  this.state.tmpSubjects.length !== 0 ? (
-                    this.state.tmpSubjects.map((row, i) => (
-                      <tr key={i}>
-                        <td>{i + 1}</td>
-                        <td>{row.subjectcode}</td>
-                        <td>{row.subjectname}</td>
-                        <td>{row.credit}</td>
-                        <td>{row.theoryperiod}</td>
-                        <td>{row.practiceperiod}</td>
-                        <td>{row.exerciseperiod}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <TdsCom />
-                  )}
-                </tbody>
-              </table>
-            </CardBody>
-          </Card>
+          <DataTable
+            value={this.state.tmpSubjects}
+            style={{ height: "30vw", overflowY: "scroll" }}
+          >
+            <Column field="subjectcode" header="Mã học phần" />
+            <Column field="subjectname" header="Tên học phần" />
+            <Column field="credit" header="Tín chỉ" />
+            <Column field="theoryperiod" header="Tiết lý thuyết" />
+            <Column field="practiceperiod" header="Tiết thực hành" />
+            <Column field="exerciseperiod" header="Tiết bài tập" />
+          </DataTable>
         </Col>
       </Dialog>
     );
@@ -405,38 +405,16 @@ export default class SubjectManageCom extends Component {
         <br />
         <Row>
           <Col lg="12" md="12" sm="12">
-            <Card small className="mb-4">
-              <CardBody className="p-0 pb-3">
-                <table className="table mb-0">
-                  <thead className="bg-light">
-                    <tr>
-                      <th scope="col" className="border-0">
-                        STT
-                      </th>
-                      <th scope="col" className="border-0">
-                        Tên
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.isArray(this.props.usingEduPro) &&
-                    this.props.usingEduPro.length !== 0 ? (
-                      this.props.usingEduPro.map((row, i) => (
-                        <tr key={i}>
-                          <td>{i + 1}</td>
-                          <td>{row.Name}</td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td />
-                        <td>Chưa có dữ liệu</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </CardBody>
-            </Card>
+            <DataTable
+              value={logic.filterToArrays(
+                this.props.eduPrograms,
+                this.props.usingEduPro
+              )}
+              style={{ height: "20vw", overflowY: "scroll" }}
+            >
+              <Column field="Id" header="Mã số" />
+              <Column field="EduName" header="Tên Chương trình đào tạo" />
+            </DataTable>
           </Col>
         </Row>
       </Dialog>
@@ -472,52 +450,40 @@ export default class SubjectManageCom extends Component {
           <Col lg="2" md="2" sm="2">
             <DataInputCom importFile={this.importFile} />
           </Col>
+
           <Col lg="12" md="12" sm="12">
-            <Card small className="mb-4">
-              <CardBody className="p-0 pb-3">
-                <table className="table mb-0">
-                  <thead className="bg-light">
-                    <TableHeaderCom />
-                  </thead>
-                  <tbody>
-                    {Array.isArray(this.props.subjects) &&
-                    this.props.subjects.length !== 0 ? (
-                      this.props.subjects.map((row, i) => (
-                        <tr key={i}>
-                          <td>{i + 1}</td>
-                          <td>{row.SubjectCode}</td>
-                          <td>{row.SubjectName}</td>
-                          <td>{row.Credit}</td>
-                          <td>{row.TheoryPeriod}</td>
-                          <td>{row.PracticePeriod}</td>
-                          <td>{row.ExercisePeriod}</td>
-                          <td>
-                            <Button
-                              title="Xem chi tiết"
-                              onClick={() => this.onShowDetail(row.Id)}
-                              theme="success"
-                            >
-                              <i className="material-icons">search</i>
-                            </Button>
-                          </td>
-                          <td>
-                            <Button
-                              title="Xóa"
-                              onClick={() => this.onDelete(row.Id)}
-                              theme="secondary"
-                            >
-                              <i className="material-icons">delete</i>
-                            </Button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <TdsCom />
-                    )}
-                  </tbody>
-                </table>
-              </CardBody>
-            </Card>
+            <DataTable value={this.props.subjects}>
+              <Column
+                sortable={true}
+                field="SubjectCode"
+                header="Mã học phần"
+              />
+              <Column
+                sortable={true}
+                field="SubjectName"
+                header="Tên học phần"
+              />
+              <Column sortable={true} field="Credit" header="Tín chỉ" />
+              <Column
+                sortable={true}
+                field="TheoryPeriod"
+                header="Tiết lý thuyết"
+              />
+              <Column
+                sortable={true}
+                field="PracticePeriod"
+                header="Tiết thực hành"
+              />
+              <Column
+                sortable={true}
+                field="ExercisePeriod"
+                header="Tiết bài tập"
+              />
+              <Column
+                body={this.actionTemplate}
+                style={{ textAlign: "center", width: "8em" }}
+              />
+            </DataTable>
           </Col>
         </Row>
         {dialog}
