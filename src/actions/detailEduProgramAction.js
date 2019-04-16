@@ -59,13 +59,13 @@ export const onSaveDetailEduProgram= detailEduProgram => {
       .get(req)
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
-          dispatch(message.message(chirp));
-          dispatch(saveDetailEduProgramError(detailEduProgram, res));
-        } else {
           let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(saveDetailEduProgramSuccess(detailEduProgram, res));
+        } else {
+          let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(saveDetailEduProgramError(detailEduProgram, res));
         }
       })
       .catch(err => {

@@ -11,8 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Spinner } from "primereact/spinner";
 
 import * as logic from "../../business/logicEducationProgram";
-import * as common from "../../business/commonEducation"
-
+import * as common from "../../business/commonEducation";
 
 export default class ContentProgramCom extends React.Component {
   constructor(props) {
@@ -32,11 +31,11 @@ export default class ContentProgramCom extends React.Component {
       note: "",
       optionalCredit: 0,
       // hover
-      nodeHover: ''
+      nodeHover: ""
     };
   }
 
-   // Add
+  // Add
   handleAddRoot = () => {
     const data = logic.addRoot(this.state.nodes, this.state.nameValue);
     this.setState({ nodes: data });
@@ -74,7 +73,6 @@ export default class ContentProgramCom extends React.Component {
     return data;
   };
 
-
   addRowTable = () => {
     debugger;
     let data = [...this.state.nodes];
@@ -82,7 +80,7 @@ export default class ContentProgramCom extends React.Component {
     subject.option = this.state.isRequired ? "BB" : "TC";
     subject.note = this.state.note;
     // test
-    subject.SubjectCode = '123';
+    subject.SubjectCode = "123";
 
     data = this.addRowTableLogic(data, this.state.nodeTables, subject);
     this.setState({ nodes: data });
@@ -101,12 +99,11 @@ export default class ContentProgramCom extends React.Component {
     return data;
   };
 
-
   // Delete
-  deleteNode = (node) =>{
+  deleteNode = node => {
     const root = logic.deleteNode(this.state.nodes, node);
-    this.setState({nodes: root});
-  }
+    this.setState({ nodes: root });
+  };
 
   // update
   nameEditor = props => {
@@ -114,10 +111,9 @@ export default class ContentProgramCom extends React.Component {
   };
 
   inputTextEditor = (props, field) => {
-    if(props.node.data.isTable){
+    if (props.node.data.isTable) {
       //
-    }
-    else{
+    } else {
       return (
         <InputText
           style={{ width: "80%" }}
@@ -132,11 +128,11 @@ export default class ContentProgramCom extends React.Component {
   onEditorValueChange = (props, value) => {
     let key = props.node.key;
     // case root = 7.1.... => 1.1...
-    if(this.state.nodes[0].key[0] === '7'){
-      const firstDot = key.indexOf('.');
+    if (this.state.nodes[0].key[0] === "7") {
+      const firstDot = key.indexOf(".");
       key = key.slice(firstDot + 1, key.length);
     }
-    const editedNode = {...common.findNodeByKey(this.state.nodes,key)};
+    const editedNode = { ...common.findNodeByKey(this.state.nodes, key) };
     editedNode.data.name = value;
     editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
     const data = common.updateNode(this.state.nodes, editedNode);
@@ -146,38 +142,37 @@ export default class ContentProgramCom extends React.Component {
   };
 
   // edit table
-  codeSubjectEditor = props =>{
-    return this.inputTextTableEditor(props, 'SubjectCode');
-  }
+  codeSubjectEditor = props => {
+    return this.inputTextTableEditor(props, "SubjectCode");
+  };
 
-  inputTextTableEditor = (props, field) =>{
-    return <InputText type="text" value={props.rowData.SubjectCode}/>;
-  }
+  inputTextTableEditor = (props, field) => {
+    return <InputText type="text" value={props.rowData.SubjectCode} />;
+  };
 
   // up/down node
-  upSameLevel = (node)=>{
-    console.log('UP');
-  }
+  upSameLevel = node => {
+    console.log("UP");
+  };
 
-  downSameLevel = (node) =>{
-    console.log('DOWN');
-  }
+  downSameLevel = node => {
+    console.log("DOWN");
+  };
 
   // mouseOver
-  mouseOver = (node) =>{
-    this.setState({nodeHover: node.key})    
-  }
+  mouseOver = node => {
+    this.setState({ nodeHover: node.key });
+  };
 
   // hover up level
-  mouseOverUp = (node) =>{
-    this.setState({nodeHover: common.hoverUpLevel(node)})    
-  }
+  mouseOverUp = node => {
+    this.setState({ nodeHover: common.hoverUpLevel(node) });
+  };
 
   // hover down level
-  mouseOverDown = (node) =>{
-    this.setState({nodeHover: common.hoverDownLevel(this.state.nodes, node)})    
-  }
-
+  mouseOverDown = node => {
+    this.setState({ nodeHover: common.hoverDownLevel(this.state.nodes, node) });
+  };
 
   // show/hidden Dialong
   isShowDialogRoot = () => {
@@ -215,7 +210,6 @@ export default class ContentProgramCom extends React.Component {
     this.setState({ nameValue: e.target.value });
   };
 
-
   // supporting
   footer = (
     <div className="p-clearfix" style={{ width: "100%" }}>
@@ -249,9 +243,11 @@ export default class ContentProgramCom extends React.Component {
       >
         <Column field="option" header="Loại Học Phần" />
         <Column field="index" header="STT" />
-        <Column field="SubjectCode" 
+        <Column
+          field="SubjectCode"
           editor={this.codeSubjectEditor}
-          header="Mã Môn Học" />
+          header="Mã Môn Học"
+        />
         <Column field="SubjectName" header="Tên Môn Học" />
         <Column field="Credit" header="Số Tín Chỉ" />
         <Column field="TheoryPeriod" header="Lý Thuyết" />
@@ -274,18 +270,31 @@ export default class ContentProgramCom extends React.Component {
   actionTemplate(node, column) {
     return (
       <div>
-        <Button
-          onClick={() => this.isShowDialogChild(node)}
-          onMouseOver = {() => this.mouseOver(node)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Thêm cấp con của ${this.state.nodeHover}`}
-        >
-          <i className="material-icons">add</i>
-        </Button>
+        {node.data.isTable ? (
+          <Button
+            onClick={() => {
+              alert("abcxyz");
+            }}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Thêm môn học`}
+          >
+            <i className="material-icons">playlist_add</i>
+          </Button>
+        ) : (
+          <Button
+            onClick={() => this.isShowDialogChild(node)}
+            onMouseOver={() => this.mouseOver(node)}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Thêm cấp con của ${this.state.nodeHover}`}
+          >
+            <i className="material-icons">add</i>
+          </Button>
+        )}
         <Button
           onClick={() => this.upSameLevel(node)}
-          onMouseOver = {() => this.mouseOverUp(node)}
+          onMouseOver={() => this.mouseOverUp(node)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}
           title={`Lên cấp ${this.state.nodeHover}`}
@@ -302,8 +311,8 @@ export default class ContentProgramCom extends React.Component {
           <i className="material-icons">arrow_downward</i>
         </Button>
         <Button
-          onClick = {() => this.deleteNode(node)}
-          onMouseOver = {() => this.mouseOver(node)}
+          onClick={() => this.deleteNode(node)}
+          onMouseOver={() => this.mouseOver(node)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
           title={`Xóa cấp ${this.state.nodeHover}`}
@@ -315,6 +324,7 @@ export default class ContentProgramCom extends React.Component {
   }
 
   render() {
+    console.log(this.state.nodes);
     const footerRoot = (
       <div>
         <Button onClick={this.handleAddRoot} theme="success">
@@ -352,10 +362,12 @@ export default class ContentProgramCom extends React.Component {
       <div>
         <hr />
         <TreeTable value={this.state.nodes}>
-          <Column field="displayName" 
-          header="Tên dòng" 
-          //editor={this.nameEditor}
-          expander />
+          <Column
+            field="displayName"
+            header="Tên dòng"
+            //editor={this.nameEditor}
+            expander
+          />
           <Column
             header={
               <Button
@@ -368,7 +380,6 @@ export default class ContentProgramCom extends React.Component {
             body={(node, column) => this.actionTemplate(node, column)}
             style={{ textAlign: "center", width: "12em" }}
           />
-          
         </TreeTable>
 
         {/* Dialog Root */}
