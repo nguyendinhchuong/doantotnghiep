@@ -284,15 +284,6 @@ export default class ContentProgramCom extends React.Component {
           <i className="material-icons">add</i>
         </Button>
         <Button
-          onClick = {() => this.deleteNode(node)}
-          onMouseOver = {() => this.mouseOver(node)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Xóa cấp ${this.state.nodeHover}`}
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
-        <Button
           onClick={() => this.upSameLevel(node)}
           onMouseOver = {() => this.mouseOverUp(node)}
           theme="info"
@@ -309,6 +300,15 @@ export default class ContentProgramCom extends React.Component {
           title={`Xuống xấp ${this.state.nodeHover}`}
         >
           <i className="material-icons">arrow_downward</i>
+        </Button>
+        <Button
+          onClick = {() => this.deleteNode(node)}
+          onMouseOver = {() => this.mouseOver(node)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title={`Xóa cấp ${this.state.nodeHover}`}
+        >
+          <i className="material-icons">delete_sweep</i>
         </Button>
       </div>
     );

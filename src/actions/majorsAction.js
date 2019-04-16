@@ -25,13 +25,11 @@ export const onLoadMajors = () => {
           dispatch(message.message(chirp));
           dispatch(loadMajorsError(res));
         } else {
-          // let chirp = { message: `Tải các môn học thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
           dispatch(loadMajorsSuccess(majors));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các môn học thất bại`, isRight: 0 };
+        let chirp = { message: `Tải các ngành thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadMajorsError(err));
       });

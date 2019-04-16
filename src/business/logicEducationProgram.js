@@ -2,9 +2,7 @@ import React from "react";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
-import * as common from './commonEducation'
-
-
+import * as common from "./commonEducation";
 
 // Add root
 export const addRoot = (data, name) => {
@@ -23,7 +21,7 @@ export const addRoot = (data, name) => {
   return nodes;
 };
 
-// Add sub
+// Add Sub
 export const addChildTitle = (data, nodeParent, name) => {
   const length = nodeParent.children.length;
   const key = `${nodeParent.key}.${length + 1}`;
@@ -42,9 +40,7 @@ export const addChildTitle = (data, nodeParent, name) => {
 };
 
 // Delete Node
-
-export const deleteNode = (nodes, node) =>{
-  debugger;
+export const deleteNode = (nodes, node) => {
   let root = [...nodes];
   // index of root
   const idRoot = common.indexRoot(node.key);
@@ -59,8 +55,8 @@ export const deleteNode = (nodes, node) =>{
   let parentKey = common.parentKey(node.key);
   let rootKey = common.keyRoot(node.key);
   // case root = 7.1.... => 1.1...
-  if(nodes[0].key[0] === '7'){
-    const firstDot = parentKey.indexOf('.');
+  if (nodes[0].key[0] === "7") {
+    const firstDot = parentKey.indexOf(".");
     parentKey = parentKey.slice(firstDot + 1, parentKey.length);
   }
   const parentNode = common.findNodeByKey(root, parentKey);
@@ -68,20 +64,17 @@ export const deleteNode = (nodes, node) =>{
   root = common.updateNode(root, parentNode);
   root = common.refreshTreeNodes(root, rootKey, idRoot - 1);
   return root;
-}
-
+};
 
 export const filterSubjects = (e, subjects) => {
   const re = new RegExp(e.query.toLowerCase());
-  const results =
-    subjects
-      ? subjects.filter(item => {
-          return re.test(item.SubjectName.toLowerCase());
-        })
-      : [];
+  const results = subjects
+    ? subjects.filter(item => {
+        return re.test(item.SubjectName.toLowerCase());
+      })
+    : [];
   return results;
 };
-
 
 export const headerGroup = (
   <ColumnGroup>

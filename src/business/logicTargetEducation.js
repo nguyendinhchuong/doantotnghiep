@@ -1,3 +1,5 @@
+import * as common from "./commonEducation";
+
 export const addRoot = (data, name) => {
   let nodes = [...data];
   const length = nodes.length;
@@ -27,12 +29,39 @@ export const addChild = (data, nodeParent, name) => {
     children: []
   };
   nodeParent.children.push(node);
-  data = updateNode(data, nodeParent);
+  data = common.updateNode(data, nodeParent);
   return data;
 };
 
 const indexRoot = key => {
   return key.split(".")[1];
+};
+
+// Delete Node
+export const deleteNode = (nodes, node) => {
+  let root = [...nodes];
+  // index of root
+  const idRoot = common.indexRoot(node.key);
+  const index = common.indexNode(node.key);
+
+  // ROOT
+  if (common.getRank(node.key) === 2) {
+    root.splice(index, 1);
+    root = common.refreshTreeNodes(root, node.key, idRoot - 1);
+    return root;
+  }
+  let parentKey = common.parentKey(node.key);
+  let rootKey = common.keyRoot(node.key);
+  // case root = 7.1.... => 1.1...
+  if (nodes[0].key[0] === "1") {
+    const firstDot = parentKey.indexOf(".");
+    parentKey = parentKey.slice(firstDot + 1, parentKey.length);
+  }
+  const parentNode = common.findNodeByKey(root, parentKey);
+  parentNode.children.splice(index, 1);
+  root = common.updateNode(root, parentNode);
+  root = common.refreshTreeNodes(root, rootKey, idRoot - 1);
+  return root;
 };
 
 // add outcomeStandard
@@ -58,30 +87,12 @@ export const addOS = (nodes, node, os) => {
   changeKeys(os, thisNode.key);
 
   thisNode.children.push(...os);
-  data = updateNode(data, thisNode);
+  data = common.updateNode(data, thisNode);
   return data;
 };
-
-export const deleteNode = (data, node) => {};
 
 export const downSameLevel = (data, node) => {};
 
 export const upSameLevel = (data, node) => {};
 
 export const findNodeByKey = (data, node) => {};
-
-export const updateNode = (data, node) => {
-  const key = node.key;
-  const index = indexRoot(key);
-  const length = data.length;
-  for (let i = index - 1; i < length; i++) {
-    if (data[i].key === key) {
-      data[i] = node;
-      return data;
-    }
-    if (data[i].children) {
-      updateNode(data[i].children, node);
-    }
-  }
-  return data;
-};

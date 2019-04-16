@@ -26,8 +26,8 @@ export const onLoadDetailEduProgram= id => {
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
         } else {
-          // let chirp = { message: `Tải cây CĐR thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
+          let chirp = { message: `Tải chi tiết CTĐT thất bại`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramSuccess(detailEduProgram));
           dispatch(onLoadTargetEduProgram(detailEduProgram.Id));
         }
@@ -36,6 +36,42 @@ export const onLoadDetailEduProgram= id => {
         let chirp = { message: `Tải chi tiết CTĐT thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadDetailEduProgramError(err));
+      });
+  };
+};
+
+export const saveDetailEduProgramSuccess = (detailEduProgram, successMessage) => ({
+  type: cst.SAVE_DETAIL_EDUPROGRAM_SUCCESS,
+  detailEduProgram: detailEduProgram,
+  successMessage
+});
+
+export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
+  type: cst.SAVE_DETAIL_EDUPROGRAM_ERROR,
+  detailEduProgram: detailEduProgram,
+  errorMessage
+});
+
+export const onSaveDetailEduProgram= detailEduProgram => {
+  return (dispatch, getState) => {
+    let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprog=${detailEduProgram.id}`;
+    axios
+      .get(req)
+      .then(res => {
+        if (res.data.code === 1) {
+          let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(saveDetailEduProgramError(detailEduProgram, res));
+        } else {
+          let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
+          dispatch(saveDetailEduProgramSuccess(detailEduProgram, res));
+        }
+      })
+      .catch(err => {
+        let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 0 };
+        dispatch(message.message(chirp));
+        dispatch(saveDetailEduProgramError(detailEduProgram, err));
       });
   };
 };
@@ -63,8 +99,8 @@ export const onLoadTargetEduProgram = id => {
           dispatch(loadTargetEduProgramError(res));
         } else {
           let targetEduProgram = logic.convertDBToTreeNode(data);
-          // let chirp = { message: `Tải cây CĐR thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
+          let chirp = { message: `Tải mục tiêu đào tạo thành công`, isRight: 1 };
+          dispatch(message.message(chirp));
           dispatch(loadTargetEduProgramSuccess(targetEduProgram));
         }
       })

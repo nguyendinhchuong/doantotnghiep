@@ -32,26 +32,19 @@ export default class TitleCom extends React.Component {
         </Row>
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
-            <p className=" h2 text-center font-weight-bold mt-4">
+            <p className="h2 text-center font-weight-bold mt-4">
               CHƯƠNG TRÌNH ĐÀO TẠO
             </p>
           </Col>
           <Col lg="12" md="12" sm="12">
-            <p className=" font-italic h4 text-center">
-              <input
-                value={`${
-                  this.props.major && this.props.major.MajorName
-                    ? "NGÀNH " + this.props.major.MajorName.toUpperCase()
-                    : ""
-                }`}
-                readOnly={true}
-              />
+            <p className="h3 text-center font-italic font-weight-bold mt-4">
+              {`NGÀNH ${this.props.major.MajorName.toUpperCase()}`}
             </p>
           </Col>
         </Row>
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
-            <p className=" font-italic my-4 text-center">
+            <p className="font-italic my-4 text-center">
               (Ban hành kèm theo Quyết định số{" "}
               <input type="" name="" style={{ width: "12em" }} />
               /QĐ-KHTN-ĐT ngày{" "}

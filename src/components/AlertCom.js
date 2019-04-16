@@ -1,70 +1,39 @@
 import React from "react";
-import { Alert } from "shards-react";
+import { Growl } from "primereact/components/growl/Growl";
+
+import "../assets/growl.css";
 
 export default class AlertCom extends React.Component {
   constructor(props) {
     super(props);
-
-    this.interval = null;
     this.state = {
-      visible: false,
-      countdown: 0,
-      timeUntilDismissed: 2,
       message: ""
     };
   }
 
-  showAlert = () => {
-    this.clearInterval();
-    this.setState({ visible: true, countdown: 0, timeUntilDismissed: 3 });
-    this.interval = setInterval(this.handleTimeChange, 1000);
-  };
-
-  handleTimeChange = () => {
-    if (this.state.countdown < this.state.timeUntilDismissed - 1) {
-      this.setState({
-        ...this.state,
-        ...{ countdown: this.state.countdown + 1 }
-      });
-      return;
-    }
-
-    this.setState({ ...this.state, ...{ visible: false } });
-    this.clearInterval();
-  };
-
-  clearInterval = () => {
-    clearInterval(this.interval);
-    this.interval = null;
-  };
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.message.message !== prevState.message) {
-      return { message: nextProps.message.message };
+      return { message: nextProps.message };
     } else return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.message !== this.props.message) {
-      this.showAlert();
+      this.growl.show({
+        severity: this.state.message.isRight ? "info" : "warn",
+        detail: this.state.message.message
+      });
     }
   }
 
   render() {
     return (
-      <div>
-        <Alert
-          theme="light"
-          style={{
-            cursor: "pointer",
-            position: "relative"
-          }}
-          className="mb-3"
-          open={this.state.visible}
-        >
-          {this.state.message}
-        </Alert>
-      </div>
+      <Growl
+        className="my-growl"
+        ref={el => {
+          this.growl = el;
+        }}
+      />
     );
   }
 }

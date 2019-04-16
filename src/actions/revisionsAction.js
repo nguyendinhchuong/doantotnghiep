@@ -25,8 +25,6 @@ export const onLoadRevisions = idOutcomeStandard => {
           dispatch(message.message(chirp));
           dispatch(loadRevisionsError(res));
         } else {
-          // let chirp = { message: `Tải các phiên bản thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
           dispatch(loadRevisionsSuccess(revisions));
         }
       })

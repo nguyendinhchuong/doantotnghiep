@@ -25,8 +25,6 @@ export const onLoadOutcomeStandards = () => {
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsError(res));
         } else {
-          // let chirp = { message: `Tải các CĐR thành công`, isRight: 1 };
-          // dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsSuccess(outcomeStandards));
         }
       })
@@ -103,13 +101,13 @@ export const onLoadOutcomeStandard = id => {
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardError(res));
         } else {
-          let chirp = { message: `Tải CĐR thành công`, isRight: 1 };
+          let chirp = { message: `Tải thông tin CĐR thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardSuccess(infoOutcomeStandard));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải CĐR thất bại`, isRight: 0 };
+        let chirp = { message: `Tải thông tin CĐR thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadOutcomeStandardError(err));
       });
