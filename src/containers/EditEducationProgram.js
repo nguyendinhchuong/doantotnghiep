@@ -104,7 +104,7 @@ export default connect(mapStateToProps, {
   onLoadSubjects: subjectsAction.onLoadSubjects,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
-  onSaveDetailEduProgram: detailEduProgramAction.onSaveDetailEduProgram,
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onLoadDetailOutcomeStandard:
     detailOutcomeStandardAction.onLoadDetailOutcomeStandard
