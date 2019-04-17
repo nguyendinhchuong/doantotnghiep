@@ -240,7 +240,7 @@ export default class ContentProgramCom extends React.Component {
       return node;
     }
     const subjects = node.data.subjects;
-    node.data.displayName = <TableSubjects subjects = {subjects} sum = {node.data.totalCredits}/>
+    node.data.displayName = <TableSubjectsCom subjects = {subjects} sum = {node.data.totalCredits}/>
     return node;
   };
 

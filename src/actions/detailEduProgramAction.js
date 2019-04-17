@@ -26,7 +26,7 @@ export const onLoadDetailEduProgram= id => {
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
         } else {
-          let chirp = { message: `Tải chi tiết CTĐT thất bại`, isRight: 1 };
+          let chirp = { message: `Tải chi tiết CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramSuccess(detailEduProgram));
           dispatch(onLoadTargetEduProgram(detailEduProgram.Id));
