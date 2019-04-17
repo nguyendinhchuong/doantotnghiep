@@ -62,11 +62,16 @@ export default class ContentProgramCom extends React.Component {
       key: key,
       data: {
         isTable: true,
+        optionalCredit: 0,
         subjects: [],
         displayName: ""
       },
       children: []
     };
+    // reset credits
+    if(this.state.isRequired){
+      this.setState({ optionalCredit: 0 });
+    }
     this.setState({ nodeTables: node });
     node = this.convertNodeToDataTable(node);
     nodeParent.children.push(node);
@@ -250,7 +255,7 @@ export default class ContentProgramCom extends React.Component {
         <Column field="option" header="Loại Học Phần" />
         <Column field="index" header="STT" />
         <Column field="SubjectCode" 
-          editor={this.codeSubjectEditor}
+          //editor={this.codeSubjectEditor}
           header="Mã Môn Học" />
         <Column field="SubjectName" header="Tên Môn Học" />
         <Column field="Credit" header="Số Tín Chỉ" />
@@ -495,8 +500,9 @@ export default class ContentProgramCom extends React.Component {
                 Tự Chọn
               </label>
             </Col>
-            <Col lg="5" md="5" sm="5" hidden={this.state.isRequired}>
-              <Row>
+          </Row>
+          <div hidden={this.state.isRequired}>
+            <Row style={{marginBottom: "15px" }}>   
                 <Col lg="2" md="2" sm="2">
                   <label>Số chỉ: </label>
                 </Col>
@@ -506,9 +512,8 @@ export default class ContentProgramCom extends React.Component {
                     onChange={e => this.setState({ optionalCredit: e.value })}
                   />
                 </Col>
-              </Row>
-            </Col>
-          </Row>
+            </Row>
+          </div>
           <Row>
             <Col lg="2" md="2" sm="6">
               <label>Ghi chú: </label>

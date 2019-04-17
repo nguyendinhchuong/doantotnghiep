@@ -102,7 +102,7 @@ export const footerGroup = (
       <Column footer="48" />
     </Row>
   </ColumnGroup>
-);
+)
 
 export const sortSubject = data => {
   return data.sort((a, b) => {
