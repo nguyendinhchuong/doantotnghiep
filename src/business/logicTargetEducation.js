@@ -80,7 +80,7 @@ export const addOS = (nodes, node, os) => {
   }
   let data = [...nodes];
   let thisNode = { ...node };
-  const tmpOs = [...os];
+  let tmpOs = [...os];
   changeKeys(tmpOs, thisNode.key);
 
   thisNode.children.push(...tmpOs);

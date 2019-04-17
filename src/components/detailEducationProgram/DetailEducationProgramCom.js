@@ -12,6 +12,7 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import "../../assets/target-education.css";
 
 import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
+import TableProgramArchiCom from "../detailEducationProgram/TableProgramArchiCom";
 import TitleCom from "../detailEducationProgram/TitleCom";
 
 import * as targetLogic from "../../business/logicTargetEducation";
@@ -133,6 +134,7 @@ export default class DetailEducationProgramCom extends React.Component {
     this.setState({
       targetNodes: data
     });
+    console.log(this.state.targetNodes);
   };
 
   // event
@@ -294,8 +296,7 @@ export default class DetailEducationProgramCom extends React.Component {
       idmajor,
       idprogram,
       schoolyear,
-      dateedited: new Date().toISOString(),
-      datecreated: new Date().toISOString()
+      dateedited: new Date().toISOString()
     };
     const detailEduProgram = {
       enrollmenttarget: this.state.EnrollmentTarget
@@ -304,7 +305,8 @@ export default class DetailEducationProgramCom extends React.Component {
       eduprocess: this.state.EduProcess ? this.state.EduProcess : "",
       graduatedcon: this.state.GraduatedCon ? this.state.GraduatedCon : "",
       ideduprogram: this.props.infoEduProgram.Id,
-      dateedited: new Date().toISOString()
+      dateedited: new Date().toISOString(),
+      datecreated: new Date().toISOString()
     };
     this.props.onSaveEduProgram(infoEduProgram, detailEduProgram);
   };
@@ -560,8 +562,9 @@ export default class DetailEducationProgramCom extends React.Component {
                 </Col>
               </AccordionTab>
 
-              <AccordionTab header="6. Cấu trúc chương trình:" />
-
+              <AccordionTab header="6. Cấu trúc chương trình:">
+                <TableProgramArchiCom />
+              </AccordionTab>
               <AccordionTab header="7. Nội dung chương trình:">
                 <ContentProgramCom subjects={this.props.subjects} />
               </AccordionTab>

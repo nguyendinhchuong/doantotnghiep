@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 
-import {
-  Row,
-  Col,
-  Button,
-  FormSelect,
-  FormInput
-} from "shards-react";
+import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Dialog from "rc-dialog";
@@ -90,7 +84,13 @@ export default class EduProgramCom extends Component {
   };
 
   handleSchoolYearChange = event => {
-    this.setState({ schoolYear: event.target.value });
+    if (event.target.value.length > 4)
+      this.setState({ schoolYear: event.target.value.substr(0, 4) });
+    else if (
+      event.target.value.length === 0 ||
+      !isNaN(event.target.value[event.target.value.length - 1])
+    )
+      this.setState({ schoolYear: event.target.value });
   };
 
   onCloseAdd = () => {

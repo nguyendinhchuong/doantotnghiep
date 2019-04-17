@@ -35,7 +35,6 @@ export default class TableSubjectsCom extends React.Component {
               <Column field="index" header="STT" />
               <Column
                 field="SubjectCode"
-                //editor={this.codeSubjectEditor}
                 header="Mã Môn Học"
               />
               <Column field="SubjectName" header="Tên Môn Học" />
