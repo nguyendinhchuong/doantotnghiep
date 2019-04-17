@@ -6,7 +6,7 @@ import { Row, Col } from "shards-react";
 
 import * as logic from "../../business/logicEducationProgram";
 
-export default class TableSubjects extends React.Component {
+export default class TableSubjectsCom extends React.Component {
   render() {
     const footerGroup = (
       <ColumnGroup>

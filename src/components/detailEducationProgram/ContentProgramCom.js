@@ -10,7 +10,7 @@ import { AutoComplete } from "primereact/autocomplete";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Spinner } from "primereact/spinner";
 
-import TableSubjects from './TableSubjects'
+import TableSubjectsCom from './TableSubjectsCom'
 
 import * as logic from "../../business/logicEducationProgram";
 import * as common from "../../business/commonEducation";
