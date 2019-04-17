@@ -294,12 +294,15 @@ export default class DetailEducationProgramCom extends React.Component {
       idmajor,
       idprogram,
       schoolyear,
-      dateedited: new Date().toISOString()
+      dateedited: new Date().toISOString(),
+      datecreated: new Date().toISOString()
     };
     const detailEduProgram = {
-      enrollmenttarget: this.state.EnrollmentTarget,
-      eduprocess: this.state.EduProcess,
-      graduatedcon: this.state.GraduatedCon,
+      enrollmenttarget: this.state.EnrollmentTarget
+        ? this.state.EnrollmentTarget
+        : "",
+      eduprocess: this.state.EduProcess ? this.state.EduProcess : "",
+      graduatedcon: this.state.GraduatedCon ? this.state.GraduatedCon : "",
       ideduprogram: this.props.infoEduProgram.Id,
       dateedited: new Date().toISOString()
     };
