@@ -52,7 +52,7 @@ export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
   errorMessage
 });
 
-export const onSaveDetailEduProgram= detailEduProgram => {
+export const onSaveDetailEduProgram = detailEduProgram => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprog=${detailEduProgram.id}`;
     axios

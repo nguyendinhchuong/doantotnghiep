@@ -101,8 +101,6 @@ export default class ContentProgramCom extends React.Component {
     }
     let child = {...node};
     let root = [...data];
-    const x = node.data.optionalCredit;
-    console.log(x);
     child.data.subjects.push(subject);
     child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
     child.data.subjects = logic.sortSubject(child.data.subjects);

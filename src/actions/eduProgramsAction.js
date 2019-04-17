@@ -127,7 +127,7 @@ export const onSaveEduProgram = infoEduProgram => {
     let params = {};
     params.data = JSON.stringify(infoEduProgram);
     axios
-      .post(links.SAVE_EDUPROGRAM, params, {
+      .post(`${links.SAVE_EDUPROGRAM}?ideduprog=${infoEduProgram.ideduprog}`, params, {
         headers: { "Content-Type": "application/json" }
       })
       .then(res => {

@@ -33,10 +33,6 @@ export const addChild = (data, nodeParent, name) => {
   return data;
 };
 
-const indexRoot = key => {
-  return key.split(".")[1];
-};
-
 // Delete Node
 export const deleteNode = (nodes, node) => {
   let root = [...nodes];

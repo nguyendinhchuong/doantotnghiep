@@ -270,7 +270,7 @@ export default class TargetEducationCom extends Component {
 
         <div className="content-section implementation">
           <Dialog
-            header="Thêm cấp..."
+            header="Thêm mục tiêu đào tạo"
             visible={this.state.visible}
             style={{ width: "50vw" }}
             footer={footer}
