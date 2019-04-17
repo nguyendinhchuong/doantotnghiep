@@ -119,7 +119,23 @@ export default class DetailEducationProgramCom extends React.Component {
   // fuctions for redux
 
   onSaveEduProgram = () => {
-    this.props.onSaveEduProgram(1);
+    const ideduprog = this.props.infoEduProgram;
+    const eduname = this.state.nameEduProgram;
+    const idlevel = this.state.level.LevelId;
+    const idmajor = this.state.major.MajorId;
+    const idprogram = this.state.program.ProgramId;
+    const schoolyear = this.state.schoolYear;
+    const infoEduProgram = {
+      ideduprog,
+      eduname,
+      eduengname: "",
+      idlevel,
+      idmajor,
+      idprogram,
+      schoolyear,
+      dateedited: new Date().toISOString()
+    };
+    this.props.onSaveEduProgram(infoEduProgram);
   };
 
   onSaveDetailEduProgram = () => {
