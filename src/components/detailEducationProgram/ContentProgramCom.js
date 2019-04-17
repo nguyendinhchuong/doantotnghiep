@@ -10,6 +10,8 @@ import { AutoComplete } from "primereact/autocomplete";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Spinner } from "primereact/spinner";
 
+import TableSubjects from './TableSubjects'
+
 import * as logic from "../../business/logicEducationProgram";
 import * as common from "../../business/commonEducation";
 
@@ -62,6 +64,7 @@ export default class ContentProgramCom extends React.Component {
       data: {
         isTable: true,
         optionalCredit: 0,
+        totalCredits: 0,
         subjects: [],
         displayName: ""
       },
@@ -71,7 +74,7 @@ export default class ContentProgramCom extends React.Component {
     if(this.state.isRequired){
       this.setState({ optionalCredit: 0 });
     }
-    this.setState({ nodeTables: node });
+    //this.setState({ nodeTables: node });
     node = this.convertNodeToDataTable(node);
     nodeParent.children.push(node);
     data = common.updateNode(data, nodeParent);
@@ -79,15 +82,15 @@ export default class ContentProgramCom extends React.Component {
   };
 
   addRowTable = () => {
-    debugger;
     let data = [...this.state.nodes];
     const subject = { ...this.state.optionSubjects };
     subject.option = this.state.isRequired ? "BB" : "TC";
     subject.note = this.state.note;
-    // test
-    subject.SubjectCode = "123";
+    // test :v
+    //subject.SubjectCode = "123";
+    //subject.Credit = 4;
 
-    data = this.addRowTableLogic(data, this.state.nodeTables, subject);
+    data = this.addRowTableLogic(data, this.state.node, subject);
     this.setState({ nodes: data });
     this.onHideDialogTable();
   };
@@ -96,12 +99,17 @@ export default class ContentProgramCom extends React.Component {
     if (!node.data.isTable) {
       return data;
     }
-    node.data.subjects.push(subject);
-    node.data.subjects = logic.sortSubject(node.data.subjects);
-    node.data.subjects = logic.indexSubjects(node.data.subjects);
-    node = this.convertNodeToDataTable(node);
-    data = common.updateNode(data, node);
-    return data;
+    let child = {...node};
+    let root = [...data];
+    const x = node.data.optionalCredit;
+    console.log(x);
+    child.data.subjects.push(subject);
+    child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
+    child.data.subjects = logic.sortSubject(child.data.subjects);
+    child.data.subjects = logic.indexSubjects(child.data.subjects);
+    child = this.convertNodeToDataTable(child);
+    root = common.updateNode(root, child);
+    return root;
   };
 
   // Delete
@@ -193,9 +201,10 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  isShowDialogTable = () => {
+  isShowDialogTable = (node) => {
     this.setState({
-      isDialogTable: true
+      isDialogTable: true,
+      node: node
     });
   };
 
@@ -219,7 +228,6 @@ export default class ContentProgramCom extends React.Component {
   footer = (
     <div className="p-clearfix" style={{ width: "100%" }}>
       <Button
-        onClick={this.isShowDialogTable}
         theme="success"
         style={{ float: "left" }}
         title="Thêm môn học"
@@ -234,32 +242,7 @@ export default class ContentProgramCom extends React.Component {
       return node;
     }
     const subjects = node.data.subjects;
-    const table = (
-      <DataTable
-        value={subjects}
-        headerColumnGroup={logic.headerGroup}
-        rowGroupMode="rowspan"
-        sortField="option"
-        sortOrder={1}
-        groupField="option"
-        footerColumnGroup={logic.footerGroup}
-        footer={this.footer}
-        editable={true}
-      >
-        <Column field="option" header="Loại Học Phần" />
-        <Column field="index" header="STT" />
-        <Column field="SubjectCode" 
-          //editor={this.codeSubjectEditor}
-          header="Mã Môn Học" />
-        <Column field="SubjectName" header="Tên Môn Học" />
-        <Column field="Credit" header="Số Tín Chỉ" />
-        <Column field="TheoryPeriod" header="Lý Thuyết" />
-        <Column field="PracticePeriod" header="Thực Hành" />
-        <Column field="ExercisePeriod" header="Bài Tập" />
-        <Column field="note" header="Ghi chú" />
-      </DataTable>
-    );
-    node.data.displayName = table;
+    node.data.displayName = <TableSubjects subjects = {subjects} sum = {node.data.totalCredits}/>
     return node;
   };
 
@@ -269,15 +252,21 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
+  // onchange
+
+  onChangeCredit = (e) =>{
+    this.setState( {
+      optionalCredit: e.value
+    });
+  }
+
   // Templatre
   actionTemplate(node, column) {
     return (
       <div>
         {node.data.isTable ? (
           <Button
-            onClick={() => {
-              alert("abcxyz");
-            }}
+            onClick={() => this.isShowDialogTable(node)}
             theme="success"
             style={{ marginRight: ".3em", padding: "8px" }}
             title={`Thêm môn học`}
@@ -327,7 +316,6 @@ export default class ContentProgramCom extends React.Component {
   }
 
   render() {
-    console.log(this.state.nodes);
     const footerRoot = (
       <div>
         <Button onClick={this.handleAddRoot} theme="success">
@@ -518,7 +506,7 @@ export default class ContentProgramCom extends React.Component {
                 <Col lg="4" md="4" sm="4">
                   <Spinner
                     value={this.state.optionalCredit}
-                    onChange={e => this.setState({ optionalCredit: e.value })}
+                    onChange={ (e) => this.onChangeCredit(e)}
                   />
                 </Col>
             </Row>

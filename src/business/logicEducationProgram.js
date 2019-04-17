@@ -125,4 +125,13 @@ export const indexSubjects = data => {
   return results;
 };
 
+export const toltalRequiredCredits = (subjects) =>{
+  return subjects.reduce((acc, cur)=>{
+    if(cur.option === "BB" && cur.Credit){
+      return acc + Number(cur.Credit);
+    }
+    return acc;
+  },0);
+}
+
 // error ham refresh cho key line 52
