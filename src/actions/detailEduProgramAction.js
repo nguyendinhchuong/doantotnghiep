@@ -14,7 +14,7 @@ export const loadDetailEduProgramError = errorMessage => ({
   errorMessage
 });
 
-export const onLoadDetailEduProgram= id => {
+export const onLoadDetailEduProgram = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
     axios
@@ -40,7 +40,10 @@ export const onLoadDetailEduProgram= id => {
   };
 };
 
-export const saveDetailEduProgramSuccess = (detailEduProgram, successMessage) => ({
+export const saveDetailEduProgramSuccess = (
+  detailEduProgram,
+  successMessage
+) => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_SUCCESS,
   detailEduProgram: detailEduProgram,
   successMessage
@@ -54,9 +57,15 @@ export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
 
 export const onSaveDetailEduProgram = detailEduProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprog=${detailEduProgram.id}`;
+    let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
+      detailEduProgram.ideduprogram
+    }`;
+    let params = {};
+    params.data = JSON.stringify(detailEduProgram);
     axios
-      .get(req)
+      .post(req, params, {
+        headers: { "Content-Type": "application/json" }
+      })
       .then(res => {
         if (res.data.code === 1) {
           let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
@@ -99,7 +108,10 @@ export const onLoadTargetEduProgram = id => {
           dispatch(loadTargetEduProgramError(res));
         } else {
           let targetEduProgram = logic.convertDBToTreeNode(data);
-          let chirp = { message: `Tải mục tiêu đào tạo thành công`, isRight: 1 };
+          let chirp = {
+            message: `Tải mục tiêu đào tạo thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(loadTargetEduProgramSuccess(targetEduProgram));
         }

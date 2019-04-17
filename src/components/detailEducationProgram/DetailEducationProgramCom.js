@@ -196,11 +196,11 @@ export default class DetailEducationProgramCom extends React.Component {
   };
 
   upSameLevelTarget = targetNode => {
-    console.log("TARGER EDU UP");
+    console.log("TARGET EDU UP");
   };
 
   downSameLevelTarget = targetNode => {
-    console.log("TARGER EDU DOWN");
+    console.log("TARGET EDU DOWN");
   };
 
   targetActionTemplate = (targetNode, column) => {
@@ -279,7 +279,6 @@ export default class DetailEducationProgramCom extends React.Component {
   // end functions for detailEduProgram
 
   // fuctions for redux
-
   onSave = () => {
     const ideduprog = this.props.infoEduProgram.Id;
     const eduname = this.state.nameEduProgram;
@@ -304,11 +303,8 @@ export default class DetailEducationProgramCom extends React.Component {
       ideduprogram: this.props.infoEduProgram.Id,
       dateedited: new Date().toISOString()
     };
-    this.props.onSave(infoEduProgram, detailEduProgram);
-    // onSaveEduProgram
-    // onSaveDetailEduProgram
+    this.props.onSaveEduProgram(infoEduProgram, detailEduProgram);
   };
-
   // end fucntions for redux
 
   componentWillReceiveProps(nextProps) {

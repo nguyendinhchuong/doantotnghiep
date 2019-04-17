@@ -2,6 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
+import * as detailEduProgramAction from "./detailEduProgramAction";
 
 export const loadEduProgramsSuccess = eduPrograms => ({
   type: cst.LOAD_EDUPROGRAMS_SUCCESS,
@@ -122,7 +123,7 @@ export const saveEduProgramError = (infoEduProgram, errorMessage) => ({
   errorMessage
 });
 
-export const onSaveEduProgram = infoEduProgram => {
+export const onSaveEduProgram = (infoEduProgram, detailEduProgram) => {
   return (dispatch, getState) => {
     let params = {};
     params.data = JSON.stringify(infoEduProgram);
@@ -135,6 +136,7 @@ export const onSaveEduProgram = infoEduProgram => {
           let chirp = { message: `Lưu thông tin CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(infoEduProgram, res));
+          dispatch(detailEduProgramAction.onSaveDetailEduProgram(detailEduProgram));
         } else {
           let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));

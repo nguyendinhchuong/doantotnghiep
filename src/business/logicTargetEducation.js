@@ -80,15 +80,10 @@ export const addOS = (nodes, node, os) => {
   }
   let data = [...nodes];
   let thisNode = { ...node };
-  changeKeys(os, thisNode.key);
+  const tmpOs = [...os];
+  changeKeys(tmpOs, thisNode.key);
 
-  thisNode.children.push(...os);
+  thisNode.children.push(...tmpOs);
   data = common.updateNode(data, thisNode);
   return data;
 };
-
-export const downSameLevel = (data, node) => {};
-
-export const upSameLevel = (data, node) => {};
-
-export const findNodeByKey = (data, node) => {};

@@ -20,7 +20,7 @@ export const SAVE_EDUPROGRAM = `${LINK}/eduprogram/update/`;
 
 // detail eduProgram links
 export const LOAD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/get/`;
-export const SAVE_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/save/`;
+export const SAVE_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/update/`;
 export const LOAD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/get/`;
 
 // subjects links
