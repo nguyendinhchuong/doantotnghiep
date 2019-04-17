@@ -248,17 +248,9 @@ export default class ContentProgramCom extends React.Component {
       >
         <Column field="option" header="Loại Học Phần" />
         <Column field="index" header="STT" />
-<<<<<<< HEAD
         <Column field="SubjectCode" 
           //editor={this.codeSubjectEditor}
           header="Mã Môn Học" />
-=======
-        <Column
-          field="SubjectCode"
-          editor={this.codeSubjectEditor}
-          header="Mã Môn Học"
-        />
->>>>>>> c20a5c915c854e06159540f224c83ae19ae8c6f4
         <Column field="SubjectName" header="Tên Môn Học" />
         <Column field="Credit" header="Số Tín Chỉ" />
         <Column field="TheoryPeriod" header="Lý Thuyết" />
