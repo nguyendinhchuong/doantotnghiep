@@ -70,7 +70,7 @@ export const onLoadDetailOutcomeStandard = id => {
       .get(req)
       .then(res => {
         const data = res.data;
-        if (data === undefined) {
+        if (data === undefined || data === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadDetailOutcomeStandardError(res));

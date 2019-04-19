@@ -20,7 +20,7 @@ export const onLoadFaculties = () => {
       .get(req)
       .then(res => {
         const faculties = res.data.data;
-        if (faculties === undefined) {
+        if (faculties === undefined || faculties === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadFacultiesError(res));

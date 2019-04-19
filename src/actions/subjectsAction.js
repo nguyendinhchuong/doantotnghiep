@@ -20,7 +20,7 @@ export const onLoadSubjects = () => {
       .get(req)
       .then(res => {
         const subjects = res.data.data;
-        if (subjects === undefined) {
+        if (subjects === undefined || subjects === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadSubjectsError(res));
@@ -162,7 +162,7 @@ export const onLoadUsingEduPro = id => {
       .get(req)
       .then(res => {
         const usingEduPro = res.data.data;
-        if (usingEduPro === undefined) {
+        if (usingEduPro === undefined || usingEduPro === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadUsingEduProError(res));

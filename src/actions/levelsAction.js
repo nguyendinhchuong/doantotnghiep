@@ -20,7 +20,7 @@ export const onLoadLevels = () => {
       .get(req)
       .then(res => {
         const levels = res.data.data;
-        if (levels === undefined) {
+        if (levels === undefined || levels === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadLevelsError(res));

@@ -20,7 +20,7 @@ export const onLoadPrograms = () => {
       .get(req)
       .then(res => {
         const programs = res.data.data;
-        if (programs === undefined) {
+        if (programs === undefined || programs === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadProgramsError(res));

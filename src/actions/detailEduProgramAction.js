@@ -21,7 +21,7 @@ export const onLoadDetailEduProgram = id => {
       .get(req)
       .then(res => {
         const detailEduProgram = res.data.data;
-        if (detailEduProgram === undefined) {
+        if (detailEduProgram === undefined || detailEduProgram === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
@@ -102,7 +102,7 @@ export const onLoadTargetEduProgram = id => {
       .get(req)
       .then(res => {
         const data = res.data.data;
-        if (data === undefined) {
+        if (data === undefined || data === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadTargetEduProgramError(res));

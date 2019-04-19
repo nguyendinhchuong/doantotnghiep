@@ -21,7 +21,7 @@ export const onLoadEduPrograms = () => {
       .get(req)
       .then(res => {
         const eduPrograms = res.data.data;
-        if (eduPrograms === undefined) {
+        if (eduPrograms === undefined || eduPrograms === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadEduProgramsError(res));
@@ -93,18 +93,18 @@ export const onLoadEduProgram = id => {
       .get(req)
       .then(res => {
         const infoEduProgram = res.data.data;
-        if (infoEduProgram === undefined) {
+        if (infoEduProgram === undefined || infoEduProgram === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadEduProgramError(res));
         } else {
-          let chirp = { message: `Tải CTĐT thành công`, isRight: 1 };
+          let chirp = { message: `Tải thông tin CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(loadEduProgramSuccess(infoEduProgram));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải CTĐT thất bại`, isRight: 0 };
+        let chirp = { message: `Tải thông tin CTĐT thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadEduProgramError(err));
       });

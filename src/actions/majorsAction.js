@@ -20,7 +20,7 @@ export const onLoadMajors = () => {
       .get(req)
       .then(res => {
         const majors = res.data.data;
-        if (majors === undefined) {
+        if (majors === undefined || majors === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadMajorsError(res));

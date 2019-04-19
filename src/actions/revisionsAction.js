@@ -20,7 +20,7 @@ export const onLoadRevisions = idOutcomeStandard => {
       .get(req)
       .then(res => {
         const revisions = res.data.data;
-        if (revisions === undefined) {
+        if (revisions === undefined || revisions === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadRevisionsError(res));

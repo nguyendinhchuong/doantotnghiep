@@ -20,7 +20,7 @@ export const onLoadOutcomeStandards = () => {
       .get(req)
       .then(res => {
         const outcomeStandards = res.data.data;
-        if (outcomeStandards === undefined) {
+        if (outcomeStandards === undefined || outcomeStandards === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardsError(res));
@@ -96,7 +96,7 @@ export const onLoadOutcomeStandard = id => {
       .get(req)
       .then(res => {
         const infoOutcomeStandard = res.data.data;
-        if (infoOutcomeStandard === undefined) {
+        if (infoOutcomeStandard === undefined || infoOutcomeStandard === null) {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardError(res));
