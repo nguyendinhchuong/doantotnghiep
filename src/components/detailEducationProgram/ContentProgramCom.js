@@ -9,6 +9,7 @@ import { Row, Col, Button } from "shards-react";
 import { AutoComplete } from "primereact/autocomplete";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Spinner } from "primereact/spinner";
+import { OrderList } from 'primereact/orderlist';
 
 import TableSubjectsCom from './TableSubjectsCom'
 
@@ -29,6 +30,7 @@ export default class ContentProgramCom extends React.Component {
       isTable: false, // check is table,
       filterSubjects: [],
       optionSubjects: [],
+      listSubjects: [], // add into table
       isRequired: true,
       note: "",
       optionalCredit: 0,
@@ -83,25 +85,31 @@ export default class ContentProgramCom extends React.Component {
 
   addRowTable = () => {
     let data = [...this.state.nodes];
-    const subject = { ...this.state.optionSubjects };
-    subject.option = this.state.isRequired ? "BB" : "TC";
-    subject.note = this.state.note;
+    // const subject = { ...this.state.optionSubjects };
+    // subject.option = this.state.isRequired ? "BB" : "TC";
+    // subject.note = this.state.note;
     // test :v
     //subject.SubjectCode = "123";
     //subject.Credit = 4;
+    const subjects = [...this.state.listSubjects];
 
-    data = this.addRowTableLogic(data, this.state.node, subject);
+    data = this.addRowTableLogic(data, this.state.node, subjects);
     this.setState({ nodes: data });
     this.onHideDialogTable();
   };
 
-  addRowTableLogic = (data, node, subject) => {
+  addRowTableLogic = (nodes, node, subjectsAdd) => {
     if (!node.data.isTable) {
-      return data;
+      return nodes;
     }
     let child = {...node};
-    let root = [...data];
-    child.data.subjects.push(subject);
+    let root = [...nodes];
+    //child.data.subjects = [child.data.subjects,...subjects];
+    let subjectsTable = child.data.subjects;
+    subjectsAdd.forEach(subject =>{
+      subjectsTable = logic.addSubjectInOnchange(subjectsTable, subject);
+    });
+    child.data.subjects = subjectsTable;
     child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
     child.data.subjects = logic.sortSubject(child.data.subjects);
     child.data.subjects = logic.indexSubjects(child.data.subjects);
@@ -215,7 +223,10 @@ export default class ContentProgramCom extends React.Component {
   };
 
   onHideDialogTable = () => {
-    this.setState({ isDialogTable: false });
+    this.setState({ 
+      listSubjects: [],
+      isDialogTable: false 
+    });
   };
 
   handleChangeValue = e => {
@@ -251,6 +262,19 @@ export default class ContentProgramCom extends React.Component {
   };
 
   // onchange
+
+  onChangeListSubjects = e =>{
+    debugger;
+    if(typeof e.value === "object"){
+      const subject = e.value;
+      subject.option = this.state.isRequired ? "BB" : "TC";
+      const subjects = logic.addSubjectInOnchange(this.state.listSubjects, subject);
+      this.setState({ listSubjects: subjects });
+    }
+    this.setState({ optionSubjects: e.value });
+    console.log(this.state.listSubjects);
+    
+  }
 
   onChangeCredit = (e) =>{
     this.setState( {
@@ -313,40 +337,48 @@ export default class ContentProgramCom extends React.Component {
     );
   }
 
+  subjectTemplate(subject){
+    return(
+      <div className="p-clearfix">
+      <div style={{ fontSize: '14px', float: 'left', margin: '5px 5px 0 0',borderBottom: 'ridge' }}>{subject.SubjectName}</div>
+      </div>
+    );
+  }
+
+  footerRoot = (
+    <div>
+      <Button onClick={this.handleAddRoot} theme="success">
+        Thêm
+      </Button>
+      <Button onClick={this.onHideDialogRoot} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  );
+
+  footerChild = (
+    <div>
+      <Button onClick={this.handleAddChild} theme="success">
+        Thêm
+      </Button>
+      <Button onClick={this.onHideDialogChild} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  );
+
+  footerDialogTable = (
+    <div>
+      <Button onClick={this.addRowTable} theme="success">
+        Thêm
+      </Button>
+      <Button onClick={this.onHideDialogTable} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  );
+
   render() {
-    const footerRoot = (
-      <div>
-        <Button onClick={this.handleAddRoot} theme="success">
-          Thêm
-        </Button>
-        <Button onClick={this.onHideDialogRoot} theme="secondary">
-          Hủy
-        </Button>
-      </div>
-    );
-
-    const footerChild = (
-      <div>
-        <Button onClick={this.handleAddChild} theme="success">
-          Thêm
-        </Button>
-        <Button onClick={this.onHideDialogChild} theme="secondary">
-          Hủy
-        </Button>
-      </div>
-    );
-
-    const footerDialogTable = (
-      <div>
-        <Button onClick={this.addRowTable} theme="success">
-          Thêm
-        </Button>
-        <Button onClick={this.onHideDialogTable} theme="secondary">
-          Hủy
-        </Button>
-      </div>
-    );
-
     return (
       <div>
         <hr />
@@ -377,7 +409,7 @@ export default class ContentProgramCom extends React.Component {
           visible={this.state.isDialogRoot}
           onHide={() => this.onHideDialogRoot()}
           style={{ width: "50vw" }}
-          footer={footerRoot}
+          footer={this.footerRoot}
         >
           <Col>
             <InputText
@@ -394,7 +426,7 @@ export default class ContentProgramCom extends React.Component {
           visible={this.state.isDialogChild}
           onHide={() => this.onHideDialogChild()}
           style={{ width: "60vw" }}
-          footer={footerChild}
+          footer={this.footerChild}
         >
           {/* Checked */}
           <Row>
@@ -453,7 +485,7 @@ export default class ContentProgramCom extends React.Component {
           visible={this.state.isDialogTable}
           onHide={() => this.onHideDialogTable()}
           style={{ width: "50vw" }}
-          footer={footerDialogTable}
+          footer={this.footerDialogTable}
         >
           <Row>
             <Col lg="2" md="2" sm="2">
@@ -464,8 +496,8 @@ export default class ContentProgramCom extends React.Component {
                 field="SubjectName"
                 value={this.state.optionSubjects}
                 dropdown={true}
-                onChange={e => this.setState({ optionSubjects: e.value })}
-                size={30}
+                onChange={e => this.onChangeListSubjects(e)}
+                size={40}
                 placeholder="Môn học"
                 minLength={1}
                 suggestions={this.state.filterSubjects}
@@ -473,6 +505,42 @@ export default class ContentProgramCom extends React.Component {
               />
             </Col>
           </Row>
+          <div hidden={!this.state.isRequired}>
+          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+            <Col lg="2" md="2" sm="2">
+              <span>Môn Học BB:</span>
+            </Col>
+            <Col lg="10" md="10" sm="12">
+            <OrderList 
+              value={this.state.listSubjects.filter(subject => {
+                if(subject.option === "BB"){
+                  return subject;
+                }
+              })}
+              responsive={true}
+              itemTemplate={this.subjectTemplate}
+              ></OrderList>
+            </Col>
+          </Row>
+          </div>
+          <div hidden={this.state.isRequired}>
+          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+            <Col lg="2" md="2" sm="2">
+              <span>Môn Học TC:</span>
+            </Col>
+            <Col lg="10" md="10" sm="12">
+            <OrderList 
+              value={this.state.listSubjects.filter(subject => {
+                if(subject.option === "TC"){
+                  return subject;
+                }
+              })}
+              responsive={true}
+              itemTemplate={this.subjectTemplate}
+              ></OrderList>
+            </Col>
+          </Row>
+          </div>
           <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
             <Col lg="2" md="2" sm="2">
               <label>Loại Học Phần:</label>
@@ -515,7 +583,7 @@ export default class ContentProgramCom extends React.Component {
             </Col>
             <Col lg="10" md="10" sm="12">
               <InputTextarea
-                rows={3}
+                rows={1}
                 cols={30}
                 value={this.state.note}
                 onChange={e => this.setState({ note: e.target.value })}

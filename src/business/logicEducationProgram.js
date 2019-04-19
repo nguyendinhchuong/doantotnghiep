@@ -3,6 +3,7 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import * as common from "./commonEducation";
+import { bool } from "prop-types";
 
 // Add root
 export const addRoot = (data, name) => {
@@ -133,5 +134,23 @@ export const toltalRequiredCredits = (subjects) =>{
     return acc;
   },0);
 }
+
+const checkExistsSubject = (subjects, subject) =>{
+  for(let i = 0 ;i < subjects.length ;i++){
+    if(subjects[i].SubjectName === subject.SubjectName){
+      return true;
+    }
+  }
+  return false;
+}
+
+export const addSubjectInOnchange = (subjects, subject) =>{
+  if(checkExistsSubject(subjects, subject)){
+    return subjects;
+  }
+  const data = [...subjects];
+  data.push(subject);
+  return data;
+};
 
 // error ham refresh cho key line 52
