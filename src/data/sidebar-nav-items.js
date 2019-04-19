@@ -14,6 +14,11 @@ export default function() {
       title: "Quản lý học phần",
       htmlBefore: '<i class="material-icons">rate_review</i>',
       to: "/subject-manage"
+    },
+    {
+      title: "Quản lý khoa hệ...",
+      htmlBefore: '<i class="material-icons">view_comfy</i>',
+      to: "/fapro-manage"
     }
   ];
 }

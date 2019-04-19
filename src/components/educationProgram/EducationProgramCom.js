@@ -193,7 +193,7 @@ export default class EduProgramCom extends Component {
       >
         <Row>
           <Col lg="3" md="3" sm="3">
-            Chương trình đào tạo:
+            Tên:
           </Col>
           <Col lg="9" md="9" sm="9">
             <FormInput
@@ -322,7 +322,7 @@ export default class EduProgramCom extends Component {
         <br />
         <Row>
           <Col lg="3" md="3" sm="3">
-            Loại hình:
+            Hệ (Loại hình):
           </Col>
           <Col lg="9" md="9" sm="9">
             <FormSelect onChange={e => this.handleProgramChange(e)}>
@@ -376,7 +376,7 @@ export default class EduProgramCom extends Component {
               <Column field="LevelName" header="Trình độ" />
               <Column field="MajorCode" header="Mã ngành" />
               <Column field="MajorName" header="Ngành" />
-              <Column field="NameProgram" header="Loại hình" />
+              <Column field="NameProgram" header="Hệ (Loại hình)" />
               <Column field="SchoolYear" header="Khóa tuyển" />
               <Column
                 body={this.actionTemplate}

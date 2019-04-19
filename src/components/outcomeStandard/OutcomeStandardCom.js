@@ -155,7 +155,7 @@ export default class OutcomeStandardCom extends Component {
       >
         <Row>
           <Col lg="3" md="3" sm="3">
-            Chuẩn đầu ra:
+            Tên:
           </Col>
           <Col lg="9" md="9" sm="9">
             <FormInput
@@ -207,7 +207,7 @@ export default class OutcomeStandardCom extends Component {
         <br />
         <Row>
           <Col lg="3" md="3" sm="3">
-            Hệ:
+            Hệ (Loại hình):
           </Col>
           <Col lg="9" md="9" sm="9">
             <FormSelect onChange={e => this.handleProgramChange(e)}>
@@ -243,11 +243,9 @@ export default class OutcomeStandardCom extends Component {
             <DataTable value={this.props.outcomeStandards}>
               <Column field="NameOutcomeStandard" header="Tên" />
               <Column field="NameFaculty" header="Khoa" />
-              <Column field="NameProgram" header="Hệ" />
+              <Column field="NameProgram" header="Hệ (Loại hình)" />
               <Column field="NameUser" header="Người tạo" />
               <Column field="SchoolYear" header="Năm học" />
-              <Column field="SchoolYear" header="Tiết bài tập" />
-              <Column field="SchoolYear" header="Tiết bài tập" />
               <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "8em" }}

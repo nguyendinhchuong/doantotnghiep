@@ -10,6 +10,7 @@ import EditEducationProgram from "./containers/EditEducationProgram";
 import OutcomeStandard from "./containers/OutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
+import FaProManage from "./containers/FaProManage";
 
 export default [
   {
@@ -47,5 +48,11 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: SubjectManage
+  },
+  {
+    path: "/fapro-manage",
+    exact: true,
+    layout: DefaultLayout,
+    component: FaProManage
   }
 ];

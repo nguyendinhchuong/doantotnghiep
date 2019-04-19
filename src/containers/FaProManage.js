@@ -9,6 +9,10 @@ import FaProManageCom from "../components/faProManage/FaProManageCom";
 import AlertCom from "../components/AlertCom";
 
 import { connect } from "react-redux";
+import * as facultiesAction from "../actions/facultiesAction";
+import * as programsAction from "../actions/programsAction";
+import * as majorsAction from "../actions/majorsAction";
+import * as levelsAction from "../actions/levelsAction";
 
 class FaProManageTemp extends Component {
   constructor(props) {
@@ -17,7 +21,10 @@ class FaProManageTemp extends Component {
   }
 
   componentDidMount = () => {
-    this.props.onLoadSubjects();
+    this.props.onLoadFaculties();
+    this.props.onLoadPrograms();
+    this.props.onLoadMajors();
+    this.props.onLoadLevels();
   };
 
   render() {
@@ -27,8 +34,7 @@ class FaProManageTemp extends Component {
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="12"
-              title="HỌC PHẦN"
-              subtitle="danh sách"
+              title="QUẢN LÝ KHOA HỆ"
               className="text-sm-left"
             />
           </Col>
@@ -41,13 +47,10 @@ class FaProManageTemp extends Component {
         <Row>
           <Col lg="12" md="12">
             <FaProManageCom
-              subjects={this.props.subjects}
-              eduPrograms={this.props.eduPrograms}
-              usingEduPro={this.props.usingEduPro}
-              onDeleteSubject={this.props.onDeleteSubject}
-              onAddSubject={this.props.onAddSubject}
-              onAddSubjectBulk={this.props.onAddSubjectBulk}
-              onLoadUsingEduPro={this.props.onLoadUsingEduPro}
+              faculties={this.props.faculties}
+              programs={this.props.programs}
+              majors={this.props.majors}
+              levels={this.props.levels}
             />
           </Col>
         </Row>
@@ -58,10 +61,15 @@ class FaProManageTemp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  subjects: state.subjects,
-  eduPrograms: state.eduPrograms,
-  usingEduPro: state.usingEduPro
+  faculties: state.faculties,
+  programs: state.programs,
+  levels: state.levels,
+  majors: state.majors
 });
 
 export default connect(mapStateToProps, {
+  onLoadFaculties: facultiesAction.onLoadFaculties,
+  onLoadPrograms: programsAction.onLoadPrograms,
+  onLoadMajors: majorsAction.onLoadMajors,
+  onLoadLevels: levelsAction.onLoadLevels
 })(FaProManageTemp);
