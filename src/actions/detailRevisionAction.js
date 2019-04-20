@@ -94,11 +94,6 @@ export const onLoadDetailRevision = id => {
           dispatch(loadDetailRevisionError(res));
         } else {
           let detailRevision = logic.convertDBToTreeNode(data);
-          let chirp = {
-            message: `Tải phiên bản của cây CĐR thành công`,
-            isRight: 1
-          };
-          dispatch(message.message(chirp));
           dispatch(loadDetailRevisionSuccess(detailRevision));
         }
       })

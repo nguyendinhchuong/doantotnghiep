@@ -98,8 +98,6 @@ export const onLoadEduProgram = id => {
           dispatch(message.message(chirp));
           dispatch(loadEduProgramError(res));
         } else {
-          let chirp = { message: `Tải thông tin CTĐT thành công`, isRight: 1 };
-          dispatch(message.message(chirp));
           dispatch(loadEduProgramSuccess(infoEduProgram));
         }
       })

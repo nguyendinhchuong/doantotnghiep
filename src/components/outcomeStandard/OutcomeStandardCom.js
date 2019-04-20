@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
+import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import Dialog from "rc-dialog";
 import "rc-dialog/assets/bootstrap.css";
@@ -14,7 +15,13 @@ export default class OutcomeStandardCom extends Component {
       faculty: { id: "0" },
       program: { id: "0" },
       visible: false,
-      schoolYear: ""
+      schoolYear: "",
+      facultyDup: { id: "0" },
+      programDup: { id: "0" },
+      dupVisible: false,
+      schoolYearDup: "",
+      duplicatedOutcomeId: 0,
+      outcomeReview: []
     };
   }
 
@@ -98,6 +105,85 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
+  handleNameOutcomeDupChange = event => {
+    this.setState({ nameOutcomeDup: event.target.value });
+  };
+
+  handleSchoolYearDupChange = event => {
+    if (event.target.value.length > 4)
+      this.setState({ schoolYearDup: event.target.value.substr(0, 4) });
+    else if (
+      event.target.value.length === 0 ||
+      !isNaN(event.target.value[event.target.value.length - 1])
+    )
+      this.setState({ schoolYearDup: event.target.value });
+  };
+
+  handleFacultyDupChange = event => {
+    const id = event.currentTarget.value;
+    if (id !== 0) {
+      const index = event.nativeEvent.target.selectedIndex;
+      const name = event.nativeEvent.target[index].text;
+      this.setState({ facultyDup: { id, name } });
+    }
+  };
+
+  handleProgramDupChange = event => {
+    const id = event.currentTarget.value;
+    if (id !== 0) {
+      const index = event.nativeEvent.target.selectedIndex;
+      const name = event.nativeEvent.target[index].text;
+      this.setState({ programDup: { id, name } });
+    }
+  };
+
+  onCloseDup = () => {
+    this.setState({
+      dupVisible: false,
+      duplicatedOutcomeId: 0,
+      outcomeReview: []
+    });
+  };
+
+  onCloseDupAndCreate = () => {
+    if (
+      this.state.facultyDup.id !== "0" &&
+      this.state.programDup.id !== "0" &&
+      this.state.nameOutcomeDup !== "" &&
+      this.state.schoolYearDup !== ""
+    ) {
+      let NameOutcomeStandard = this.state.nameOutcomeDup;
+      let IdFaculty = parseInt(this.state.facultyDup.id, 10);
+      let IdProgram = parseInt(this.state.programDup.id, 10);
+      let SchoolYear = this.state.schoolYearDup;
+      let data = {
+        IdFaculty,
+        IdProgram,
+        IdUser: 1,
+        NameOutcomeStandard,
+        DateCreated: new Date().toISOString(),
+        DateEdited: new Date(),
+        SchoolYear,
+        DuplicatedOutcomeId: this.state.duplicatedOutcomeId
+      };
+      this.props.onDupOutcomeStandard(data);
+      this.setState({
+        visible: false,
+        duplicatedOutcomeId: 0,
+        outcomeReview: []
+      });
+    }
+  };
+
+  onDuplicate = IdOutcome => {
+    this.props.onLoadDetailOutcomeStandard(IdOutcome);
+    this.setState({
+      dupVisible: true,
+      duplicatedOutcomeId: IdOutcome,
+      outcomeReview: this.props.detailOutcomeStandard
+    });
+  };
+
   onDelete = IdOutcome => {
     this.props.onDeleteOutcomeStandard(IdOutcome);
   };
@@ -112,6 +198,14 @@ export default class OutcomeStandardCom extends Component {
           style={{ marginRight: ".3em", padding: "8px" }}
         >
           <i className="material-icons">edit</i>
+        </Button>
+        <Button
+          title="Tạo bản sao"
+          onClick={() => this.onDuplicate(data.Id)}
+          theme="info"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">file_copy</i>
         </Button>
         <Button
           title="Xóa"
@@ -229,6 +323,119 @@ export default class OutcomeStandardCom extends Component {
       </Dialog>
     );
 
+    const dupDialog = (
+      <Dialog
+        visible={this.state.dupVisible}
+        onClose={this.onCloseDup}
+        style={{ width: 520 }}
+        title={<div>Sao chép chuẩn đầu ra</div>}
+        footer={[
+          <Button
+            type="button"
+            className="btn btn-default"
+            key="close"
+            onClick={this.onCloseDup}
+            theme="light"
+          >
+            Hủy
+          </Button>,
+          <Button
+            type="button"
+            className="btn btn-primary"
+            key="save"
+            onClick={this.onCloseDupAndCreate}
+            theme="success"
+          >
+            Tạo bản sao
+          </Button>
+        ]}
+      >
+        <Row>
+          <Col lg="1" md="1" sm="1">
+            Tên:
+          </Col>
+          <Col lg="5" md="5" sm="5">
+            <FormInput
+              type="text"
+              value={this.state.nameOutcomeDup}
+              onChange={this.handleNameOutcomeDupChange}
+              placeholder="Tên..."
+              className="mb-2"
+            />
+          </Col>
+          <Col lg="1" md="1" sm="1">
+            Năm:
+          </Col>
+          <Col lg="5" md="5" sm="5">
+            <FormInput
+              type="text"
+              value={this.state.schoolYearDup}
+              onChange={this.handleSchoolYearDupChange}
+              placeholder="2015"
+              className="mb-2"
+            />
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col lg="1" md="1" sm="1">
+            Khoa:
+          </Col>
+          <Col lg="5" md="5" sm="5">
+            <FormSelect onChange={e => this.handleFacultyDupChange(e)}>
+              <option defaultValue key={0} value={0}>
+                Chọn...
+              </option>
+              {Array.isArray(this.props.faculties)
+                ? this.props.faculties.map((item, i) => {
+                    return (
+                      <option key={item.Id} value={item.Id}>
+                        {item.NameFaculty}
+                      </option>
+                    );
+                  })
+                : null}
+            </FormSelect>
+          </Col>
+          <Col lg="1" md="1" sm="1">
+            Hệ:
+          </Col>
+          <Col lg="5" md="5" sm="5">
+            <FormSelect onChange={e => this.handleProgramDupChange(e)}>
+              <option defaultValue key={0} value={0}>
+                Chọn...
+              </option>
+              {Array.isArray(this.props.programs)
+                ? this.props.programs.map((item, i) => {
+                    return (
+                      <option key={item.Id} value={item.Id}>
+                        {item.NameProgram}
+                      </option>
+                    );
+                  })
+                : null}
+            </FormSelect>
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col lg="12" md="12" sm="12">
+            Chi tiết chuẩn đầu ra:
+          </Col>
+          <Col
+            lg="12"
+            md="12"
+            sm="12"
+            style={{ overflowY: "scroll", height: "240px" }}
+          >
+            <TreeTable value={this.state.outcomeReview}>
+              <Column field="displayName" header="Tên dòng" expander />
+            </TreeTable>
+          </Col>
+        </Row>
+      </Dialog>
+    );
+
     return (
       <div>
         <Row>
@@ -248,12 +455,13 @@ export default class OutcomeStandardCom extends Component {
               <Column field="SchoolYear" header="Năm học" />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "8em" }}
+                style={{ textAlign: "center", width: "12em" }}
               />
             </DataTable>
           </Col>
         </Row>
         {dialog}
+        {dupDialog}
       </div>
     );
   }

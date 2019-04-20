@@ -101,8 +101,6 @@ export const onLoadOutcomeStandard = id => {
           dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardError(res));
         } else {
-          let chirp = { message: `Tải thông tin CĐR thành công`, isRight: 1 };
-          dispatch(message.message(chirp));
           dispatch(loadOutcomeStandardSuccess(infoOutcomeStandard));
         }
       })

@@ -16,7 +16,7 @@ export default function() {
       to: "/subject-manage"
     },
     {
-      title: "Quản lý khoa hệ...",
+      title: "Quản lý khoa hệ",
       htmlBefore: '<i class="material-icons">view_comfy</i>',
       to: "/fapro-manage"
     }

@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
+import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 
 class OutcomeStandardTemp extends Component {
   constructor(props) {
@@ -48,10 +49,12 @@ class OutcomeStandardTemp extends Component {
               faculties={this.props.faculties}
               programs={this.props.programs}
               outcomeStandards={this.props.outcomeStandards}
+              detailOutcomeStandard={this.props.detailOutcomeStandard}
               onLoadFaculties={this.props.onLoadFaculties}
               onLoadPrograms={this.props.onLoadPrograms}
               onAddOutcomeStandard={this.props.onAddOutcomeStandard}
               onDeleteOutcomeStandard={this.props.onDeleteOutcomeStandard}
+              onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
             />
           </Col>
         </Row>
@@ -64,7 +67,8 @@ const mapStateToProps = state => ({
   message: state.message,
   faculties: state.faculties,
   programs: state.programs,
-  outcomeStandards: state.outcomeStandards
+  outcomeStandards: state.outcomeStandards,
+  detailOutcomeStandard: state.detailOutcomeStandard
 });
 
 export default connect(mapStateToProps, {
@@ -72,5 +76,6 @@ export default connect(mapStateToProps, {
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onAddOutcomeStandard: outcomeStandardsAction.onAddOutcomeStandard,
-  onDeleteOutcomeStandard: outcomeStandardsAction.onDeleteOutcomeStandard
+  onDeleteOutcomeStandard: outcomeStandardsAction.onDeleteOutcomeStandard,
+  onLoadDetailOutcomeStandard: detailOutcomeStandardAction.onLoadDetailOutcomeStandard
 })(OutcomeStandardTemp);
