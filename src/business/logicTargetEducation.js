@@ -75,7 +75,7 @@ export const changeKeys = (nodes, key) => {
 
 export const addOS = (nodes, node, os) => {
   if (node === "" || node.children.length !== 0 || os.length === 0) {
-    alert("Không thể thêm chuẩn đầ ra");
+    alert("Không thể thêm chuẩn đầu ra ở node này!!");
     return nodes;
   }
   let data = [...nodes];

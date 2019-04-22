@@ -416,6 +416,7 @@ export default class ContentProgramCom extends React.Component {
               type="text"
               value={this.state.nameValue}
               onChange={this.handleChangeValue}
+              placeholder="Tên"
               style={{ width: "100%" }}
             />
           </Col>
@@ -436,7 +437,7 @@ export default class ContentProgramCom extends React.Component {
                 onChange={e => this.setState({ isTable: false })}
               />
               <label htmlFor="cb2" className="p-checkbox-label">
-                Title
+                Thêm cấp
               </label>
             </Col>
             <Col lg="2" md="2" sm="4">
@@ -445,7 +446,7 @@ export default class ContentProgramCom extends React.Component {
                 onChange={e => this.setState({ isTable: true })}
               />
               <label htmlFor="cb2" className="p-checkbox-label">
-                Table
+                Thêm bảng
               </label>
             </Col>
           </Row>
@@ -458,6 +459,7 @@ export default class ContentProgramCom extends React.Component {
                 type="text"
                 value={this.state.nameValue}
                 onChange={this.handleChangeValue}
+                placeholder="Tên"
                 style={{ width: "100%" }}
               />
             </Col>

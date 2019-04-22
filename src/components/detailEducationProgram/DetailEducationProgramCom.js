@@ -377,7 +377,11 @@ export default class DetailEducationProgramCom extends React.Component {
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
             <p align="left">
-              <Button disabled={this.state.isSaveBtnDisabled} onClick={this.onSave} theme="success">
+              <Button
+                disabled={this.state.isSaveBtnDisabled}
+                onClick={this.onSave}
+                theme="success"
+              >
                 <i className="material-icons">save</i> Lưu chương trình đào tạo
               </Button>
             </p>
@@ -438,26 +442,28 @@ export default class DetailEducationProgramCom extends React.Component {
                       footer={targetFooter}
                       onHide={this.onHideTargetDialog}
                     >
-                      <Row>
-                        <Col lg="6" md="6" sm="6">
-                          <Checkbox
-                            checked={!this.state.isData}
-                            onChange={e => this.setState({ isData: false })}
-                          />
-                          <label htmlFor="cb2" className="p-checkbox-label">
-                            Thêm cấp
-                          </label>
-                        </Col>
-                        <Col lg="6" md="6" sm="6">
-                          <Checkbox
-                            checked={this.state.isData}
-                            onChange={e => this.setState({ isData: true })}
-                          />
-                          <label htmlFor="cb2" className="p-checkbox-label">
-                            Thêm chuẩn đầu ra
-                          </label>
-                        </Col>
-                      </Row>
+                      {!this.state.targetRoot ? (
+                        <Row>
+                          <Col lg="6" md="6" sm="6">
+                            <Checkbox
+                              checked={!this.state.isData}
+                              onChange={e => this.setState({ isData: false })}
+                            />
+                            <label htmlFor="cb2" className="p-checkbox-label">
+                              Thêm cấp
+                            </label>
+                          </Col>
+                          <Col lg="6" md="6" sm="6">
+                            <Checkbox
+                              checked={this.state.isData}
+                              onChange={e => this.setState({ isData: true })}
+                            />
+                            <label htmlFor="cb2" className="p-checkbox-label">
+                              Thêm chuẩn đầu ra
+                            </label>
+                          </Col>
+                        </Row>
+                      ) : null}
                       <br />
                       {!this.state.isData ? (
                         <InputText
