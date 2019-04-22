@@ -21,7 +21,7 @@ export default class LevelManageCom extends Component {
       <div>
         <Button
           title="Xóa"
-          onClick={() => this.props.onDelete(data.Id)}
+          onClick={() => this.props.onDeleteLevel(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >

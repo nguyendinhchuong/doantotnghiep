@@ -282,6 +282,8 @@ export default class DetailEducationProgramCom extends React.Component {
 
   // fuctions for redux
   onSave = () => {
+    this.setState({ isSaveBtnDisabled: true });
+    setTimeout(() => this.setState({ isSaveBtnDisabled: false }), 3000);
     const ideduprog = this.props.infoEduProgram.Id;
     const eduname = this.state.nameEduProgram;
     const idlevel = this.state.level.LevelId;
@@ -375,7 +377,7 @@ export default class DetailEducationProgramCom extends React.Component {
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
             <p align="left">
-              <Button onClick={this.onSave} theme="success">
+              <Button disabled={this.state.isSaveBtnDisabled} onClick={this.onSave} theme="success">
                 <i className="material-icons">save</i> Lưu chương trình đào tạo
               </Button>
             </p>

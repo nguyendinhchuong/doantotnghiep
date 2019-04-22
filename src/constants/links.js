@@ -2,15 +2,23 @@ export const LINK = "http://localhost:3001";
 
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;
+export const ADD_LEVEL = `${LINK}/level/add/`;
+export const DELETE_LEVEL = `${LINK}/level/delete/`;
 
 // majors links
 export const LOAD_MAJORS = `${LINK}/major/getlist/`;
+export const ADD_MAJOR = `${LINK}/major/add/`;
+export const DELETE_MAJOR = `${LINK}/major/delete/`;
 
 // faculties links
 export const LOAD_FACULTIES = `${LINK}/getfacultyinfo/`;
+export const ADD_FACULTY = `${LINK}/faculty/add/`;
+export const DELETE_FACULTY = `${LINK}/faculty/delete/`;
 
 // programs links
 export const LOAD_PROGRAMS = `${LINK}/getprograminfo/`;
+export const ADD_PROGRAM = `${LINK}/program/add/`;
+export const DELETE_PROGRAM = `${LINK}/program/delete/`;
 
 // eduPrograms links
 export const LOAD_EDUPROGRAMS = `${LINK}/eduprogram/getlist/`;

@@ -30,7 +30,8 @@ export default class DetailOutcomeStandardCom extends Component {
       DragNodeVisible: false,
       keyDrag: "",
       keySuggestions: null,
-      keys: null
+      keys: null,
+      isSaveBtnDisabled: false
     };
   }
 
@@ -292,6 +293,8 @@ export default class DetailOutcomeStandardCom extends Component {
 
   // on save outcomestandard
   onSave = () => {
+    this.setState({ isSaveBtnDisabled: true });
+    setTimeout(() => this.setState({ isSaveBtnDisabled: false }), 3000);
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
@@ -426,6 +429,7 @@ export default class DetailOutcomeStandardCom extends Component {
               style={{ margin: "0 10px" }}
               theme="success"
               onClick={this.onSave}
+              disabled={this.state.isSaveBtnDisabled}
             >
               <i className="material-icons">save</i> Lưu cây CĐR
             </Button>

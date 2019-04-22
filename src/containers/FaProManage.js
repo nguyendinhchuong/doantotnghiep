@@ -51,6 +51,14 @@ class FaProManageTemp extends Component {
               programs={this.props.programs}
               majors={this.props.majors}
               levels={this.props.levels}
+              onAddFaculty={this.props.onAddFaculty}
+              onDeleteFaculty={this.props.onDeleteFaculty}
+              onAddProgram={this.props.onAddProgram}
+              onDeleteProgram={this.props.onDeleteProgram}
+              onAddMajor={this.props.onAddMajor}
+              onDeleteMajor={this.props.onDeleteMajor}
+              onAddLevel={this.props.onAddLevel}
+              onDeleteLevel={this.props.onDeleteLevel}
             />
           </Col>
         </Row>
@@ -69,7 +77,15 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onLoadFaculties: facultiesAction.onLoadFaculties,
+  onAddFaculty: facultiesAction.onAddFaculty,
+  onDeleteFaculty: facultiesAction.onDeleteFaculty,
   onLoadPrograms: programsAction.onLoadPrograms,
+  onAddProgram: programsAction.onAddProgram,
+  onDeleteProgram: programsAction.onDeleteProgram,
   onLoadMajors: majorsAction.onLoadMajors,
-  onLoadLevels: levelsAction.onLoadLevels
+  onAddMajor: majorsAction.onAddMajor,
+  onDeleteMajor: majorsAction.onDeleteMajor,
+  onLoadLevels: levelsAction.onLoadLevels,
+  onAddLevel: levelsAction.onAddLevel,
+  onDeleteLevel: levelsAction.onDeleteLevel
 })(FaProManageTemp);

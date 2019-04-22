@@ -26,16 +26,33 @@ export default class FaProManageCom extends Component {
               onTabChange={e => this.setState({ activeIndex: e.index })}
             >
               <TabPanel header="Quản Lý Khoa">
-                <FacultyManageCom faculties={this.props.faculties} />
+                <FacultyManageCom
+                  faculties={this.props.faculties}
+                  onAddFaculty={this.props.onAddFaculty}
+                  onDeleteFaculty={this.props.onDeleteFaculty}
+                />
               </TabPanel>
               <TabPanel header="Quản Lý Hệ (Loại hình)">
-                <ProgramManageCom programs={this.props.programs} />
+                <ProgramManageCom
+                  programs={this.props.programs}
+                  onAddProgram={this.props.onAddProgram}
+                  onDeleteProgram={this.props.onDeleteProgram}
+                />
               </TabPanel>
               <TabPanel header="Quản Lý Ngành">
-                <MajorManageCom majors={this.props.majors} faculties={this.props.faculties} />
+                <MajorManageCom
+                  majors={this.props.majors}
+                  faculties={this.props.faculties}
+                  onAddMajor={this.props.onAddMajor}
+                  onDeleteMajor={this.props.onDeleteMajor}
+                />
               </TabPanel>
               <TabPanel header="Quản Lý Trình Độ">
-                <LevelManageCom levels={this.props.levels} />
+                <LevelManageCom
+                  levels={this.props.levels}
+                  onAddLevel={this.props.onAddLevel}
+                  onDeleteLevel={this.props.onDeleteLevel}
+                />
               </TabPanel>
             </TabView>
           </Col>
