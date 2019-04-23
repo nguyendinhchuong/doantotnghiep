@@ -34,7 +34,7 @@ export default class DetailEducationProgramCom extends React.Component {
       // end states for Title
       // states for TargetEducation
       targetNodes: [],
-      targetNode: "",
+      targetNode: {},
       targetVisible: false,
       targetNameOut: "",
       targetRoot: false,
@@ -42,6 +42,7 @@ export default class DetailEducationProgramCom extends React.Component {
       isData: false,
       detailOsVisible: false,
       os: [],
+      tmpIdOutcome: 0,
       // end states for TargetEducation
       // states this Component
       eduYear: 0,
@@ -117,24 +118,12 @@ export default class DetailEducationProgramCom extends React.Component {
     });
   };
 
-  addOS = () => {
-    const data = targetLogic.addOS(
-      this.state.targetNodes,
-      this.state.targetNode,
-      this.state.os
-    );
-    this.setState({
-      targetNodes: data
-    });
-  };
-
   // delete
   deleteTargetNode = targetNode => {
     const data = targetLogic.deleteNode(this.state.targetNodes, targetNode);
     this.setState({
       targetNodes: data
     });
-    console.log(this.state.targetNodes);
   };
 
   // event
@@ -166,7 +155,8 @@ export default class DetailEducationProgramCom extends React.Component {
     this.props.onLoadDetailOutcomeStandard(IdOutcome);
     this.setState({
       detailOsVisible: true,
-      os: this.props.detailOutcomeStandard
+      os: this.props.detailOutcomeStandard,
+      tmpIdOutcome: IdOutcome
     });
   };
 
@@ -188,7 +178,11 @@ export default class DetailEducationProgramCom extends React.Component {
   };
 
   onTargetSubmit = () => {
-    this.addOS();
+    // addOS(
+    //   this.state.targetNodes,
+    //   this.state.targetNode,
+    //   this.state.tmpIdOutcome
+    // );
     this.onHideTargetDialog();
     this.onHideDetailOS();
   };
@@ -415,7 +409,7 @@ export default class DetailEducationProgramCom extends React.Component {
                       <TreeTable value={this.state.targetNodes}>
                         <Column
                           field="displayName"
-                          header="Tên dòng"
+                          header="Tên dòng (Đang sử dụng Chuẩn đầu ra: abc ở mục 1.1.1)"
                           expander
                         />
                         <Column

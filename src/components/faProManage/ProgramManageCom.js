@@ -45,7 +45,8 @@ export default class ProgramManageCom extends Component {
 
   onCloseAndCreate = () => {
     if (this.state.programName !== "") {
-      this.props.onAddProgram(this.state.programName);
+      const data = { programname: this.state.programName };
+      this.props.onAddProgram(data);
       this.setState({ visible: false });
     }
   };

@@ -45,7 +45,8 @@ export default class LevelManageCom extends Component {
 
   onCloseAndCreate = () => {
     if (this.state.levelName !== "") {
-      this.props.onAddLevel(this.state.levelName);
+      const data = { levelname: this.state.levelName };
+      this.props.onAddLevel(data);
       this.setState({ visible: false });
     }
   };

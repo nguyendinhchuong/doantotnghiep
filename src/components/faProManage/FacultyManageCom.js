@@ -40,12 +40,13 @@ export default class FacultyManageCom extends Component {
   };
 
   handleFacultyName = event => {
-      this.setState({ facultyName: event.target.value });
+    this.setState({ facultyName: event.target.value });
   };
 
   onCloseAndCreate = () => {
     if (this.state.facultyName !== "") {
-      this.props.onAddFaculty(this.state.facultyName);
+      const data = { facultyname: this.state.facultyName };
+      this.props.onAddFaculty(data);
       this.setState({ visible: false });
     }
   };
