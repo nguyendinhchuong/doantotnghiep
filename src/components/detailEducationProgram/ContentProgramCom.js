@@ -107,6 +107,7 @@ export default class ContentProgramCom extends React.Component {
     //child.data.subjects = [child.data.subjects,...subjects];
     let subjectsTable = child.data.subjects;
     subjectsAdd.forEach(subject =>{
+      subject.parentKey = child.key;
       subjectsTable = logic.addSubjectInOnchange(subjectsTable, subject);
     });
     child.data.subjects = subjectsTable;

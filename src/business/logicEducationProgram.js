@@ -153,4 +153,20 @@ export const addSubjectInOnchange = (subjects, subject) =>{
   return data;
 };
 
+const arr = [];
+
+export const convertTreenodeToArr = (nodes, arr = []) =>{
+  const length = nodes.length;
+  for(let i=0; i < length; i++){
+    arr.push(nodes[i]);
+    if(nodes[i].data && nodes[i].data.isTable){
+      convertTreenodeToArr(nodes[i].data.subjects, arr);
+    }
+    if(nodes[i].children){
+      convertTreenodeToArr(nodes[i].children, arr);
+    }
+  }
+  return arr;
+};
+
 // error ham refresh cho key line 52
