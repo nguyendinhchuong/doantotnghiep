@@ -2,11 +2,17 @@ import React from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
-import { Row, Col } from "shards-react";
+import { Row, Col, Button } from "shards-react";
 
 import * as logic from "../../business/logicEducationProgram";
 
 export default class TableSubjectsCom extends React.Component {
+
+  actionTemplate = (rowData, column) =>{
+    return(<div>
+        <Button type="button" icon="pi pi-search" className="p-button-success" style={{marginRight: '.5em'}}>Xóa</Button>
+    </div>)
+}
   render() {
     const footerGroup = (
       <ColumnGroup>
@@ -43,6 +49,7 @@ export default class TableSubjectsCom extends React.Component {
               <Column field="PracticePeriod" header="Thực Hành" />
               <Column field="ExercisePeriod" header="Bài Tập" />
               <Column field="note" header="Ghi chú" />
+              <Column body={(rowData, column)=>this.actionTemplate(rowData, column)} style={{textAlign:'center', width: '8em'}}/>
             </DataTable>
           </Col>
         </Row>

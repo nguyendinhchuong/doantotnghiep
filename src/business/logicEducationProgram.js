@@ -87,6 +87,7 @@ export const headerGroup = (
       <Column header="Số Tín Chỉ" rowSpan={2} />
       <Column header="Số Tiết" colSpan={3} />
       <Column header="Ghi Chú" rowSpan={2} />
+      <Column header="Action" rowSpan={2} />
     </Row>
     <Row>
       <Column header="Lý Thuyết" />
@@ -168,5 +169,13 @@ export const convertTreenodeToArr = (nodes, arr = []) =>{
   }
   return arr;
 };
+
+export const deteleSubject = (subjects, subject) =>{
+  debugger;
+  const arr = [...subjects];
+  const index = arr.indexOf(subject);
+  arr.splice(index, 1);
+  return arr;
+}
 
 // error ham refresh cho key line 52

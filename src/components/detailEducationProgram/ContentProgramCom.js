@@ -37,6 +37,7 @@ export default class ContentProgramCom extends React.Component {
       // hover
       nodeHover: ""
     };
+    this.deleteSubject.bind(this);
   }
 
   // Add
@@ -124,6 +125,7 @@ export default class ContentProgramCom extends React.Component {
     const root = logic.deleteNode(this.state.nodes, node);
     this.setState({ nodes: root });
   };
+
 
   // update
   nameEditor = props => {
@@ -265,7 +267,6 @@ export default class ContentProgramCom extends React.Component {
   // onchange
 
   onChangeListSubjects = e =>{
-    debugger;
     if(typeof e.value === "object"){
       const subject = e.value;
       subject.option = this.state.isRequired ? "BB" : "TC";
@@ -338,13 +339,21 @@ export default class ContentProgramCom extends React.Component {
     );
   }
 
-  subjectTemplate(subject){
+  deleteSubject = (subject) =>{
+    this.setState({listSubjects: logic.deteleSubject(this.state.listSubjects, subject)});    
+  }
+
+  subjectTemplate = (subject) =>{
     return(
       <div className="p-clearfix">
       <div style={{ fontSize: '14px', float: 'left', margin: '5px 5px 0 0',borderBottom: 'ridge' }}>{subject.SubjectName}</div>
+      <div style={{ float: 'right', marginRight: '2px',borderBottom: 'ridge' }}>
+        <button onClick = {()=>this.deleteSubject(subject)}>Xóa</button>
+      </div>
       </div>
     );
   }
+
 
   footerRoot = (
     <div>
