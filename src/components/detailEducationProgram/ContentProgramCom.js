@@ -9,9 +9,9 @@ import { Row, Col, Button } from "shards-react";
 import { AutoComplete } from "primereact/autocomplete";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Spinner } from "primereact/spinner";
-import { OrderList } from 'primereact/orderlist';
+import { OrderList } from "primereact/orderlist";
 
-import TableSubjectsCom from './TableSubjectsCom'
+import TableSubjectsCom from "./TableSubjectsCom";
 
 import * as logic from "../../business/logicEducationProgram";
 import * as common from "../../business/commonEducation";
@@ -74,7 +74,7 @@ export default class ContentProgramCom extends React.Component {
       children: []
     };
     // reset credits
-    if(this.state.isRequired){
+    if (this.state.isRequired) {
       this.setState({ optionalCredit: 0 });
     }
     //this.setState({ nodeTables: node });
@@ -103,16 +103,18 @@ export default class ContentProgramCom extends React.Component {
     if (!node.data.isTable) {
       return nodes;
     }
-    let child = {...node};
+    let child = { ...node };
     let root = [...nodes];
     //child.data.subjects = [child.data.subjects,...subjects];
     let subjectsTable = child.data.subjects;
-    subjectsAdd.forEach(subject =>{
+    subjectsAdd.forEach(subject => {
       subject.parentKey = child.key;
       subjectsTable = logic.addSubjectInOnchange(subjectsTable, subject);
     });
     child.data.subjects = subjectsTable;
-    child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
+    child.data.totalCredits =
+      logic.toltalRequiredCredits(child.data.subjects) +
+      this.state.optionalCredit;
     child.data.subjects = logic.sortSubject(child.data.subjects);
     child.data.subjects = logic.indexSubjects(child.data.subjects);
     child = this.convertNodeToDataTable(child);
@@ -125,7 +127,6 @@ export default class ContentProgramCom extends React.Component {
     const root = logic.deleteNode(this.state.nodes, node);
     this.setState({ nodes: root });
   };
-
 
   // update
   nameEditor = props => {
@@ -210,7 +211,7 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  isShowDialogTable = (node) => {
+  isShowDialogTable = node => {
     this.setState({
       isDialogTable: true,
       node: node
@@ -226,9 +227,9 @@ export default class ContentProgramCom extends React.Component {
   };
 
   onHideDialogTable = () => {
-    this.setState({ 
+    this.setState({
       listSubjects: [],
-      isDialogTable: false 
+      isDialogTable: false
     });
   };
 
@@ -239,11 +240,7 @@ export default class ContentProgramCom extends React.Component {
   // supporting
   footer = (
     <div className="p-clearfix" style={{ width: "100%" }}>
-      <Button
-        theme="success"
-        style={{ float: "left" }}
-        title="Thêm môn học"
-      >
+      <Button theme="success" style={{ float: "left" }} title="Thêm môn học">
         <i className="material-icons">playlist_add</i>
       </Button>
     </div>
@@ -254,8 +251,18 @@ export default class ContentProgramCom extends React.Component {
       return node;
     }
     const subjects = node.data.subjects;
-    node.data.displayName = <TableSubjectsCom subjects = {subjects} sum = {node.data.totalCredits}/>
+    node.data.displayName = (
+      <TableSubjectsCom
+        subjects={subjects}
+        deleteSubject={this.deleteSubjectOnTable}
+        sum={node.data.totalCredits}
+      />
+    );
     return node;
+  };
+  
+  deleteSubjectOnTable = rowData => {
+    console.log(rowData);
   };
 
   filterSubjects = e => {
@@ -266,23 +273,25 @@ export default class ContentProgramCom extends React.Component {
 
   // onchange
 
-  onChangeListSubjects = e =>{
-    if(typeof e.value === "object"){
+  onChangeListSubjects = e => {
+    if (typeof e.value === "object") {
       const subject = e.value;
       subject.option = this.state.isRequired ? "BB" : "TC";
-      const subjects = logic.addSubjectInOnchange(this.state.listSubjects, subject);
+      const subjects = logic.addSubjectInOnchange(
+        this.state.listSubjects,
+        subject
+      );
       this.setState({ listSubjects: subjects });
     }
     this.setState({ optionSubjects: e.value });
     console.log(this.state.listSubjects);
-    
-  }
+  };
 
-  onChangeCredit = (e) =>{
-    this.setState( {
+  onChangeCredit = e => {
+    this.setState({
       optionalCredit: e.value
     });
-  }
+  };
 
   // Templatre
   actionTemplate(node, column) {
@@ -339,21 +348,39 @@ export default class ContentProgramCom extends React.Component {
     );
   }
 
-  deleteSubject = (subject) =>{
-    this.setState({listSubjects: logic.deteleSubject(this.state.listSubjects, subject)});    
-  }
+  deleteSubject = subject => {
+    this.setState({
+      listSubjects: logic.deteleSubject(this.state.listSubjects, subject)
+    });
+  };
 
-  subjectTemplate = (subject) =>{
-    return(
+  subjectTemplate = subject => {
+    return (
       <div className="p-clearfix">
-      <div style={{ fontSize: '14px', float: 'left', margin: '5px 5px 0 0',borderBottom: 'ridge' }}>{subject.SubjectName}</div>
-      <div style={{ float: 'right', marginRight: '2px',borderBottom: 'ridge' }}>
-        <button onClick = {()=>this.deleteSubject(subject)}>Xóa</button>
-      </div>
+        <div
+          style={{
+            fontSize: "14px",
+            float: "left",
+            margin: "5px 5px 0 0",
+            borderBottom: "ridge"
+          }}
+        >
+          {subject.SubjectName}
+        </div>
+        <p
+          style={{
+            fontSize: "14px",
+            float: "right",
+            margin: "5px 5px 0 0",
+            borderBottom: "ridge"
+          }}
+          onClick={() => this.deleteSubject(subject)}
+        >
+          <i className="material-icons">clear</i>
+        </p>
       </div>
     );
-  }
-
+  };
 
   footerRoot = (
     <div>
@@ -518,40 +545,40 @@ export default class ContentProgramCom extends React.Component {
             </Col>
           </Row>
           <div hidden={!this.state.isRequired}>
-          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
-            <Col lg="2" md="2" sm="2">
-              <span>Môn Học BB:</span>
-            </Col>
-            <Col lg="10" md="10" sm="12">
-            <OrderList 
-              value={this.state.listSubjects.filter(subject => {
-                if(subject.option === "BB"){
-                  return subject;
-                }
-              })}
-              responsive={true}
-              itemTemplate={this.subjectTemplate}
-              ></OrderList>
-            </Col>
-          </Row>
+            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <span>Môn Học BB:</span>
+              </Col>
+              <Col lg="10" md="10" sm="12">
+                <OrderList
+                  value={this.state.listSubjects.filter(subject => {
+                    if (subject.option === "BB") {
+                      return subject;
+                    }
+                  })}
+                  responsive={true}
+                  itemTemplate={this.subjectTemplate}
+                />
+              </Col>
+            </Row>
           </div>
           <div hidden={this.state.isRequired}>
-          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
-            <Col lg="2" md="2" sm="2">
-              <span>Môn Học TC:</span>
-            </Col>
-            <Col lg="10" md="10" sm="12">
-            <OrderList 
-              value={this.state.listSubjects.filter(subject => {
-                if(subject.option === "TC"){
-                  return subject;
-                }
-              })}
-              responsive={true}
-              itemTemplate={this.subjectTemplate}
-              ></OrderList>
-            </Col>
-          </Row>
+            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <span>Môn Học TC:</span>
+              </Col>
+              <Col lg="10" md="10" sm="12">
+                <OrderList
+                  value={this.state.listSubjects.filter(subject => {
+                    if (subject.option === "TC") {
+                      return subject;
+                    }
+                  })}
+                  responsive={true}
+                  itemTemplate={this.subjectTemplate}
+                />
+              </Col>
+            </Row>
           </div>
           <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
             <Col lg="2" md="2" sm="2">
@@ -577,16 +604,16 @@ export default class ContentProgramCom extends React.Component {
             </Col>
           </Row>
           <div hidden={this.state.isRequired}>
-            <Row style={{marginBottom: "15px" }}>   
-                <Col lg="2" md="2" sm="2">
-                  <label>Số chỉ: </label>
-                </Col>
-                <Col lg="4" md="4" sm="4">
-                  <Spinner
-                    value={this.state.optionalCredit}
-                    onChange={ (e) => this.onChangeCredit(e)}
-                  />
-                </Col>
+            <Row style={{ marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <label>Số chỉ: </label>
+              </Col>
+              <Col lg="4" md="4" sm="4">
+                <Spinner
+                  value={this.state.optionalCredit}
+                  onChange={e => this.onChangeCredit(e)}
+                />
+              </Col>
             </Row>
           </div>
           <Row>

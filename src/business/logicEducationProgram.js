@@ -3,7 +3,6 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import * as common from "./commonEducation";
-import { bool } from "prop-types";
 
 // Add root
 export const addRoot = (data, name) => {
@@ -87,7 +86,7 @@ export const headerGroup = (
       <Column header="Số Tín Chỉ" rowSpan={2} />
       <Column header="Số Tiết" colSpan={3} />
       <Column header="Ghi Chú" rowSpan={2} />
-      <Column header="Action" rowSpan={2} />
+      <Column rowSpan={2} />
     </Row>
     <Row>
       <Column header="Lý Thuyết" />
@@ -104,7 +103,7 @@ export const footerGroup = (
       <Column footer="48" />
     </Row>
   </ColumnGroup>
-)
+);
 
 export const sortSubject = data => {
   return data.sort((a, b) => {
@@ -127,26 +126,26 @@ export const indexSubjects = data => {
   return results;
 };
 
-export const toltalRequiredCredits = (subjects) =>{
-  return subjects.reduce((acc, cur)=>{
-    if(cur.option === "BB" && cur.Credit){
+export const toltalRequiredCredits = subjects => {
+  return subjects.reduce((acc, cur) => {
+    if (cur.option === "BB" && cur.Credit) {
       return acc + Number(cur.Credit);
     }
     return acc;
-  },0);
-}
+  }, 0);
+};
 
-const checkExistsSubject = (subjects, subject) =>{
-  for(let i = 0 ;i < subjects.length ;i++){
-    if(subjects[i].SubjectName === subject.SubjectName){
+const checkExistsSubject = (subjects, subject) => {
+  for (let i = 0; i < subjects.length; i++) {
+    if (subjects[i].SubjectName === subject.SubjectName) {
       return true;
     }
   }
   return false;
-}
+};
 
-export const addSubjectInOnchange = (subjects, subject) =>{
-  if(checkExistsSubject(subjects, subject)){
+export const addSubjectInOnchange = (subjects, subject) => {
+  if (checkExistsSubject(subjects, subject)) {
     return subjects;
   }
   const data = [...subjects];
@@ -154,28 +153,26 @@ export const addSubjectInOnchange = (subjects, subject) =>{
   return data;
 };
 
-const arr = [];
-
-export const convertTreenodeToArr = (nodes, arr = []) =>{
+export const convertTreenodeToArr = (nodes, arr = []) => {
   const length = nodes.length;
-  for(let i=0; i < length; i++){
+  for (let i = 0; i < length; i++) {
     arr.push(nodes[i]);
-    if(nodes[i].data && nodes[i].data.isTable){
+    if (nodes[i].data && nodes[i].data.isTable) {
       convertTreenodeToArr(nodes[i].data.subjects, arr);
     }
-    if(nodes[i].children){
+    if (nodes[i].children) {
       convertTreenodeToArr(nodes[i].children, arr);
     }
   }
   return arr;
 };
 
-export const deteleSubject = (subjects, subject) =>{
+export const deteleSubject = (subjects, subject) => {
   debugger;
   const arr = [...subjects];
   const index = arr.indexOf(subject);
   arr.splice(index, 1);
   return arr;
-}
+};
 
 // error ham refresh cho key line 52
