@@ -16,6 +16,7 @@ import TableProgramArchiCom from "../detailEducationProgram/TableProgramArchiCom
 import TitleCom from "../detailEducationProgram/TitleCom";
 
 import * as targetLogic from "../../business/logicTargetEducation";
+import * as logic from "../../business/";
 // import * as commonLogic from "../../business/commonEducation";
 
 export default class DetailEducationProgramCom extends React.Component {
@@ -33,6 +34,7 @@ export default class DetailEducationProgramCom extends React.Component {
       GraduatedCon: "",
       // end states for Title
       // states for TargetEducation
+      IdOutcome: null,
       targetNodes: [],
       targetNode: {},
       targetVisible: false,
@@ -302,9 +304,20 @@ export default class DetailEducationProgramCom extends React.Component {
       graduatedcon: this.state.GraduatedCon ? this.state.GraduatedCon : "",
       ideduprogram: this.props.infoEduProgram.Id,
       dateedited: new Date().toISOString(),
-      datecreated: new Date().toISOString()
+      datecreated: new Date().toISOString(),
+      idoutcome: this.state.IdOutcome
     };
-    this.props.onSaveEduProgram(infoEduProgram, detailEduProgram);
+    let data = [];
+    let level = logic.getMaxLevel(this.state.targetNodes);
+    logic.createSaveData(this.state.targetNodes, data, 1, level);
+    console.log(data);
+    const targetEduProgram = {
+      datecreated: new Date().toISOString(),
+      iddetail: this.props.detailEduProgram.Id,
+      data,
+      targetNodes: this.state.targetNodes
+    };
+    this.props.onSaveEduProgram(infoEduProgram, detailEduProgram, targetEduProgram);
   };
   // end fucntions for redux
 

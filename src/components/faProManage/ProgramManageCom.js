@@ -20,6 +20,7 @@ export default class ProgramManageCom extends Component {
     return (
       <div>
         <Button
+          disabled={true}
           title="Xóa"
           onClick={() => this.props.onDeleteProgram(data.Id)}
           theme="secondary"
@@ -45,7 +46,7 @@ export default class ProgramManageCom extends Component {
 
   onCloseAndCreate = () => {
     if (this.state.programName !== "") {
-      const data = { programname: this.state.programName };
+      const data = { nameprogram: this.state.programName };
       this.props.onAddProgram(data);
       this.setState({ visible: false });
     }

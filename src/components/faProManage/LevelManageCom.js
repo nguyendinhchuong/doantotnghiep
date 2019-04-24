@@ -20,6 +20,7 @@ export default class LevelManageCom extends Component {
     return (
       <div>
         <Button
+          disabled={true}
           title="Xóa"
           onClick={() => this.props.onDeleteLevel(data.Id)}
           theme="secondary"

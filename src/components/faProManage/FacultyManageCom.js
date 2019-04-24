@@ -20,6 +20,7 @@ export default class FacultyManageCom extends Component {
     return (
       <div>
         <Button
+          disabled={true}
           title="Xóa"
           onClick={() => this.props.onDeleteFaculty(data.Id)}
           theme="secondary"
@@ -45,7 +46,7 @@ export default class FacultyManageCom extends Component {
 
   onCloseAndCreate = () => {
     if (this.state.facultyName !== "") {
-      const data = { facultyname: this.state.facultyName };
+      const data = { namefaculty: this.state.facultyName };
       this.props.onAddFaculty(data);
       this.setState({ visible: false });
     }

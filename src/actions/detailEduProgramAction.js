@@ -116,3 +116,51 @@ export const onLoadTargetEduProgram = id => {
       });
   };
 };
+
+export const saveTargetEduProgramSuccess = (
+  targetEduProgram,
+  successMessage
+) => ({
+  type: cst.SAVE_TARGET_EDUPROGRAM_SUCCESS,
+  targetEduProgram: targetEduProgram,
+  successMessage
+});
+
+export const saveTargetEduProgramError = (targetEduProgram, errorMessage) => ({
+  type: cst.SAVE_TARGET_EDUPROGRAM_ERROR,
+  targetEduProgram: targetEduProgram,
+  errorMessage
+});
+
+export const onSaveTargetEduProgram = targetEduProgram => {
+  return (dispatch, getState) => {
+    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
+      targetEduProgram.iddetail
+    }&datecreated=${targetEduProgram.datecreated}`;
+    let params = {};
+    params.data = JSON.stringify(targetEduProgram.data);
+    axios
+      .post(req, params, {
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          let chirp = {
+            message: `Lưu mục tiêu đào tạo thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+          dispatch(saveTargetEduProgramSuccess(targetEduProgram.data, res));
+        } else {
+          let chirp = { message: `Lưu mục tiêu đào tạo thất bại`, isRight: 0 };
+          dispatch(message.message(chirp));
+          dispatch(saveTargetEduProgramError(targetEduProgram.data, res));
+        }
+      })
+      .catch(err => {
+        let chirp = { message: `Lưu mục tiêu đào tạo thất bại`, isRight: 0 };
+        dispatch(message.message(chirp));
+        dispatch(saveTargetEduProgramError(targetEduProgram.data, err));
+      });
+  };
+};

@@ -121,7 +121,7 @@ export const saveEduProgramError = (infoEduProgram, errorMessage) => ({
   errorMessage
 });
 
-export const onSaveEduProgram = (infoEduProgram, detailEduProgram) => {
+export const onSaveEduProgram = (infoEduProgram, detailEduProgram, targetEduProgram) => {
   return (dispatch, getState) => {
     let params = {};
     params.data = JSON.stringify(infoEduProgram);
@@ -135,6 +135,7 @@ export const onSaveEduProgram = (infoEduProgram, detailEduProgram) => {
           dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(infoEduProgram, res));
           dispatch(detailEduProgramAction.onSaveDetailEduProgram(detailEduProgram));
+          dispatch(detailEduProgramAction.onSaveTargetEduProgram(targetEduProgram));
         } else {
           let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));

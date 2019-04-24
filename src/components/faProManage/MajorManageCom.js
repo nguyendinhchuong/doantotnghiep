@@ -21,6 +21,7 @@ export default class MajorManageCom extends Component {
     return (
       <div>
         <Button
+          disabled={true}
           title="Xóa"
           onClick={() => this.props.onDeleteMajor(data.Id)}
           theme="secondary"

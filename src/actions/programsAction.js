@@ -29,7 +29,7 @@ export const onLoadPrograms = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các hệ thất bại`, isRight: 0 };
+        let chirp = { message: `Tải các chương trình thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
         dispatch(loadProgramsError(err));
       });
