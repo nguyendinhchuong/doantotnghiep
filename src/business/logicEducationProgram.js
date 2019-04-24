@@ -177,33 +177,32 @@ export const deteleSubject = (subjects, subject) => {
 
 // drag
 
-
-const addIndexRoot = (nodes, node, index) =>{
+const addIndexRoot = (nodes, node, index) => {
   const root = [...nodes];
   root.splice(index, 0, node);
   return root;
-}
+};
 
-const previousKey = key =>{
-  const arr = key.split('.');
-  const last = arr[arr.length-1];
-  const lastIndex = key.lastIndexOf('.');
-  const pre = key.slice(0, lastIndex) + "."+ (last - 1).toString();
+const previousKey = key => {
+  const arr = key.split(".");
+  const last = arr[arr.length - 1];
+  const lastIndex = key.lastIndexOf(".");
+  const pre = key.slice(0, lastIndex) + "." + (last - 1).toString();
   return pre;
-}
+};
 
-const nextKey = key =>{
-  const arr = key.split('.');
-  const last = arr[arr.length-1];
-  const lastIndex = key.lastIndexOf('.');
-  const pre = key.slice(0, lastIndex) + "."+ (last + 1).toString();
+const nextKey = key => {
+  const arr = key.split(".");
+  const last = arr[arr.length - 1];
+  const lastIndex = key.lastIndexOf(".");
+  const pre = key.slice(0, lastIndex) + "." + (last + 1).toString();
   return pre;
-}
+};
 
-const upSameLevelRoot = (nodes, node) =>{
+const upSameLevelRoot = (nodes, node) => {
   const index = common.indexNode(node.key);
-  if(index === 0){
-    alert('Vị trí không thay đổi');
+  if (index === 0) {
+    alert("Vị trí không thay đổi");
     return nodes;
   }
   const preKey = previousKey(node.key);
@@ -214,20 +213,20 @@ const upSameLevelRoot = (nodes, node) =>{
   return data;
 };
 
-const downSameLevelRoot = (nodes, node) =>{
+const downSameLevelRoot = (nodes, node) => {
   const index = common.indexNode(node.key);
-  if(index === nodes.length - 1){
-    alert('Vị trí không thay đổi');
+  if (index === nodes.length - 1) {
+    alert("Vị trí không thay đổi");
     return nodes;
   }
   let data = [...nodes];
   data = deleteNode(data, node);
   data = addIndexRoot(data, node, index + 1);
-  data = common.refreshTreeNodes(data, node.key, index );
+  data = common.refreshTreeNodes(data, node.key, index);
   return data;
 };
 
-const upSameLevelSub = (nodes, node) =>{
+const upSameLevelSub = (nodes, node) => {
   let root = [...nodes];
   const keyRoot = common.keyRoot(node.key);
   const indexRoot = common.indexNode(keyRoot);
@@ -240,19 +239,19 @@ const upSameLevelSub = (nodes, node) =>{
   let nodeParent = common.findNodeByKey(root, keyParent);
   let arr = nodeParent.children;
   const index = common.indexNode(node.key);
-  if(index === 0){
-    alert('Vị trí không thay đổi');
+  if (index === 0) {
+    alert("Vị trí không thay đổi");
     return root;
   }
   arr.splice(index, 1);
-  arr.splice(index -1, 0, node);
+  arr.splice(index - 1, 0, node);
   nodeParent.children = arr;
   root = common.updateNode(root, nodeParent);
-  root = common.refreshTreeNodes(root, keyRoot,indexRoot - 1);
+  root = common.refreshTreeNodes(root, keyRoot, indexRoot - 1);
   return root;
 };
 
-const downSameLevelSub = (nodes, node) =>{
+const downSameLevelSub = (nodes, node) => {
   let root = [...nodes];
   const keyRoot = common.keyRoot(node.key);
   const indexRoot = common.indexNode(keyRoot);
@@ -265,34 +264,32 @@ const downSameLevelSub = (nodes, node) =>{
   let nodeParent = common.findNodeByKey(root, keyParent);
   let arr = nodeParent.children;
   const index = common.indexNode(node.key);
-  if(index === nodeParent.children.length - 1){
-    alert('Vị trí không thay đổi');
+  if (index === nodeParent.children.length - 1) {
+    alert("Vị trí không thay đổi");
     return root;
   }
   arr.splice(index, 1);
   arr.splice(index + 1, 0, node);
   nodeParent.children = arr;
   root = common.updateNode(root, nodeParent);
-  root = common.refreshTreeNodes(root, keyRoot,indexRoot - 1);
+  root = common.refreshTreeNodes(root, keyRoot, indexRoot - 1);
   return root;
 };
 
-export const upSameLevel = (nodes, node) =>{
-  if(common.getRank(node.key) === 2){
+export const upSameLevel = (nodes, node) => {
+  if (common.getRank(node.key) === 2) {
     return upSameLevelRoot(nodes, node);
-  }
-  else{
+  } else {
     return upSameLevelSub(nodes, node);
   }
-}
+};
 
-export const downSameLevel = (nodes, node) =>{
-  if(common.getRank(node.key) === 2){
+export const downSameLevel = (nodes, node) => {
+  if (common.getRank(node.key) === 2) {
     return downSameLevelRoot(nodes, node);
-  }
-  else{
+  } else {
     return downSameLevelSub(nodes, node);
   }
-}
+};
 
 // error ham refresh cho key line 52

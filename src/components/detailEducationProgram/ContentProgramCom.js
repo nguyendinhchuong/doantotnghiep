@@ -175,11 +175,11 @@ export default class ContentProgramCom extends React.Component {
 
   // up/down node
   upSameLevel = node => {
-    this.setState({nodes: logic.upSameLevel(this.state.nodes, node)})
+    this.setState({ nodes: logic.upSameLevel(this.state.nodes, node) });
   };
 
   downSameLevel = node => {
-    this.setState({nodes: logic.downSameLevel(this.state.nodes, node)})
+    this.setState({ nodes: logic.downSameLevel(this.state.nodes, node) });
   };
 
   // mouseOver
@@ -260,7 +260,7 @@ export default class ContentProgramCom extends React.Component {
     );
     return node;
   };
-  
+
   deleteSubjectOnTable = rowData => {
     console.log(rowData);
   };
@@ -307,34 +307,36 @@ export default class ContentProgramCom extends React.Component {
             <i className="material-icons">playlist_add</i>
           </Button>
         ) : (
-          <Button
-            onClick={() => this.isShowDialogChild(node)}
-            onMouseOver={() => this.mouseOver(node)}
-            theme="success"
-            style={{ marginRight: ".3em", padding: "8px" }}
-            title={`Thêm cấp con của ${this.state.nodeHover}`}
-          >
-            <i className="material-icons">add</i>
-          </Button>
+          <span>
+            <Button
+              onClick={() => this.isShowDialogChild(node)}
+              onMouseOver={() => this.mouseOver(node)}
+              theme="success"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Thêm cấp con của ${this.state.nodeHover}`}
+            >
+              <i className="material-icons">add</i>
+            </Button>
+            <Button
+              onClick={() => this.upSameLevel(node)}
+              onMouseOver={() => this.mouseOverUp(node)}
+              theme="info"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Lên cấp ${this.state.nodeHover}`}
+            >
+              <i className="material-icons">arrow_upward</i>
+            </Button>
+            <Button
+              onClick={() => this.downSameLevel(node)}
+              // onMouseOver = {() => this.mouseOverDown(node)}
+              theme="info"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              //title={`Xuống xấp ${this.state.nodeHover}`}
+            >
+              <i className="material-icons">arrow_downward</i>
+            </Button>
+          </span>
         )}
-        <Button
-          onClick={() => this.upSameLevel(node)}
-          onMouseOver={() => this.mouseOverUp(node)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Lên cấp ${this.state.nodeHover}`}
-        >
-          <i className="material-icons">arrow_upward</i>
-        </Button>
-        <Button
-          onClick={() => this.downSameLevel(node)}
-          // onMouseOver = {() => this.mouseOverDown(node)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          //title={`Xuống xấp ${this.state.nodeHover}`}
-        >
-          <i className="material-icons">arrow_downward</i>
-        </Button>
         <Button
           onClick={() => this.deleteNode(node)}
           onMouseOver={() => this.mouseOver(node)}

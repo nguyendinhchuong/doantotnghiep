@@ -134,8 +134,8 @@ export const onSaveEduProgram = (infoEduProgram, detailEduProgram, targetEduProg
           let chirp = { message: `Lưu thông tin CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(infoEduProgram, res));
-          dispatch(detailEduProgramAction.onSaveDetailEduProgram(detailEduProgram));
-          dispatch(detailEduProgramAction.onSaveTargetEduProgram(targetEduProgram));
+          dispatch(detailEduProgramAction.onSaveDetailEduProgram(detailEduProgram, targetEduProgram));
+          // dispatch(detailEduProgramAction.onSaveTargetEduProgram(targetEduProgram));
         } else {
           let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));

@@ -34,7 +34,7 @@ export default class DetailEducationProgramCom extends React.Component {
       GraduatedCon: "",
       // end states for Title
       // states for TargetEducation
-      IdOutcome: null,
+      IdOutcome: 0,
       targetNodes: [],
       targetNode: {},
       targetVisible: false,
@@ -99,6 +99,15 @@ export default class DetailEducationProgramCom extends React.Component {
   // end functions for Title
 
   // functions for TargetEducation
+  // up/down node
+  upSameLevelTarget = targetNode => {
+    this.setState({ targetNodes: targetLogic.upSameLevel(this.state.targetNodes, targetNode) });
+  };
+
+  downSameLevelTarget = targetNode => {
+    this.setState({ targetNodes: targetLogic.downSameLevel(this.state.targetNodes, targetNode) });
+  };
+
   // add
   addTargetRoot = () => {
     const data = targetLogic.addRoot(
@@ -197,25 +206,12 @@ export default class DetailEducationProgramCom extends React.Component {
         OSUsedNode: this.state.targetNode.key
       });
     }
-    // addOS(
-    //   this.state.targetNodes,
-    //   this.state.targetNode,
-    //   this.state.tmpIdOutcome
-    // );
     this.onHideTargetDialog();
     this.onHideDetailOS();
   };
 
   index = (ids, id) => {
     return Number(ids[id]) - 1;
-  };
-
-  upSameLevelTarget = targetNode => {
-    console.log("TARGET EDU UP");
-  };
-
-  downSameLevelTarget = targetNode => {
-    console.log("TARGET EDU DOWN");
   };
 
   targetActionTemplate = (targetNode, column) => {
@@ -370,7 +366,7 @@ export default class DetailEducationProgramCom extends React.Component {
           : "",
         IdOutcome: nextProps.detailEduProgram
           ? nextProps.detailEduProgram.IdOutcome
-          : null
+          : 0
       });
     }
   }

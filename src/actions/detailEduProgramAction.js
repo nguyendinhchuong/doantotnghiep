@@ -53,7 +53,7 @@ export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
   errorMessage
 });
 
-export const onSaveDetailEduProgram = detailEduProgram => {
+export const onSaveDetailEduProgram = (detailEduProgram, targetEduProgram) => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
       detailEduProgram.ideduprogram
@@ -68,6 +68,7 @@ export const onSaveDetailEduProgram = detailEduProgram => {
         if (res.data.code === 1) {
           let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
+          // onSaveTargetEduProgram(targetEduProgram);
           dispatch(saveDetailEduProgramSuccess(detailEduProgram, res));
         } else {
           let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
