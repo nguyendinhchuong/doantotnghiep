@@ -33,9 +33,11 @@ const updateSubNode = (iParent, node) => {
     const length = node.children.length;
     for (let i = 0; i < length; i++) {
       node.children[i].key = `${iParent}.${i + 1}`;
-      node.children[i].data.displayName = `${node.children[i].key}. ${
-        node.children[i].data.name
-      }`;
+      if(!node.children[i].data.isTable){
+        node.children[i].data.displayName = `${node.children[i].key}. ${
+          node.children[i].data.name
+        }`;
+      }
       if (node.children[i].children)
         updateSubNode(node.children[i].key, node.children[i]);
     }
@@ -55,8 +57,9 @@ export const refreshTreeNodes = (nodes, key, indexRefresh) => {
   for (let i = indexRefresh; i < length; i++) {
     data[i].key = increaseKey(key, i + 1);
     data[i].data.displayName = `${increaseKey(key, i + 1)}. ${
-      data[i].data.name
-    }`;
+        data[i].data.name
+      }`;
+    
     updateSubNode(data[i].key, data[i]);
   }
 

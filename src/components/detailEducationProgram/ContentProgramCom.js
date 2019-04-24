@@ -179,7 +179,7 @@ export default class ContentProgramCom extends React.Component {
   };
 
   downSameLevel = node => {
-    console.log("DOWN");
+    this.setState({nodes: logic.downSameLevel(this.state.nodes, node)})
   };
 
   // mouseOver
@@ -331,7 +331,7 @@ export default class ContentProgramCom extends React.Component {
           // onMouseOver = {() => this.mouseOverDown(node)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Xuống xấp ${this.state.nodeHover}`}
+          //title={`Xuống xấp ${this.state.nodeHover}`}
         >
           <i className="material-icons">arrow_downward</i>
         </Button>
