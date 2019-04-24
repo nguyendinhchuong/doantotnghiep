@@ -44,6 +44,7 @@ export default class DetailEducationProgramCom extends React.Component {
       isData: false,
       detailOsVisible: false,
       os: [],
+      OSUsedNode: "chưa có",
       tmpIdOutcome: 0,
       // end states for TargetEducation
       // states this Component
@@ -122,10 +123,12 @@ export default class DetailEducationProgramCom extends React.Component {
 
   // delete
   deleteTargetNode = targetNode => {
-    const data = targetLogic.deleteNode(this.state.targetNodes, targetNode);
-    this.setState({
-      targetNodes: data
-    });
+    if (this.state.OSUsedNode.indexOf(targetNode.key) !== 0) {
+      const data = targetLogic.deleteNode(this.state.targetNodes, targetNode);
+      this.setState({
+        targetNodes: data
+      });
+    } else alert("Cấp này đang sử dụng chuẩn đầu ra!!");
   };
 
   // event
@@ -174,12 +177,26 @@ export default class DetailEducationProgramCom extends React.Component {
     if (this.state.targetRoot) {
       this.addTargetRoot();
     } else {
-      this.addTarget(this.state.targetNode);
+      if (this.state.targetNode.key !== this.state.OSUsedNode)
+        this.addTarget(this.state.targetNode);
+      else alert("Cấp này đang sử dụng chuẩn đầu ra!!");
     }
     this.onHideTargetDialog();
   };
 
   onTargetSubmit = () => {
+    if (
+      this.state.targetNode === "" ||
+      this.state.targetNode.children.length !== 0 ||
+      this.state.os.length === 0
+    ) {
+      alert("Không thể thêm chuẩn đầu ra ở node này!!");
+    } else {
+      this.setState({
+        IdOutcome: this.state.tmpIdOutcome,
+        OSUsedNode: this.state.targetNode.key
+      });
+    }
     // addOS(
     //   this.state.targetNodes,
     //   this.state.targetNode,
@@ -310,14 +327,17 @@ export default class DetailEducationProgramCom extends React.Component {
     let data = [];
     let level = logic.getMaxLevel(this.state.targetNodes);
     logic.createSaveData(this.state.targetNodes, data, 1, level);
-    console.log(data);
     const targetEduProgram = {
       datecreated: new Date().toISOString(),
       iddetail: this.props.detailEduProgram.Id,
       data,
       targetNodes: this.state.targetNodes
     };
-    this.props.onSaveEduProgram(infoEduProgram, detailEduProgram, targetEduProgram);
+    this.props.onSaveEduProgram(
+      infoEduProgram,
+      detailEduProgram,
+      targetEduProgram
+    );
   };
   // end fucntions for redux
 
@@ -347,7 +367,10 @@ export default class DetailEducationProgramCom extends React.Component {
           : "",
         GraduatedCon: nextProps.detailEduProgram
           ? nextProps.detailEduProgram.GraduatedCon
-          : ""
+          : "",
+        IdOutcome: nextProps.detailEduProgram
+          ? nextProps.detailEduProgram.IdOutcome
+          : null
       });
     }
   }
@@ -422,7 +445,21 @@ export default class DetailEducationProgramCom extends React.Component {
                       <TreeTable value={this.state.targetNodes}>
                         <Column
                           field="displayName"
-                          header="Tên dòng (Đang sử dụng Chuẩn đầu ra: abc ở mục 1.1.1)"
+                          header={
+                            <p>
+                              Tên dòng (Đang sử dụng Chuẩn đầu ra:{" "}
+                              <span style={{ color: "#00B8D8" }}>
+                                {targetLogic.getNameOS(
+                                  this.props.outcomeStandards,
+                                  this.state.IdOutcome
+                                )}
+                              </span>{" "}
+                              ở mục:{" "}
+                              <span style={{ color: "#00B8D8" }}>
+                                {this.state.OSUsedNode}
+                              </span>)
+                            </p>
+                          }
                           expander
                         />
                         <Column

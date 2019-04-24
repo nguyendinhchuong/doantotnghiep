@@ -60,30 +60,36 @@ export const deleteNode = (nodes, node) => {
   return root;
 };
 
-// add outcomeStandard
-export const changeKeys = (nodes, key) => {
-  if (nodes === undefined || nodes.length === 0) {
-    return 0;
-  } else {
-    for (let i in nodes) {
-      nodes[i].key = `${key}.${nodes[i].key}`;
-      nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
-      changeKeys(nodes[i].children, key);
-    }
-  }
-};
+// // add outcomeStandard
+// export const changeKeys = (nodes, key) => {
+//   if (nodes === undefined || nodes.length === 0) {
+//     return 0;
+//   } else {
+//     for (let i in nodes) {
+//       nodes[i].key = `${key}.${nodes[i].key}`;
+//       nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
+//       changeKeys(nodes[i].children, key);
+//     }
+//   }
+// };
 
-export const addOS = (nodes, node, os) => {
-  if (node === "" || node.children.length !== 0 || os.length === 0) {
-    alert("Không thể thêm chuẩn đầu ra ở node này!!");
-    return nodes;
-  }
-  let data = [...nodes];
-  let thisNode = { ...node };
-  let tmpOs = [...os];
-  changeKeys(tmpOs, thisNode.key);
+// export const addOS = (nodes, node, os) => {
+//   if (node === "" || node.children.length !== 0 || os.length === 0) {
+//     alert("Không thể thêm chuẩn đầu ra ở node này!!");
+//     return nodes;
+//   }
+//   let data = [...nodes];
+//   let thisNode = { ...node };
+//   let tmpOs = [...os];
+//   changeKeys(tmpOs, thisNode.key);
 
-  thisNode.children.push(...tmpOs);
-  data = common.updateNode(data, thisNode);
-  return data;
+//   thisNode.children.push(...tmpOs);
+//   data = common.updateNode(data, thisNode);
+//   return data;
+// };
+
+export const getNameOS = (outcomeStandards, idOutcome) => {
+  const outcomeStandard = outcomeStandards.filter(row => row.Id === idOutcome);
+  if (outcomeStandard.length === 0) return "Chưa có";
+  else return outcomeStandard[0].NameOutcomeStandard;
 };
