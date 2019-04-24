@@ -175,7 +175,7 @@ export default class ContentProgramCom extends React.Component {
 
   // up/down node
   upSameLevel = node => {
-    console.log("UP");
+    this.setState({nodes: logic.upSameLevel(this.state.nodes, node)})
   };
 
   downSameLevel = node => {

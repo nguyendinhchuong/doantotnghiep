@@ -175,4 +175,76 @@ export const deteleSubject = (subjects, subject) => {
   return arr;
 };
 
+// drag
+
+
+const addIndexRoot = (nodes, node, index) =>{
+  const root = [...nodes];
+  root.splice(index, 0, node);
+  return root;
+}
+
+const previousKey = key =>{
+  const arr = key.split('.');
+  const last = arr[arr.length-1];
+  const lastIndex = key.lastIndexOf('.');
+  const pre = key.slice(0, lastIndex) + "."+ (last - 1).toString();
+  return pre;
+}
+
+const upSameLevelRoot = (nodes, node) =>{
+  const index = common.indexNode(node.key);
+  if(index === 0){
+    alert('Vị trí không thay đổi');
+    return nodes;
+  }
+  const preKey = previousKey(node.key);
+  let data = [...nodes];
+  data = deleteNode(data, node);
+  data = addIndexRoot(data, node, index - 1);
+  data = common.refreshTreeNodes(data, preKey, index - 1);
+  return data;
+};
+
+const upSameLevelSub = (nodes, node) =>{
+  let root = [...nodes];
+  const keyRoot = common.keyRoot(node.key);
+  const indexRoot = common.indexNode(keyRoot);
+  let keyParent = common.parentKey(node.key);
+  // case root = 7.1.... => 1.1...
+  if (nodes[0].key[0] === "7") {
+    const firstDot = keyParent.indexOf(".");
+    keyParent = keyParent.slice(firstDot + 1, keyParent.length);
+  }
+  let nodeParent = common.findNodeByKey(root, keyParent);
+  let arr = nodeParent.children;
+  const index = common.indexNode(node.key);
+  if(index === 0){
+    alert('Vị trí không thay đổi');
+    return root;
+  }
+  arr.splice(index, 1);
+  arr.splice(index -1, 0, node);
+  nodeParent.children = arr;
+  root = common.updateNode(root, nodeParent);
+  root = common.refreshTreeNodes(root, keyRoot,indexRoot - 1);
+  return root;
+};
+
+export const upSameLevel = (nodes, node) =>{
+  debugger;
+  if(common.getRank(node.key) === 2){
+    const results = upSameLevelRoot(nodes, node);
+    return results;
+  }
+  else{
+    const results = upSameLevelSub(nodes, node);
+    return results;
+  }
+}
+
+export const downSameLevel = (nodes, node) =>{
+  
+}
+
 // error ham refresh cho key line 52
