@@ -56,8 +56,6 @@ export default class ContentProgramCom extends React.Component {
     } else {
       this.setState({ nodes: this.addChildTable(data, this.state.node) });
     }
-    console.log(this.state.nodes);
-    
     this.onHideDialogChild();
   };
 
@@ -188,13 +186,13 @@ export default class ContentProgramCom extends React.Component {
   upSameLevel = node => {
     let root = logic.upSameLevel(this.state.nodes, node);
     root = this.loadTreeNodes(root);
-    this.setState({ nodes: root});    
+    this.setState({ nodes: root });
   };
 
   downSameLevel = node => {
     let root = logic.downSameLevel(this.state.nodes, node);
     root = this.loadTreeNodes(root);
-    this.setState({ nodes: root});
+    this.setState({ nodes: root });
   };
 
   // mouseOver
@@ -260,31 +258,31 @@ export default class ContentProgramCom extends React.Component {
       </Button>
     </div>
   );
-  
+
   loadSubNode = node => {
     if (node.children) {
       const length = node.children.length;
       for (let i = 0; i < length; i++) {
-        if(node.children[i].data.isTable){
-          node.children[i] = this.convertNodeToDataTable(node.children[i]);                   
+        if (node.children[i].data.isTable) {
+          node.children[i] = this.convertNodeToDataTable(node.children[i]);
         }
       }
     }
   };
 
-  loadTreeNodes = nodes =>{
+  loadTreeNodes = nodes => {
     const root = [...nodes];
     const length = root.length;
-    for(let i = 0 ; i< length; i++){
+    for (let i = 0; i < length; i++) {
       this.loadSubNode(root[i]);
     }
     return root;
-  }
+  };
 
   deleteSubjectOnTable = rowData => {
     let root = logic.deleteSubjectTable(this.state.nodes, rowData);
     root = this.loadTreeNodes(root);
-    this.setState({nodes: root});
+    this.setState({ nodes: root });
   };
 
   filterSubjects = e => {
@@ -306,7 +304,6 @@ export default class ContentProgramCom extends React.Component {
       this.setState({ listSubjects: subjects });
     }
     this.setState({ optionSubjects: e.value });
-    console.log(this.state.listSubjects);
   };
 
   onChangeCredit = e => {

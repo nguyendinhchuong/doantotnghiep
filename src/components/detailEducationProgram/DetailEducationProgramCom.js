@@ -101,11 +101,15 @@ export default class DetailEducationProgramCom extends React.Component {
   // functions for TargetEducation
   // up/down node
   upSameLevelTarget = targetNode => {
-    this.setState({ targetNodes: targetLogic.upSameLevel(this.state.targetNodes, targetNode) });
+    this.setState({
+      targetNodes: targetLogic.upSameLevel(this.state.targetNodes, targetNode)
+    });
   };
 
   downSameLevelTarget = targetNode => {
-    this.setState({ targetNodes: targetLogic.downSameLevel(this.state.targetNodes, targetNode) });
+    this.setState({
+      targetNodes: targetLogic.downSameLevel(this.state.targetNodes, targetNode)
+    });
   };
 
   // add

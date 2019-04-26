@@ -193,12 +193,6 @@ export default class SubjectManageCom extends Component {
     this.props.onDeleteSubject(IdSubject);
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.usingEduPro !== prevState.usingEduPro) {
-  //     return { usingEduPro: nextProps.usingEduPro };
-  //   } else return null;
-  // }
-
   actionTemplate = (data, column) => {
     return (
       <div>

@@ -234,15 +234,14 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   upSameLevel = node => {
-    this.setState({ 
-      nodes: logic.upSameLevel(this.state.nodes, node) 
+    this.setState({
+      nodes: logic.upSameLevel(this.state.nodes, node)
     });
   };
 
   downSameLevel = node => {
-
     this.setState({
-       nodes: logic.downSameLevel(this.state.nodes, node) 
+      nodes: logic.downSameLevel(this.state.nodes, node)
     });
   };
 
@@ -365,12 +364,6 @@ export default class DetailOutcomeStandardCom extends Component {
       </div>
     );
   };
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.detailOutcomeStandard !== prevState.nodes) {
-  //     return { nodes: nextProps.detailOutcomeStandard };
-  //   } else return null;
-  // }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ nodes: nextProps.detailOutcomeStandard });
