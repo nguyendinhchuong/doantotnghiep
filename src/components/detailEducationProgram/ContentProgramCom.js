@@ -56,10 +56,13 @@ export default class ContentProgramCom extends React.Component {
     } else {
       this.setState({ nodes: this.addChildTable(data, this.state.node) });
     }
+    console.log(this.state.nodes);
+    
     this.onHideDialogChild();
   };
 
   addChildTable = (data, nodeParent) => {
+    debugger;
     const length = nodeParent.children.length;
     const key = `${nodeParent.key}.${length + 1}`;
     let node = {
@@ -77,21 +80,29 @@ export default class ContentProgramCom extends React.Component {
     if (this.state.isRequired) {
       this.setState({ optionalCredit: 0 });
     }
-    //this.setState({ nodeTables: node });
     node = this.convertNodeToDataTable(node);
     nodeParent.children.push(node);
     data = common.updateNode(data, nodeParent);
     return data;
   };
 
+  convertNodeToDataTable = node => {
+    if (!node.data.isTable) {
+      return node;
+    }
+    const subjects = node.data.subjects;
+    node.data.displayName = (
+      <TableSubjectsCom
+        subjects={subjects}
+        deleteSubject={this.deleteSubjectOnTable}
+        sum={node.data.totalCredits}
+      />
+    );
+    return node;
+  };
+
   addRowTable = () => {
     let data = [...this.state.nodes];
-    // const subject = { ...this.state.optionSubjects };
-    // subject.option = this.state.isRequired ? "BB" : "TC";
-    // subject.note = this.state.note;
-    // test :v
-    //subject.SubjectCode = "123";
-    //subject.Credit = 4;
     const subjects = [...this.state.listSubjects];
 
     data = this.addRowTableLogic(data, this.state.node, subjects);
@@ -175,11 +186,15 @@ export default class ContentProgramCom extends React.Component {
 
   // up/down node
   upSameLevel = node => {
-    this.setState({ nodes: logic.upSameLevel(this.state.nodes, node) });
+    let root = logic.upSameLevel(this.state.nodes, node);
+    root = this.loadTreeNodes(root);
+    this.setState({ nodes: root});    
   };
 
   downSameLevel = node => {
-    this.setState({ nodes: logic.downSameLevel(this.state.nodes, node) });
+    let root = logic.downSameLevel(this.state.nodes, node);
+    root = this.loadTreeNodes(root);
+    this.setState({ nodes: root});
   };
 
   // mouseOver
@@ -245,24 +260,31 @@ export default class ContentProgramCom extends React.Component {
       </Button>
     </div>
   );
-
-  convertNodeToDataTable = node => {
-    if (!node.data.isTable) {
-      return node;
+  
+  loadSubNode = node => {
+    if (node.children) {
+      const length = node.children.length;
+      for (let i = 0; i < length; i++) {
+        if(node.children[i].data.isTable){
+          node.children[i] = this.convertNodeToDataTable(node.children[i]);                   
+        }
+      }
     }
-    const subjects = node.data.subjects;
-    node.data.displayName = (
-      <TableSubjectsCom
-        subjects={subjects}
-        deleteSubject={this.deleteSubjectOnTable}
-        sum={node.data.totalCredits}
-      />
-    );
-    return node;
   };
 
+  loadTreeNodes = nodes =>{
+    const root = [...nodes];
+    const length = root.length;
+    for(let i = 0 ; i< length; i++){
+      this.loadSubNode(root[i]);
+    }
+    return root;
+  }
+
   deleteSubjectOnTable = rowData => {
-    console.log(rowData);
+    let root = logic.deleteSubjectTable(this.state.nodes, rowData);
+    root = this.loadTreeNodes(root);
+    this.setState({nodes: root});
   };
 
   filterSubjects = e => {
@@ -293,7 +315,7 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  // Templatre
+  // Template
   actionTemplate(node, column) {
     return (
       <div>

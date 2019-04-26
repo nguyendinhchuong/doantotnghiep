@@ -28,6 +28,12 @@ export const getRank = key => {
   return countDot + 1;
 };
 
+const updateKeyParentOfSubjects = (subjects, idParent) =>{
+  return subjects.map((subject) =>{
+    return {...subject, parentKey: idParent};
+  });
+};
+
 const updateSubNode = (iParent, node) => {
   if (node.children) {
     const length = node.children.length;
@@ -37,6 +43,9 @@ const updateSubNode = (iParent, node) => {
         node.children[i].data.displayName = `${node.children[i].key}. ${
           node.children[i].data.name
         }`;
+      }
+      if(node.children[i].data.isTable){
+        node.children[i].data.subjects = updateKeyParentOfSubjects(node.children[i].data.subjects, node.children[i].key);                        
       }
       if (node.children[i].children)
         updateSubNode(node.children[i].key, node.children[i]);
@@ -118,7 +127,6 @@ export const hoverUpLevel = node => {
 
 // error
 export const hoverDownLevel = (nodes, node) => {
-  debugger;
   const root = [...nodes];
   const child = { ...node };
   const lastDot = child.key.indexOf(".");

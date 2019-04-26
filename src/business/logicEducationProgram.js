@@ -168,7 +168,6 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
 };
 
 export const deteleSubject = (subjects, subject) => {
-  debugger;
   const arr = [...subjects];
   const index = arr.indexOf(subject);
   arr.splice(index, 1);
@@ -188,14 +187,6 @@ const previousKey = key => {
   const last = arr[arr.length - 1];
   const lastIndex = key.lastIndexOf(".");
   const pre = key.slice(0, lastIndex) + "." + (last - 1).toString();
-  return pre;
-};
-
-const nextKey = key => {
-  const arr = key.split(".");
-  const last = arr[arr.length - 1];
-  const lastIndex = key.lastIndexOf(".");
-  const pre = key.slice(0, lastIndex) + "." + (last + 1).toString();
   return pre;
 };
 
@@ -247,7 +238,7 @@ const upSameLevelSub = (nodes, node) => {
   arr.splice(index - 1, 0, node);
   nodeParent.children = arr;
   root = common.updateNode(root, nodeParent);
-  root = common.refreshTreeNodes(root, keyRoot, indexRoot - 1);
+  root = common.refreshTreeNodes(root, keyRoot, indexRoot);
   return root;
 };
 
@@ -272,24 +263,36 @@ const downSameLevelSub = (nodes, node) => {
   arr.splice(index + 1, 0, node);
   nodeParent.children = arr;
   root = common.updateNode(root, nodeParent);
-  root = common.refreshTreeNodes(root, keyRoot, indexRoot - 1);
+  root = common.refreshTreeNodes(root, keyRoot, indexRoot);
   return root;
 };
 
 export const upSameLevel = (nodes, node) => {
   if (common.getRank(node.key) === 2) {
     return upSameLevelRoot(nodes, node);
-  } else {
-    return upSameLevelSub(nodes, node);
   }
+  return upSameLevelSub(nodes, node);
 };
 
 export const downSameLevel = (nodes, node) => {
   if (common.getRank(node.key) === 2) {
     return downSameLevelRoot(nodes, node);
-  } else {
-    return downSameLevelSub(nodes, node);
   }
+  return downSameLevelSub(nodes, node);
+};
+
+export const deleteSubjectTable = (nodes, subject) =>{
+  let root = [...nodes];
+  let keyParent = subject.parentKey;
+  // case root = 7.1.... => 1.1...
+  if (nodes[0].key[0] === "7") {
+    const firstDot = keyParent.indexOf(".");
+    keyParent = keyParent.slice(firstDot + 1, keyParent.length);
+  }
+  const parentNode = common.findNodeByKey(root, keyParent);
+  parentNode.data.subjects = deteleSubject(parentNode.data.subjects, subject);
+  root = common.updateNode(root, parentNode);
+  return root;
 };
 
 // error ham refresh cho key line 52
