@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
 
-import PageTitle from "../components/common/PageTitle";
 import EducationProgramCom from "../components/educationProgram/EducationProgramCom";
 import AlertCom from "../components/AlertCom";
+import PageTitle from "../components/PageTitle";
 
 import { connect } from "react-redux";
 import * as eduProgramsAction from "../actions/eduProgramsAction";

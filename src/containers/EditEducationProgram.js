@@ -4,9 +4,9 @@ import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
-import PageTitle from "../components/common/PageTitle";
 import DetailEducationProgramCom from "../components/detailEducationProgram/DetailEducationProgramCom";
 import AlertCom from "../components/AlertCom";
+import PageTitle from "../components/PageTitle";
 
 import { connect } from "react-redux";
 import * as levelsAction from "../actions/levelsAction";

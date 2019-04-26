@@ -6,7 +6,7 @@ import { Store } from "../../../flux";
 
 class SidebarNavItems extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       navItems: Store.getSidebarItems()
@@ -35,12 +35,10 @@ class SidebarNavItems extends React.Component {
     return (
       <div className="nav-wrapper">
         <Nav className="nav--no-borders flex-column">
-          {items.map((item, idx) => (
-            <SidebarNavItem key={idx} item={item} />
-          ))}
+          {items.map((item, idx) => <SidebarNavItem key={idx} item={item} />)}
         </Nav>
       </div>
-    )
+    );
   }
 }
 

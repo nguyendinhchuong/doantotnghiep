@@ -39,9 +39,7 @@ class SidebarMainNavbar extends React.Component {
                 alt="Shards Dashboard"
               />
               {!hideLogoText && (
-                <span className="d-none d-md-inline ml-1">
-                  CDIO
-                </span>
+                <span className="d-none d-md-inline ml-1">CDIO</span>
               )}
             </div>
           </NavbarBrand>

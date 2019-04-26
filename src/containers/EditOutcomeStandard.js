@@ -4,9 +4,9 @@ import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
-import PageTitle from "../components/common/PageTitle";
 import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
+import PageTitle from "../components/PageTitle";
 
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";

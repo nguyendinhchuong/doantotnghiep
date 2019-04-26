@@ -4,9 +4,9 @@ import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
-import PageTitle from "../components/common/PageTitle";
 import SubjectManageCom from "../components/subjectManage/SubjectManageCom";
 import AlertCom from "../components/AlertCom";
+import PageTitle from "../components/PageTitle";
 
 import { connect } from "react-redux";
 import * as subjectsAction from "../actions/subjectsAction";
@@ -69,5 +69,5 @@ export default connect(mapStateToProps, {
   onDeleteSubject: subjectsAction.onDeleteSubject,
   onAddSubject: subjectsAction.onAddSubject,
   onAddSubjectBulk: subjectsAction.onAddSubjectBulk,
-  onLoadUsingEduPro: subjectsAction.onLoadUsingEduPro,
+  onLoadUsingEduPro: subjectsAction.onLoadUsingEduPro
 })(SubjectManageTemp);

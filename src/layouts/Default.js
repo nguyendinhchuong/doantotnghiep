@@ -24,13 +24,7 @@ const DefaultLayout = ({ children, noNavbar, noFooter }) => (
 );
 
 DefaultLayout.propTypes = {
-  /**
-   * Whether to display the navbar, or not.
-   */
   noNavbar: PropTypes.bool,
-  /**
-   * Whether to display the footer, or not.
-   */
   noFooter: PropTypes.bool
 };
 
@@ -40,4 +34,3 @@ DefaultLayout.defaultProps = {
 };
 
 export default DefaultLayout;
-        // {!noFooter && <MainFooter />}

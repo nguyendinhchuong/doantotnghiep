@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
-import * as logic from "../business";
 import * as message from "./message";
 
 export const loadDetailEduProgramSuccess = detailEduProgram => ({
@@ -68,7 +67,7 @@ export const onSaveDetailEduProgram = (detailEduProgram, targetEduProgram) => {
         if (res.data.code === 1) {
           let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
-          // onSaveTargetEduProgram(targetEduProgram);
+          dispatch(onSaveTargetEduProgram(targetEduProgram));
           dispatch(saveDetailEduProgramSuccess(detailEduProgram, res));
         } else {
           let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
@@ -106,8 +105,8 @@ export const onLoadTargetEduProgram = id => {
           dispatch(message.message(chirp));
           dispatch(loadTargetEduProgramError(res));
         } else {
-          let targetEduProgram = logic.convertDBToTreeNode(data);
-          dispatch(loadTargetEduProgramSuccess(targetEduProgram));
+          // let targetEduProgram = commonLogic.convertDBToTreeNodeForEduPro(data);
+          // dispatch(loadTargetEduProgramSuccess(targetEduProgram));
         }
       })
       .catch(err => {

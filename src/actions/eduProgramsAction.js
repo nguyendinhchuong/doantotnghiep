@@ -121,20 +121,33 @@ export const saveEduProgramError = (infoEduProgram, errorMessage) => ({
   errorMessage
 });
 
-export const onSaveEduProgram = (infoEduProgram, detailEduProgram, targetEduProgram) => {
+export const onSaveEduProgram = (
+  infoEduProgram,
+  detailEduProgram,
+  targetEduProgram
+) => {
   return (dispatch, getState) => {
     let params = {};
     params.data = JSON.stringify(infoEduProgram);
     axios
-      .post(`${links.SAVE_EDUPROGRAM}?ideduprog=${infoEduProgram.ideduprog}`, params, {
-        headers: { "Content-Type": "application/json" }
-      })
+      .post(
+        `${links.SAVE_EDUPROGRAM}?ideduprog=${infoEduProgram.ideduprog}`,
+        params,
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      )
       .then(res => {
         if (res.data.code === 1) {
           let chirp = { message: `Lưu thông tin CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(infoEduProgram, res));
-          dispatch(detailEduProgramAction.onSaveDetailEduProgram(detailEduProgram, targetEduProgram));
+          dispatch(
+            detailEduProgramAction.onSaveDetailEduProgram(
+              detailEduProgram,
+              targetEduProgram
+            )
+          );
           // dispatch(detailEduProgramAction.onSaveTargetEduProgram(targetEduProgram));
         } else {
           let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };

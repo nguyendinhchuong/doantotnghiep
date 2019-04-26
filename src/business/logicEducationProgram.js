@@ -281,7 +281,7 @@ export const downSameLevel = (nodes, node) => {
   return downSameLevelSub(nodes, node);
 };
 
-export const deleteSubjectTable = (nodes, subject) =>{
+export const deleteSubjectTable = (nodes, subject) => {
   let root = [...nodes];
   let keyParent = subject.parentKey;
   // case root = 7.1.... => 1.1...
@@ -294,5 +294,3 @@ export const deleteSubjectTable = (nodes, subject) =>{
   root = common.updateNode(root, parentNode);
   return root;
 };
-
-// error ham refresh cho key line 52

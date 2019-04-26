@@ -93,11 +93,17 @@ export const onAddSubjectBulk = data => {
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadSubjects());
-          let chirp = { message: `Thêm danh sách môn học thành công`, isRight: 1 };
+          let chirp = {
+            message: `Thêm danh sách môn học thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addSubjectBulkSuccess(res));
         } else {
-          let chirp = { message: `Thêm danh sách môn học thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Thêm danh sách môn học thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addSubjectBulkError(res));
         }
@@ -171,7 +177,10 @@ export const onLoadUsingEduPro = id => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các CTĐT sử dụng môn học thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các CTĐT sử dụng môn học thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadUsingEduProError(err));
       });

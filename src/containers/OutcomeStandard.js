@@ -4,9 +4,9 @@ import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
-import PageTitle from "../components/common/PageTitle";
 import OutcomeStandardCom from "../components/outcomeStandard/OutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
+import PageTitle from "../components/PageTitle";
 
 import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
@@ -54,7 +54,9 @@ class OutcomeStandardTemp extends Component {
               onLoadPrograms={this.props.onLoadPrograms}
               onAddOutcomeStandard={this.props.onAddOutcomeStandard}
               onDeleteOutcomeStandard={this.props.onDeleteOutcomeStandard}
-              onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
+              onLoadDetailOutcomeStandard={
+                this.props.onLoadDetailOutcomeStandard
+              }
             />
           </Col>
         </Row>
@@ -77,5 +79,6 @@ export default connect(mapStateToProps, {
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onAddOutcomeStandard: outcomeStandardsAction.onAddOutcomeStandard,
   onDeleteOutcomeStandard: outcomeStandardsAction.onDeleteOutcomeStandard,
-  onLoadDetailOutcomeStandard: detailOutcomeStandardAction.onLoadDetailOutcomeStandard
+  onLoadDetailOutcomeStandard:
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard
 })(OutcomeStandardTemp);

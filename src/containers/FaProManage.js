@@ -4,9 +4,9 @@ import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "rc-pagination/assets/index.css";
 
-import PageTitle from "../components/common/PageTitle";
 import FaProManageCom from "../components/faProManage/FaProManageCom";
 import AlertCom from "../components/AlertCom";
+import PageTitle from "../components/PageTitle";
 
 import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
