@@ -3,16 +3,12 @@ import React from "react";
 import { Row, Col, Button, FormTextarea } from "shards-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 
-import "../../assets/target-education.css";
-
 import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
 import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
 import TableProgramArchiCom from "../detailEducationProgram/TableProgramArchiCom";
 import TitleCom from "../detailEducationProgram/TitleCom";
 
-import * as logic from "../../business/";
-import * as event from "../../business/eventReceiveProps";
-// import * as commonLogic from "../../business/commonEducation";
+import * as event from "../../business/events";
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -119,45 +115,11 @@ export default class DetailEducationProgramCom extends React.Component {
   onSave = () => {
     this.setState({ isSaveBtnDisabled: true });
     setTimeout(() => this.setState({ isSaveBtnDisabled: false }), 3000);
-    const ideduprog = this.props.infoEduProgram.Id;
-    const eduname = this.state.nameEduProgram;
-    const idlevel = this.state.level.LevelId;
-    const idmajor = this.state.major.MajorId;
-    const idprogram = this.state.program.ProgramId;
-    const schoolyear = this.state.schoolYear;
-    const infoEduProgram = {
-      ideduprog,
-      eduname,
-      eduengname: "",
-      idlevel,
-      idmajor,
-      idprogram,
-      schoolyear,
-      dateedited: new Date().toISOString()
-    };
 
-    const detailEduProgram = {
-      enrollmenttarget: this.state.EnrollmentTarget
-        ? this.state.EnrollmentTarget
-        : "",
-      eduprocess: this.state.EduProcess ? this.state.EduProcess : "",
-      graduatedcon: this.state.GraduatedCon ? this.state.GraduatedCon : "",
-      ideduprogram: this.props.infoEduProgram.Id,
-      dateedited: new Date().toISOString(),
-      datecreated: new Date().toISOString(),
-      idoutcome: this.state.IdOutcome
-    };
-
+    const infoEduProgram = event.onSaveInfo(this.props, this.state);
+    const detailEduProgram = event.onSaveDetail(this.props, this.state);
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
-    let data = [];
-    let level = logic.getMaxLevel(targetNodes);
-    logic.createSaveData(targetNodes, data, 1, level);
-    const targetEduProgram = {
-      datecreated: new Date().toISOString(),
-      iddetail: this.props.detailEduProgram.Id,
-      data,
-      targetNodes: targetNodes
-    };
+    const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
 
     this.props.onSaveEduProgram(
       infoEduProgram,

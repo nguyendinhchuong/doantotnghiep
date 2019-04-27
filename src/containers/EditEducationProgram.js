@@ -78,7 +78,7 @@ class DetailEducationProgramTmp extends Component {
               majors={this.props.majors}
               programs={this.props.programs}
               subjects={this.props.subjects}
-              infoEduProgram={this.props.infoEduProgram[0]}
+              infoEduProgram={infoEduProgram}
               detailEduProgram={this.props.detailEduProgram}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}

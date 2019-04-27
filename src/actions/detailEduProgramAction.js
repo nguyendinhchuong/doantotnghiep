@@ -37,18 +37,13 @@ export const onLoadDetailEduProgram = id => {
   };
 };
 
-export const saveDetailEduProgramSuccess = (
-  detailEduProgram,
-  successMessage
-) => ({
+export const saveDetailEduProgramSuccess = successMessage => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_SUCCESS,
-  detailEduProgram: detailEduProgram,
   successMessage
 });
 
-export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
+export const saveDetailEduProgramError = errorMessage => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_ERROR,
-  detailEduProgram: detailEduProgram,
   errorMessage
 });
 
@@ -67,18 +62,21 @@ export const onSaveDetailEduProgram = (detailEduProgram, targetEduProgram) => {
         if (res.data.code === 1) {
           let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
+          dispatch(onLoadDetailEduProgram(detailEduProgram.ideduprogram));
           dispatch(onSaveTargetEduProgram(targetEduProgram));
-          dispatch(saveDetailEduProgramSuccess(detailEduProgram, res));
+          dispatch(saveDetailEduProgramSuccess(res));
         } else {
           let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));
-          dispatch(saveDetailEduProgramError(detailEduProgram, res));
+          dispatch(onLoadDetailEduProgram(detailEduProgram.ideduprogram));
+          dispatch(saveDetailEduProgramError(res));
         }
       })
       .catch(err => {
         let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 0 };
         dispatch(message.message(chirp));
-        dispatch(saveDetailEduProgramError(detailEduProgram, err));
+        dispatch(onLoadDetailEduProgram(detailEduProgram.ideduprogram));
+        dispatch(saveDetailEduProgramError(err));
       });
   };
 };
