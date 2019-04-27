@@ -8,116 +8,99 @@ import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { DataTable } from "primereact/datatable";
 
-import * as logic from "../../business/logicTargetEducation";
-import * as commonLogic from "../../business/commonEducation";
+import * as targetLogic from "../../business/logicTargetEducation";
 
 export default class TargetEducationCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: [],
-      node: "",
-      visible: false,
-      nameOut: "",
-      root: false,
+      targetNodes: [],
+      targetNode: {},
+      targetVisible: false,
+      targetNameOut: "",
+      targetRoot: false,
       osVisible: false,
       isData: false,
       detailOsVisible: false,
-      os: []
+      os: [],
+      tmpIdOutcome: 0
     };
   }
 
+  // up/down node
+  upSameLevelTarget = targetNode => {
+    let nodes = targetLogic.upSameLevel(this.state.targetNodes, targetNode);
+    this.setState({ targetNodes: nodes });
+  };
+
+  downSameLevelTarget = targetNode => {
+    let nodes = targetLogic.downSameLevel(this.state.targetNodes, targetNode);
+    this.setState({ targetNodes: nodes });
+  };
+
   // add
-  addRoot = () => {
-    const data = logic.addRoot(this.state.nodes, this.state.nameOut);
+  addTargetRoot = () => {
+    const data = targetLogic.addRoot(
+      this.state.targetNodes,
+      this.state.targetNameOut
+    );
     this.setState({
-      nodes: data
+      targetNodes: data
     });
   };
 
-  add = node => {
-    const data = logic.addChild(this.state.nodes, node, this.state.nameOut);
+  addTarget = targetNode => {
+    const data = targetLogic.addChild(
+      this.state.targetNodes,
+      targetNode,
+      this.state.targetNameOut
+    );
     this.setState({
-      nodes: data
-    });
-  };
-
-  addOS = () => {
-    const data = logic.addOS(this.state.nodes, this.state.node, this.state.os);
-    this.setState({
-      nodes: data
+      targetNodes: data
     });
   };
 
   // delete
-  deleteNode = node => {
-    const data = logic.deleteNode(this.state.nodes, node);
-    this.setState({
-      nodes: data
-    });
-  };
-
-  // update
-  nameEditor = props => {
-    return this.inputTextEditor(props, "name");
-  };
-
-  inputTextEditor = (props, field) => {
-    return (
-      <InputText
-        style={{ width: "80%" }}
-        type="text"
-        value={props.node.data[field]}
-        onChange={e => this.onEditorValueChange(props, e.target.value)}
-      />
-    );
-  };
-
-  onEditorValueChange = (props, value) => {
-    let editedNode = logic.findNodeByKey(this.state.nodes, props.node.key);
-    editedNode.data.name = value;
-    editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
-    this.updateNode(editedNode);
-  };
-
-  // update node after edit node
-  updateNode = node => {
-    const data = commonLogic.updateNode(this.state.nodes, node);
-    this.setState({
-      nodes: data
-    });
+  deleteTargetNode = targetNode => {
+    if (this.props.OSUsedNode.indexOf(targetNode.key) !== 0) {
+      const data = targetLogic.deleteNode(this.state.targetNodes, targetNode);
+      this.setState({
+        targetNodes: data
+      });
+    } else alert("Cấp này đang sử dụng chuẩn đầu ra!!");
   };
 
   // event
-  onClickDialog = node => {
+  onClickTargetDialog = targetNode => {
     this.setState({
-      visible: true,
-      root: false,
-      node: node,
-      nameOut: "",
+      targetVisible: true,
+      targetRoot: false,
+      targetNode: targetNode,
+      targetNameOut: "",
       isData: false
     });
   };
 
-  onClickDialogRoot = () => {
+  onClickTargetDialogRoot = () => {
     this.setState({
-      visible: true,
-      root: true,
-      nameOut: "",
+      targetVisible: true,
+      targetRoot: true,
+      targetNameOut: "",
       isData: false,
-      node: ""
+      targetNode: ""
     });
   };
 
-  onHideDialog = () => {
-    this.setState({ visible: false });
+  onHideTargetDialog = () => {
+    this.setState({ targetVisible: false });
   };
 
   onShowDetailOS = IdOutcome => {
     this.props.onLoadDetailOutcomeStandard(IdOutcome);
     this.setState({
       detailOsVisible: true,
-      os: this.props.detailOutcomeStandard
+      os: this.props.detailOutcomeStandard,
+      tmpIdOutcome: IdOutcome
     });
   };
 
@@ -125,24 +108,32 @@ export default class TargetEducationCom extends Component {
     this.setState({ detailOsVisible: false });
   };
 
-  handleChangeTitle = event => {
-    this.setState({ nameOut: event.target.value });
+  handleChangeTargetTitle = event => {
+    this.setState({ targetNameOut: event.target.value });
   };
 
-  handleSubmit = event => {
-    if (this.state.root) {
-      this.addRoot();
+  handleTargetSubmit = () => {
+    if (this.state.targetRoot) {
+      this.addTargetRoot();
     } else {
-      this.add(this.state.node);
+      if (this.state.targetNode.key !== this.props.OSUsedNode)
+        this.addTarget(this.state.targetNode);
+      else alert("Cấp này đang sử dụng chuẩn đầu ra!!");
     }
-    this.onHideDialog();
-
-    event.preventDefault();
+    this.onHideTargetDialog();
   };
 
-  onSubmit = () => {
-    this.addOS();
-    this.onHideDialog();
+  onTargetSubmit = () => {
+    if (
+      this.state.targetNode === "" ||
+      this.state.targetNode.children.length !== 0 ||
+      this.state.os.length === 0
+    ) {
+      alert("Không thể thêm chuẩn đầu ra ở node này!!");
+    } else {
+      this.props.onSaveOutcomeUsed(this.state.tmpIdOutcome,this.state.targetNode.key);
+    }
+    this.onHideTargetDialog();
     this.onHideDetailOS();
   };
 
@@ -150,23 +141,11 @@ export default class TargetEducationCom extends Component {
     return Number(ids[id]) - 1;
   };
 
-  upSameLevel = node => {
-    const data = [...logic.upSameLevel(this.state.nodes, node)];
-
-    this.setState({ nodes: [...data] });
-  };
-
-  downSameLevel = node => {
-    const data = [...logic.downSameLevel(this.state.nodes, node)];
-
-    this.setState({ nodes: [...data] });
-  };
-
-  actionTemplate = (node, column) => {
+  targetActionTemplate = (targetNode, column) => {
     return (
       <div>
         <Button
-          onClick={() => this.onClickDialog(node)}
+          onClick={() => this.onClickTargetDialog(targetNode)}
           theme="success"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Thêm cấp con"
@@ -174,7 +153,7 @@ export default class TargetEducationCom extends Component {
           <i className="material-icons">add</i>
         </Button>
         <Button
-          onClick={() => this.upSameLevel(node)}
+          onClick={() => this.upSameLevelTarget(targetNode)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Lên cùng cấp"
@@ -182,7 +161,7 @@ export default class TargetEducationCom extends Component {
           <i className="material-icons">arrow_upward</i>
         </Button>
         <Button
-          onClick={() => this.downSameLevel(node)}
+          onClick={() => this.downSameLevelTarget(targetNode)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Xuống cùng cấp"
@@ -190,7 +169,7 @@ export default class TargetEducationCom extends Component {
           <i className="material-icons">arrow_downward</i>
         </Button>
         <Button
-          onClick={() => this.deleteNode(node)}
+          onClick={() => this.deleteTargetNode(targetNode)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Xóa cấp này"
@@ -217,22 +196,22 @@ export default class TargetEducationCom extends Component {
   };
 
   render() {
-    const footer = (
+    const targetFooter = (
       <div>
         {!this.state.isData ? (
-          <Button onClick={this.handleSubmit} theme="success">
+          <Button onClick={this.handleTargetSubmit} theme="success">
             Thêm
           </Button>
         ) : null}
-        <Button onClick={this.onHideDialog} theme="secondary">
+        <Button onClick={this.onHideTargetDialog} theme="secondary">
           Hủy
         </Button>
       </div>
     );
 
-    const detailFooter = (
+    const detailTargetFooter = (
       <div>
-        <Button onClick={this.onSubmit} theme="success">
+        <Button onClick={this.onTargetSubmit} theme="success">
           Thêm
         </Button>
         <Button onClick={this.onHideDetailOS} theme="secondary">
@@ -245,23 +224,36 @@ export default class TargetEducationCom extends Component {
       <div className="p-grid content-section implementation">
         <Row>
           <Col lg="12" md="12" sm="12">
-            <TreeTable value={this.state.nodes}>
+            <TreeTable value={this.state.targetNodes}>
               <Column
                 field="displayName"
-                header="Tên dòng"
-                editor={this.nameEditor}
+                header={
+                  <p>
+                    Tên dòng (Đang sử dụng Chuẩn đầu ra:{" "}
+                    <span style={{ color: "#00B8D8" }}>
+                      {targetLogic.getNameOS(
+                        this.props.outcomeStandards,
+                        this.props.IdOutcome
+                      )}
+                    </span>{" "}
+                    ở mục:{" "}
+                    <span style={{ color: "#00B8D8" }}>
+                      {this.props.OSUsedNode}
+                    </span>)
+                  </p>
+                }
                 expander
               />
               <Column
                 header={
                   <Button
-                    onClick={() => this.onClickDialogRoot()}
+                    onClick={() => this.onClickTargetDialogRoot()}
                     theme="success"
                   >
                     <i className="material-icons">add</i> Thêm cấp
                   </Button>
                 }
-                body={this.actionTemplate}
+                body={this.targetActionTemplate}
                 style={{ textAlign: "center", width: "12em" }}
               />
             </TreeTable>
@@ -271,37 +263,39 @@ export default class TargetEducationCom extends Component {
         <div className="content-section implementation">
           <Dialog
             header="Thêm Mục Tiêu Đào Tạo"
-            visible={this.state.visible}
+            visible={this.state.targetVisible}
             style={{ width: "50vw" }}
-            footer={footer}
-            onHide={this.onHideDialog}
+            footer={targetFooter}
+            onHide={this.onHideTargetDialog}
           >
-            <Row>
-              <Col lg="6" md="6" sm="6">
-                <Checkbox
-                  checked={!this.state.isData}
-                  onChange={e => this.setState({ isData: false })}
-                />
-                <label htmlFor="cb2" className="p-checkbox-label">
-                  Thêm cấp
-                </label>
-              </Col>
-              <Col lg="6" md="6" sm="6">
-                <Checkbox
-                  checked={this.state.isData}
-                  onChange={e => this.setState({ isData: true })}
-                />
-                <label htmlFor="cb2" className="p-checkbox-label">
-                  Thêm chuẩn đầu ra
-                </label>
-              </Col>
-            </Row>
+            {!this.state.targetRoot ? (
+              <Row>
+                <Col lg="6" md="6" sm="6">
+                  <Checkbox
+                    checked={!this.state.isData}
+                    onChange={e => this.setState({ isData: false })}
+                  />
+                  <label htmlFor="cb2" className="p-checkbox-label">
+                    Thêm cấp
+                  </label>
+                </Col>
+                <Col lg="6" md="6" sm="6">
+                  <Checkbox
+                    checked={this.state.isData}
+                    onChange={e => this.setState({ isData: true })}
+                  />
+                  <label htmlFor="cb2" className="p-checkbox-label">
+                    Thêm chuẩn đầu ra
+                  </label>
+                </Col>
+              </Row>
+            ) : null}
             <br />
             {!this.state.isData ? (
               <InputText
                 type="text"
-                value={this.state.nameOut}
-                onChange={this.handleChangeTitle}
+                value={this.state.targetNameOut}
+                onChange={this.handleChangeTargetTitle}
                 placeholder="Tên"
                 style={{ width: "100%" }}
               />
@@ -334,7 +328,7 @@ export default class TargetEducationCom extends Component {
             header="Chi tiết chuẩn đầu ra"
             visible={this.state.detailOsVisible}
             style={{ width: "50vw" }}
-            footer={detailFooter}
+            footer={detailTargetFooter}
             onHide={this.onHideDetailOS}
           >
             <Row>

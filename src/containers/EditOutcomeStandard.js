@@ -27,6 +27,15 @@ class EditOutcomeStandardTmp extends Component {
     this.props.onLoadRevisions(id);
     this.props.onLoadOutcomeStandard(id);
     this.props.onLoadDetailOutcomeStandard(id);
+    window.addEventListener("beforeunload", this.onUnload);
+  };
+
+  onUnload = event => {
+    event.returnValue = "Hello World!!";
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener("beforeunload", this.onUnload);
   };
 
   render() {

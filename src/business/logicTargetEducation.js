@@ -60,40 +60,13 @@ export const deleteNode = (nodes, node) => {
   return root;
 };
 
-// // add outcomeStandard
-// export const changeKeys = (nodes, key) => {
-//   if (nodes === undefined || nodes.length === 0) {
-//     return 0;
-//   } else {
-//     for (let i in nodes) {
-//       nodes[i].key = `${key}.${nodes[i].key}`;
-//       nodes[i].data.displayName = `${nodes[i].key}. ${nodes[i].data.name}`;
-//       changeKeys(nodes[i].children, key);
-//     }
-//   }
-// };
-
-// export const addOS = (nodes, node, os) => {
-//   if (node === "" || node.children.length !== 0 || os.length === 0) {
-//     alert("Không thể thêm chuẩn đầu ra ở node này!!");
-//     return nodes;
-//   }
-//   let data = [...nodes];
-//   let thisNode = { ...node };
-//   let tmpOs = [...os];
-//   changeKeys(tmpOs, thisNode.key);
-
-//   thisNode.children.push(...tmpOs);
-//   data = common.updateNode(data, thisNode);
-//   return data;
-// };
-
 export const getNameOS = (outcomeStandards, idOutcome) => {
   const outcomeStandard = outcomeStandards.filter(row => row.Id === idOutcome);
   if (outcomeStandard.length === 0) return "Chưa có";
   else return outcomeStandard[0].NameOutcomeStandard;
 };
 
+// drag
 const addIndexRoot = (nodes, node, index) => {
   const root = [...nodes];
   root.splice(index, 0, node);
@@ -105,14 +78,6 @@ const previousKey = key => {
   const last = arr[arr.length - 1];
   const lastIndex = key.lastIndexOf(".");
   const pre = key.slice(0, lastIndex) + "." + (last - 1).toString();
-  return pre;
-};
-
-const nextKey = key => {
-  const arr = key.split(".");
-  const last = arr[arr.length - 1];
-  const lastIndex = key.lastIndexOf(".");
-  const pre = key.slice(0, lastIndex) + "." + (last + 1).toString();
   return pre;
 };
 
@@ -164,7 +129,7 @@ const upSameLevelSub = (nodes, node) => {
   arr.splice(index - 1, 0, node);
   nodeParent.children = arr;
   root = common.updateNode(root, nodeParent);
-  root = common.refreshTreeNodes(root, keyRoot, indexRoot - 1);
+  root = common.refreshTreeNodes(root, keyRoot, indexRoot);
   return root;
 };
 
@@ -189,22 +154,20 @@ const downSameLevelSub = (nodes, node) => {
   arr.splice(index + 1, 0, node);
   nodeParent.children = arr;
   root = common.updateNode(root, nodeParent);
-  root = common.refreshTreeNodes(root, keyRoot, indexRoot - 1);
+  root = common.refreshTreeNodes(root, keyRoot, indexRoot);
   return root;
 };
 
 export const upSameLevel = (nodes, node) => {
   if (common.getRank(node.key) === 2) {
     return upSameLevelRoot(nodes, node);
-  } else {
-    return upSameLevelSub(nodes, node);
   }
+  return upSameLevelSub(nodes, node);
 };
 
 export const downSameLevel = (nodes, node) => {
   if (common.getRank(node.key) === 2) {
     return downSameLevelRoot(nodes, node);
-  } else {
-    return downSameLevelSub(nodes, node);
   }
+  return downSameLevelSub(nodes, node);
 };

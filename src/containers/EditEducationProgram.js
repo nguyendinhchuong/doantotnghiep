@@ -34,6 +34,15 @@ class DetailEducationProgramTmp extends Component {
     this.props.onLoadPrograms();
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
+    window.addEventListener("beforeunload", this.onUnload);
+  };
+
+  onUnload = event => {
+    event.returnValue = "Hello World!!";
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener("beforeunload", this.onUnload);
   };
 
   render() {
