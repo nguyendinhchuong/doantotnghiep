@@ -60,7 +60,6 @@ export default class ContentProgramCom extends React.Component {
   };
 
   addChildTable = (data, nodeParent) => {
-    debugger;
     const length = nodeParent.children.length;
     const key = `${nodeParent.key}.${length + 1}`;
     let node = {
@@ -265,6 +264,9 @@ export default class ContentProgramCom extends React.Component {
       for (let i = 0; i < length; i++) {
         if (node.children[i].data.isTable) {
           node.children[i] = this.convertNodeToDataTable(node.children[i]);
+        }
+        if(node.children[i].children){
+          this.loadSubNode(node.children[i]);
         }
       }
     }
