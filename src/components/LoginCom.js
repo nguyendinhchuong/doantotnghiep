@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -16,10 +17,6 @@ export default class LoginCom extends Component {
   constructor() {
     super();
     this.state = {
-      username: null,
-      price: null,
-      website1: null,
-      website2: null
     };
   }
 
@@ -50,7 +47,13 @@ export default class LoginCom extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">
+                          <Button
+                            tag={Link}
+                            to="/"
+                            color="primary"
+                            className="px-4"
+                            onClick={this.props.onLogIn}
+                          >
                             Đăng nhập
                           </Button>
                         </Col>

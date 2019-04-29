@@ -1,6 +1,10 @@
 // message actions
 export const MESSAGE = "MESSAGE";
 
+// auth actions
+export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
+export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
+
 // majors actions
 export const LOAD_MAJORS_SUCCESS = "LOAD_MAJORS_SUCCESS";
 export const LOAD_MAJORS_ERROR = "LOAD_MAJORS_ERROR";
