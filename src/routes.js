@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 // Layout Types
-import { DefaultLayout } from "./layouts";
+import { DefaultLayout, PlainLayout } from "./layouts";
 
 import EducationProgram from "./containers/EducationProgram";
 import EditEducationProgram from "./containers/EditEducationProgram";
@@ -10,6 +10,7 @@ import OutcomeStandard from "./containers/OutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
 import FaProManage from "./containers/FaProManage";
+import Login from "./containers/Login";
 
 export default [
   {
@@ -53,5 +54,11 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: FaProManage
+  },
+  {
+    path: "/login",
+    exact: true,
+    layout: PlainLayout,
+    component: Login
   }
 ];

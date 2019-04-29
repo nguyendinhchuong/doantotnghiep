@@ -120,6 +120,13 @@ export default class DetailEducationProgramCom extends React.Component {
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
+    console.log(targetEduProgram.data);
+    
+
+    const contentNodes = this.TargetEducationCom.current.state.nodes;
+    const contentProgram = event.onSaveContent(this.props, contentNodes);
+    console.log(contentProgram.data);
+    console.log(contentProgram.contentNodes);
 
     this.props.onSaveEduProgram(
       infoEduProgram,

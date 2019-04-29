@@ -94,7 +94,20 @@ export const onSaveTarget = (prop, targetNodes) => {
     datecreated: new Date().toISOString(),
     iddetail: prop.detailEduProgram.Id,
     data,
-    targetNodes: targetNodes
+    targetNodes
   };
   return targetEduProgram;
+};
+
+export const onSaveContent = (prop, contentNodes) => {
+  let data = [];
+  let level = logic.getMaxLevel(contentNodes);
+  logic.createSaveData(contentNodes, data, 1, level);
+  const contentProgram = {
+    datecreated: new Date().toISOString(),
+    iddetail: prop.detailEduProgram.Id,
+    data,
+    contentNodes
+  };
+  return contentProgram;
 };
