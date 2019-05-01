@@ -1,5 +1,9 @@
 export const LINK = "http://localhost:3001";
 
+// user
+export const LOGIN = `${LINK}/user/login/`;
+export const LOAD_USERS = `${LINK}/user/getlist/`;
+
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;
 export const ADD_LEVEL = `${LINK}/level/add/`;

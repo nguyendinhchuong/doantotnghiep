@@ -10,6 +10,7 @@ import OutcomeStandard from "./containers/OutcomeStandard";
 import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
 import FaProManage from "./containers/FaProManage";
+import UserManage from "./containers/UserManage";
 
 export default [
   {
@@ -53,5 +54,11 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: FaProManage
+  },
+  {
+    path: "/user-manage",
+    exact: true,
+    layout: DefaultLayout,
+    component: UserManage
   }
 ];

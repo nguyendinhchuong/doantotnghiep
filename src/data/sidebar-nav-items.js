@@ -19,6 +19,11 @@ export default function() {
       title: "Quản lý khoa hệ",
       htmlBefore: '<i class="material-icons">view_comfy</i>',
       to: "/fapro-manage"
+    },
+    {
+      title: "Quản lý người dùng",
+      htmlBefore: '<i class="material-icons">supervisor_account</i>',
+      to: "/user-manage"
     }
   ];
 }
