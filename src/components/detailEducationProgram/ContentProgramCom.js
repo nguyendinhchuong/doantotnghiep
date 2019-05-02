@@ -446,7 +446,7 @@ export default class ContentProgramCom extends React.Component {
           <Column
             field="displayName"
             header="Tên dòng"
-            //editor={this.nameEditor}
+            editor={this.nameEditor}
             expander
           />
           <Column
