@@ -1,5 +1,7 @@
 import { combineReducers } from "redux";
 import { message } from "./message";
+import { users } from "./users";
+import { user } from "./user";
 import { faculties } from "./faculties";
 import { programs } from "./programs";
 import { subjects } from "./subjects";
@@ -30,7 +32,9 @@ const rootReducer = combineReducers({
   infoEduProgram,
   detailEduProgram,
   targetEduProgram,
-  message
+  message,
+  users,
+  user
 });
 
 export default rootReducer;

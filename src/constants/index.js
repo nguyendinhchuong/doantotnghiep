@@ -3,7 +3,14 @@ export const MESSAGE = "MESSAGE";
 
 // auth actions
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
+export const LOG_IN_ERROR = "LOG_IN_ERROR";
+
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
+export const LOG_OUT_ERROR = "LOG_OUT_ERROR";
+
+// users actions
+export const LOAD_USERS_SUCCESS = "LOAD_USERS_SUCCESS";
+export const LOAD_USERS_ERROR = "LOAD_USERS_ERROR";
 
 // majors actions
 export const LOAD_MAJORS_SUCCESS = "LOAD_MAJORS_SUCCESS";
