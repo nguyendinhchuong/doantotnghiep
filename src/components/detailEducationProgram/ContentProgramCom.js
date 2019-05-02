@@ -43,15 +43,21 @@ export default class ContentProgramCom extends React.Component {
   // Add
   handleAddRoot = () => {
     const data = logic.addRoot(this.state.nodes, this.state.nameValue);
-    this.setState({ nodes: data });
+    this.setState({ nodes: data, nameValue: "" });
     this.onHideDialogRoot();
   };
 
   handleAddChild = () => {
     const data = [...this.state.nodes];
     if (!this.state.isTable) {
+      const nodes = logic.addChildTitle(
+        data,
+        this.state.node,
+        this.state.nameValue
+      );
       this.setState({
-        nodes: logic.addChildTitle(data, this.state.node, this.state.nameValue)
+        nodes: nodes,
+        nameValue: ""
       });
     } else {
       this.setState({ nodes: this.addChildTable(data, this.state.node) });
@@ -265,7 +271,7 @@ export default class ContentProgramCom extends React.Component {
         if (node.children[i].data.isTable) {
           node.children[i] = this.convertNodeToDataTable(node.children[i]);
         }
-        if(node.children[i].children){
+        if (node.children[i].children) {
           this.loadSubNode(node.children[i]);
         }
       }

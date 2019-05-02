@@ -30,6 +30,8 @@ export default class TargetEducationCom extends Component {
   // up/down node
   upSameLevelTarget = targetNode => {
     let nodes = targetLogic.upSameLevel(this.state.targetNodes, targetNode);
+    // if (this.props.OSUsedNode.indexOf(targetNode.key) !== 0) {
+    // }
     this.setState({ targetNodes: nodes });
   };
 

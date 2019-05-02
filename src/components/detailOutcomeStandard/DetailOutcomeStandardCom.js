@@ -25,34 +25,57 @@ export default class DetailOutcomeStandardCom extends Component {
       revisionsVisible: false,
       exportVisible: false,
       saveRevisionVisible: false,
+      deleteAlertVisible: false,
       nameRevision: "",
       fileName: "",
       DragNodeVisible: false,
       keyDrag: "",
       keySuggestions: null,
       keys: null,
-      isSaveBtnDisabled: false
+      isSaveBtnDisabled: false,
+      deleteReAlertVisible: false,
+      idRevision: 0
     };
   }
 
   // add
   addRoot = () => {
+    const nodes = logic.addRoot(this.state.nodes, this.state.nameOut);
     this.setState({
-      nodes: logic.addRoot(this.state.nodes, this.state.nameOut)
+      nodes: nodes,
+      nameOut: ""
     });
   };
 
   add = node => {
+    const nodes = logic.addChild(this.state.nodes, node, this.state.nameOut);
     this.setState({
-      nodes: logic.addChild(this.state.nodes, node, this.state.nameOut)
+      nodes: nodes,
+      nameOut: ""
     });
   };
 
   // delete
-  deleteNode = node => {
-    const data1 = logic.deleteNode(this.state.nodes, node);
+  onShowDeleteAlert = node => {
     this.setState({
-      nodes: data1
+      deleteAlertVisible: true,
+      node: node
+    });
+  };
+
+  onHideDeleteAlertVisible = () => {
+    this.setState({
+      deleteAlertVisible: false,
+      node: ""
+    });
+  };
+
+  onDeleteNode = () => {
+    const data1 = logic.deleteNode(this.state.nodes, this.state.node);
+    this.setState({
+      nodes: data1,
+      node: "",
+      deleteAlertVisible: false
     });
   };
 
@@ -122,14 +145,39 @@ export default class DetailOutcomeStandardCom extends Component {
     this.setState({ revisionsVisible: false });
   };
 
-  onDeleteRevision = idRevision => {
-    const idOutcome = this.props.infoOutcomeStandard.Id;
-    this.props.onDeleteRevision(idRevision, idOutcome, this.state.nodes);
-    this.setState({ revisionsVisible: false });
+  onShowDeleteReAlert = id => {
+    this.setState({
+      deleteReAlertVisible: true,
+      idRevision: id
+    });
+  };
+
+  onHideDeleteReAlertVisible = () => {
+    this.setState({
+      deleteReAlertVisible: false,
+      idRevision: 0
+    });
+  };
+
+  onDeleteRevision = () => {
+    const idOutcome = this.props.infoOutcomeStandard
+      ? this.props.infoOutcomeStandard.Id
+      : 0;
+    this.props.onDeleteRevision(
+      this.state.idRevision,
+      idOutcome,
+      this.state.nodes
+    );
+    this.setState({
+      deleteReAlertVisible: false,
+      idRevision: 0
+    });
   };
 
   onOpenOutcomStandard = () => {
-    this.props.onLoadDetailOutcomeStandard(this.props.infoOutcomeStandard.Id);
+    this.props.onLoadDetailOutcomeStandard(
+      this.props.infoOutcomeStandard ? this.props.infoOutcomeStandard.Id : 0
+    );
     this.setState({ revisionsVisible: false });
   };
 
@@ -300,7 +348,7 @@ export default class DetailOutcomeStandardCom extends Component {
     this.props.onSaveDetailOutcomeStandard(
       data,
       this.state.nodes,
-      this.props.infoOutcomeStandard.Id
+      this.props.infoOutcomeStandard ? this.props.infoOutcomeStandard.Id : 0
     );
   };
 
@@ -354,10 +402,10 @@ export default class DetailOutcomeStandardCom extends Component {
           <i className="material-icons">swap_vert</i>
         </Button>*/}
         <Button
-          onClick={() => this.deleteNode(node)}
+          onClick={() => this.onShowDeleteAlert(node)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
-          title="Xóa cấp này"
+          title={`Xóa cấp ${node.key}`}
         >
           <i className="material-icons">delete_sweep</i>
         </Button>
@@ -555,7 +603,7 @@ export default class DetailOutcomeStandardCom extends Component {
           >
             <RevisionsCom
               onEdit={this.onEditRevision}
-              onDelete={this.onDeleteRevision}
+              onShowDeleteReAlert={this.onShowDeleteReAlert}
               revisions={this.props.revisions}
             />
           </Dialog>
@@ -575,6 +623,61 @@ export default class DetailOutcomeStandardCom extends Component {
               onChange={this.handleChangeNameRevision}
               style={{ width: "100%" }}
             />
+          </Dialog>
+        </div>
+        <div className="content-section implementation">
+          <Dialog
+            header="Thông báo"
+            visible={this.state.deleteAlertVisible}
+            style={{ width: "50vw" }}
+            footer={
+              <div>
+                <Button onClick={this.onDeleteNode} theme="success">
+                  Xóa
+                </Button>
+                <Button
+                  onClick={this.onHideDeleteAlertVisible}
+                  theme="secondary"
+                >
+                  Hủy
+                </Button>
+              </div>
+            }
+            onHide={this.onHideDeleteAlertVisible}
+          >
+            {`Bạn thực sự muốn xóa node ${
+              this.state.node ? this.state.node.key : "chưa có dữ liệu"
+            }`}
+          </Dialog>
+        </div>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="Thông báo"
+            visible={this.state.deleteReAlertVisible}
+            style={{ width: "50vw" }}
+            footer={
+              <div>
+                <Button onClick={this.onDeleteRevision} theme="success">
+                  Xóa
+                </Button>
+                <Button
+                  onClick={this.onHideDeleteReAlertVisible}
+                  theme="secondary"
+                >
+                  Hủy
+                </Button>
+              </div>
+            }
+            onHide={this.onHideDeleteReAlertVisible}
+          >
+            {`Bạn thực sự muốn xóa phiên bản ${
+              this.state.idRevision !== 0
+                ? this.props.revisions.filter(
+                    row => row.Id === this.state.idRevision
+                  )[0].NameRevision
+                : ""
+            }`}
           </Dialog>
         </div>
       </div>

@@ -49,25 +49,31 @@ export const deleteRevisionError = errorMessage => ({
 
 export const onDeleteRevision = (idRevision, idOutcome, nodes) => {
   return (dispatch, getState) => {
-    let req = `${links.DELETE_REVISION}?idrevision=${idRevision}`;
-    axios
-      .post(req)
-      .then(res => {
-        if (res.data.code === 1) {
-          let chirp = { message: `Xóa phiên bản thành công`, isRight: 1 };
-          dispatch(onLoadRevisions(idOutcome));
-          dispatch(message.message(chirp));
-          dispatch(deleteRevisionSuccess(res, nodes));
-        } else {
+    if (idOutcome < 1) {
+      let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+      dispatch(message.message(chirp));
+      dispatch(deleteRevisionError("Chưa đủ dữ liệu"));
+    } else {
+      let req = `${links.DELETE_REVISION}?idrevision=${idRevision}`;
+      axios
+        .post(req)
+        .then(res => {
+          if (res.data.code === 1) {
+            let chirp = { message: `Xóa phiên bản thành công`, isRight: 1 };
+            dispatch(onLoadRevisions(idOutcome));
+            dispatch(message.message(chirp));
+            dispatch(deleteRevisionSuccess(res, nodes));
+          } else {
+            let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+            dispatch(message.message(chirp));
+            dispatch(deleteRevisionError(res));
+          }
+        })
+        .catch(err => {
           let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
           dispatch(message.message(chirp));
-          dispatch(deleteRevisionError(res));
-        }
-      })
-      .catch(err => {
-        let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
-        dispatch(message.message(chirp));
-        dispatch(deleteRevisionError(err));
-      });
+          dispatch(deleteRevisionError(err));
+        });
+    }
   };
 };

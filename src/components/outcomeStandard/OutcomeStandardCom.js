@@ -4,7 +4,7 @@ import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import Dialog from "rc-dialog";
+import { Dialog } from "primereact/dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -12,16 +12,19 @@ export default class OutcomeStandardCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nameOutcome: "",
       faculty: { id: "0" },
       program: { id: "0" },
-      visible: false,
       schoolYear: "",
+      visible: false,
       facultyDup: { id: "0" },
       programDup: { id: "0" },
       dupVisible: false,
       schoolYearDup: "",
       duplicatedOutcomeId: 0,
-      outcomeReview: []
+      outcomeReview: [],
+      deleteVisible: false,
+      idOutcome: 0
     };
   }
 
@@ -93,6 +96,8 @@ export default class OutcomeStandardCom extends Component {
       };
       this.props.onAddOutcomeStandard(data);
       this.setState({
+        nameOutcome: "",
+        schoolYear: "",
         visible: false
       });
     }
@@ -184,8 +189,26 @@ export default class OutcomeStandardCom extends Component {
     });
   };
 
-  onDelete = IdOutcome => {
-    this.props.onDeleteOutcomeStandard(IdOutcome);
+  onDeleteShow = IdOutcome => {
+    this.setState({
+      deleteVisible: true,
+      idOutcome: IdOutcome
+    });
+  };
+
+  onDelete = () => {
+    this.props.onDeleteOutcomeStandard(this.state.idOutcome);
+    this.setState({
+      deleteVisible: false,
+      idOutcome: 0
+    });
+  };
+
+  onHideDeleteVisible = () => {
+    this.setState({
+      deleteVisible: false,
+      idOutcome: 0
+    });
   };
 
   actionTemplate = (data, column) => {
@@ -209,7 +232,7 @@ export default class OutcomeStandardCom extends Component {
         </Button>
         <Button
           title="Xóa"
-          onClick={() => this.onDelete(data.Id)}
+          onClick={this.onDeleteShow}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -223,29 +246,31 @@ export default class OutcomeStandardCom extends Component {
     const dialog = (
       <Dialog
         visible={this.state.visible}
-        onClose={this.onCloseAdd}
-        style={{ width: 520 }}
-        title={<div>Thêm chuẩn đầu ra</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onCloseAdd}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseAndCreate}
-            theme="success"
-          >
-            Tạo
-          </Button>
-        ]}
+        onHide={this.onCloseAdd}
+        style={{ width: "50vw" }}
+        header="Thêm chuẩn đầu ra"
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndCreate}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseAdd}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Row>
           <Col lg="3" md="3" sm="3">
@@ -326,29 +351,31 @@ export default class OutcomeStandardCom extends Component {
     const dupDialog = (
       <Dialog
         visible={this.state.dupVisible}
-        onClose={this.onCloseDup}
-        style={{ width: 520 }}
-        title={<div>Sao chép chuẩn đầu ra</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onCloseDup}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseDupAndCreate}
-            theme="success"
-          >
-            Tạo bản sao
-          </Button>
-        ]}
+        onHide={this.onCloseDup}
+        style={{ width: "50vw" }}
+        header="Sao chép chuẩn đầu ra"
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseDupAndCreate}
+              theme="success"
+            >
+              Tạo bản sao
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseDup}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Row>
           <Col lg="1" md="1" sm="1">
@@ -462,6 +489,32 @@ export default class OutcomeStandardCom extends Component {
         </Row>
         {dialog}
         {dupDialog}
+        <div className="content-section implementation">
+          <Dialog
+            header="Thông báo"
+            visible={this.state.deleteVisible}
+            style={{ width: "50vw" }}
+            footer={
+              <div>
+                <Button onClick={this.onDelete} theme="success">
+                  Xóa
+                </Button>
+                <Button onClick={this.onHideDeleteVisible} theme="secondary">
+                  Hủy
+                </Button>
+              </div>
+            }
+            onHide={this.onHideDeleteVisible}
+          >
+            {`Bạn thực sự muốn xóa chuẩn đầu ra ${
+              this.state.idOutcome !== 0
+                ? this.props.outcomeStandards.filter(
+                    row => row.Id === this.state.idOutcome
+                  )[0].NameOutcomeStandard
+                : ""
+            }`}
+          </Dialog>
+        </div>
       </div>
     );
   }

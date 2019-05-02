@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import Dialog from "rc-dialog";
+import { Dialog } from "primereact/dialog";
 import "rc-dialog/assets/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -17,7 +17,8 @@ export default class EduProgramCom extends Component {
       program: { id: "0" },
       major: { Id: "0" },
       facultyId: 0,
-      schoolYear: ""
+      schoolYear: "",
+      eduId: 0
     };
   }
 
@@ -124,7 +125,9 @@ export default class EduProgramCom extends Component {
       };
       this.props.onAddEduProgram(data);
       this.setState({
-        visible: false
+        visible: false,
+        nameEduProgram: "",
+        schoolYear: ""
       });
     }
   };
@@ -136,8 +139,26 @@ export default class EduProgramCom extends Component {
     });
   };
 
-  onDelete = IdEdu => {
-    this.props.onDeleteEduProgram(IdEdu);
+  onHideDeleteVisible = () => {
+    this.setState({
+      eduId: 0,
+      deleteVisible: false
+    });
+  };
+
+  onDeleteShow = eduId => {
+    this.setState({
+      eduId: eduId,
+      deleteVisible: true
+    });
+  };
+
+  onDelete = () => {
+    // this.props.onDeleteEduProgram(this.state.eduId);
+    this.setState({
+      eduId: 0,
+      deleteVisible: false
+    });
   };
 
   actionTemplate = (data, column) => {
@@ -153,7 +174,7 @@ export default class EduProgramCom extends Component {
         </Button>
         <Button
           title="Xóa"
-          onClick={() => this.onDelete(data.Id)}
+          onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -167,29 +188,31 @@ export default class EduProgramCom extends Component {
     const dialog = (
       <Dialog
         visible={this.state.visible}
-        onClose={this.onCloseAdd}
-        style={{ width: 520 }}
-        title={<div>Thêm chương trình đào tạo</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onCloseAdd}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseAndCreate}
-            theme="success"
-          >
-            Tạo
-          </Button>
-        ]}
+        onHide={this.onCloseAdd}
+        style={{ width: "50vw" }}
+        header="Thêm chương trình đào tạo"
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndCreate}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseAdd}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Row>
           <Col lg="3" md="3" sm="3">
@@ -386,6 +409,32 @@ export default class EduProgramCom extends Component {
           </Col>
         </Row>
         {dialog}
+        <div className="content-section implementation">
+          <Dialog
+            header="Thông báo"
+            visible={this.state.deleteVisible}
+            style={{ width: "50vw" }}
+            footer={
+              <div>
+                <Button onClick={this.onDelete} theme="success">
+                  Xóa
+                </Button>
+                <Button onClick={this.onHideDeleteVisible} theme="secondary">
+                  Hủy
+                </Button>
+              </div>
+            }
+            onHide={this.onHideDeleteVisible}
+          >
+            {`Bạn thực sự muốn xóa chương trình đào tạo ${
+              this.state.eduId !== 0
+                ? this.props.eduPrograms.filter(
+                    row => row.Id === this.state.eduId
+                  )[0].EduName
+                : ""
+            }`}
+          </Dialog>
+        </div>
       </div>
     );
   }

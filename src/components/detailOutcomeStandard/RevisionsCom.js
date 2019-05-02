@@ -17,7 +17,7 @@ export default class RevisionsCom extends React.Component {
         </Button>
         <Button
           title="Xóa"
-          onClick={() => this.props.onDelete(data.Id)}
+          onClick={() => this.props.onShowDeleteReAlert(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
