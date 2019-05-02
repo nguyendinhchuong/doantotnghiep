@@ -7,6 +7,7 @@ import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
 import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
 import TableProgramArchiCom from "../detailEducationProgram/TableProgramArchiCom";
 import TitleCom from "../detailEducationProgram/TitleCom";
+import ScheduleEducationCom from "../detailEducationProgram/ScheduleEducationCom"
 
 import * as event from "../../business/events";
 
@@ -254,7 +255,11 @@ export default class DetailEducationProgramCom extends React.Component {
                 />
               </AccordionTab>
 
-              <AccordionTab header="8. Kế hoạch giảng dạy dự kiến:" />
+              <AccordionTab header="8. Kế hoạch giảng dạy dự kiến:" >
+                <ScheduleEducationCom 
+
+                />
+              </AccordionTab>
             </Accordion>
           </Col>
         </Row>
