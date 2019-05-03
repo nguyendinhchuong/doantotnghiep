@@ -3,6 +3,26 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 
+const NAME_SEMESTER = "HỌC KỲ ";
+const LEVEL = 8;
+
+// add
+export const addRoot = (nodes, semester) => {
+  debugger;
+  const key = `${LEVEL}.${nodes.length + 1}`;
+  const node = {
+    key: key,
+    data: {
+      name: semester,
+      displayName: `${key}. ${NAME_SEMESTER + semester}`
+    },
+    children: []
+  };
+  let results = [...nodes,node];
+  return results;
+};
+
+//
 export const headerGroup = (
     <ColumnGroup>
       <Row>

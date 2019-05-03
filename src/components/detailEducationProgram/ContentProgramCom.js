@@ -256,14 +256,7 @@ export default class ContentProgramCom extends React.Component {
   };
 
   // supporting
-  footer = (
-    <div className="p-clearfix" style={{ width: "100%" }}>
-      <Button theme="success" style={{ float: "left" }} title="Thêm môn học">
-        <i className="material-icons">playlist_add</i>
-      </Button>
-    </div>
-  );
-
+  
   loadSubNode = node => {
     if (node.children) {
       const length = node.children.length;
@@ -411,6 +404,14 @@ export default class ContentProgramCom extends React.Component {
     );
   };
 
+  footer = (
+    <div className="p-clearfix" style={{ width: "100%" }}>
+      <Button theme="success" style={{ float: "left" }} title="Thêm môn học">
+        <i className="material-icons">playlist_add</i>
+      </Button>
+    </div>
+  );
+  
   footerRoot = (
     <div>
       <Button onClick={this.handleAddRoot} theme="success">
