@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import UserManageCom from "../components/userManage/UserManageCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import { connect } from "react-redux";
 import * as usersAction from "../actions/usersAction";
+
+import { connect } from "react-redux";
 
 class UserManageTemp extends Component {
   constructor(props) {
@@ -28,7 +28,8 @@ class UserManageTemp extends Component {
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="12"
-              title="QUẢN LÝ NGƯỜI DÙNG"
+              title="NGƯỜI DÙNG"
+              subtitle="quản lý"
               className="text-sm-left"
             />
           </Col>

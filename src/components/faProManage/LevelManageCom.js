@@ -3,9 +3,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import Dialog from "rc-dialog";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
+import { Dialog } from "primereact/dialog";
 
 export default class LevelManageCom extends Component {
   constructor(props) {
@@ -41,7 +39,7 @@ export default class LevelManageCom extends Component {
   };
 
   handleLevelName = event => {
-      this.setState({ levelName: event.target.value });
+    this.setState({ levelName: event.target.value });
   };
 
   onCloseAndCreate = () => {
@@ -55,30 +53,32 @@ export default class LevelManageCom extends Component {
   render() {
     const dialog = (
       <Dialog
+        header="Thêm Trình độ"
         visible={this.state.visible}
-        onClose={this.onCloseAdd}
-        style={{ width: 520 }}
-        title={<div>Thêm Trình độ</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onCloseAdd}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseAndCreate}
-            theme="success"
-          >
-            Tạo
-          </Button>
-        ]}
+        style={{ width: "50vw" }}
+        onHide={this.onCloseAdd}
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndCreate}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseAdd}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Row>
           <Col lg="4" md="4" sm="4">

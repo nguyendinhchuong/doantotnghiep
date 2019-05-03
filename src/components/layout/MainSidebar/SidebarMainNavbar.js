@@ -57,9 +57,6 @@ class SidebarMainNavbar extends React.Component {
 }
 
 SidebarMainNavbar.propTypes = {
-  /**
-   * Whether to hide the logo text, or not.
-   */
   hideLogoText: PropTypes.bool
 };
 

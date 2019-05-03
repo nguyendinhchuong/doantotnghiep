@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import { Row, Col } from "shards-react";
 import { TabView, TabPanel } from "primereact/tabview";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
 
 import FacultyManageCom from "./FacultyManageCom";
 import ProgramManageCom from "./ProgramManageCom";

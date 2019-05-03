@@ -4,7 +4,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
-import { Spinner } from 'primereact/spinner';
+import { Spinner } from "primereact/spinner";
 
 import * as logic from "../../business/logicScheduleEdu";
 import * as common from "../../business/commonEducation"
@@ -27,10 +27,8 @@ export default class ScheduleEducationCom extends React.Component {
   handleAddRoot = () => {
     const data = logic.addRoot(this.state.nodes, this.state.semester);
     this.setState({ nodes: data, semester: this.state.semester + 1 });
-    console.log(this.state.nodes);
-
     this.onHideDialogRoot();
-  }
+  };
 
   handleAddChild = () => {
     this.setState({ nodes: this.addChildTable(this.state.nodes, this.state.node) });

@@ -30,8 +30,6 @@ export default class TargetEducationCom extends Component {
   // up/down node
   upSameLevelTarget = targetNode => {
     let nodes = targetLogic.upSameLevel(this.state.targetNodes, targetNode);
-    // if (this.props.OSUsedNode.indexOf(targetNode.key) !== 0) {
-    // }
     this.setState({ targetNodes: nodes });
   };
 
@@ -57,9 +55,15 @@ export default class TargetEducationCom extends Component {
       targetNode,
       this.state.targetNameOut
     );
+    let nodes = [...data];
+    targetLogic.updateOSUsedNode(nodes, this.state.targetNode.key);
     this.setState({
-      targetNodes: data
+      targetNodes: nodes
     });
+    console.log(this.state.targetNodes);
+    let key = "fuck";
+    targetLogic.getOSUsedNode(nodes, key);
+    console.log(key);
   };
 
   // delete
@@ -133,7 +137,13 @@ export default class TargetEducationCom extends Component {
     ) {
       alert("Không thể thêm chuẩn đầu ra ở node này!!");
     } else {
-      this.props.onSaveOutcomeUsed(this.state.tmpIdOutcome,this.state.targetNode.key);
+      let nodes = [...this.state.targetNodes];
+      targetLogic.updateOSUsedNode(nodes, this.state.targetNode.key);
+      this.props.onSaveOutcomeUsed(
+        this.state.tmpIdOutcome,
+        this.state.targetNode.key
+      );
+      this.setState({ targetNodes: nodes });
     }
     this.onHideTargetDialog();
     this.onHideDetailOS();

@@ -3,9 +3,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import Dialog from "rc-dialog";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
+import { Dialog } from "primereact/dialog";
 
 export default class MajorManageCom extends Component {
   constructor(props) {
@@ -78,30 +76,32 @@ export default class MajorManageCom extends Component {
   render() {
     const dialog = (
       <Dialog
+        header="Thêm Ngành"
         visible={this.state.visible}
-        onClose={this.onCloseAdd}
-        style={{ width: 520 }}
-        title={<div>Thêm Ngành</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onCloseAdd}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseAndCreate}
-            theme="success"
-          >
-            Tạo
-          </Button>
-        ]}
+        style={{ width: "50vw" }}
+        onHide={this.onCloseAdd}
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndCreate}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseAdd}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Row>
           <Col lg="4" md="4" sm="4">

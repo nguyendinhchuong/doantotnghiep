@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import XLSX from "xlsx";
 
-import { Row, Col, Button, FormInput, FormTextarea } from "shards-react";
+import { Row, Col, Button, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import Dialog from "rc-dialog";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
+import { Dialog } from "primereact/dialog";
 
 import * as logic from "../../business";
 
@@ -219,30 +217,32 @@ export default class SubjectManageCom extends Component {
   render() {
     const dialog = (
       <Dialog
+        header="Thêm Học phần"
         visible={this.state.visible}
-        onClose={this.onCloseAdd}
-        style={{ width: 520 }}
-        title={<div>Thêm học phần</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onCloseAdd}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseAndCreate}
-            theme="success"
-          >
-            Tạo
-          </Button>
-        ]}
+        style={{ width: "50vw" }}
+        onHide={this.onCloseAdd}
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndCreate}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseAdd}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Row>
           <Col lg="4" md="4" sm="4">
@@ -339,9 +339,10 @@ export default class SubjectManageCom extends Component {
             Mô tả môn học:
           </Col>
           <Col lg="8" md="8" sm="8">
-            <FormTextarea
+            <FormInput
               value={this.state.description}
               onChange={this.handleDescription}
+              className="mb-2"
             />
           </Col>
         </Row>
@@ -350,30 +351,32 @@ export default class SubjectManageCom extends Component {
 
     const reviewDialog = (
       <Dialog
+        header="Danh sách môn từ file:"
         visible={this.state.reviewVisible}
-        onClose={this.onClose}
-        style={{ width: "60vw" }}
-        title={<div>Danh sách môn từ file:</div>}
-        footer={[
-          <Button
-            type="button"
-            className="btn btn-default"
-            key="close"
-            onClick={this.onClose}
-            theme="light"
-          >
-            Hủy
-          </Button>,
-          <Button
-            type="button"
-            className="btn btn-primary"
-            key="save"
-            onClick={this.onCloseAndAddSubjects}
-            theme="success"
-          >
-            Tạo
-          </Button>
-        ]}
+        style={{ width: "50vw" }}
+        onHide={this.onClose}
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndAddSubjects}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onClose}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
       >
         <Col lg="12" md="12" sm="12">
           <DataTable
@@ -393,11 +396,11 @@ export default class SubjectManageCom extends Component {
 
     const detailDialog = (
       <Dialog
+        header="Mô tả môn học:"
         visible={this.state.detailVisible}
-        onClose={this.onCloseDetail}
-        style={{ width: 800 }}
-        title={<div>Mô tả môn học:</div>}
-        footer={[
+        style={{ width: "50vw" }}
+        onHide={this.onCloseDetail}
+        footer={
           <Button
             type="button"
             className="btn btn-default"
@@ -407,7 +410,7 @@ export default class SubjectManageCom extends Component {
           >
             Đóng
           </Button>
-        ]}
+        }
       >
         <Row>
           <Col lg="12" md="12" sm="12">
@@ -444,7 +447,7 @@ export default class SubjectManageCom extends Component {
           <Col lg="2" md="2" sm="2">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">playlist_add</i> Thêm học phần
+                <i className="material-icons">playlist_add</i> Thêm Học phần
               </Button>
             </p>
           </Col>

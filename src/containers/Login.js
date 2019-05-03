@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import LoginCom from "../components/LoginCom";
 import AlertCom from "../components/AlertCom";
 
-import { connect } from "react-redux";
 import * as usersAction from "../actions/usersAction";
+
+import { connect } from "react-redux";
 
 class LoginTemp extends Component {
   constructor(props) {

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
@@ -43,14 +42,9 @@ class EditOutcomeStandardTmp extends Component {
       ? this.props.infoOutcomeStandard[0]
       : null;
 
-    const subtitle = infoOutcomeStandard
-      ? `Khoa: ${infoOutcomeStandard.NameFaculty} | Hệ: ${
-          infoOutcomeStandard.NameProgram
-        }`
-      : `Khoa: Chưa tải được | Hệ: Chưa tải được`;
     const title = infoOutcomeStandard
-      ? `Sửa chuẩn đầu ra: ${infoOutcomeStandard.NameOutcomeStandard}`
-      : `Sửa chuẩn đầu ra: Chưa tải được`;
+      ? `${infoOutcomeStandard.NameOutcomeStandard}`
+      : `Chưa tải được`;
 
     return (
       <Container fluid className="main-content-container px-4">
@@ -59,7 +53,7 @@ class EditOutcomeStandardTmp extends Component {
             <PageTitle
               sm="12"
               title={title}
-              subtitle={subtitle}
+              subtitle="Chỉnh sửa CĐR"
               className="text-sm-left"
             />
           </Col>

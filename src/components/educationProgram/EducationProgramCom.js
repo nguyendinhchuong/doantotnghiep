@@ -4,8 +4,6 @@ import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
 
 export default class EduProgramCom extends Component {
   constructor(props) {
@@ -187,10 +185,10 @@ export default class EduProgramCom extends Component {
   render() {
     const dialog = (
       <Dialog
+        header="Thêm Chương trình đào tạo"
         visible={this.state.visible}
-        onHide={this.onCloseAdd}
         style={{ width: "50vw" }}
-        header="Thêm chương trình đào tạo"
+        onHide={this.onCloseAdd}
         footer={
           <div>
             <Button
@@ -388,7 +386,7 @@ export default class EduProgramCom extends Component {
           <Col lg="12" md="12" sm="12">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">playlist_add</i> Thêm chương trình
+                <i className="material-icons">playlist_add</i> Thêm Chương trình
                 đào tạo
               </Button>
             </p>

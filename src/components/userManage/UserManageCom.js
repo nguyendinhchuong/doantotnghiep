@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { Row, Col } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
 
 export default class UserManageCom extends Component {
   render() {

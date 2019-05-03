@@ -8,9 +8,6 @@ import withTracker from "./withTracker";
 
 import ScrollToTop from "./ScrollToTop";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/shards-dashboards.1.1.0.min.css";
-
 export default () => (
   <Router basename={process.env.REACT_APP_BASENAME}>
     <div>
