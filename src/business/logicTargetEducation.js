@@ -1,5 +1,34 @@
 import * as common from "./commonEducation";
 
+export const updateOSUsedNode = (nodes, key) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    for (let i in nodes) {
+      if (key === nodes[i].key) {
+        nodes[i].OSUsed = true;
+      } else {
+        nodes[i].OSUsed = false;
+      }
+      let children = nodes[i].children;
+      updateOSUsedNode(children, key);
+    }
+  }
+};
+
+export const getOSUsedNode = (nodes, key) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    for (let i in nodes) {
+      if (nodes[i].OSUsed) {
+        key = nodes[i].key;
+        key = "heelllo";
+      }
+      let children = nodes[i].children;
+      getOSUsedNode(children, key);
+    }
+  }
+};
+
 export const addRoot = (data, name) => {
   let nodes = [...data];
   const length = nodes.length;

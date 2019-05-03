@@ -1,4 +1,5 @@
 import * as logic from "./";
+import * as commonLogic from "./commonEducation";
 
 export const receiveProps = nextProps => {
   const MajorId = nextProps.infoEduProgram
@@ -102,12 +103,13 @@ export const onSaveTarget = (prop, targetNodes) => {
 export const onSaveContent = (prop, contentNodes) => {
   let data = [];
   let level = logic.getMaxLevel(contentNodes);
-  logic.createSaveData(contentNodes, data, 1, level);
+  commonLogic.createSaveData(contentNodes, data, level);
   const contentProgram = {
     datecreated: new Date().toISOString(),
     iddetail: prop.detailEduProgram.Id,
     data,
     contentNodes
   };
+  console.log(data)
   return contentProgram;
 };

@@ -61,7 +61,7 @@ class DetailEducationProgramTmp extends Component {
             <PageTitle
               sm="12"
               title={title}
-              subtitle="Chỉnh sửa"
+              subtitle="Chỉnh sửa CTĐT"
               className="text-sm-left"
             />
           </Col>

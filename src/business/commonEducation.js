@@ -150,3 +150,26 @@ export const hoverDownLevel = (nodes, node) => {
     ? child.key
     : key.slice(0, lastDot + 1) + (index - 1).toString();
 };
+
+export const createSaveData = (nodes, outData, level) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    let tmpObj = {};
+    for (let i in nodes) {
+      let length = level - nodes[i].key.length / 2 - 1;
+      let KeyRow = nodes[i].key;
+      for (var j = 0; j < length; j++) {
+        KeyRow = KeyRow + ".";
+      }
+      let { displayName, ...rest } = nodes[i].data;
+      let data = rest;
+      tmpObj = { KeyRow, data };
+
+      outData.push(tmpObj);
+      tmpObj = {};
+
+      let children = nodes[i].children;
+      createSaveData(children, outData, level);
+    }
+  }
+};
