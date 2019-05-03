@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import OutcomeStandardCom from "../components/outcomeStandard/OutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
+
+import { connect } from "react-redux";
 
 class OutcomeStandardTemp extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class OutcomeStandardTemp extends Component {
             <PageTitle
               sm="12"
               title="CHUẨN ĐẦU RA"
-              subtitle="danh sách"
+              subtitle="quản lý"
               className="text-sm-left"
             />
           </Col>

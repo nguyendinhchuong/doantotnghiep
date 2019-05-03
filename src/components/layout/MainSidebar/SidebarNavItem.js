@@ -24,9 +24,6 @@ const SidebarNavItem = ({ item }) => (
 );
 
 SidebarNavItem.propTypes = {
-  /**
-   * The item object.
-   */
   item: PropTypes.object
 };
 

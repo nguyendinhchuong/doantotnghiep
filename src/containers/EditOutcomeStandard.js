@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";

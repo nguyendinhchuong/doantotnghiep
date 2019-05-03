@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import EducationProgramCom from "../components/educationProgram/EducationProgramCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import { connect } from "react-redux";
 import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 import * as levelsAction from "../actions/levelsAction";
 import * as majorsAction from "../actions/majorsAction";
+
+import { connect } from "react-redux";
 
 class EducationProgramTmp extends Component {
   constructor(props) {
@@ -30,7 +33,7 @@ class EducationProgramTmp extends Component {
             <PageTitle
               sm="12"
               title="CHƯƠNG TRÌNH ĐÀO TẠO"
-              subtitle="danh sách"
+              subtitle="quản lý"
               className="text-sm-left"
             />
           </Col>

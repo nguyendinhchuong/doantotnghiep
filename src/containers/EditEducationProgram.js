@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import DetailEducationProgramCom from "../components/detailEducationProgram/DetailEducationProgramCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import { connect } from "react-redux";
 import * as levelsAction from "../actions/levelsAction";
 import * as majorsAction from "../actions/majorsAction";
 import * as programsAction from "../actions/programsAction";
@@ -17,6 +15,8 @@ import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as detailEduProgramAction from "../actions/detailEduProgramAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
+
+import { connect } from "react-redux";
 
 class DetailEducationProgramTmp extends Component {
   constructor(props) {

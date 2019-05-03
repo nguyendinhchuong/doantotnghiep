@@ -7,7 +7,7 @@ import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
 import ContentProgramCom from "../detailEducationProgram/ContentProgramCom";
 import TableProgramArchiCom from "../detailEducationProgram/TableProgramArchiCom";
 import TitleCom from "../detailEducationProgram/TitleCom";
-import ScheduleEducationCom from "../detailEducationProgram/ScheduleEducationCom"
+import ScheduleEducationCom from "../detailEducationProgram/ScheduleEducationCom";
 
 import * as event from "../../business/events";
 
@@ -121,13 +121,9 @@ export default class DetailEducationProgramCom extends React.Component {
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
-    console.log(targetEduProgram.data);
-    
 
     const contentNodes = this.TargetEducationCom.current.state.nodes;
     const contentProgram = event.onSaveContent(this.props, contentNodes);
-    console.log(contentProgram.data);
-    console.log(contentProgram.contentNodes);
 
     this.props.onSaveEduProgram(
       infoEduProgram,
@@ -255,10 +251,8 @@ export default class DetailEducationProgramCom extends React.Component {
                 />
               </AccordionTab>
 
-              <AccordionTab header="8. Kế hoạch giảng dạy dự kiến:" >
-                <ScheduleEducationCom 
-
-                />
+              <AccordionTab header="8. Kế hoạch giảng dạy dự kiến:">
+                <ScheduleEducationCom />
               </AccordionTab>
             </Accordion>
           </Col>

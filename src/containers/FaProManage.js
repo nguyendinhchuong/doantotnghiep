@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import FaProManageCom from "../components/faProManage/FaProManageCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import { connect } from "react-redux";
 import * as facultiesAction from "../actions/facultiesAction";
 import * as programsAction from "../actions/programsAction";
 import * as majorsAction from "../actions/majorsAction";
 import * as levelsAction from "../actions/levelsAction";
+
+import { connect } from "react-redux";
 
 class FaProManageTemp extends Component {
   constructor(props) {
@@ -34,7 +34,8 @@ class FaProManageTemp extends Component {
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="12"
-              title="QUẢN LÝ KHOA HỆ"
+              title="KHOA HỆ"
+              subtitle="quản lý"
               className="text-sm-left"
             />
           </Col>

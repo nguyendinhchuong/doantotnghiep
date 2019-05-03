@@ -5,8 +5,6 @@ import { DataTable } from "primereact/datatable";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
 
 export default class OutcomeStandardCom extends Component {
   constructor(props) {
@@ -245,10 +243,10 @@ export default class OutcomeStandardCom extends Component {
   render() {
     const dialog = (
       <Dialog
+        header="Thêm Chuẩn đầu ra"
         visible={this.state.visible}
-        onHide={this.onCloseAdd}
         style={{ width: "50vw" }}
-        header="Thêm chuẩn đầu ra"
+        onHide={this.onCloseAdd}
         footer={
           <div>
             <Button
@@ -350,10 +348,10 @@ export default class OutcomeStandardCom extends Component {
 
     const dupDialog = (
       <Dialog
-        visible={this.state.dupVisible}
-        onHide={this.onCloseDup}
-        style={{ width: "50vw" }}
         header="Sao chép chuẩn đầu ra"
+        visible={this.state.dupVisible}
+        style={{ width: "50vw" }}
+        onHide={this.onCloseDup}
         footer={
           <div>
             <Button
@@ -469,7 +467,7 @@ export default class OutcomeStandardCom extends Component {
           <Col lg="12" md="12" sm="12">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">playlist_add</i> Thêm chuẩn đầu ra
+                <i className="material-icons">playlist_add</i> Thêm Chuẩn đầu ra
               </Button>
             </p>
           </Col>

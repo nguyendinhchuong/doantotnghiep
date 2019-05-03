@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import "rc-dialog/assets/bootstrap.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "rc-pagination/assets/index.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import SubjectManageCom from "../components/subjectManage/SubjectManageCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import { connect } from "react-redux";
 import * as subjectsAction from "../actions/subjectsAction";
+
+import { connect } from "react-redux";
 
 class SubjectManageTemp extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class SubjectManageTemp extends Component {
             <PageTitle
               sm="12"
               title="HỌC PHẦN"
-              subtitle="danh sách"
+              subtitle="quản lý"
               className="text-sm-left"
             />
           </Col>
