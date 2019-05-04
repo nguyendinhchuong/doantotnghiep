@@ -29,7 +29,7 @@ export default class DetailEducationProgramCom extends React.Component {
       GraduatedCon: "",
       // end states for Title
       // states for TargetEdu
-      OSUsedNode: "chưa có",
+      OSUsedNode: "",
       IdOutcome: 0,
       //end states for TargetEdu
       // states this Component
@@ -146,7 +146,8 @@ export default class DetailEducationProgramCom extends React.Component {
       EnrollmentTarget: data.EnrollmentTarget,
       EduProcess: data.EduProcess,
       GraduatedCon: data.GraduatedCon,
-      IdOutcome: data.IdOutcome
+      IdOutcome: data.IdOutcome,
+      OSUsedNode: data.OSUsedNode
     });
   }
 

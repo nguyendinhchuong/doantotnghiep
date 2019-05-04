@@ -9,6 +9,7 @@ import { Checkbox } from "primereact/checkbox";
 import { DataTable } from "primereact/datatable";
 
 import * as targetLogic from "../../business/logicTargetEducation";
+import * as commonLogic from "../../business/commonEducation";
 
 export default class TargetEducationCom extends Component {
   constructor(props) {
@@ -23,19 +24,26 @@ export default class TargetEducationCom extends Component {
       isData: false,
       detailOsVisible: false,
       os: [],
-      tmpIdOutcome: 0
+      tmpIdOutcome: 0,
+      deleteAlertVisible: false
     };
   }
 
   // up/down node
   upSameLevelTarget = targetNode => {
     let nodes = targetLogic.upSameLevel(this.state.targetNodes, targetNode);
+    const key = { data: "" };
+    targetLogic.getOSUsedNode(nodes, key);
     this.setState({ targetNodes: nodes });
+    this.props.onSaveOutcomeUsed(this.props.IdOutcome, key.data);
   };
 
   downSameLevelTarget = targetNode => {
     let nodes = targetLogic.downSameLevel(this.state.targetNodes, targetNode);
+    const key = { data: "" };
+    targetLogic.getOSUsedNode(nodes, key);
     this.setState({ targetNodes: nodes });
+    this.props.onSaveOutcomeUsed(this.props.IdOutcome, key.data);
   };
 
   // add
@@ -55,25 +63,71 @@ export default class TargetEducationCom extends Component {
       targetNode,
       this.state.targetNameOut
     );
-    let nodes = [...data];
-    targetLogic.updateOSUsedNode(nodes, this.state.targetNode.key);
     this.setState({
-      targetNodes: nodes
+      targetNodes: data
     });
-    console.log(this.state.targetNodes);
-    let key = "fuck";
-    targetLogic.getOSUsedNode(nodes, key);
-    console.log(key);
   };
 
   // delete
-  deleteTargetNode = targetNode => {
-    if (this.props.OSUsedNode.indexOf(targetNode.key) !== 0) {
-      const data = targetLogic.deleteNode(this.state.targetNodes, targetNode);
-      this.setState({
-        targetNodes: data
-      });
-    } else alert("Cấp này đang sử dụng chuẩn đầu ra!!");
+  onShowDeleteAlert = targetNode => {
+    this.setState({
+      deleteAlertVisible: true,
+      targetNode: targetNode
+    });
+  };
+
+  onHideDeleteAlertVisible = () => {
+    this.setState({
+      deleteAlertVisible: false,
+      targetNode: ""
+    });
+  };
+
+  deleteTargetNode = () => {
+    const data = targetLogic.deleteNode(
+      this.state.targetNodes,
+      this.state.targetNode
+    );
+    this.props.onSaveOutcomeUsed(0, "");
+    this.setState({
+      targetNodes: data,
+      targetNode: "",
+      deleteAlertVisible: false
+    });
+  };
+
+  // update
+  nameEditor = props => {
+    return this.inputTextEditor(props, "name");
+  };
+
+  inputTextEditor = (props, field) => {
+    return (
+      <InputText
+        style={{ width: "80%" }}
+        type="text"
+        value={props.node.data[field]}
+        onChange={e => this.onEditorValueChange(props, e.target.value)}
+      />
+    );
+  };
+
+  onEditorValueChange = (props, value) => {
+    let key = props.node.key;
+    // case root = 7.1.... => 1.1...
+    if (this.state.targetNodes[0].key[0] === "1") {
+      const firstDot = key.indexOf(".");
+      key = key.slice(firstDot + 1, key.length);
+    }
+    const editedNode = {
+      ...commonLogic.findNodeByKey(this.state.targetNodes, key)
+    };
+    editedNode.data.name = value;
+    editedNode.data.displayName = `${editedNode.key}. ${editedNode.data.name}`;
+    const data = commonLogic.updateNode(this.state.targetNodes, editedNode);
+    this.setState({
+      targetNodes: data
+    });
   };
 
   // event
@@ -137,13 +191,13 @@ export default class TargetEducationCom extends Component {
     ) {
       alert("Không thể thêm chuẩn đầu ra ở node này!!");
     } else {
-      let nodes = [...this.state.targetNodes];
+      const nodes = [...this.state.targetNodes];
       targetLogic.updateOSUsedNode(nodes, this.state.targetNode.key);
       this.props.onSaveOutcomeUsed(
         this.state.tmpIdOutcome,
         this.state.targetNode.key
       );
-      this.setState({ targetNodes: nodes });
+      this.setState({ targetNodes: nodes, targetNode: "" });
     }
     this.onHideTargetDialog();
     this.onHideDetailOS();
@@ -181,7 +235,7 @@ export default class TargetEducationCom extends Component {
           <i className="material-icons">arrow_downward</i>
         </Button>
         <Button
-          onClick={() => this.deleteTargetNode(targetNode)}
+          onClick={() => this.onShowDeleteAlert(targetNode)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
           title="Xóa cấp này"
@@ -239,6 +293,7 @@ export default class TargetEducationCom extends Component {
             <TreeTable value={this.state.targetNodes}>
               <Column
                 field="displayName"
+                editor={this.nameEditor}
                 header={
                   <p>
                     Tên dòng (Đang sử dụng Chuẩn đầu ra:{" "}
@@ -250,7 +305,9 @@ export default class TargetEducationCom extends Component {
                     </span>{" "}
                     ở mục:{" "}
                     <span style={{ color: "#00B8D8" }}>
-                      {this.props.OSUsedNode}
+                      {this.props.OSUsedNode !== ""
+                        ? this.props.OSUsedNode
+                        : "chưa có"}
                     </span>)
                   </p>
                 }
@@ -355,6 +412,34 @@ export default class TargetEducationCom extends Component {
                 </TreeTable>
               </Col>
             </Row>
+          </Dialog>
+        </div>
+
+        <div className="content-section implementation">
+          <Dialog
+            header="Thông báo"
+            visible={this.state.deleteAlertVisible}
+            style={{ width: "50vw" }}
+            footer={
+              <div>
+                <Button onClick={this.deleteTargetNode} theme="success">
+                  Xóa
+                </Button>
+                <Button
+                  onClick={this.onHideDeleteAlertVisible}
+                  theme="secondary"
+                >
+                  Hủy
+                </Button>
+              </div>
+            }
+            onHide={this.onHideDeleteAlertVisible}
+          >
+            {`Bạn thực sự muốn xóa dòng ${this.state.targetNode.key} ${
+              this.state.targetNode.OSUsed && this.props.OSUsedNode !== ""
+                ? `đang sử dụng chuẩn đầu ra ${this.props.OSUsedNode}`
+                : ""
+            }`}
           </Dialog>
         </div>
       </div>

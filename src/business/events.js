@@ -45,6 +45,9 @@ export const receiveProps = nextProps => {
   const IdOutcome = nextProps.detailEduProgram.IdOutcome
     ? nextProps.detailEduProgram.IdOutcome
     : 0;
+  const OSUsedNode = nextProps.detailEduProgram.OSUsedNode
+    ? nextProps.detailEduProgram.OSUsedNode
+    : "";
 
   const data = {
     major,
@@ -55,7 +58,8 @@ export const receiveProps = nextProps => {
     EnrollmentTarget,
     EduProcess,
     GraduatedCon,
-    IdOutcome
+    IdOutcome,
+    OSUsedNode
   };
   return data;
 };
