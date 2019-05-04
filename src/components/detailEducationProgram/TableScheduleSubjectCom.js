@@ -43,7 +43,7 @@ export default class TableScheduleSubjectCom extends React.Component {
               sortOrder={1}
               groupField="option"
               editable={true}
-              footerColumnGroup={footerGroup}
+              //footerColumnGroup={footerGroup}
             >
               <Column field="option" header="Loại Học Phần" />
               <Column field="index" header="STT" />

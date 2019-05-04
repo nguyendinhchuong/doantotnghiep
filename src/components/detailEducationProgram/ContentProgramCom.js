@@ -290,6 +290,8 @@ export default class ContentProgramCom extends React.Component {
     this.setState({
       filterSubjects: logic.filterSubjects(e, this.props.subjects)
     });
+    console.log(this.state.filterSubjects);
+    
   };
 
   // onchange

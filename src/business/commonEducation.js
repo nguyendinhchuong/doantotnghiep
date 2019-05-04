@@ -28,13 +28,13 @@ export const getRank = key => {
   return countDot + 1;
 };
 
-const updateKeyParentOfSubjects = (subjects, idParent) => {
+export const updateKeyParentOfSubjects = (subjects, idParent) => {
   return subjects.map(subject => {
     return { ...subject, parentKey: idParent };
   });
 };
 
-const updateSubNode = (iParent, node) => {
+export const updateSubNode = (iParent, node) => {
   if (node.children) {
     const length = node.children.length;
     for (let i = 0; i < length; i++) {
@@ -56,7 +56,7 @@ const updateSubNode = (iParent, node) => {
   }
 };
 
-const increaseKey = (key, index) => {
+export const increaseKey = (key, index) => {
   const lastDot = key.lastIndexOf(".");
   let result = key.slice(0, lastDot) + "." + index.toString();
   return result;
@@ -67,11 +67,11 @@ export const refreshTreeNodes = (nodes, key, indexRefresh) => {
   const length = data.length;
 
   for (let i = indexRefresh; i < length; i++) {
-    data[i].key = increaseKey(key, i + 1);
-    data[i].data.displayName = `${increaseKey(key, i + 1)}. ${
+    const keyIncrease = increaseKey(key, i+1);
+    data[i].key = keyIncrease;
+    data[i].data.displayName = `${keyIncrease}. ${
       data[i].data.name
     }`;
-
     updateSubNode(data[i].key, data[i]);
   }
 

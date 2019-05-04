@@ -5,6 +5,10 @@ import { Column } from "primereact/column";
 import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { Spinner } from "primereact/spinner";
+import { AutoComplete } from "primereact/autocomplete";
+import { InputTextarea } from "primereact/inputtextarea";
+import { OrderList } from "primereact/orderlist";
+import { Checkbox } from "primereact/checkbox";
 
 import * as logic from "../../business/logicScheduleEdu";
 import * as common from "../../business/commonEducation"
@@ -19,8 +23,13 @@ export default class ScheduleEducationCom extends React.Component {
       node: {},
       semester: 1,
       nodeHover: "",
+      isRequired: true,
+      filterSubjects: [],
+      optionSubjects: [],
+      listSubjects: [], // add into table
       isDialogRoot: false,
-      isDialogTable: false
+      isDialogTable: false,
+      isDialogSubjectsTable: false
     };
   }
   // add
@@ -36,7 +45,6 @@ export default class ScheduleEducationCom extends React.Component {
   }
 
   addChildTable = (nodes, nodeParent) => {
-    debugger;
     let data = [...nodes];
     const length = nodeParent.children.length;
     const key = `${nodeParent.key}.${length + 1}`;
@@ -62,11 +70,38 @@ export default class ScheduleEducationCom extends React.Component {
     node.data.displayName = (
       <TableScheduleSubjectCom
         subjects={node.data.subjects}
-        //deleteSubject={this.deleteSubjectOnTable}
-        //sum={node.data.totalCredits}
+      //deleteSubject={this.deleteSubjectOnTable}
+      //sum={node.data.totalCredits}
       />
     );
     return node;
+  };
+
+  // Delete
+  deleteNode = node => {
+    const root = logic.deleteNode(this.state.nodes, node);
+    this.setState({ nodes: root });
+  };
+
+  // onchange
+
+  onChangeListSubjects = e => {
+    if (typeof e.value === "object") {
+      const subject = e.value;
+      subject.option = this.state.isRequired ? "BB" : "TC";
+      const subjects = logic.addSubjectInOnchange(
+        this.state.listSubjects,
+        subject
+      );
+      this.setState({ listSubjects: subjects });
+    }
+    this.setState({ optionSubjects: e.value });
+  };
+
+  filterSubjects = e => {
+    this.setState({
+      filterSubjects: logic.filterSubjects(e, this.props.subjects)
+    });
   };
 
   // show/hidden Dialong
@@ -83,6 +118,13 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
+  isShowDialogSubjectsTable = node =>{
+    this.setState({
+      isDialogSubjectsTable: true,
+      node: node
+    });
+  }
+
   onHideDialogRoot = () => {
     this.setState({ isDialogRoot: false });
   };
@@ -93,20 +135,39 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
+  onHideDialogSubjectsTable = () =>{
+    this.setState({
+      isDialogSubjectsTable: false
+    });
+  }
+
   // Template
   actionTemplate(node, column) {
     return (
       <div>
+        {
+          !node.data.isTable ? (
+            <Button
+              onClick={() => this.isShowDialogTable(node)}
+              theme="success"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Thêm bảng môn học`}
+            >
+              <i className="material-icons">add</i>
+            </Button>
+          ) : (
+              <Button
+                onClick={() => this.isShowDialogSubjectsTable(node)}
+                theme="success"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title={`Thêm môn học`}
+              >
+                <i className="material-icons">playlist_add</i>
+              </Button>
+            )
+        }
         <Button
-          onClick={() => this.isShowDialogTable(node)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Thêm học kỳ`}
-        >
-          <i className="material-icons">playlist_add</i>
-        </Button>
-        <Button
-          //onClick={() => this.deleteNode(node)}
+          onClick={() => this.deleteNode(node)}
           //onMouseOver={() => this.mouseOver(node)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
@@ -201,6 +262,118 @@ export default class ScheduleEducationCom extends React.Component {
           </DataTable>
         </div>
       </Dialog>
+      {/* Dialog of dataTable */}
+      <Dialog
+          header="Thêm Nội Dung Môn Học"
+          visible={this.state.isDialogSubjectsTable}
+          onHide={() => this.onHideDialogSubjectsTable()}
+          style={{ width: "50vw" }}
+          footer={this.footerDialogSubjectsTable}
+        >
+          <Row>
+            <Col lg="2" md="2" sm="2">
+              <span>Môn Học:</span>
+            </Col>
+            <Col lg="6" md="6" sm="12">
+              <AutoComplete
+                field="SubjectName"
+                value={this.state.optionSubjects}
+                dropdown={true}
+                onChange={e => this.onChangeListSubjects(e)}
+                size={40}
+                placeholder="Môn học"
+                minLength={1}
+                suggestions={this.state.filterSubjects}
+                completeMethod={e => this.filterSubjects(e)}
+              />
+            </Col>
+          </Row>
+          <div hidden={!this.state.isRequired}>
+            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <span>Môn Học BB:</span>
+              </Col>
+              <Col lg="10" md="10" sm="12">
+                <OrderList
+                  value={this.state.listSubjects.filter(subject => {
+                    if (subject.option === "BB") {
+                      return subject;
+                    }
+                  })}
+                  responsive={true}
+                  itemTemplate={this.subjectTemplate}
+                />
+              </Col>
+            </Row>
+          </div>
+          <div hidden={this.state.isRequired}>
+            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <span>Môn Học TC:</span>
+              </Col>
+              <Col lg="10" md="10" sm="12">
+                <OrderList
+                  value={this.state.listSubjects.filter(subject => {
+                    if (subject.option === "TC") {
+                      return subject;
+                    }
+                  })}
+                  responsive={true}
+                  itemTemplate={this.subjectTemplate}
+                />
+              </Col>
+            </Row>
+          </div>
+          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+            <Col lg="2" md="2" sm="2">
+              <label>Loại Học Phần:</label>
+            </Col>
+            <Col lg="3" md="3" sm="3">
+              <Checkbox
+                checked={this.state.isRequired}
+                onChange={e => this.setState({ isRequired: true })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Bắt Buộc
+              </label>
+            </Col>
+            <Col lg="2" md="2" sm="2">
+              <Checkbox
+                checked={!this.state.isRequired}
+                onChange={e => this.setState({ isRequired: false })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Tự Chọn
+              </label>
+            </Col>
+          </Row>
+          <div hidden={this.state.isRequired}>
+            <Row style={{ marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <label>Số chỉ: </label>
+              </Col>
+              <Col lg="4" md="4" sm="4">
+                <Spinner
+                  value={this.state.optionalCredit}
+                  onChange={e => this.onChangeCredit(e)}
+                />
+              </Col>
+            </Row>
+          </div>
+          <Row>
+            <Col lg="2" md="2" sm="6">
+              <label>Ghi chú: </label>
+            </Col>
+            <Col lg="10" md="10" sm="12">
+              <InputTextarea
+                rows={1}
+                cols={30}
+                value={this.state.note}
+                onChange={e => this.setState({ note: e.target.value })}
+              />
+            </Col>
+          </Row>
+        </Dialog>
     </div>
   }
 }

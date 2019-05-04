@@ -246,7 +246,9 @@ export default class DetailEducationProgramCom extends React.Component {
               </AccordionTab>
 
               <AccordionTab header="KẾ HOẠCH GIẢNG DẠY DỰ KIẾN">
-                <ScheduleEducationCom />
+                <ScheduleEducationCom 
+                subjects={this.props.subjects}
+                />
               </AccordionTab>
             </Accordion>
           </Col>
