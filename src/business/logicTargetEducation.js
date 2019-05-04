@@ -20,8 +20,7 @@ export const getOSUsedNode = (nodes, key) => {
   else {
     for (let i in nodes) {
       if (nodes[i].OSUsed) {
-        key = nodes[i].key;
-        key = "heelllo";
+        key.data = nodes[i].key;
       }
       let children = nodes[i].children;
       getOSUsedNode(children, key);
