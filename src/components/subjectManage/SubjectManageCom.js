@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import XLSX from "xlsx";
 
-import { Row, Col, Button, FormInput } from "shards-react";
+import { Row, Col, Button, FormInput, FormTextarea } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
@@ -219,7 +219,7 @@ export default class SubjectManageCom extends Component {
       <Dialog
         header="Thêm Học phần"
         visible={this.state.visible}
-        style={{ width: "50vw" }}
+        style={{ width: "60vw" }}
         onHide={this.onCloseAdd}
         footer={
           <div>
@@ -245,10 +245,10 @@ export default class SubjectManageCom extends Component {
         }
       >
         <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Mã học phần:
           </Col>
-          <Col lg="8" md="8" sm="8">
+          <Col lg="4" md="4" sm="4">
             <FormInput
               type="text"
               value={this.state.subjectCode}
@@ -257,13 +257,10 @@ export default class SubjectManageCom extends Component {
               className="mb-2"
             />
           </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Tên học phần:
           </Col>
-          <Col lg="8" md="8" sm="8">
+          <Col lg="4" md="4" sm="4">
             <FormInput
               type="text"
               value={this.state.subjectName}
@@ -275,10 +272,10 @@ export default class SubjectManageCom extends Component {
         </Row>
         <br />
         <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Số tín chỉ:
           </Col>
-          <Col lg="8" md="8" sm="8">
+          <Col lg="4" md="4" sm="4">
             <FormInput
               type="text"
               value={this.state.credits}
@@ -287,13 +284,10 @@ export default class SubjectManageCom extends Component {
               className="mb-2"
             />
           </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Số tiết lý thuyết:
           </Col>
-          <Col lg="8" md="8" sm="8">
+          <Col lg="4" md="4" sm="4">
             <FormInput
               type="text"
               value={this.state.theory}
@@ -305,10 +299,10 @@ export default class SubjectManageCom extends Component {
         </Row>
         <br />
         <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Số tiết thực hành:
           </Col>
-          <Col lg="8" md="8" sm="8">
+          <Col lg="4" md="4" sm="4">
             <FormInput
               type="text"
               value={this.state.practice}
@@ -317,13 +311,10 @@ export default class SubjectManageCom extends Component {
               className="mb-2"
             />
           </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Số tiết bài tập:
           </Col>
-          <Col lg="8" md="8" sm="8">
+          <Col lg="4" md="4" sm="4">
             <FormInput
               type="text"
               value={this.state.exercise}
@@ -335,11 +326,11 @@ export default class SubjectManageCom extends Component {
         </Row>
         <br />
         <Row>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="2" md="2" sm="2">
             Mô tả môn học:
           </Col>
-          <Col lg="8" md="8" sm="8">
-            <FormInput
+          <Col lg="10" md="10" sm="10">
+            <FormTextarea
               value={this.state.description}
               onChange={this.handleDescription}
               className="mb-2"

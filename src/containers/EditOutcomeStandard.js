@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
+import { Prompt } from "react-router";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -48,6 +49,7 @@ class EditOutcomeStandardTmp extends Component {
 
     return (
       <Container fluid className="main-content-container px-4">
+        <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle

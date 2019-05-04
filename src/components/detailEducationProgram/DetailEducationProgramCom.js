@@ -167,7 +167,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="12" md="12" sm="12">
             <Accordion multiple={true}>
-              <AccordionTab header="* THÔNG TIN CHUNG">
+              <AccordionTab header="THÔNG TIN CHUNG">
                 <TitleCom
                   levels={this.props.levels}
                   majors={this.props.majors}
@@ -184,10 +184,13 @@ export default class DetailEducationProgramCom extends React.Component {
                   handleMajorNameChange={this.handleMajorNameChange}
                   handleProgramChange={this.handleProgramChange}
                   handleSchoolYearChange={this.handleSchoolYearChange}
+
+                  eduYear={this.state.eduYear}
+                  sumCredit={this.state.sumCredit}
                 />
               </AccordionTab>
 
-              <AccordionTab header="1. Mục tiêu đào tạo:">
+              <AccordionTab header="MỤC TIÊU ĐÀO TẠO">
                 <TargetEducationCom
                   ref={this.TargetEducationCom}
                   outcomeStandards={this.props.outcomeStandards}
@@ -201,24 +204,14 @@ export default class DetailEducationProgramCom extends React.Component {
                 />
               </AccordionTab>
 
-              <AccordionTab
-                header={`2. Thời gian đào tạo: ${this.state.eduYear} năm`}
-              />
-
-              <AccordionTab
-                header={`3. Khối lượng kiến thức toàn khóa: ${
-                  this.state.sumCredit
-                } chỉ`}
-              />
-
-              <AccordionTab header="4. Đối tượng tuyển sinh:">
+              <AccordionTab header="ĐỐI TƯỢNG TUYỂN SINH">
                 <FormTextarea
                   value={this.state.EnrollmentTarget}
                   onChange={this.handleEnrollmentChange}
                 />
               </AccordionTab>
 
-              <AccordionTab header="5. Quy trình đào tạo, điều kiện tốt nghiệp:">
+              <AccordionTab header="QUY TRÌNH ĐÀO TẠO, ĐIỀU KIỆN TỐT NGHIỆP">
                 <Col lg="12" md="12" sm="12">
                   <h5 className="font-weight-bold">5.1 Quy trình đào tạo:</h5>
                 </Col>
@@ -242,17 +235,17 @@ export default class DetailEducationProgramCom extends React.Component {
                 </Col>
               </AccordionTab>
 
-              <AccordionTab header="6. Cấu trúc chương trình:">
+              <AccordionTab header="CẤU TRÚC CHƯƠNG TRÌNH">
                 <TableProgramArchiCom />
               </AccordionTab>
-              <AccordionTab header="7. Nội dung chương trình:">
+              <AccordionTab header="NỘI DUNG CHƯƠNG TRÌNH">
                 <ContentProgramCom
                   ref={this.ContentProgramCom}
                   subjects={this.props.subjects}
                 />
               </AccordionTab>
 
-              <AccordionTab header="8. Kế hoạch giảng dạy dự kiến:">
+              <AccordionTab header="KẾ HOẠCH GIẢNG DẠY DỰ KIẾN">
                 <ScheduleEducationCom />
               </AccordionTab>
             </Accordion>
