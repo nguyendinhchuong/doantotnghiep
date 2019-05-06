@@ -1,7 +1,6 @@
 import React from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { ColumnGroup } from "primereact/columngroup";
 import { Row, Col, Button } from "shards-react";
 
 import * as logic from "../../business/logicEducationProgram";

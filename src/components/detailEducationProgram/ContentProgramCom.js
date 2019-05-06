@@ -149,7 +149,13 @@ export default class ContentProgramCom extends React.Component {
 
   inputTextEditor = (props, field) => {
     if (props.node.data.isTable) {
-      //
+      return (
+        <TableSubjectsCom
+          subjects={props.node.data.subjects}
+          deleteSubject={this.deleteSubjectOnTable}
+          sum={props.node.data.totalCredits}
+        />
+      )
     } else {
       return (
         <InputText
