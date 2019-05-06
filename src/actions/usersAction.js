@@ -38,7 +38,7 @@ export const onLogIn = user => {
           });
         } else if (res.data.code === 1) {
           Promise.resolve(
-            localStorage.setItem("user", JSON.stringify(res.data))
+            localStorage.setItem("user", JSON.stringify(res.data.token))
           ).then(() => {
             let chirp = { message: `Đăng nhập thành công`, isRight: 1 };
             dispatch(message.message(chirp));
