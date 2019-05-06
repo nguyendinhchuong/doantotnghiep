@@ -11,7 +11,7 @@ export default class TableScheduleSubjectCom extends React.Component {
     return (
       <div>
         <Button
-          //onClick={() => this.props.deleteSubject(rowData)}
+          onClick={() => this.props.deleteSubject(rowData)}
           theme="secondary"
           title="Xóa môn học"
           style={{ marginRight: ".3em", padding: "8px" }}
@@ -22,15 +22,6 @@ export default class TableScheduleSubjectCom extends React.Component {
     );
   };
   render() {
-    const footerGroup = (
-      <ColumnGroup>
-        <Row>
-          <Column footer="Tổng chỉ:" colSpan={4} />
-          <Column footer={this.props.sum} />
-        </Row>
-      </ColumnGroup>
-    );
-
     return (
       <div>
         <Row>
@@ -43,7 +34,6 @@ export default class TableScheduleSubjectCom extends React.Component {
               sortOrder={1}
               groupField="option"
               editable={true}
-              //footerColumnGroup={footerGroup}
             >
               <Column field="option" header="Loại Học Phần" />
               <Column field="index" header="STT" />

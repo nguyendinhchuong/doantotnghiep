@@ -136,3 +136,56 @@ export const filterSubjects = (e, subjects) => {
     : [];
   return results;
 };
+
+export const deteleSubject = (subjects, subject) => {
+  const indexSubject = subjects.indexOf(subject);
+  return subjects.filter((subject, index) => {
+    if(indexSubject !== index){
+      return subject;
+    }
+  });
+};
+
+export const sortSubject = data => {
+  return data.sort((a, b) => {
+    const option1 = a.option;
+    const option2 = b.option;
+    if (option1 === option2) {
+      const code1 = a.SubjectCode;
+      const code2 = b.SubjectCode;
+      return code1.localeCompare(code2);
+    }
+    return option1.localeCompare(option2);
+  });
+};
+
+export const toltalRequiredCredits = subjects => {
+  return subjects.reduce((acc, cur) => {
+    if (cur.option === "BB" && cur.Credit) {
+      return acc + Number(cur.Credit);
+    }
+    return acc;
+  }, 0);
+};
+
+export const indexSubjects = data => {
+  const results = data.reduce((acc, cur, index) => {
+    cur.index = index + 1;
+    return acc.concat(cur);
+  }, []);
+  return results;
+};
+
+export const deleteSubjectTable = (nodes, subject) => {
+  let root = [...nodes];
+  let keyParent = subject.parentKey;
+  // case root = 7.1.... => 1.1...
+  if (nodes[0].key[0] === "8") {
+    const firstDot = keyParent.indexOf(".");
+    keyParent = keyParent.slice(firstDot + 1, keyParent.length);
+  }
+  const parentNode = common.findNodeByKey(root, keyParent);
+  parentNode.data.subjects = deteleSubject(parentNode.data.subjects, subject);
+  root = common.updateNode(root, parentNode);
+  return root;
+};

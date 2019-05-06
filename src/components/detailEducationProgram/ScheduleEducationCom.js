@@ -70,7 +70,7 @@ export default class ScheduleEducationCom extends React.Component {
     node.data.displayName = (
       <TableScheduleSubjectCom
         subjects={node.data.subjects}
-      //deleteSubject={this.deleteSubjectOnTable}
+      deleteSubject={this.deleteSubjectOnTable}
       //sum={node.data.totalCredits}
       />
     );
@@ -95,7 +95,7 @@ export default class ScheduleEducationCom extends React.Component {
       );
       this.setState({ listSubjects: subjects });
     }
-    this.setState({ optionSubjects: e.value });
+    this.setState({ optionSubjects: e.value });  
   };
 
   filterSubjects = e => {
@@ -103,6 +103,22 @@ export default class ScheduleEducationCom extends React.Component {
       filterSubjects: logic.filterSubjects(e, this.props.subjects)
     });
   };
+
+  requiredSubjects = () =>{
+    return this.state.listSubjects.filter(subject => {
+      if (subject.option === "BB") {
+        return subject;
+      }
+    });
+  }
+
+  notRequiredSubjects = () =>{
+    return this.state.listSubjects.filter(subject => {
+      if (subject.option === "TC") {
+        return subject;
+      }
+    });
+  }
 
   // show/hidden Dialong
   isShowDialogRoot = () => {
@@ -121,7 +137,8 @@ export default class ScheduleEducationCom extends React.Component {
   isShowDialogSubjectsTable = node =>{
     this.setState({
       isDialogSubjectsTable: true,
-      node: node
+      node: node,
+      listSubjects: []
     });
   }
 
@@ -140,6 +157,102 @@ export default class ScheduleEducationCom extends React.Component {
       isDialogSubjectsTable: false
     });
   }
+  // subjects
+
+  deleteSubject = subject => {
+    this.setState({
+      listSubjects: logic.deteleSubject(this.state.listSubjects, subject)
+    });
+  };
+
+  // table subject
+
+  loadSubNode = node => {
+    if (node.children) {
+      const length = node.children.length;
+      for (let i = 0; i < length; i++) {
+        if (node.children[i].data.isTable) {
+          node.children[i] = this.convertNodeToDataTable(node.children[i]);
+        }
+        if (node.children[i].children) {
+          this.loadSubNode(node.children[i]);
+        }
+      }
+    }
+  };
+
+  loadTreeNodes = nodes => {
+    const root = [...nodes];
+    const length = root.length;
+    for (let i = 0; i < length; i++) {
+      this.loadSubNode(root[i]);
+    }
+    return root;
+  };
+
+  addRowTable = () => {
+    const data = this.addRowTableLogic(this.state.nodes, this.state.node, this.state.listSubjects);
+    this.setState({ nodes: data });
+    this.onHideDialogSubjectsTable();
+  };
+
+  addRowTableLogic = (nodes, node, subjectsAdd) => {
+    if (!node.data.isTable) {
+      return nodes;
+    }
+    let child = { ...node };
+    let root = [...nodes];
+    let subjectsTable = child.data.subjects;
+    subjectsAdd.forEach(subject => {
+      subject.parentKey = child.key;
+      subjectsTable = logic.addSubjectInOnchange(subjectsTable, subject);
+    });
+    child.data.subjects = subjectsTable;
+    child.data.totalCredits =
+      logic.toltalRequiredCredits(child.data.subjects) +
+      this.state.optionalCredit;
+    child.data.subjects = logic.sortSubject(child.data.subjects);
+    child.data.subjects = logic.indexSubjects(child.data.subjects);
+    child = this.convertNodeToDataTable(child);
+    root = common.updateNode(root, child);
+    return root;
+  };
+
+  deleteSubjectOnTable = rowData => {
+    let root = logic.deleteSubjectTable(this.state.nodes, rowData);
+    root = this.loadTreeNodes(root);
+    this.setState({ nodes: root });
+  };
+
+  // tempplate table
+
+  subjectTemplate = subject => {
+    return (
+      <div className="p-clearfix">
+        <div
+          style={{
+            fontSize: "14px",
+            float: "left",
+            margin: "5px 5px 0 0",
+            borderBottom: "ridge"
+          }}
+        >
+          {subject.SubjectName}
+        </div>
+        <p
+          style={{
+            fontSize: "14px",
+            float: "right",
+            margin: "5px 5px 0 0",
+            borderBottom: "ridge"
+          }}
+          onClick={() => this.deleteSubject(subject)}
+        >
+          <i className="material-icons">clear</i>
+        </p>
+      </div>
+    );
+  };
 
   // Template
   actionTemplate(node, column) {
@@ -193,6 +306,17 @@ export default class ScheduleEducationCom extends React.Component {
   footerChildTable = (
     <div>
       <Button onClick={this.handleAddChild} theme="success">
+        Thêm
+      </Button>
+      <Button onClick={this.onHideDialogTable} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  );
+
+  footerDialogSubjectsTable = (
+    <div>
+      <Button onClick={this.addRowTable} theme="success">
         Thêm
       </Button>
       <Button onClick={this.onHideDialogTable} theme="secondary">
@@ -324,6 +448,7 @@ export default class ScheduleEducationCom extends React.Component {
               </Col>
             </Row>
           </div>
+          
           <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
             <Col lg="2" md="2" sm="2">
               <label>Loại Học Phần:</label>
@@ -347,19 +472,6 @@ export default class ScheduleEducationCom extends React.Component {
               </label>
             </Col>
           </Row>
-          <div hidden={this.state.isRequired}>
-            <Row style={{ marginBottom: "15px" }}>
-              <Col lg="2" md="2" sm="2">
-                <label>Số chỉ: </label>
-              </Col>
-              <Col lg="4" md="4" sm="4">
-                <Spinner
-                  value={this.state.optionalCredit}
-                  onChange={e => this.onChangeCredit(e)}
-                />
-              </Col>
-            </Row>
-          </div>
           <Row>
             <Col lg="2" md="2" sm="6">
               <label>Ghi chú: </label>

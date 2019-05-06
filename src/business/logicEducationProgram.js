@@ -168,10 +168,12 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
 };
 
 export const deteleSubject = (subjects, subject) => {
-  const arr = [...subjects];
-  const index = arr.indexOf(subject);
-  arr.splice(index, 1);
-  return arr;
+  const indexSubject = subjects.indexOf(subject);
+  return subjects.filter((subject, index) => {
+    if(indexSubject !== index){
+      return subject;
+    }
+  });
 };
 
 // drag
