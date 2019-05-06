@@ -32,6 +32,7 @@ export default class ContentProgramCom extends React.Component {
       optionSubjects: [],
       listSubjects: [], // add into table
       isRequired: true,
+      isAccumulation: true,
       note: "",
       optionalCredit: 0,
       // hover
@@ -262,7 +263,7 @@ export default class ContentProgramCom extends React.Component {
   };
 
   // supporting
-  
+
   loadSubNode = node => {
     if (node.children) {
       const length = node.children.length;
@@ -297,7 +298,7 @@ export default class ContentProgramCom extends React.Component {
       filterSubjects: logic.filterSubjects(e, this.props.subjects)
     });
     console.log(this.state.filterSubjects);
-    
+
   };
 
   // onchange
@@ -306,6 +307,9 @@ export default class ContentProgramCom extends React.Component {
     if (typeof e.value === "object") {
       const subject = e.value;
       subject.option = this.state.isRequired ? "BB" : "TC";
+      if(subject.option){
+        subject.isAccumulation = true;
+      }
       const subjects = logic.addSubjectInOnchange(
         this.state.listSubjects,
         subject
@@ -335,36 +339,36 @@ export default class ContentProgramCom extends React.Component {
             <i className="material-icons">playlist_add</i>
           </Button>
         ) : (
-          <span>
-            <Button
-              onClick={() => this.isShowDialogChild(node)}
-              onMouseOver={() => this.mouseOver(node)}
-              theme="success"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Thêm cấp con của ${this.state.nodeHover}`}
-            >
-              <i className="material-icons">add</i>
-            </Button>
-            <Button
-              onClick={() => this.upSameLevel(node)}
-              onMouseOver={() => this.mouseOverUp(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Lên cấp ${this.state.nodeHover}`}
-            >
-              <i className="material-icons">arrow_upward</i>
-            </Button>
-            <Button
-              onClick={() => this.downSameLevel(node)}
-              // onMouseOver = {() => this.mouseOverDown(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
+            <span>
+              <Button
+                onClick={() => this.isShowDialogChild(node)}
+                onMouseOver={() => this.mouseOver(node)}
+                theme="success"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title={`Thêm cấp con của ${this.state.nodeHover}`}
+              >
+                <i className="material-icons">add</i>
+              </Button>
+              <Button
+                onClick={() => this.upSameLevel(node)}
+                onMouseOver={() => this.mouseOverUp(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title={`Lên cấp ${this.state.nodeHover}`}
+              >
+                <i className="material-icons">arrow_upward</i>
+              </Button>
+              <Button
+                onClick={() => this.downSameLevel(node)}
+                // onMouseOver = {() => this.mouseOverDown(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
               //title={`Xuống xấp ${this.state.nodeHover}`}
-            >
-              <i className="material-icons">arrow_downward</i>
-            </Button>
-          </span>
-        )}
+              >
+                <i className="material-icons">arrow_downward</i>
+              </Button>
+            </span>
+          )}
         <Button
           onClick={() => this.deleteNode(node)}
           onMouseOver={() => this.mouseOver(node)}
@@ -419,7 +423,7 @@ export default class ContentProgramCom extends React.Component {
       </Button>
     </div>
   );
-  
+
   footerRoot = (
     <div>
       <Button onClick={this.handleAddRoot} theme="success">
@@ -638,6 +642,29 @@ export default class ContentProgramCom extends React.Component {
               />
               <label htmlFor="cb2" className="p-checkbox-label">
                 Tự Chọn
+              </label>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="2" md="2" sm="2">
+              <label>Tích lũy:</label>
+            </Col>
+            <Col lg="3" md="3" sm="3">
+              <Checkbox
+                checked={this.state.isAccumulation}
+                onChange={e => this.setState({ isAccumulation: true })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Có
+              </label>
+            </Col>
+            <Col lg="3" md="3" sm="3">
+              <Checkbox
+                checked={!this.state.isAccumulation}
+                onChange={e => this.setState({ isAccumulation: false })}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Không
               </label>
             </Col>
           </Row>
