@@ -79,7 +79,13 @@ export default class DetailEducationProgramCom extends React.Component {
   };
 
   handleSchoolYearChange = event => {
-    this.setState({ schoolYear: event.target.value });
+    if (event.target.value.length > 4)
+      this.setState({ schoolYear: event.target.value.substr(0, 4) });
+    else if (
+      event.target.value.length === 0 ||
+      !isNaN(event.target.value[event.target.value.length - 1])
+    )
+      this.setState({ schoolYear: event.target.value });
   };
   // end functions for Title
 

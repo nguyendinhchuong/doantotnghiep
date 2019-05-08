@@ -9,9 +9,12 @@ export default class MajorManageCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      visible: false,
       majorCode: "",
       majorName: "",
-      faculty: {}
+      faculty: {},
+      deleteVisible: false,
+      id: 0
     };
   }
 
@@ -19,9 +22,8 @@ export default class MajorManageCom extends Component {
     return (
       <div>
         <Button
-          disabled={true}
           title="Xóa"
-          onClick={() => this.props.onDeleteMajor(data.Id)}
+          onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -71,6 +73,28 @@ export default class MajorManageCom extends Component {
       this.props.onAddMajor(data);
       this.setState({ visible: false });
     }
+  };
+
+  onDeleteShow = id => {
+    this.setState({
+      deleteVisible: true,
+      id: id
+    });
+  };
+
+  onDelete = () => {
+    this.props.onDeleteMajor(this.state.id);
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
+  };
+
+  onHideDeleteVisible = () => {
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
   };
 
   render() {
@@ -157,6 +181,34 @@ export default class MajorManageCom extends Component {
       </Dialog>
     );
 
+    const alertDialog = (
+      <div className="content-section implementation">
+        <Dialog
+          header="Thông báo"
+          visible={this.state.deleteVisible}
+          style={{ width: "50vw" }}
+          footer={
+            <div>
+              <Button onClick={this.onDelete} theme="success">
+                Xóa
+              </Button>
+              <Button onClick={this.onHideDeleteVisible} theme="secondary">
+                Hủy
+              </Button>
+            </div>
+          }
+          onHide={this.onHideDeleteVisible}
+        >
+          {`Bạn thực sự muốn xóa chuyên ngành ${
+            this.state.id !== 0
+              ? this.props.majors.filter(row => row.Id === this.state.id)[0]
+                  .MajorName
+              : ""
+          }`}
+        </Dialog>
+      </div>
+    );
+
     return (
       <div>
         <Row>
@@ -182,6 +234,7 @@ export default class MajorManageCom extends Component {
           </Col>
         </Row>
         {dialog}
+        {alertDialog}
       </div>
     );
   }

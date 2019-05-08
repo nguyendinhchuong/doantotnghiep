@@ -230,7 +230,7 @@ export default class OutcomeStandardCom extends Component {
         </Button>
         <Button
           title="Xóa"
-          onClick={this.onDeleteShow}
+          onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -517,3 +517,4 @@ export default class OutcomeStandardCom extends Component {
     );
   }
 }
+//<DataTable value={[{NameOutcomeStandard:"hihi",NameFaculty:"hihi",NameProgram:"hihi",NameUser:"hihi",SchoolYear:"hihi"}]}>

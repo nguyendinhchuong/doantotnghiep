@@ -11,7 +11,9 @@ export default class UserManageCom extends Component {
     super(props);
     this.state = {
       visible: false,
-      roles: []
+      roles: [],
+      deleteVisible: false,
+      id: 0
     };
   }
 
@@ -19,9 +21,8 @@ export default class UserManageCom extends Component {
     return (
       <div>
         <Button
-          disabled={true}
           title="Xóa"
-          onClick={() => this.props.onDelete(data.Id)}
+          onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -51,10 +52,32 @@ export default class UserManageCom extends Component {
     this.setState({ visible: false });
   };
 
+  onDeleteShow = id => {
+    this.setState({
+      deleteVisible: true,
+      id: id
+    });
+  };
+
+  onDelete = () => {
+    this.props.onDelete(this.state.id);
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
+  };
+
+  onHideDeleteVisible = () => {
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
+  };
+
   render() {
     const dialog = (
       <Dialog
-        header="Thêm người dùng"
+        header="Thêm Người dùng"
         visible={this.state.visible}
         style={{ width: "50vw" }}
         onHide={this.onCloseAdd}
@@ -83,7 +106,7 @@ export default class UserManageCom extends Component {
       >
         <Row>
           <Col lg="2" md="2" sm="2">
-            Tên:
+            Tên người dùng:
           </Col>
           <Col lg="4" md="4" sm="4">
             <FormInput
@@ -94,7 +117,7 @@ export default class UserManageCom extends Component {
             />
           </Col>
           <Col lg="2" md="2" sm="2">
-            Mail:
+            Mail người dùng:
           </Col>
           <Col lg="4" md="4" sm="4">
             <FormInput
@@ -142,6 +165,34 @@ export default class UserManageCom extends Component {
       </Dialog>
     );
 
+    const alertDialog = (
+      <div className="content-section implementation">
+        <Dialog
+          header="Thông báo"
+          visible={this.state.deleteVisible}
+          style={{ width: "50vw" }}
+          footer={
+            <div>
+              <Button onClick={this.onDelete} theme="success">
+                Xóa
+              </Button>
+              <Button onClick={this.onHideDeleteVisible} theme="secondary">
+                Hủy
+              </Button>
+            </div>
+          }
+          onHide={this.onHideDeleteVisible}
+        >
+          {`Bạn thực sự muốn xóa người dùng ${
+            this.state.id !== 0
+              ? this.props.users.filter(row => row.Id === this.state.id)[0]
+                  .Username
+              : ""
+          }`}
+        </Dialog>
+      </div>
+    );
+    
     return (
       <div>
         <Row>
@@ -151,7 +202,7 @@ export default class UserManageCom extends Component {
           <Col lg="12" md="12" sm="12">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">add</i> Thêm người dùng
+                <i className="material-icons">add</i> Thêm Người dùng
               </Button>
             </p>
           </Col>
@@ -166,6 +217,7 @@ export default class UserManageCom extends Component {
             </DataTable>
           </Col>
           {dialog}
+          {alertDialog}
         </Row>
       </div>
     );

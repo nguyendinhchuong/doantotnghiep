@@ -154,6 +154,7 @@ export default class DetailOutcomeStandardCom extends Component {
 
   onHideDeleteReAlertVisible = () => {
     this.setState({
+      revisionsVisible: true,
       deleteReAlertVisible: false,
       idRevision: 0
     });
@@ -169,6 +170,7 @@ export default class DetailOutcomeStandardCom extends Component {
       this.state.nodes
     );
     this.setState({
+      revisionsVisible: true,
       deleteReAlertVisible: false,
       idRevision: 0
     });
@@ -591,7 +593,6 @@ export default class DetailOutcomeStandardCom extends Component {
         <div className="content-section implementation">
           <Dialog
             header="Các phiên bản"
-            blockScroll={false}
             style={{ width: "60vw" }}
             visible={this.state.revisionsVisible}
             onHide={this.onHideRevisions}
