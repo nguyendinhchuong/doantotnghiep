@@ -3,6 +3,7 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import * as common from "./commonEducation";
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from "constants";
 
 // Add root
 export const addRoot = (data, name) => {
@@ -107,14 +108,14 @@ export const footerGroup = (
 
 export const sortSubject = data => {
   return data.sort((a, b) => {
-    const option1 = a.option;
-    const option2 = b.option;
-    if (option1 === option2) {
+    const block1 = a.nameBlock;
+    const block2 = b.nameBlock;
+    if (block1 === block2) {
       const code1 = a.SubjectCode;
       const code2 = b.SubjectCode;
       return code1.localeCompare(code2);
     }
-    return option1.localeCompare(option2);
+    return block1.localeCompare(block2);
   });
 };
 
@@ -128,7 +129,8 @@ export const indexSubjects = data => {
 
 export const toltalRequiredCredits = subjects => {
   return subjects.reduce((acc, cur) => {
-    if (cur.option === "BB" && cur.Credit) {
+    const isRequired = cur.nameBlock.startsWith("BB");
+    if (isRequired && cur.Credit) {
       return acc + Number(cur.Credit);
     }
     return acc;
@@ -148,9 +150,7 @@ export const addSubjectInOnchange = (subjects, subject) => {
   if (checkExistsSubject(subjects, subject)) {
     return subjects;
   }
-  const data = [...subjects];
-  data.push(subject);
-  return data;
+  return [...subjects, subject];
 };
 
 export const convertTreenodeToArr = (nodes, arr = []) => {
@@ -295,4 +295,63 @@ export const deleteSubjectTable = (nodes, subject) => {
   parentNode.data.subjects = deteleSubject(parentNode.data.subjects, subject);
   root = common.updateNode(root, parentNode);
   return root;
+};
+
+export const blocksOfTable = node =>{
+  const groups = groupBy(node.data.subjects, item =>{
+    return item.nameBlock;
+  });
+  const results = groups.reduce((arr, cur) =>{
+    const block = cur[0].nameBlock;
+    if(block.includes("(")){
+      return arr.concat(block.slice( block.indexOf('(')+1, block.indexOf(')')-1 ))
+    }
+    return arr;
+  },[]);
+  return results;
+};
+
+const groupBy = ( array , f ) =>
+{
+  let groups = {};
+  array.forEach( subject =>
+  {
+    let group = JSON.stringify( f(subject) );
+    groups[group] = groups[group] || [];
+    groups[group].push(subject);  
+  });
+  return Object.keys(groups).map(group =>
+  {
+    return groups[group]; 
+  })
+}
+
+export const updateBlocks = ( subjects, ...agru) =>{
+  return subjects.reduce((arr, subject) =>{
+    if(subject.nameBlock.startsWith("BB") && agru[0]){
+      subject.nameBlock += `( ${agru[0]} )`;
+      subject.isAccumulation = agru[2]
+    }
+    if(subject.nameBlock.startsWith("TC") && agru[1]){
+      subject.nameBlock += `( ${agru[1]} )`;
+      subject.isAccumulation = agru[3]
+      subject.optionCredit = agru[4]
+    }
+    return arr.concat(subject);
+  },[]);
+};
+
+export const checkExistsBlock = (nameBlock, listBlocks) =>{
+  return listBlocks.find((block) =>{
+    return block === nameBlock;
+  })
+};
+
+export const updateAccumulationAndCredit = (subjects, nameBlock,accumulation, credit) =>{
+  return subjects.map(subject => {
+    if(subject.nameBlock === nameBlock){
+      return {...subject, isAccumulation: accumulation, optionCredit: credit};
+    }
+    return {...subject};
+  });
 };

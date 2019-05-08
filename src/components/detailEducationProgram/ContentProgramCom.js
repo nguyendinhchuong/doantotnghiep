@@ -32,11 +32,15 @@ export default class ContentProgramCom extends React.Component {
       optionSubjects: [],
       listSubjects: [], // add into table
       isRequired: true,
-      isAccumulation: true,
+      isAccumulationBB: true,
+      isAccumulationTC: true,
       note: "",
       optionalCredit: 0,
       // hover
-      nodeHover: ""
+      nodeHover: "",
+      descriptionBlockTC: "",
+      descriptionBlockBB: "",
+      filterBlocks: []
     };
     this.deleteSubject.bind(this);
   }
@@ -107,7 +111,13 @@ export default class ContentProgramCom extends React.Component {
 
   addRowTable = () => {
     let data = [...this.state.nodes];
-    const subjects = [...this.state.listSubjects];
+    const subjects = logic.updateBlocks(this.state.listSubjects,
+      this.state.descriptionBlockBB,
+      this.state.descriptionBlockTC,
+      this.state.isAccumulationBB,
+      this.state.isAccumulationTC,
+      this.state.optionalCredit
+    );
 
     data = this.addRowTableLogic(data, this.state.node, subjects);
     this.setState({ nodes: data });
@@ -115,6 +125,7 @@ export default class ContentProgramCom extends React.Component {
   };
 
   addRowTableLogic = (nodes, node, subjectsAdd) => {
+    debugger;
     if (!node.data.isTable) {
       return nodes;
     }
@@ -126,10 +137,17 @@ export default class ContentProgramCom extends React.Component {
       subject.parentKey = child.key;
       subjectsTable = logic.addSubjectInOnchange(subjectsTable, subject);
     });
+    // check exists block
+    const blocks = logic.blocksOfTable(this.state.node);
+    if(logic.checkExistsBlock(this.state.descriptionBlockTC, blocks)){
+      subjectsTable = logic.updateAccumulationAndCredit(subjectsTable, 
+        this.state.descriptionBlockTC,
+        this.state.isAccumulationTC,
+        this.state.optionalCredit
+        )
+    }
     child.data.subjects = subjectsTable;
-    child.data.totalCredits =
-      logic.toltalRequiredCredits(child.data.subjects) +
-      this.state.optionalCredit;
+    //child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
     child.data.subjects = logic.sortSubject(child.data.subjects);
     child.data.subjects = logic.indexSubjects(child.data.subjects);
     child = this.convertNodeToDataTable(child);
@@ -239,7 +257,14 @@ export default class ContentProgramCom extends React.Component {
   isShowDialogTable = node => {
     this.setState({
       isDialogTable: true,
-      node: node
+      node: node,
+      isAccumulationBB: true,
+      isAccumulationTC: true,
+      optionalCredit: 0,
+      isRequired: true,
+      descriptionBlockBB: "",
+      descriptionBlockTC: "",
+      listSubjects: []
     });
   };
 
@@ -297,8 +322,13 @@ export default class ContentProgramCom extends React.Component {
     this.setState({
       filterSubjects: logic.filterSubjects(e, this.props.subjects)
     });
-    console.log(this.state.filterSubjects);
+  };
 
+  filterBlocks = e => {
+    const x = logic.blocksOfTable(this.state.node);
+    this.setState({
+      filterBlocks: logic.blocksOfTable(this.state.node)
+    });
   };
 
   // onchange
@@ -306,17 +336,21 @@ export default class ContentProgramCom extends React.Component {
   onChangeListSubjects = e => {
     if (typeof e.value === "object") {
       const subject = e.value;
-      subject.option = this.state.isRequired ? "BB" : "TC";
-      if(subject.option){
-        subject.isAccumulation = true;
-      }
-      const subjects = logic.addSubjectInOnchange(
-        this.state.listSubjects,
-        subject
-      );
+      subject.nameBlock = this.state.isRequired ? "BB" : "TC";
+      subject.isAccumulation = true;
+      const subjects = logic.addSubjectInOnchange(this.state.listSubjects, subject);
       this.setState({ listSubjects: subjects });
     }
     this.setState({ optionSubjects: e.value });
+  };
+
+  onChangeDescriptionBlock = e => {
+    if (this.state.isRequired) {
+      this.setState({ descriptionBlockBB: e.value });
+    }
+    else {
+      this.setState({ descriptionBlockTC: e.value })
+    }
   };
 
   onChangeCredit = e => {
@@ -457,6 +491,7 @@ export default class ContentProgramCom extends React.Component {
     </div>
   );
 
+
   render() {
     return (
       <div>
@@ -594,7 +629,7 @@ export default class ContentProgramCom extends React.Component {
               <Col lg="10" md="10" sm="12">
                 <OrderList
                   value={this.state.listSubjects.filter(subject => {
-                    if (subject.option === "BB") {
+                    if (subject.nameBlock.startsWith("BB")) {
                       return subject;
                     }
                   })}
@@ -612,7 +647,7 @@ export default class ContentProgramCom extends React.Component {
               <Col lg="10" md="10" sm="12">
                 <OrderList
                   value={this.state.listSubjects.filter(subject => {
-                    if (subject.option === "TC") {
+                    if (subject.nameBlock.startsWith("TC")) {
                       return subject;
                     }
                   })}
@@ -626,7 +661,7 @@ export default class ContentProgramCom extends React.Component {
             <Col lg="2" md="2" sm="2">
               <label>Loại Học Phần:</label>
             </Col>
-            <Col lg="3" md="3" sm="3">
+            <Col lg="2" md="2" sm="12">
               <Checkbox
                 checked={this.state.isRequired}
                 onChange={e => this.setState({ isRequired: true })}
@@ -645,29 +680,6 @@ export default class ContentProgramCom extends React.Component {
               </label>
             </Col>
           </Row>
-          <Row>
-            <Col lg="2" md="2" sm="2">
-              <label>Tích lũy:</label>
-            </Col>
-            <Col lg="3" md="3" sm="3">
-              <Checkbox
-                checked={this.state.isAccumulation}
-                onChange={e => this.setState({ isAccumulation: true })}
-              />
-              <label htmlFor="cb2" className="p-checkbox-label">
-                Có
-              </label>
-            </Col>
-            <Col lg="3" md="3" sm="3">
-              <Checkbox
-                checked={!this.state.isAccumulation}
-                onChange={e => this.setState({ isAccumulation: false })}
-              />
-              <label htmlFor="cb2" className="p-checkbox-label">
-                Không
-              </label>
-            </Col>
-          </Row>
           <div hidden={this.state.isRequired}>
             <Row style={{ marginBottom: "15px" }}>
               <Col lg="2" md="2" sm="2">
@@ -675,9 +687,81 @@ export default class ContentProgramCom extends React.Component {
               </Col>
               <Col lg="4" md="4" sm="4">
                 <Spinner
-                  value={this.state.optionalCredit}
+                  value={+this.state.optionalCredit}
                   onChange={e => this.onChangeCredit(e)}
                 />
+              </Col>
+            </Row>
+          </div>
+          <div hidden={!this.state.isRequired}>
+            <Row>
+              <Col lg="2" md="2" sm="2">
+                <label>Mô tả :</label>
+              </Col>
+              <Col lg="6" md="6" sm="12">
+                <AutoComplete
+                  //field="SubjectName"
+                  value={this.state.descriptionBlockBB}
+                  dropdown={true}
+                  onChange={e => this.onChangeDescriptionBlock(e)}
+                  size={40}
+                  placeholder="Môn học"
+                  minLength={1}
+                  suggestions={this.state.filterBlocks}
+                  completeMethod={e => this.filterBlocks(e)}
+                />
+              </Col>
+            </Row>
+          </div>
+          <div hidden={this.state.isRequired}>
+            <Row>
+              <Col lg="2" md="2" sm="2">
+                <label>Mô tả :</label>
+              </Col>
+              <Col lg="6" md="6" sm="12">
+                <AutoComplete
+                  //field="SubjectName"
+                  value={this.state.descriptionBlockTC}
+                  dropdown={true}
+                  onChange={e => this.onChangeDescriptionBlock(e)}
+                  size={40}
+                  placeholder="Môn học"
+                  minLength={1}
+                  suggestions={this.state.filterBlocks}
+                  completeMethod={e => this.filterBlocks(e)}
+                />
+              </Col>
+            </Row>
+          </div>
+          <div hidden={!this.state.isRequired}>
+            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <label>Tích lũy:</label>
+              </Col>
+              <Col lg="3" md="3" sm="3">
+                <Checkbox
+                  checked={this.state.isAccumulationBB}
+                  onChange={e => this.setState({ isAccumulationBB: !this.state.isAccumulationBB })}
+                />
+                <label htmlFor="cb2" className="p-checkbox-label">
+                  Có
+              </label>
+              </Col>
+            </Row>
+          </div>
+          <div hidden={this.state.isRequired}>
+            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+              <Col lg="2" md="2" sm="2">
+                <label>Tích lũy:</label>
+              </Col>
+              <Col lg="3" md="3" sm="3">
+                <Checkbox
+                  checked={this.state.isAccumulationTC}
+                  onChange={e => this.setState({ isAccumulationTC: !this.state.isAccumulationTC })}
+                />
+                <label htmlFor="cb2" className="p-checkbox-label">
+                  Có
+              </label>
               </Col>
             </Row>
           </div>

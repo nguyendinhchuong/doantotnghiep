@@ -39,13 +39,13 @@ export default class TableSubjectsCom extends React.Component {
               value={this.props.subjects}
               headerColumnGroup={logic.headerGroup}
               rowGroupMode="rowspan"
-              sortField="option"
+              sortField="nameBlock"
               sortOrder={1}
-              groupField="option"
+              groupField="nameBlock"
               editable={true}
               footerColumnGroup={footerGroup}
             >
-              <Column field="option" header="Loại Học Phần" />
+              <Column field="nameBlock" header="Loại Học Phần" />
               <Column field="index" header="STT" />
               <Column field="SubjectCode" header="Mã Môn Học" />
               <Column field="SubjectName" header="Tên Môn Học" />
