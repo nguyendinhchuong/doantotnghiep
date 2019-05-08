@@ -111,7 +111,8 @@ export default class ContentProgramCom extends React.Component {
 
   addRowTable = () => {
     let data = [...this.state.nodes];
-    const subjects = logic.updateBlocks(this.state.listSubjects,
+    const subjects = logic.updateBlocks(
+      this.state.listSubjects,
       this.state.descriptionBlockBB,
       this.state.descriptionBlockTC,
       this.state.isAccumulationBB,
@@ -139,12 +140,13 @@ export default class ContentProgramCom extends React.Component {
     });
     // check exists block
     const blocks = logic.blocksOfTable(this.state.node);
-    if(logic.checkExistsBlock(this.state.descriptionBlockTC, blocks)){
-      subjectsTable = logic.updateAccumulationAndCredit(subjectsTable, 
+    if (logic.checkExistsBlock(this.state.descriptionBlockTC, blocks)) {
+      subjectsTable = logic.updateAccumulationAndCredit(
+        subjectsTable,
         this.state.descriptionBlockTC,
         this.state.isAccumulationTC,
         this.state.optionalCredit
-        )
+      );
     }
     child.data.subjects = subjectsTable;
     //child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
@@ -174,7 +176,7 @@ export default class ContentProgramCom extends React.Component {
           deleteSubject={this.deleteSubjectOnTable}
           sum={props.node.data.totalCredits}
         />
-      )
+      );
     } else {
       return (
         <InputText
@@ -338,7 +340,10 @@ export default class ContentProgramCom extends React.Component {
       const subject = e.value;
       subject.nameBlock = this.state.isRequired ? "BB" : "TC";
       subject.isAccumulation = true;
-      const subjects = logic.addSubjectInOnchange(this.state.listSubjects, subject);
+      const subjects = logic.addSubjectInOnchange(
+        this.state.listSubjects,
+        subject
+      );
       this.setState({ listSubjects: subjects });
     }
     this.setState({ optionSubjects: e.value });
@@ -347,16 +352,16 @@ export default class ContentProgramCom extends React.Component {
   onChangeDescriptionBlock = e => {
     if (this.state.isRequired) {
       this.setState({ descriptionBlockBB: e.value });
-    }
-    else {
-      this.setState({ descriptionBlockTC: e.value })
+    } else {
+      this.setState({ descriptionBlockTC: e.value });
     }
   };
 
   onChangeCredit = e => {
-    this.setState({
-      optionalCredit: e.value
-    });
+    if (e.value > 0)
+      this.setState({
+        optionalCredit: e.value
+      });
   };
 
   // Template
@@ -373,36 +378,36 @@ export default class ContentProgramCom extends React.Component {
             <i className="material-icons">playlist_add</i>
           </Button>
         ) : (
-            <span>
-              <Button
-                onClick={() => this.isShowDialogChild(node)}
-                onMouseOver={() => this.mouseOver(node)}
-                theme="success"
-                style={{ marginRight: ".3em", padding: "8px" }}
-                title={`Thêm cấp con của ${this.state.nodeHover}`}
-              >
-                <i className="material-icons">add</i>
-              </Button>
-              <Button
-                onClick={() => this.upSameLevel(node)}
-                onMouseOver={() => this.mouseOverUp(node)}
-                theme="info"
-                style={{ marginRight: ".3em", padding: "8px" }}
-                title={`Lên cấp ${this.state.nodeHover}`}
-              >
-                <i className="material-icons">arrow_upward</i>
-              </Button>
-              <Button
-                onClick={() => this.downSameLevel(node)}
-                // onMouseOver = {() => this.mouseOverDown(node)}
-                theme="info"
-                style={{ marginRight: ".3em", padding: "8px" }}
+          <span>
+            <Button
+              onClick={() => this.isShowDialogChild(node)}
+              onMouseOver={() => this.mouseOver(node)}
+              theme="success"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Thêm cấp con của ${this.state.nodeHover}`}
+            >
+              <i className="material-icons">add</i>
+            </Button>
+            <Button
+              onClick={() => this.upSameLevel(node)}
+              onMouseOver={() => this.mouseOverUp(node)}
+              theme="info"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Lên cấp ${this.state.nodeHover}`}
+            >
+              <i className="material-icons">arrow_upward</i>
+            </Button>
+            <Button
+              onClick={() => this.downSameLevel(node)}
+              // onMouseOver = {() => this.mouseOverDown(node)}
+              theme="info"
+              style={{ marginRight: ".3em", padding: "8px" }}
               //title={`Xuống xấp ${this.state.nodeHover}`}
-              >
-                <i className="material-icons">arrow_downward</i>
-              </Button>
-            </span>
-          )}
+            >
+              <i className="material-icons">arrow_downward</i>
+            </Button>
+          </span>
+        )}
         <Button
           onClick={() => this.deleteNode(node)}
           onMouseOver={() => this.mouseOver(node)}
@@ -490,7 +495,6 @@ export default class ContentProgramCom extends React.Component {
       </Button>
     </div>
   );
-
 
   render() {
     return (
@@ -600,34 +604,33 @@ export default class ContentProgramCom extends React.Component {
           header="Thêm Nội Dung Môn Học"
           visible={this.state.isDialogTable}
           onHide={() => this.onHideDialogTable()}
-          style={{ width: "50vw" }}
+          style={{ width: "60vw" }}
           footer={this.footerDialogTable}
         >
           <Row>
-            <Col lg="2" md="2" sm="2">
-              <span>Môn Học:</span>
+            <Col lg="3" md="3" sm="3">
+              <span>Môn Học thêm vào:</span>
             </Col>
-            <Col lg="6" md="6" sm="12">
+            <Col lg="9" md="9" sm="9">
               <AutoComplete
                 field="SubjectName"
                 value={this.state.optionSubjects}
                 dropdown={true}
                 onChange={e => this.onChangeListSubjects(e)}
                 size={40}
-                placeholder="Môn học"
+                placeholder="Toán rời rạc"
                 minLength={1}
                 suggestions={this.state.filterSubjects}
                 completeMethod={e => this.filterSubjects(e)}
               />
             </Col>
           </Row>
+          <hr />
           <div hidden={!this.state.isRequired}>
-            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
-              <Col lg="2" md="2" sm="2">
-                <span>Môn Học BB:</span>
-              </Col>
-              <Col lg="10" md="10" sm="12">
+            <Row>
+              <Col lg="12" md="12" sm="12">
                 <OrderList
+                  header="Danh Sách Môn Học BB:"
                   value={this.state.listSubjects.filter(subject => {
                     if (subject.nameBlock.startsWith("BB")) {
                       return subject;
@@ -640,12 +643,10 @@ export default class ContentProgramCom extends React.Component {
             </Row>
           </div>
           <div hidden={this.state.isRequired}>
-            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
-              <Col lg="2" md="2" sm="2">
-                <span>Môn Học TC:</span>
-              </Col>
-              <Col lg="10" md="10" sm="12">
+            <Row>
+              <Col lg="12" md="12" sm="12">
                 <OrderList
+                  header="Danh Sách Môn Học TC:"
                   value={this.state.listSubjects.filter(subject => {
                     if (subject.nameBlock.startsWith("TC")) {
                       return subject;
@@ -657,11 +658,12 @@ export default class ContentProgramCom extends React.Component {
               </Col>
             </Row>
           </div>
-          <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
+          <br />
+          <Row>
             <Col lg="2" md="2" sm="2">
               <label>Loại Học Phần:</label>
             </Col>
-            <Col lg="2" md="2" sm="12">
+            <Col lg="2" md="2" sm="2">
               <Checkbox
                 checked={this.state.isRequired}
                 onChange={e => this.setState({ isRequired: true })}
@@ -679,95 +681,85 @@ export default class ContentProgramCom extends React.Component {
                 Tự Chọn
               </label>
             </Col>
+            <Col lg="2" md="2" sm="2" hidden={this.state.isRequired}>
+              <label>Số chỉ Tự Chọn:</label>
+            </Col>
+            <Col lg="1" md="1" sm="1" hidden={this.state.isRequired}>
+              <Spinner
+                value={+this.state.optionalCredit}
+                onChange={e => this.onChangeCredit(e)}
+              />
+            </Col>
           </Row>
-          <div hidden={this.state.isRequired}>
-            <Row style={{ marginBottom: "15px" }}>
-              <Col lg="2" md="2" sm="2">
-                <label>Số chỉ: </label>
-              </Col>
-              <Col lg="4" md="4" sm="4">
-                <Spinner
-                  value={+this.state.optionalCredit}
-                  onChange={e => this.onChangeCredit(e)}
-                />
-              </Col>
-            </Row>
-          </div>
           <div hidden={!this.state.isRequired}>
+            <br />
             <Row>
               <Col lg="2" md="2" sm="2">
-                <label>Mô tả :</label>
+                <label>Mô tả:</label>
               </Col>
-              <Col lg="6" md="6" sm="12">
+              <Col lg="6" md="6" sm="6">
                 <AutoComplete
-                  //field="SubjectName"
                   value={this.state.descriptionBlockBB}
                   dropdown={true}
                   onChange={e => this.onChangeDescriptionBlock(e)}
                   size={40}
-                  placeholder="Môn học"
+                  placeholder="Tự Nhiên"
                   minLength={1}
                   suggestions={this.state.filterBlocks}
                   completeMethod={e => this.filterBlocks(e)}
                 />
               </Col>
+              <Col lg="2" md="2" sm="2">
+                <Checkbox
+                  checked={this.state.isAccumulationBB}
+                  onChange={e =>
+                    this.setState({
+                      isAccumulationBB: !this.state.isAccumulationBB
+                    })
+                  }
+                />
+                <label htmlFor="cb2" className="p-checkbox-label">
+                  Có Tính Lũy
+                </label>
+              </Col>
             </Row>
           </div>
           <div hidden={this.state.isRequired}>
+            <br />
             <Row>
               <Col lg="2" md="2" sm="2">
-                <label>Mô tả :</label>
+                <label>Mô tả:</label>
               </Col>
-              <Col lg="6" md="6" sm="12">
+              <Col lg="6" md="6" sm="6">
                 <AutoComplete
-                  //field="SubjectName"
                   value={this.state.descriptionBlockTC}
                   dropdown={true}
                   onChange={e => this.onChangeDescriptionBlock(e)}
                   size={40}
-                  placeholder="Môn học"
+                  placeholder="Toán Học"
                   minLength={1}
                   suggestions={this.state.filterBlocks}
                   completeMethod={e => this.filterBlocks(e)}
                 />
               </Col>
-            </Row>
-          </div>
-          <div hidden={!this.state.isRequired}>
-            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
               <Col lg="2" md="2" sm="2">
-                <label>Tích lũy:</label>
-              </Col>
-              <Col lg="3" md="3" sm="3">
-                <Checkbox
-                  checked={this.state.isAccumulationBB}
-                  onChange={e => this.setState({ isAccumulationBB: !this.state.isAccumulationBB })}
-                />
-                <label htmlFor="cb2" className="p-checkbox-label">
-                  Có
-              </label>
-              </Col>
-            </Row>
-          </div>
-          <div hidden={this.state.isRequired}>
-            <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
-              <Col lg="2" md="2" sm="2">
-                <label>Tích lũy:</label>
-              </Col>
-              <Col lg="3" md="3" sm="3">
                 <Checkbox
                   checked={this.state.isAccumulationTC}
-                  onChange={e => this.setState({ isAccumulationTC: !this.state.isAccumulationTC })}
+                  onChange={e =>
+                    this.setState({
+                      isAccumulationTC: !this.state.isAccumulationTC
+                    })
+                  }
                 />
                 <label htmlFor="cb2" className="p-checkbox-label">
-                  Có
-              </label>
+                  Có Tích Lũy
+                </label>
               </Col>
             </Row>
           </div>
-          <Row>
+          <Row hidden={true}>
             <Col lg="2" md="2" sm="6">
-              <label>Ghi chú: </label>
+              <label>Ghi chú:</label>
             </Col>
             <Col lg="10" md="10" sm="12">
               <InputTextarea

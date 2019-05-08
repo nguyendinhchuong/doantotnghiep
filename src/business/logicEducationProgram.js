@@ -170,7 +170,7 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
 export const deteleSubject = (subjects, subject) => {
   const indexSubject = subjects.indexOf(subject);
   return subjects.filter((subject, index) => {
-    if(indexSubject !== index){
+    if (indexSubject !== index) {
       return subject;
     }
   });
@@ -297,61 +297,65 @@ export const deleteSubjectTable = (nodes, subject) => {
   return root;
 };
 
-export const blocksOfTable = node =>{
-  const groups = groupBy(node.data.subjects, item =>{
+export const blocksOfTable = node => {
+  const groups = groupBy(node.data.subjects, item => {
     return item.nameBlock;
   });
-  const results = groups.reduce((arr, cur) =>{
+  const results = groups.reduce((arr, cur) => {
     const block = cur[0].nameBlock;
-    if(block.includes("(")){
-      return arr.concat(block.slice( block.indexOf('(')+1, block.indexOf(')')-1 ))
+    if (block.includes("(")) {
+      return arr.concat(
+        block.slice(block.indexOf("(") + 1, block.indexOf(")") - 1)
+      );
     }
     return arr;
-  },[]);
+  }, []);
   return results;
 };
 
-const groupBy = ( array , f ) =>
-{
+const groupBy = (array, f) => {
   let groups = {};
-  array.forEach( subject =>
-  {
-    let group = JSON.stringify( f(subject) );
+  array.forEach(subject => {
+    let group = JSON.stringify(f(subject));
     groups[group] = groups[group] || [];
-    groups[group].push(subject);  
+    groups[group].push(subject);
   });
-  return Object.keys(groups).map(group =>
-  {
-    return groups[group]; 
-  })
-}
+  return Object.keys(groups).map(group => {
+    return groups[group];
+  });
+};
 
-export const updateBlocks = ( subjects, ...agru) =>{
-  return subjects.reduce((arr, subject) =>{
-    if(subject.nameBlock.startsWith("BB") && agru[0]){
+export const updateBlocks = (subjects, ...agru) => {
+  return subjects.reduce((arr, subject) => {
+    if (subject.nameBlock.startsWith("BB") && agru[0]) {
       subject.nameBlock += `( ${agru[0]} )`;
-      subject.isAccumulation = agru[2]
+      subject.isAccumulation = agru[2];
     }
-    if(subject.nameBlock.startsWith("TC") && agru[1]){
+    if (subject.nameBlock.startsWith("TC") && agru[1]) {
       subject.nameBlock += `( ${agru[1]} )`;
-      subject.isAccumulation = agru[3]
-      subject.optionCredit = agru[4]
+      subject.isAccumulation = agru[3];
+      subject.optionCredit = agru[4];
     }
     return arr.concat(subject);
-  },[]);
+  }, []);
 };
 
-export const checkExistsBlock = (nameBlock, listBlocks) =>{
-  return listBlocks.find((block) =>{
+export const checkExistsBlock = (nameBlock, listBlocks) => {
+  return listBlocks.find(block => {
     return block === nameBlock;
-  })
+  });
 };
 
-export const updateAccumulationAndCredit = (subjects, nameBlock,accumulation, credit) =>{
+export const updateAccumulationAndCredit = (
+  subjects,
+  nameBlock,
+  accumulation,
+  credit
+) => {
   return subjects.map(subject => {
-    if(subject.nameBlock === nameBlock){
-      return {...subject, isAccumulation: accumulation, optionCredit: credit};
+    if (subject.nameBlock === nameBlock) {
+      return { ...subject, isAccumulation: accumulation, optionCredit: credit };
     }
-    return {...subject};
+    return { ...subject };
   });
 };

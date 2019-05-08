@@ -191,7 +191,6 @@ export default class DetailEducationProgramCom extends React.Component {
                   handleMajorNameChange={this.handleMajorNameChange}
                   handleProgramChange={this.handleProgramChange}
                   handleSchoolYearChange={this.handleSchoolYearChange}
-
                   eduYear={this.state.eduYear}
                   sumCredit={this.state.sumCredit}
                 />
@@ -253,9 +252,7 @@ export default class DetailEducationProgramCom extends React.Component {
               </AccordionTab>
 
               <AccordionTab header="KẾ HOẠCH GIẢNG DẠY DỰ KIẾN">
-                <ScheduleEducationCom 
-                subjects={this.props.subjects}
-                />
+                <ScheduleEducationCom subjects={this.props.subjects} />
               </AccordionTab>
             </Accordion>
           </Col>
