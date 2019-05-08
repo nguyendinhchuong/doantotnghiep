@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
-import * as logic from "../business";
 import * as message from "./message";
 import { onLoadRevisions } from "./revisionsAction";
+import * as logic from "../business";
 
 export const addDetailRevisionSuccess = (nodes, successMessage) => ({
   type: cst.ADD_DETAIL_REVISION_SUCCESS,
