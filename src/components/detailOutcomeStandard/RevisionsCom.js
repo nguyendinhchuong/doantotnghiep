@@ -15,14 +15,6 @@ export default class RevisionsCom extends React.Component {
         >
           <i className="material-icons">edit</i>
         </Button>
-        <Button
-          title="Xóa"
-          onClick={() => this.props.onShowDeleteReAlert(data.Id)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-        >
-          <i className="material-icons">delete</i>
-        </Button>
       </div>
     );
   };
@@ -40,7 +32,7 @@ export default class RevisionsCom extends React.Component {
             <Column field="NameRevision" header="Tên phiên bản" />
             <Column
               body={this.actionTemplate}
-              style={{ textAlign: "center", width: "8em" }}
+              style={{ textAlign: "center", width: "4em" }}
             />
           </DataTable>
         </Col>
@@ -48,3 +40,12 @@ export default class RevisionsCom extends React.Component {
     );
   }
 }
+// 
+//        <Button
+//          title="Xóa"
+//          onClick={() => this.props.onShowDeleteReAlert(data.Id)}
+//          theme="secondary"
+//          style={{ marginRight: ".3em", padding: "8px" }}
+//        >
+//          <i className="material-icons">delete</i>
+//        </Button>

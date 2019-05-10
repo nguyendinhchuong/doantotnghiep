@@ -7,6 +7,7 @@ import SubjectManageCom from "../components/subjectManage/SubjectManageCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
+import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as subjectsAction from "../actions/subjectsAction";
 
 import { connect } from "react-redux";
@@ -19,6 +20,7 @@ class SubjectManageTemp extends Component {
 
   componentDidMount = () => {
     this.props.onLoadSubjects();
+    this.props.onLoadEduPrograms();
   };
 
   render() {
@@ -65,6 +67,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+  onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
   onLoadSubjects: subjectsAction.onLoadSubjects,
   onDeleteSubject: subjectsAction.onDeleteSubject,
   onAddSubject: subjectsAction.onAddSubject,

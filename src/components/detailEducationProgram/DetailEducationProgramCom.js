@@ -79,7 +79,13 @@ export default class DetailEducationProgramCom extends React.Component {
   };
 
   handleSchoolYearChange = event => {
-    this.setState({ schoolYear: event.target.value });
+    if (event.target.value.length > 4)
+      this.setState({ schoolYear: event.target.value.substr(0, 4) });
+    else if (
+      event.target.value.length === 0 ||
+      !isNaN(event.target.value[event.target.value.length - 1])
+    )
+      this.setState({ schoolYear: event.target.value });
   };
   // end functions for Title
 
@@ -185,7 +191,6 @@ export default class DetailEducationProgramCom extends React.Component {
                   handleMajorNameChange={this.handleMajorNameChange}
                   handleProgramChange={this.handleProgramChange}
                   handleSchoolYearChange={this.handleSchoolYearChange}
-
                   eduYear={this.state.eduYear}
                   sumCredit={this.state.sumCredit}
                 />
@@ -247,9 +252,7 @@ export default class DetailEducationProgramCom extends React.Component {
               </AccordionTab>
 
               <AccordionTab header="KẾ HOẠCH GIẢNG DẠY DỰ KIẾN">
-                <ScheduleEducationCom 
-                subjects={this.props.subjects}
-                />
+                <ScheduleEducationCom subjects={this.props.subjects} />
               </AccordionTab>
             </Accordion>
           </Col>

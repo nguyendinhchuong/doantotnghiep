@@ -11,7 +11,7 @@ import { OrderList } from "primereact/orderlist";
 import { Checkbox } from "primereact/checkbox";
 
 import * as logic from "../../business/logicScheduleEdu";
-import * as common from "../../business/commonEducation"
+import * as common from "../../business/commonEducation";
 
 import TableScheduleSubjectCom from "./TableScheduleSubjectCom";
 
@@ -40,9 +40,11 @@ export default class ScheduleEducationCom extends React.Component {
   };
 
   handleAddChild = () => {
-    this.setState({ nodes: this.addChildTable(this.state.nodes, this.state.node) });
+    this.setState({
+      nodes: this.addChildTable(this.state.nodes, this.state.node)
+    });
     this.onHideDialogTable();
-  }
+  };
 
   addChildTable = (nodes, nodeParent) => {
     let data = [...nodes];
@@ -70,8 +72,8 @@ export default class ScheduleEducationCom extends React.Component {
     node.data.displayName = (
       <TableScheduleSubjectCom
         subjects={node.data.subjects}
-      deleteSubject={this.deleteSubjectOnTable}
-      //sum={node.data.totalCredits}
+        deleteSubject={this.deleteSubjectOnTable}
+        //sum={node.data.totalCredits}
       />
     );
     return node;
@@ -95,7 +97,7 @@ export default class ScheduleEducationCom extends React.Component {
       );
       this.setState({ listSubjects: subjects });
     }
-    this.setState({ optionSubjects: e.value });  
+    this.setState({ optionSubjects: e.value });
   };
 
   filterSubjects = e => {
@@ -104,21 +106,21 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
-  requiredSubjects = () =>{
+  requiredSubjects = () => {
     return this.state.listSubjects.filter(subject => {
       if (subject.option === "BB") {
         return subject;
       }
     });
-  }
+  };
 
-  notRequiredSubjects = () =>{
+  notRequiredSubjects = () => {
     return this.state.listSubjects.filter(subject => {
       if (subject.option === "TC") {
         return subject;
       }
     });
-  }
+  };
 
   // show/hidden Dialong
   isShowDialogRoot = () => {
@@ -134,13 +136,13 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
-  isShowDialogSubjectsTable = node =>{
+  isShowDialogSubjectsTable = node => {
     this.setState({
       isDialogSubjectsTable: true,
       node: node,
       listSubjects: []
     });
-  }
+  };
 
   onHideDialogRoot = () => {
     this.setState({ isDialogRoot: false });
@@ -152,11 +154,11 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
-  onHideDialogSubjectsTable = () =>{
+  onHideDialogSubjectsTable = () => {
     this.setState({
       isDialogSubjectsTable: false
     });
-  }
+  };
   // subjects
 
   deleteSubject = subject => {
@@ -191,7 +193,11 @@ export default class ScheduleEducationCom extends React.Component {
   };
 
   addRowTable = () => {
-    const data = this.addRowTableLogic(this.state.nodes, this.state.node, this.state.listSubjects);
+    const data = this.addRowTableLogic(
+      this.state.nodes,
+      this.state.node,
+      this.state.listSubjects
+    );
     this.setState({ nodes: data });
     this.onHideDialogSubjectsTable();
   };
@@ -258,27 +264,25 @@ export default class ScheduleEducationCom extends React.Component {
   actionTemplate(node, column) {
     return (
       <div>
-        {
-          !node.data.isTable ? (
-            <Button
-              onClick={() => this.isShowDialogTable(node)}
-              theme="success"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Thêm bảng môn học`}
-            >
-              <i className="material-icons">add</i>
-            </Button>
-          ) : (
-              <Button
-                onClick={() => this.isShowDialogSubjectsTable(node)}
-                theme="success"
-                style={{ marginRight: ".3em", padding: "8px" }}
-                title={`Thêm môn học`}
-              >
-                <i className="material-icons">playlist_add</i>
-              </Button>
-            )
-        }
+        {!node.data.isTable ? (
+          <Button
+            onClick={() => this.isShowDialogTable(node)}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Thêm bảng môn học`}
+          >
+            <i className="material-icons">add</i>
+          </Button>
+        ) : (
+          <Button
+            onClick={() => this.isShowDialogSubjectsTable(node)}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Thêm môn học`}
+          >
+            <i className="material-icons">playlist_add</i>
+          </Button>
+        )}
         <Button
           onClick={() => this.deleteNode(node)}
           //onMouseOver={() => this.mouseOver(node)}
@@ -326,68 +330,67 @@ export default class ScheduleEducationCom extends React.Component {
   );
 
   render() {
-    return <div>
-      <TreeTable value={this.state.nodes}>
-        <Column
-          field="displayName"
-          header="Tên dòng"
-          expander
-        />
-        <Column
-          header={
-            <Button
-              onClick={() => this.isShowDialogRoot()}
-              theme="success"
-            >
-              <i className="material-icons">add</i> Thêm học kỳ
+    return (
+      <div>
+        <TreeTable value={this.state.nodes}>
+          <Column field="displayName" header="Tên dòng" expander />
+          <Column
+            header={
+              <Button onClick={() => this.isShowDialogRoot()} theme="success">
+                <i className="material-icons">add</i> Thêm Học kỳ
               </Button>
-          }
-          body={(node, column) => this.actionTemplate(node, column)}
-          style={{ textAlign: "center", width: "12em" }}
-        />
-      </TreeTable>
+            }
+            body={(node, column) => this.actionTemplate(node, column)}
+            style={{ textAlign: "center", width: "12em" }}
+          />
+        </TreeTable>
 
-      {/* Dialog Root */}
-      <Dialog
-        header="Thêm học kỳ"
-        visible={this.state.isDialogRoot}
-        onHide={() => this.onHideDialogRoot()}
-        style={{ width: "50vw" }}
-        footer={this.footerRoot}
-      >
-        <Row>
-          <Col lg="2" md="2" sm="4">
-            <label>Học kỳ: </label>
-          </Col>
-          <Col lg="2" md="2" sm="4">
-            <Spinner value={this.state.semester} onChange={(e) => this.setState({ semester: e.value })} />
-          </Col>
-        </Row>
-      </Dialog>
-      {/*Dialog Table */}
-      <Dialog
-        header="Cấu trúc"
-        visible={this.state.isDialogTable}
-        onHide={() => this.onHideDialogTable()}
-        style={{ width: "50vw" }}
-        footer={this.footerChildTable}
-      >
-        <div>
-          <DataTable headerColumnGroup={logic.headerGroup}>
-            <Column header="STT" />
-            <Column header="Loại Học Phần" />
-            <Column header="Mã Môn Học" />
-            <Column header="Tên Môn Học" />
-            <Column header="Số Tín Chỉ" />
-            <Column header="Lý Thuyết" />
-            <Column header="Thực Hành" />
-            <Column header="Bài Tập" />
-            <Column header="Description" />
-          </DataTable>
-        </div>
-      </Dialog>
-      {/* Dialog of dataTable */}
-      <Dialog
+        {/* Dialog Root */}
+        <Dialog
+          header="Thêm Học kỳ"
+          visible={this.state.isDialogRoot}
+          onHide={() => this.onHideDialogRoot()}
+          style={{ width: "50vw" }}
+          footer={this.footerRoot}
+        >
+          <Row>
+            <Col lg="2" md="2" sm="4">
+              <label>Học kỳ: </label>
+            </Col>
+            <Col lg="2" md="2" sm="4">
+              <Spinner
+                value={this.state.semester}
+                onChange={e => {
+                  if (e.value > 0) this.setState({ semester: e.value });
+                }}
+              />
+            </Col>
+          </Row>
+        </Dialog>
+        {/*Dialog Table */}
+        <Dialog
+          header="Cấu trúc"
+          visible={this.state.isDialogTable}
+          onHide={() => this.onHideDialogTable()}
+          style={{ width: "50vw" }}
+          footer={this.footerChildTable}
+        >
+          <div>
+            <DataTable headerColumnGroup={logic.headerGroup}>
+              <Column header="STT" />
+              <Column header="Loại Học Phần" />
+              <Column header="Mã Môn Học" />
+              <Column header="Tên Môn Học" />
+              <Column header="Số Tín Chỉ" />
+              <Column header="Lý Thuyết" />
+              <Column header="Thực Hành" />
+              <Column header="Bài Tập" />
+              <Column header="Description" />
+            </DataTable>
+          </div>
+        </Dialog>
+        {/* Dialog of dataTable */}
+        <Dialog
           header="Thêm Nội Dung Môn Học"
           visible={this.state.isDialogSubjectsTable}
           onHide={() => this.onHideDialogSubjectsTable()}
@@ -448,7 +451,7 @@ export default class ScheduleEducationCom extends React.Component {
               </Col>
             </Row>
           </div>
-          
+
           <Row style={{ marginTop: "15px", marginBottom: "15px" }}>
             <Col lg="2" md="2" sm="2">
               <label>Loại Học Phần:</label>
@@ -486,6 +489,7 @@ export default class ScheduleEducationCom extends React.Component {
             </Col>
           </Row>
         </Dialog>
-    </div>
+      </div>
+    );
   }
 }

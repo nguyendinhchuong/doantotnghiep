@@ -10,7 +10,9 @@ export default class LevelManageCom extends Component {
     super(props);
     this.state = {
       visible: false,
-      levelName: ""
+      levelName: "",
+      deleteVisible: false,
+      id: 0
     };
   }
 
@@ -18,9 +20,8 @@ export default class LevelManageCom extends Component {
     return (
       <div>
         <Button
-          disabled={true}
           title="Xóa"
-          onClick={() => this.props.onDeleteLevel(data.Id)}
+          onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -48,6 +49,28 @@ export default class LevelManageCom extends Component {
       this.props.onAddLevel(data);
       this.setState({ visible: false });
     }
+  };
+
+  onDeleteShow = id => {
+    this.setState({
+      deleteVisible: true,
+      id: id
+    });
+  };
+
+  onDelete = () => {
+    this.props.onDeleteLevel(this.state.id);
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
+  };
+
+  onHideDeleteVisible = () => {
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
   };
 
   render() {
@@ -97,6 +120,34 @@ export default class LevelManageCom extends Component {
       </Dialog>
     );
 
+    const alertDialog = (
+      <div className="content-section implementation">
+        <Dialog
+          header="Thông báo"
+          visible={this.state.deleteVisible}
+          style={{ width: "50vw" }}
+          footer={
+            <div>
+              <Button onClick={this.onDelete} theme="success">
+                Xóa
+              </Button>
+              <Button onClick={this.onHideDeleteVisible} theme="secondary">
+                Hủy
+              </Button>
+            </div>
+          }
+          onHide={this.onHideDeleteVisible}
+        >
+          {`Bạn thực sự muốn xóa trình độ ${
+            this.state.id !== 0
+              ? this.props.levels.filter(row => row.Id === this.state.id)[0]
+                  .LevelName
+              : ""
+          }`}
+        </Dialog>
+      </div>
+    );
+
     return (
       <div>
         <Row>
@@ -121,6 +172,7 @@ export default class LevelManageCom extends Component {
           </Col>
         </Row>
         {dialog}
+        {alertDialog}
       </div>
     );
   }

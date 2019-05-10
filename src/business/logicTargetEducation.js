@@ -199,3 +199,103 @@ export const downSameLevel = (nodes, node) => {
   }
   return downSameLevelSub(nodes, node);
 };
+
+export const indexRoot = key => {
+  return key.split(".")[1];
+};
+
+export const updateNode = (data, node) => {
+  const key = node.key;
+  const index = indexRoot(key);
+  const length = data.length;
+  for (let i = index - 1; i < length; i++) {
+    if (data[i].key === key) {
+      data[i] = node;
+      return data;
+    }
+    if (data[i].children) {
+      updateNode(data[i].children, node);
+    }
+  }
+  return data;
+};
+
+const parentKey = key => {
+  const lastIndexDot = key.lastIndexOf(".");
+  return key.slice(0, lastIndexDot);
+};
+
+export const findNodeByKey = (nodes, key) => {
+  let path = [...key];
+  if (key.length > 1) {
+    path = key.split(".");
+  }
+  let node;
+
+  while (path.length) {
+    let list = node ? node.children : nodes;
+    node = list[Number(path[0]) - 1];
+    if (!node) {
+      return undefined;
+    }
+    path.shift();
+  }
+  return { ...node };
+};
+
+const lastNumberOfKey = str => {
+  const length = str.length;
+  for (let i = length - 1; i >= 0; i--) {
+    if (Number.isInteger(Number(str[i]))) return i;
+  }
+};
+
+const getFormatKey = key => {
+  return key.slice(0, lastNumberOfKey(key) + 1);
+};
+
+const getRank = key => {
+  let countDot = 0;
+  for (let i = 0; i < key.length; i++) {
+    if (key[i] === ".") {
+      countDot++;
+    }
+  }
+  return countDot + 1;
+};
+
+const addRootImport = (nodes, node) => {
+  const root = [...nodes];
+  root.push(node);
+  return root;
+};
+
+const addImport = (nodes, node) => {
+  const root = [...nodes];
+  const keyParent = parentKey(node.key);
+  const nodeParent = findNodeByKey(root, keyParent);
+  nodeParent.children.push(node);
+  return updateNode(root, nodeParent);
+};
+
+export const convertDBToTreeNodeForEduPro = arrDB => {
+  let data1 = [];
+  arrDB.forEach(el => {
+    const key = getFormatKey(el.KeyRow);
+    const name = el.NameRow;
+    const subNode = {
+      key: key,
+      data: {
+        name: name,
+        displayName: `${key}. ${name}`
+      },
+      children: []
+    };
+    if (getRank(key) <= 2) {
+      data1 = addRootImport(data1, subNode);
+    } else {
+      data1 = addImport(data1, subNode);
+    }
+  });
+  return data1;
+};

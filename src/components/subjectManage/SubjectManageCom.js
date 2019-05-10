@@ -5,6 +5,7 @@ import { Row, Col, Button, FormInput, FormTextarea } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
+import { ColumnGroup } from "primereact/columngroup";
 
 import * as logic from "../../business";
 
@@ -24,7 +25,9 @@ export default class SubjectManageCom extends Component {
       practice: "",
       exercise: "",
       description: "",
-      tmpSubjects: []
+      tmpSubjects: [],
+      deleteVisible: false,
+      id: 0
     };
   }
 
@@ -181,14 +184,33 @@ export default class SubjectManageCom extends Component {
     const description = row.Description
       ? "Mô tả môn học: " + row.Description
       : "Chưa có mô tả môn học!!";
+
     this.setState({
       showDescription: description,
       detailVisible: true
     });
   };
 
-  onDelete = IdSubject => {
-    this.props.onDeleteSubject(IdSubject);
+  onDeleteShow = id => {
+    this.setState({
+      deleteVisible: true,
+      id: id
+    });
+  };
+
+  onDelete = () => {
+    this.props.onDeleteSubject(this.state.id);
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
+  };
+
+  onHideDeleteVisible = () => {
+    this.setState({
+      deleteVisible: false,
+      id: 0
+    });
   };
 
   actionTemplate = (data, column) => {
@@ -204,7 +226,7 @@ export default class SubjectManageCom extends Component {
         </Button>
         <Button
           title="Xóa"
-          onClick={() => this.onDelete(data.Id)}
+          onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -340,6 +362,34 @@ export default class SubjectManageCom extends Component {
       </Dialog>
     );
 
+    const alertDialog = (
+      <div className="content-section implementation">
+        <Dialog
+          header="Thông báo"
+          visible={this.state.deleteVisible}
+          style={{ width: "50vw" }}
+          footer={
+            <div>
+              <Button onClick={this.onDelete} theme="success">
+                Xóa
+              </Button>
+              <Button onClick={this.onHideDeleteVisible} theme="secondary">
+                Hủy
+              </Button>
+            </div>
+          }
+          onHide={this.onHideDeleteVisible}
+        >
+          {`Bạn thực sự muốn xóa môn học ${
+            this.state.id !== 0
+              ? this.props.subjects.filter(row => row.Id === this.state.id)[0]
+                  .SubjectName
+              : ""
+          }`}
+        </Dialog>
+      </div>
+    );
+
     const reviewDialog = (
       <Dialog
         header="Danh sách môn từ file:"
@@ -424,7 +474,6 @@ export default class SubjectManageCom extends Component {
               )}
               style={{ height: "20vw", overflowY: "scroll" }}
             >
-              <Column field="Id" header="Mã số" />
               <Column field="EduName" header="Tên Chương trình đào tạo" />
             </DataTable>
           </Col>
@@ -438,7 +487,7 @@ export default class SubjectManageCom extends Component {
           <Col lg="2" md="2" sm="2">
             <p align="left">
               <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">playlist_add</i> Thêm Học phần
+                <i className="material-icons">add</i> Thêm Học phần
               </Button>
             </p>
           </Col>
@@ -501,6 +550,7 @@ export default class SubjectManageCom extends Component {
         {dialog}
         {reviewDialog}
         {detailDialog}
+        {alertDialog}
       </div>
     );
   }

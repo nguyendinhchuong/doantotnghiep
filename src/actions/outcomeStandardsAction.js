@@ -91,7 +91,7 @@ export const loadOutcomeStandardError = errorMessage => ({
 
 export const onLoadOutcomeStandard = id => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_OUTCOMESTANDARD}?IdOutcome=${id}`;
+    let req = `${links.LOAD_OUTCOMESTANDARD}?idoutcome=${id}`;
     axios
       .get(req)
       .then(res => {
