@@ -92,8 +92,8 @@ export const onSaveDetail = (prop, state) => {
 };
 
 export const onSaveTarget = (prop, targetNodes) => {
-  let data = [];
-  let level = logic.getMaxLevel(targetNodes);
+  const data = [];
+  const level = logic.getMaxLevel(targetNodes);
   commonLogic.createSaveDataForTarget(targetNodes, data, level);
   const targetEduProgram = {
     datecreated: new Date().toISOString(),
@@ -105,8 +105,8 @@ export const onSaveTarget = (prop, targetNodes) => {
 };
 
 export const onSaveContent = (prop, contentNodes) => {
-  let data = [];
-  let level = logic.getMaxLevel(contentNodes);
+  const data = [];
+  const level = logic.getMaxLevel(contentNodes);
   commonLogic.createSaveDataForContent(contentNodes, data, level);
   const contentProgram = {
     datecreated: new Date().toISOString(),
@@ -114,6 +114,6 @@ export const onSaveContent = (prop, contentNodes) => {
     data,
     contentNodes
   };
-  console.log(data)
+  console.log(JSON.stringify(data))
   return contentProgram;
 };

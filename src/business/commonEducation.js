@@ -172,4 +172,31 @@ export const createSaveDataForTarget = (nodes, outData, level) => {
   }
 };
 
-export const createSaveDataForContent = (nodes, outData, level) => {};
+export const createSaveDataForContent = (nodes, outData, level) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    let tmpObj = {};
+    for (let i in nodes) {
+      let length = level - nodes[i].key.length / 2 - 1;
+      let KeyRow = nodes[i].key;
+      for (var j = 0; j < length; j++) {
+        KeyRow = KeyRow + ".";
+      }
+      let data = nodes[i].data;
+
+      if (data.isTable) {
+        tmpObj = { KeyRow, Type: true, subjects: [...data.subjects] };
+      } else {
+        tmpObj = { KeyRow, NameRow: data.name, Type: false };
+      }
+
+      outData.push(tmpObj);
+      tmpObj = {};
+
+      if (!data.isTable) {
+        let children = nodes[i].children;
+        createSaveDataForContent(children, outData, level);
+      }
+    }
+  }
+};
