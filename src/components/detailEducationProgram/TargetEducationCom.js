@@ -65,7 +65,7 @@ export default class TargetEducationCom extends Component {
     );
     this.setState({
       targetNodes: data
-    });
+    });    
   };
 
   // delete

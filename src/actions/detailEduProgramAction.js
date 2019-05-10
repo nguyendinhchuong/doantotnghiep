@@ -2,7 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
-// import * as targetLogic from "../business/logicTargetEducation";
+import * as targetLogic from "../business/logicTargetEducation";
 
 export const loadDetailEduProgramSuccess = detailEduProgram => ({
   type: cst.LOAD_DETAIL_EDUPROGRAM_SUCCESS,
@@ -104,8 +104,8 @@ export const onLoadTargetEduProgram = id => {
           dispatch(message.message(chirp));
           dispatch(loadTargetEduProgramError(res));
         } else {
-          // let targetEduProgram = targetLogic.convertDBToTreeNodeForEduPro(data);
-          // dispatch(loadTargetEduProgramSuccess(targetEduProgram));
+          let targetEduProgram = targetLogic.convertDBToTreeNodeForEduPro(data);
+          dispatch(loadTargetEduProgramSuccess(targetEduProgram));
         }
       })
       .catch(err => {

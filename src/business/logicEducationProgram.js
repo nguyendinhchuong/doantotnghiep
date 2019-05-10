@@ -359,7 +359,6 @@ export const updateAccumulationAndCredit = (
     return { ...subject };
   });
 };
-<<<<<<< HEAD
 
 export const totalCreditsOfTable = subjects =>{
   const groups = groupBy(subjects, item =>{
@@ -369,5 +368,3 @@ export const totalCreditsOfTable = subjects =>{
     return arr.concat(cur);
   },[]);
 };
-=======
->>>>>>> 086fcbdcefed41a0e68c6775effc061022780716
