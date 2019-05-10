@@ -129,6 +129,7 @@ export default class DetailEducationProgramCom extends React.Component {
     const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
+    console.log(contentNodes)
     const contentProgram = event.onSaveContent(this.props, contentNodes);
 
     this.props.onSaveEduProgram(
@@ -142,6 +143,10 @@ export default class DetailEducationProgramCom extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const data = event.receiveProps(nextProps);
+
+    const targetNodes = this.TargetEducationCom.current.state.targetNodes;
+    if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))
+      this.TargetEducationCom.current.getTargetNodes(nextProps.targetNodes);
 
     this.setState({
       nameEduProgram: data.nameEduProgram,

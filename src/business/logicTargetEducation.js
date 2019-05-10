@@ -220,11 +220,6 @@ export const updateNode = (data, node) => {
   return data;
 };
 
-const parentKey = key => {
-  const lastIndexDot = key.lastIndexOf(".");
-  return key.slice(0, lastIndexDot);
-};
-
 export const findNodeByKey = (nodes, key) => {
   let path = [...key];
   if (key.length > 1) {
@@ -243,59 +238,4 @@ export const findNodeByKey = (nodes, key) => {
   return { ...node };
 };
 
-const lastNumberOfKey = str => {
-  const length = str.length;
-  for (let i = length - 1; i >= 0; i--) {
-    if (Number.isInteger(Number(str[i]))) return i;
-  }
-};
-
-const getFormatKey = key => {
-  return key.slice(0, lastNumberOfKey(key) + 1);
-};
-
-const getRank = key => {
-  let countDot = 0;
-  for (let i = 0; i < key.length; i++) {
-    if (key[i] === ".") {
-      countDot++;
-    }
-  }
-  return countDot + 1;
-};
-
-const addRootImport = (nodes, node) => {
-  const root = [...nodes];
-  root.push(node);
-  return root;
-};
-
-const addImport = (nodes, node) => {
-  const root = [...nodes];
-  const keyParent = parentKey(node.key);
-  const nodeParent = findNodeByKey(root, keyParent);
-  nodeParent.children.push(node);
-  return updateNode(root, nodeParent);
-};
-
-export const convertDBToTreeNodeForEduPro = arrDB => {
-  let data1 = [];
-  arrDB.forEach(el => {
-    const key = getFormatKey(el.KeyRow);
-    const name = el.NameRow;
-    const subNode = {
-      key: key,
-      data: {
-        name: name,
-        displayName: `${key}. ${name}`
-      },
-      children: []
-    };
-    if (getRank(key) <= 2) {
-      data1 = addRootImport(data1, subNode);
-    } else {
-      data1 = addImport(data1, subNode);
-    }
-  });
-  return data1;
-};
+export const convertDBToTreeNodeForEduPro = arrDB => {};

@@ -364,6 +364,7 @@ export const totalCreditsOfTable = subjects =>{
   const groups = groupBy(subjects, item =>{
     return item.nameBlock;
   });
+  
   const results = groups.reduce((arr, cur) =>{
     return arr.concat(cur);
   },[]);

@@ -29,7 +29,9 @@ class DetailEducationProgramTmp extends Component {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
     this.props.onLoadEduProgram(id);
-    this.props.onLoadDetailEduProgram(id);
+    Promise.resolve(this.props.onLoadDetailEduProgram(id)).then(() => {
+      this.props.onLoadTargetEduProgram(this.props.detailEduProgram.Id);
+    });
     this.props.onLoadLevels();
     this.props.onLoadMajors();
     this.props.onLoadPrograms();
@@ -82,6 +84,7 @@ class DetailEducationProgramTmp extends Component {
               subjects={this.props.subjects}
               infoEduProgram={infoEduProgram}
               detailEduProgram={this.props.detailEduProgram}
+              targetNodes={this.props.targetEduProgram}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
               onSaveEduProgram={this.props.onSaveEduProgram}
@@ -105,7 +108,8 @@ const mapStateToProps = state => ({
   programs: state.programs,
   subjects: state.subjects,
   infoEduProgram: state.infoEduProgram,
-  detailEduProgram: state.detailEduProgram
+  detailEduProgram: state.detailEduProgram,
+  targetEduProgram: state.targetEduProgram
 });
 
 export default connect(mapStateToProps, {
@@ -116,6 +120,7 @@ export default connect(mapStateToProps, {
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+  onLoadTargetEduProgram: detailEduProgramAction.onLoadTargetEduProgram,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
   onLoadDetailOutcomeStandard:
     detailOutcomeStandardAction.onLoadDetailOutcomeStandard

@@ -67,11 +67,9 @@ export const refreshTreeNodes = (nodes, key, indexRefresh) => {
   const length = data.length;
 
   for (let i = indexRefresh; i < length; i++) {
-    const keyIncrease = increaseKey(key, i+1);
+    const keyIncrease = increaseKey(key, i + 1);
     data[i].key = keyIncrease;
-    data[i].data.displayName = `${keyIncrease}. ${
-      data[i].data.name
-    }`;
+    data[i].data.displayName = `${keyIncrease}. ${data[i].data.name}`;
     updateSubNode(data[i].key, data[i]);
   }
 
@@ -151,7 +149,7 @@ export const hoverDownLevel = (nodes, node) => {
     : key.slice(0, lastDot + 1) + (index - 1).toString();
 };
 
-export const createSaveData = (nodes, outData, level) => {
+export const createSaveDataForTarget = (nodes, outData, level) => {
   if (nodes === undefined || nodes.length === 0) return;
   else {
     let tmpObj = {};
@@ -161,15 +159,44 @@ export const createSaveData = (nodes, outData, level) => {
       for (var j = 0; j < length; j++) {
         KeyRow = KeyRow + ".";
       }
-      let { displayName, ...rest } = nodes[i].data;
-      let data = rest;
-      tmpObj = { KeyRow, data };
+      let KeyName = nodes[i].data.name;
+      let OSUsed = nodes[i].OSUsed ? nodes[i].OSUsed : false;
+      tmpObj = { KeyRow, KeyName, OSUsed };
 
       outData.push(tmpObj);
       tmpObj = {};
 
       let children = nodes[i].children;
-      createSaveData(children, outData, level);
+      createSaveDataForTarget(children, outData, level);
+    }
+  }
+};
+
+export const createSaveDataForContent = (nodes, outData, level) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    let tmpObj = {};
+    for (let i in nodes) {
+      let length = level - nodes[i].key.length / 2 - 1;
+      let KeyRow = nodes[i].key;
+      for (var j = 0; j < length; j++) {
+        KeyRow = KeyRow + ".";
+      }
+      let data = nodes[i].data;
+
+      if (data.isTable) {
+        tmpObj = { KeyRow, Type: true, subjects: [...data.subjects] };
+      } else {
+        tmpObj = { KeyRow, NameRow: data.name, Type: false };
+      }
+
+      outData.push(tmpObj);
+      tmpObj = {};
+
+      if (!data.isTable) {
+        let children = nodes[i].children;
+        createSaveDataForContent(children, outData, level);
+      }
     }
   }
 };
