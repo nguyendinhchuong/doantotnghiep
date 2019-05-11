@@ -6,6 +6,7 @@ import { Dialog } from "primereact/dialog";
 import { AutoComplete } from "primereact/autocomplete";
 import { OrderList } from "primereact/orderlist";
 import { Spinner } from "primereact/spinner";
+import { ColumnGroup } from "primereact/columngroup";
 
 import * as logic from "../../business/logicScheduleEdu";
 
@@ -24,6 +25,15 @@ export default class ScheduleEducationCom extends React.Component {
           subjects: [
             {
               Id: 2,
+              SubjectCode: "BAA00002",
+              SubjectName: "Đường lối cách mạng của ĐCSVN",
+              Credit: 3,
+              TheoryPeriod: 45,
+              PracticePeriod: 0,
+              ExercisePeriod: 0
+            },
+            {
+              Id: 5,
               SubjectCode: "BAA00002",
               SubjectName: "Đường lối cách mạng của ĐCSVN",
               Credit: 3,
@@ -81,8 +91,39 @@ export default class ScheduleEducationCom extends React.Component {
   };
 
   rowExpansionTemplate = data => {
+    const headerGroup = (
+      <ColumnGroup>
+        <Row>
+          <Column header="STT" rowSpan={2} />
+          <Column header="Mã Học Phần" rowSpan={2} />
+          <Column header="Tên Học Phần" rowSpan={2} />
+          <Column header="Loại HP" rowSpan={2} />
+          <Column header="Số TC" rowSpan={2} />
+          <Column header="Số Tiết" colSpan={3} />
+          <Column header="Ghi Chú" rowSpan={2} />
+          <Column
+            header={
+              <Button
+                title={`Thêm môn học`}
+                onClick={this.OpenAddSubject}
+                theme="success"
+              >
+                <i className="material-icons">add</i>
+              </Button>
+            }
+            rowSpan={2}
+          />
+        </Row>
+        <Row>
+          <Column header="Lý Thuyết" />
+          <Column header="Thực Hành" />
+          <Column header="Bài Tập" />
+        </Row>
+      </ColumnGroup>
+    );
+
     return (
-      <DataTable headerColumnGroup={logic.headerGroup} value={data.subjects}>
+      <DataTable headerColumnGroup={headerGroup} value={data.subjects}>
         <Column field="Id" />
         <Column field="SubjectCode" />
         <Column field="SubjectName" />
@@ -92,20 +133,27 @@ export default class ScheduleEducationCom extends React.Component {
         <Column field="PracticePeriod" />
         <Column field="ExercisePeriod" />
         <Column field="note" />
+        <Column
+          body={(node, column) => this.actionTemplate(node, column)}
+          style={{ textAlign: "center", width: "4em" }}
+        />
       </DataTable>
     );
   };
 
-  footerDialogTable = (
-    <div>
-      <Button onClick={this.addSemester} theme="success">
-        Thêm
-      </Button>
-      <Button onClick={this.onHideAddSemester} theme="secondary">
-        Hủy
-      </Button>
-    </div>
-  );
+  actionTemplate(node, column) {
+    return (
+      <div>
+        <Button
+          onClick={this.OpenDeleteSubject}
+          theme="secondary"
+          title={`Xóa môn học`}
+        >
+          <i className="material-icons">clear</i>
+        </Button>
+      </div>
+    );
+  }
 
   subjectTemplate = subject => {
     return (
@@ -135,6 +183,17 @@ export default class ScheduleEducationCom extends React.Component {
     );
   };
 
+  footerDialogTable = (
+    <div>
+      <Button onClick={this.addSemester} theme="success">
+        Thêm
+      </Button>
+      <Button onClick={this.onHideAddSemester} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  );
+
   render() {
     return (
       <div className="content-section implementation">
@@ -153,12 +212,16 @@ export default class ScheduleEducationCom extends React.Component {
                 onClick={this.OnOpenAddSemester}
                 theme="success"
               >
-                <i className="material-icons">add</i>
+                <i className="material-icons">playlist_add</i>
               </Button>
             }
             expander={true}
           />
-          <Column field="num" header="HỌC KÌ" />
+          <Column
+            field="num"
+            style={{ backgroundColor: "#FDC285" }}
+            header={<span style={{ backgroundColor: "#FDC239" }}>HỌC KÌ</span>}
+          />
         </DataTable>
         <Dialog
           header="Thêm Học Kì"
