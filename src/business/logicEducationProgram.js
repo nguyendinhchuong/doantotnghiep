@@ -3,7 +3,6 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import * as common from "./commonEducation";
-import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from "constants";
 
 // Add root
 export const addRoot = (data, name) => {
@@ -305,7 +304,7 @@ export const blocksOfTable = node => {
     const block = cur[0].nameBlock;
     if (block.includes("(")) {
       return arr.concat(
-        block.slice(block.indexOf("(") + 1, block.indexOf(")") - 1)
+        block.slice(block.indexOf("(") + 2, block.indexOf(")") - 1)
       );
     }
     return arr;

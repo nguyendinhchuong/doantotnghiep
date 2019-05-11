@@ -126,7 +126,6 @@ export default class ContentProgramCom extends React.Component {
   };
 
   addRowTableLogic = (nodes, node, subjectsAdd) => {
-    debugger;
     if (!node.data.isTable) {
       return nodes;
     }
