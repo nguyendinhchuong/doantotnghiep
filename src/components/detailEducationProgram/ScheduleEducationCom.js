@@ -21,7 +21,7 @@ export default class ScheduleEducationCom extends React.Component {
       optionSubjects: [],
       semesters: [
         {
-          num: 1,
+          semester: 1,
           subjects: [
             {
               Id: 2,
@@ -44,15 +44,27 @@ export default class ScheduleEducationCom extends React.Component {
           ]
         },
         {
-          num: 2
+          semester: 2
         },
         {
-          num: 3
+          semester: 3
         }
       ],
       tmpSubject: []
     };
   }
+
+  addSemester = () => {
+    const data = logic.addSemester(this.state.semester,this.state.listSubjects,this.state.semesters);
+    console.log(data)
+    let newSemester=this.state.semester;
+    this.setState({
+      isDialogTable: false,
+      listSubjects: [],
+      semester: ++newSemester,
+      semesters:data
+    });
+  };
 
   onHideAddSemester = () => {
     this.setState({
@@ -82,12 +94,6 @@ export default class ScheduleEducationCom extends React.Component {
       this.setState({ listSubjects: subjects });
     }
     this.setState({ optionSubjects: e.value });
-  };
-
-  addSemester = () => {
-    this.setState({
-      isDialogTable: false
-    });
   };
 
   rowExpansionTemplate = data => {
@@ -195,16 +201,10 @@ export default class ScheduleEducationCom extends React.Component {
   );
 
   render() {
-    return (
-      <div className="content-section implementation">
-        <DataTable
-          value={this.state.semesters}
-          expandedRows={this.state.expandedRows}
-          onRowToggle={e => this.setState({ expandedRows: e.data })}
-          rowExpansionTemplate={this.rowExpansionTemplate}
-        >
+    let headerGroup = (
+      <ColumnGroup>
+        <Row>
           <Column
-            field="num"
             style={{ width: "5em" }}
             header={
               <Button
@@ -215,14 +215,33 @@ export default class ScheduleEducationCom extends React.Component {
                 <i className="material-icons">playlist_add</i>
               </Button>
             }
+          />
+          <Column header="HỌC KÌ" />
+        </Row>
+      </ColumnGroup>
+    );
+
+    return (
+      <div className="content-section implementation">
+        <DataTable
+          value={this.state.semesters}
+          expandedRows={this.state.expandedRows}
+          onRowToggle={e => this.setState({ expandedRows: e.data })}
+          rowExpansionTemplate={this.rowExpansionTemplate}
+          headerColumnGroup={headerGroup}
+        >
+          <Column
+            field="semester"
+            style={{ width: "5em", backgroundColor: "#E2EFD9" }}
             expander={true}
           />
           <Column
-            field="num"
-            style={{ backgroundColor: "#FDC285" }}
-            header={<span style={{ backgroundColor: "#FDC239" }}>HỌC KÌ</span>}
+            field="semester"
+            className="text-center font-weight-bold"
+            style={{ backgroundColor: "#E2EFD9" }}
           />
         </DataTable>
+
         <Dialog
           header="Thêm Học Kì"
           visible={this.state.isDialogTable}

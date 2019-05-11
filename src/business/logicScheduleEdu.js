@@ -23,3 +23,23 @@ const checkExistsSubject = (subjects, subject) => {
   }
   return false;
 };
+
+const sortSemester = (a, b) => {
+  if (a.semester > b.semester) return 1;
+  if (a.semester < b.semester) return -1;
+  return 0;
+};
+
+export const addSemester = (semester, subjects, semesters) => {
+  let data = [...semesters];
+
+  const index = data.findIndex(ele => ele.semester === semester);
+  if (index > -1) {
+    data[index].subjects = [...data[index].subjects, ...subjects];
+  } else {
+    let newSemester = { semester, subjects };
+    data = [...data, newSemester];
+  }
+  data.sort(sortSemester);
+  return data;
+};
