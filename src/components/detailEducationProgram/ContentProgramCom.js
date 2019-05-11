@@ -148,7 +148,9 @@ export default class ContentProgramCom extends React.Component {
       );
     }
     child.data.subjects = subjectsTable;
-    //child.data.totalCredits = logic.toltalRequiredCredits(child.data.subjects) + this.state.optionalCredit;
+    console.log(subjectsTable);
+    
+    child.data.totalCredits = logic.totalCreditsOfTable(subjectsTable);
     child.data.subjects = logic.sortSubject(child.data.subjects);
     child.data.subjects = logic.indexSubjects(child.data.subjects);
     child = this.convertNodeToDataTable(child);

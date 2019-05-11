@@ -7,6 +7,16 @@ import { Row, Col, Button } from "shards-react";
 import * as logic from "../../business/logicEducationProgram";
 
 export default class TableSubjectsCom extends React.Component {
+
+  headerTemplate(data) {
+    return data.nameBlock;
+}
+
+footerTemplate(data, index) {
+  return (""
+  );
+}
+
   actionTemplate = (rowData, column) => {
     return (
       <div>
@@ -38,14 +48,16 @@ export default class TableSubjectsCom extends React.Component {
             <DataTable
               value={this.props.subjects}
               headerColumnGroup={logic.headerGroup}
-              rowGroupMode="rowspan"
+              rowGroupMode="subheader"
               sortField="nameBlock"
               sortOrder={1}
               groupField="nameBlock"
               editable={true}
+              rowGroupHeaderTemplate = {this.headerTemplate}
+              rowGroupFooterTemplate = {this.footerTemplate}
               footerColumnGroup={footerGroup}
             >
-              <Column field="nameBlock" header="Loại Học Phần" />
+              {/* <Column field="nameBlock" header="Loại Học Phần" /> */}
               <Column field="index" header="STT" />
               <Column field="SubjectCode" header="Mã Môn Học" />
               <Column field="SubjectName" header="Tên Môn Học" />

@@ -79,7 +79,7 @@ export const filterSubjects = (e, subjects) => {
 export const headerGroup = (
   <ColumnGroup>
     <Row>
-      <Column header="Loại Học Phần" rowSpan={2} />
+      {/* <Column header="Loại Học Phần" rowSpan={2} /> */}
       <Column header="STT" rowSpan={2} />
       <Column header="Mã Học Phần" rowSpan={2} />
       <Column header="Tên Học Phần" rowSpan={2} />
@@ -331,7 +331,7 @@ export const updateBlocks = (subjects, ...agru) => {
       subject.isAccumulation = agru[2];
     }
     if (subject.nameBlock.startsWith("TC") && agru[1]) {
-      subject.nameBlock += `( ${agru[1]} )`;
+      subject.nameBlock += `( ${agru[1]} ) : Học ${agru[4]} chỉ`;
       subject.isAccumulation = agru[3];
       subject.optionCredit = agru[4];
     }
@@ -345,15 +345,15 @@ export const checkExistsBlock = (nameBlock, listBlocks) => {
   });
 };
 
-export const updateAccumulationAndCredit = (
-  subjects,
-  nameBlock,
-  accumulation,
-  credit
-) => {
+export const updateAccumulationAndCredit = ( subjects, ... agru) => {
   return subjects.map(subject => {
-    if (subject.nameBlock === nameBlock) {
-      return { ...subject, isAccumulation: accumulation, optionCredit: credit };
+    const description = subject.nameBlock.slice(subject.nameBlock.indexOf('(')+2,subject.nameBlock.indexOf(')')-1);
+    if (subject.nameBlock.startsWith("TC") && description === agru[0]) {
+      return { 
+        ...subject, 
+        isAccumulation: agru[1], 
+        optionCredit: agru[2] 
+      };
     }
     return { ...subject };
   });
@@ -364,7 +364,12 @@ export const totalCreditsOfTable = subjects =>{
     return item.nameBlock;
   });
   
-  const results = groups.reduce((arr, cur) =>{
-    return arr.concat(cur);
-  },[]);
+  return groups.reduce((total, blocks) =>{
+    if(blocks[0].nameBlock.startsWith("BB")){
+      return total += blocks.reduce((totalCredit, subject) =>{
+        return totalCredit += +subject.Credit;
+      },0);
+    }
+    return total += +blocks[0].optionCredit;
+  },0);
 };
