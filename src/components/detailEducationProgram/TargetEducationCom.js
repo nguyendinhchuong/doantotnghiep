@@ -31,7 +31,6 @@ export default class TargetEducationCom extends Component {
 
   // get targetNodes from redux
   getTargetNodes = targetNodes => {
-    console.log(targetNodes);
     // this.setState({ targetNodes: targetNodes });
   };
   // end get targetNodes from redux
@@ -269,7 +268,6 @@ export default class TargetEducationCom extends Component {
   };
 
   render() {
-    console.log(this.state.targetNodes)
     const targetFooter = (
       <div>
         {!this.state.isData ? (

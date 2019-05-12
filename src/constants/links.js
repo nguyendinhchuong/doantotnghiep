@@ -34,7 +34,7 @@ export const SAVE_EDUPROGRAM = `${LINK}/eduprogram/update/`;
 export const LOAD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/get/`;
 export const SAVE_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/update/`;
 export const LOAD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/get/`;
-export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/add/`;
+export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/update/`;
 
 // subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;

@@ -19,50 +19,24 @@ export default class ScheduleEducationCom extends React.Component {
       filterSubjects: [],
       listSubjects: [],
       optionSubjects: [],
-      semesters: [
-        {
-          semester: 1,
-          subjects: [
-            {
-              Id: 2,
-              SubjectCode: "BAA00002",
-              SubjectName: "Đường lối cách mạng của ĐCSVN",
-              Credit: 3,
-              TheoryPeriod: 45,
-              PracticePeriod: 0,
-              ExercisePeriod: 0
-            },
-            {
-              Id: 5,
-              SubjectCode: "BAA00002",
-              SubjectName: "Đường lối cách mạng của ĐCSVN",
-              Credit: 3,
-              TheoryPeriod: 45,
-              PracticePeriod: 0,
-              ExercisePeriod: 0
-            }
-          ]
-        },
-        {
-          semester: 2
-        },
-        {
-          semester: 3
-        }
-      ],
-      tmpSubject: []
+      semesters: [],
+      subjectAlertVisible: false,
+      row: {}
     };
   }
 
   addSemester = () => {
-    const data = logic.addSemester(this.state.semester,this.state.listSubjects,this.state.semesters);
-    console.log(data)
-    let newSemester=this.state.semester;
+    const data = logic.addSemester(
+      this.state.semester,
+      this.state.listSubjects,
+      this.state.semesters
+    );
+    let newSemester = this.state.semester;
     this.setState({
       isDialogTable: false,
       listSubjects: [],
       semester: ++newSemester,
-      semesters:data
+      semesters: data
     });
   };
 
@@ -72,9 +46,69 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
-  OnOpenAddSemester = () => {
+  onOpenAddSemester = () => {
     this.setState({
       isDialogTable: true
+    });
+  };
+
+  onOpenAddSubject = semester => {
+    this.setState({
+      isDialogTable: true,
+      semester: semester
+    });
+  };
+
+  openDeleteSubject = (row, semester) => {
+    this.setState({
+      subjectAlertVisible: true,
+      semester: semester,
+      row: row
+    });
+  };
+
+  hideDeleteSubject = () => {
+    this.setState({
+      subjectAlertVisible: false,
+      semester: 1
+    });
+  };
+
+  deleteSubject = () => {
+    const semesters = logic.deleteSubject(
+      this.state.semesters,
+      this.state.semester,
+      this.state.row
+    );
+    this.setState({
+      subjectAlertVisible: false,
+      semesters: semesters,
+      semester: 1
+    });
+  };
+
+  openDeleteSemester = rowData => {
+    this.setState({
+      semesterAlertVisible: true,
+      semester: rowData.semester
+    });
+  };
+
+  hideDeleteSemester = () => {
+    this.setState({
+      semesterAlertVisible: false,
+      semester: 1
+    });
+  };
+
+  deleteSemeter = () => {
+    const semesters = this.state.semesters.filter(
+      ele => ele.semester !== this.state.semester
+    );
+    this.setState({
+      semesterAlertVisible: false,
+      semesters: semesters,
+      semester: 1
     });
   };
 
@@ -96,28 +130,35 @@ export default class ScheduleEducationCom extends React.Component {
     this.setState({ optionSubjects: e.value });
   };
 
+  deleteSubjectOnTable = subject => {
+    const subjects = this.state.listSubjects.filter(
+      ele => ele.Id !== subject.Id
+    );
+    this.setState({ listSubjects: subjects });
+  };
+
   rowExpansionTemplate = data => {
     const headerGroup = (
       <ColumnGroup>
         <Row>
-          <Column header="STT" rowSpan={2} />
-          <Column header="Mã Học Phần" rowSpan={2} />
-          <Column header="Tên Học Phần" rowSpan={2} />
-          <Column header="Loại HP" rowSpan={2} />
-          <Column header="Số TC" rowSpan={2} />
-          <Column header="Số Tiết" colSpan={3} />
-          <Column header="Ghi Chú" rowSpan={2} />
+          <Column header="Mã Học Phần" rowSpan={2} style={{ width: "3em" }} />
+          <Column header="Tên Học Phần" rowSpan={2} style={{ width: "8em" }} />
+          <Column header="Loại HP" rowSpan={2} style={{ width: "0.5em" }} />
+          <Column header="Số TC" rowSpan={2} style={{ width: "0.5em" }} />
+          <Column header="Số Tiết" colSpan={3} style={{ width: "5em" }} />
+          <Column header="Ghi Chú" rowSpan={2} style={{ width: "2em" }} />
           <Column
             header={
               <Button
                 title={`Thêm môn học`}
-                onClick={this.OpenAddSubject}
+                onClick={() => this.onOpenAddSubject(data.semester)}
                 theme="success"
               >
                 <i className="material-icons">add</i>
               </Button>
             }
             rowSpan={2}
+            style={{ width: "2em" }}
           />
         </Row>
         <Row>
@@ -129,31 +170,50 @@ export default class ScheduleEducationCom extends React.Component {
     );
 
     return (
-      <DataTable headerColumnGroup={headerGroup} value={data.subjects}>
-        <Column field="Id" />
+      <DataTable
+        headerColumnGroup={headerGroup}
+        responsive={true}
+        value={data.subjects}
+      >
         <Column field="SubjectCode" />
         <Column field="SubjectName" />
-        <Column field="option" />
-        <Column field="Credit" />
-        <Column field="TheoryPeriod" />
-        <Column field="PracticePeriod" />
-        <Column field="ExercisePeriod" />
+        <Column field="option" style={{ textAlign: "center" }} />
+        <Column field="Credit" style={{ textAlign: "center" }} />
+        <Column field="TheoryPeriod" style={{ textAlign: "center" }} />
+        <Column field="PracticePeriod" style={{ textAlign: "center" }} />
+        <Column field="ExercisePeriod" style={{ textAlign: "center" }} />
         <Column field="note" />
         <Column
-          body={(node, column) => this.actionTemplate(node, column)}
-          style={{ textAlign: "center", width: "4em" }}
+          body={(rowData, column) =>
+            this.actionTemplateForSubjects(rowData, column, data.semester)
+          }
+          style={{ textAlign: "center" }}
         />
       </DataTable>
     );
   };
 
-  actionTemplate(node, column) {
+  actionTemplateForSubjects(rowData, column, semester) {
     return (
       <div>
         <Button
-          onClick={this.OpenDeleteSubject}
+          onClick={() => this.openDeleteSubject(rowData, semester)}
           theme="secondary"
           title={`Xóa môn học`}
+        >
+          <i className="material-icons">clear</i>
+        </Button>
+      </div>
+    );
+  }
+
+  actionTemplateForSemesters(rowData, column) {
+    return (
+      <div>
+        <Button
+          onClick={() => this.openDeleteSemester(rowData)}
+          theme="secondary"
+          title={`Xóa học kì`}
         >
           <i className="material-icons">clear</i>
         </Button>
@@ -181,7 +241,7 @@ export default class ScheduleEducationCom extends React.Component {
             margin: "5px 5px 0 0",
             borderBottom: "ridge"
           }}
-          onClick={() => this.deleteSubject(subject)}
+          onClick={() => this.deleteSubjectOnTable(subject)}
         >
           <i className="material-icons">clear</i>
         </p>
@@ -209,7 +269,7 @@ export default class ScheduleEducationCom extends React.Component {
             header={
               <Button
                 title="Thêm học kì"
-                onClick={this.OnOpenAddSemester}
+                onClick={this.onOpenAddSemester}
                 theme="success"
               >
                 <i className="material-icons">playlist_add</i>
@@ -217,6 +277,7 @@ export default class ScheduleEducationCom extends React.Component {
             }
           />
           <Column header="HỌC KÌ" />
+          <Column style={{ width: "5em" }} />
         </Row>
       </ColumnGroup>
     );
@@ -240,10 +301,20 @@ export default class ScheduleEducationCom extends React.Component {
             className="text-center font-weight-bold"
             style={{ backgroundColor: "#E2EFD9" }}
           />
+          <Column
+            body={(rowData, column) =>
+              this.actionTemplateForSemesters(rowData, column)
+            }
+            style={{
+              width: "5em",
+              textAlign: "center",
+              backgroundColor: "#E2EFD9"
+            }}
+          />
         </DataTable>
 
         <Dialog
-          header="Thêm Học Kì"
+          header="Thêm Học Kì - Môn Học"
           visible={this.state.isDialogTable}
           onHide={this.onHideAddSemester}
           style={{ width: "50vw" }}
@@ -293,6 +364,44 @@ export default class ScheduleEducationCom extends React.Component {
               />
             </Col>
           </Row>
+        </Dialog>
+        <Dialog
+          header="Thông báo"
+          visible={this.state.subjectAlertVisible}
+          style={{ width: "50vw" }}
+          footer={
+            <div>
+              <Button onClick={this.deleteSubject} theme="success">
+                Xóa
+              </Button>
+              <Button onClick={this.hideDeleteSubject} theme="secondary">
+                Hủy
+              </Button>
+            </div>
+          }
+          onHide={this.hideDeleteSubject}
+        >
+          {`Bạn thực sự muốn xóa môn ${
+            this.state.row.SubjectName
+          } trong học kì ${this.state.semester}`}
+        </Dialog>
+        <Dialog
+          header="Thông báo"
+          visible={this.state.semesterAlertVisible}
+          style={{ width: "50vw" }}
+          footer={
+            <div>
+              <Button onClick={this.deleteSemeter} theme="success">
+                Xóa
+              </Button>
+              <Button onClick={this.hideDeleteSemester} theme="secondary">
+                Hủy
+              </Button>
+            </div>
+          }
+          onHide={this.hideDeleteSemester}
+        >
+          {`Bạn thực sự muốn xóa học kì ${this.state.semester}`}
         </Dialog>
       </div>
     );

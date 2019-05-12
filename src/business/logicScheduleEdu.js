@@ -24,6 +24,17 @@ const checkExistsSubject = (subjects, subject) => {
   return false;
 };
 
+const getUnique = (arr, comp) => {
+  const unique = arr
+    .map(e => e[comp])
+    // store the keys of the unique objects
+    .map((e, i, final) => final.indexOf(e) === i && i)
+    // eliminate the dead keys & store unique objects
+    .filter(e => arr[e])
+    .map(e => arr[e]);
+  return unique;
+};
+
 const sortSemester = (a, b) => {
   if (a.semester > b.semester) return 1;
   if (a.semester < b.semester) return -1;
@@ -35,11 +46,24 @@ export const addSemester = (semester, subjects, semesters) => {
 
   const index = data.findIndex(ele => ele.semester === semester);
   if (index > -1) {
-    data[index].subjects = [...data[index].subjects, ...subjects];
+    data[index].subjects = getUnique(
+      [...data[index].subjects, ...subjects],
+      "Id"
+    );
   } else {
     let newSemester = { semester, subjects };
     data = [...data, newSemester];
   }
   data.sort(sortSemester);
+  return data;
+};
+
+export const deleteSubject = (semesters, semester, subject) => {
+  const data = [...semesters];
+
+  const index = data.findIndex(ele => ele.semester === semester);
+  data[index].subjects = data[index].subjects.filter(
+    ele => ele.Id !== subject.Id
+  );
   return data;
 };

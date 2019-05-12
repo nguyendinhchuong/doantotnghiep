@@ -125,18 +125,20 @@ export default class DetailEducationProgramCom extends React.Component {
 
     const infoEduProgram = event.onSaveInfo(this.props, this.state);
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
+
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
+    console.log(targetEduProgram)
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
-    console.log(contentNodes)
     const contentProgram = event.onSaveContent(this.props, contentNodes);
+    console.log(contentProgram)
 
     this.props.onSaveEduProgram(
       infoEduProgram,
       detailEduProgram,
       targetEduProgram,
-      contentProgram
+      // contentProgram
     );
   };
   // end fucntions for redux
