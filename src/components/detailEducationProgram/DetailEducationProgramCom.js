@@ -39,6 +39,12 @@ export default class DetailEducationProgramCom extends React.Component {
     };
   }
 
+  // get subjects for ScheduleEducation
+  getDataForScheduleEducation = () => {
+    return this.ContentProgramCom.current.state.nodes;
+  };
+  // end get subjects for ScheduleEducation
+
   // functions for Title
   handleNameEduProgramChange = event => {
     this.setState({ nameEduProgram: event.target.value });
@@ -259,7 +265,10 @@ export default class DetailEducationProgramCom extends React.Component {
               </AccordionTab>
 
               <AccordionTab header="KẾ HOẠCH GIẢNG DẠY DỰ KIẾN">
-                <ScheduleEducationCom subjects={this.props.subjects} />
+                <ScheduleEducationCom
+                  subjects={this.props.subjects}
+                  getData={this.getDataForScheduleEducation}
+                />
               </AccordionTab>
             </Accordion>
           </Col>

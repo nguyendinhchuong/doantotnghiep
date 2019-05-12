@@ -47,6 +47,7 @@ export default class ScheduleEducationCom extends React.Component {
   };
 
   onOpenAddSemester = () => {
+    console.log(this.props.getData());
     this.setState({
       isDialogTable: true
     });
