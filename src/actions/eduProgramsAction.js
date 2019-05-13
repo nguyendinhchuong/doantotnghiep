@@ -122,7 +122,8 @@ export const saveEduProgramError = errorMessage => ({
 export const onSaveEduProgram = (
   infoEduProgram,
   detailEduProgram,
-  targetEduProgram
+  targetEduProgram,
+  contentProgram
 ) => {
   return (dispatch, getState) => {
     let params = {};
@@ -144,7 +145,8 @@ export const onSaveEduProgram = (
           dispatch(
             detailEduProgramAction.onSaveDetailEduProgram(
               detailEduProgram,
-              targetEduProgram
+              targetEduProgram,
+              contentProgram
             )
           );
         } else {

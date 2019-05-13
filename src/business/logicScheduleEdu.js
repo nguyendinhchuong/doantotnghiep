@@ -44,14 +44,19 @@ const sortSemester = (a, b) => {
 export const addSemester = (semester, subjects, semesters) => {
   let data = [...semesters];
 
+  const newSubjects = subjects.map(ele => {
+    ele.note = ele.note ? ele.note : "";
+    return ele;
+  });
+
   const index = data.findIndex(ele => ele.semester === semester);
   if (index > -1) {
     data[index].subjects = getUnique(
-      [...data[index].subjects, ...subjects],
+      [...data[index].subjects, ...newSubjects],
       "Id"
     );
   } else {
-    let newSemester = { semester, subjects };
+    let newSemester = { semester, subjects: newSubjects };
     data = [...data, newSemester];
   }
   data.sort(sortSemester);
@@ -65,5 +70,12 @@ export const deleteSubject = (semesters, semester, subject) => {
   data[index].subjects = data[index].subjects.filter(
     ele => ele.Id !== subject.Id
   );
+  return data;
+};
+
+export const editorValueChange = (rowData, semester, value, semesters) => {
+  const data = [...semesters];
+  const index = data.findIndex(ele => ele.semester === semester);
+  data[index].subjects[rowData]["note"] = value;
   return data;
 };
