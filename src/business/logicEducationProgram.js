@@ -155,10 +155,14 @@ export const addSubjectInOnchange = (subjects, subject) => {
 export const convertTreenodeToArr = (nodes, arr = []) => {
   const length = nodes.length;
   for (let i = 0; i < length; i++) {
-    arr.push(nodes[i]);
-    if (nodes[i].data && nodes[i].data.isTable) {
-      convertTreenodeToArr(nodes[i].data.subjects, arr);
+    const node = {...nodes[i]};
+    if(node.children && node.children.length){
+      node.children = [];
     }
+    arr.push(node);
+    // if (nodes[i].data && nodes[i].data.isTable) {
+    //   convertTreenodeToArr(nodes[i].data.subjects, arr);
+    // }
     if (nodes[i].children) {
       convertTreenodeToArr(nodes[i].children, arr);
     }
