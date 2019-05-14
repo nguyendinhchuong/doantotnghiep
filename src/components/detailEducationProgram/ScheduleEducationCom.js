@@ -7,6 +7,7 @@ import { AutoComplete } from "primereact/autocomplete";
 import { OrderList } from "primereact/orderlist";
 import { Spinner } from "primereact/spinner";
 import { ColumnGroup } from "primereact/columngroup";
+import { InputText } from "primereact/inputtext";
 
 import * as logic from "../../business/logicScheduleEdu";
 
@@ -138,6 +139,32 @@ export default class ScheduleEducationCom extends React.Component {
     this.setState({ listSubjects: subjects });
   };
 
+  onEditorValueChange(rowData, semester, value) {
+    const semesters = logic.editorValueChange(
+      rowData,
+      semester,
+      value,
+      this.state.semesters
+    );
+    this.setState({ semesters: semesters });
+  }
+
+  inputTextEditor = (rowData, semester, field) => {
+    return (
+      <InputText
+        type="text"
+        value={rowData.note}
+        onChange={e =>
+          this.onEditorValueChange(rowData, semester, e.target.value)
+        }
+      />
+    );
+  };
+
+  noteEditor = (rowData, semester) => {
+    return this.inputTextEditor(rowData, semester, "note");
+  };
+
   rowExpansionTemplate = data => {
     const headerGroup = (
       <ColumnGroup>
@@ -147,13 +174,14 @@ export default class ScheduleEducationCom extends React.Component {
           <Column header="Loại HP" rowSpan={2} style={{ width: "0.5em" }} />
           <Column header="Số TC" rowSpan={2} style={{ width: "0.5em" }} />
           <Column header="Số Tiết" colSpan={3} style={{ width: "5em" }} />
-          <Column header="Ghi Chú" rowSpan={2} style={{ width: "2em" }} />
+          <Column header="Ghi Chú" rowSpan={2} style={{ width: "3em" }} />
           <Column
             header={
               <Button
                 title={`Thêm môn học`}
                 onClick={() => this.onOpenAddSubject(data.semester)}
                 theme="success"
+                style={{ padding: "0.8em", margin: "0" }}
               >
                 <i className="material-icons">add</i>
               </Button>
@@ -175,6 +203,7 @@ export default class ScheduleEducationCom extends React.Component {
         headerColumnGroup={headerGroup}
         responsive={true}
         value={data.subjects}
+        editable={true}
       >
         <Column field="SubjectCode" />
         <Column field="SubjectName" />
@@ -183,7 +212,7 @@ export default class ScheduleEducationCom extends React.Component {
         <Column field="TheoryPeriod" style={{ textAlign: "center" }} />
         <Column field="PracticePeriod" style={{ textAlign: "center" }} />
         <Column field="ExercisePeriod" style={{ textAlign: "center" }} />
-        <Column field="note" />
+        {/*<Column field="note" editor={() => this.noteEditor(rowData, data.semester)} />*/}
         <Column
           body={(rowData, column) =>
             this.actionTemplateForSubjects(rowData, column, data.semester)
@@ -201,6 +230,7 @@ export default class ScheduleEducationCom extends React.Component {
           onClick={() => this.openDeleteSubject(rowData, semester)}
           theme="secondary"
           title={`Xóa môn học`}
+          style={{ padding: "0.5em", margin: "0" }}
         >
           <i className="material-icons">clear</i>
         </Button>
@@ -215,6 +245,7 @@ export default class ScheduleEducationCom extends React.Component {
           onClick={() => this.openDeleteSemester(rowData)}
           theme="secondary"
           title={`Xóa học kì`}
+          style={{ padding: "0.5em", margin: "0" }}
         >
           <i className="material-icons">clear</i>
         </Button>

@@ -80,13 +80,13 @@ export const headerGroup = (
   <ColumnGroup>
     <Row>
       {/* <Column header="Loại Học Phần" rowSpan={2} /> */}
-      <Column header="STT" rowSpan={2} />
-      <Column header="Mã Học Phần" rowSpan={2} />
-      <Column header="Tên Học Phần" rowSpan={2} />
-      <Column header="Số Tín Chỉ" rowSpan={2} />
-      <Column header="Số Tiết" colSpan={3} />
-      <Column header="Ghi Chú" rowSpan={2} />
-      <Column rowSpan={2} />
+      <Column header="STT" rowSpan={2} style={{ width: "0.5em" }} />
+      <Column header="Mã Học Phần" rowSpan={2} style={{ width: "3em" }} />
+      <Column header="Tên Học Phần" rowSpan={2} style={{ width: "8em" }} />
+      <Column header="Số TC" rowSpan={2} style={{ width: "0.5em" }} />
+      <Column header="Số Tiết" colSpan={3} style={{ width: "5.5em" }} />
+      <Column header="Ghi Chú" rowSpan={2} style={{ width: "3em" }} />
+      <Column rowSpan={2} style={{ width: "2em" }} />
     </Row>
     <Row>
       <Column header="Lý Thuyết" />

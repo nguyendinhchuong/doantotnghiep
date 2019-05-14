@@ -144,7 +144,7 @@ export default class DetailEducationProgramCom extends React.Component {
       infoEduProgram,
       detailEduProgram,
       targetEduProgram,
-      // contentProgram
+      contentProgram
     );
   };
   // end fucntions for redux
