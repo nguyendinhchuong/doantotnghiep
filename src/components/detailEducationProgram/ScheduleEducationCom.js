@@ -22,9 +22,21 @@ export default class ScheduleEducationCom extends React.Component {
       optionSubjects: [],
       semesters: [],
       subjectAlertVisible: false,
-      row: {}
+      row: {},
+      groupSubjectsFrom7: [],
+      subjectsFrom7: [],
+      blockSuggestions: null,
+      block: null
     };
   }
+
+  suggestBlocks = event => {
+    let results = Object.keys(this.state.groupSubjectsFrom7).filter(block => {
+      return block.toLowerCase().startsWith(event.query.toLowerCase());
+    });
+
+    this.setState({ blockSuggestions: results });
+  };
 
   addSemester = () => {
     const data = logic.addSemester(
@@ -48,11 +60,13 @@ export default class ScheduleEducationCom extends React.Component {
   };
 
   onOpenAddSubject = semester => {
-    const subjects = this.props.getData();
-    console.log(subjects)
+    const { groupSubjects, subjects } = this.props.getData();
+
     this.setState({
       isDialogTable: true,
-      semester: !isNaN(semester) ? semester : this.state.semester
+      semester: !isNaN(semester) ? semester : this.state.semester,
+      groupSubjectsFrom7: groupSubjects,
+      subjectsFrom7: subjects
     });
   };
 
@@ -111,7 +125,13 @@ export default class ScheduleEducationCom extends React.Component {
 
   filterSubjects = e => {
     this.setState({
-      filterSubjects: logic.filterSubjects(e, this.props.subjects)
+      filterSubjects: logic.filterSubjects(
+        e,
+        this.state.block &&
+        Object.keys(this.state.groupSubjectsFrom7).includes(this.state.block)
+          ? this.state.groupSubjectsFrom7[this.state.block]
+          : this.state.subjectsFrom7
+      )
     });
   };
 
@@ -366,16 +386,34 @@ export default class ScheduleEducationCom extends React.Component {
           footer={this.footerDialogTable}
         >
           <Row>
-            <Col lg="3" md="3" sm="3" offset="3">
+            <Col lg="3" md="3" sm="3">
               <label>Học kì:</label>
             </Col>
-            <Col lg="1" md="1" sm="2" offset="3">
+            <Col lg="1" md="1" sm="1">
               <Spinner
                 value={this.state.semester}
                 onChange={e => {
                   if (e.value > 0 && e.value < 13)
                     this.setState({ semester: e.value });
                 }}
+              />
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col lg="3" md="3" sm="3">
+              <label>Khối kiến thức:</label>
+            </Col>
+            <Col lg="9" md="9" sm="9">
+              <AutoComplete
+                value={this.state.block}
+                onChange={e => this.setState({ block: e.value })}
+                suggestions={this.state.blockSuggestions}
+                completeMethod={e => this.suggestBlocks(e)}
+                placeholder="BB"
+                size={40}
+                dropdown={true}
+                minLength={1}
               />
             </Col>
           </Row>

@@ -328,7 +328,6 @@ export default class ContentProgramCom extends React.Component {
   };
 
   filterBlocks = e => {
-    const x = logic.blocksOfTable(this.state.node);
     this.setState({
       filterBlocks: logic.blocksOfTable(this.state.node)
     });

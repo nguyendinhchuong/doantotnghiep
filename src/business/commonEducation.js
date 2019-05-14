@@ -216,9 +216,15 @@ const createArrayFor8 = (nodes, outData) => {
     for (let i in nodes) {
       let data = nodes[i].data;
       if (data.isTable) {
+        const subjects = data.subjects.map(subject => {
+          subject.nameBlock[0].indexOf("BB") === 0
+            ? (subject.option = "BB")
+            : (subject.option = "TC");
+          return subject;
+        });
         outData.value = outData.value
-          ? [outData.value, ...data.subjects]
-          : [...data.subjects];
+          ? [...outData.value, ...subjects]
+          : [...subjects];
       }
       if (!data.isTable) {
         let children = nodes[i].children;
@@ -230,6 +236,8 @@ const createArrayFor8 = (nodes, outData) => {
 
 export const createDataFor8 = nodes => {
   const data = {};
+  data.value = [];
   createArrayFor8(nodes, data);
-  return groupBy(data.value, "nameBlock");
+  const groupSubjects = groupBy(data.value, "nameBlock");
+  return { groupSubjects, subjects: data.value };
 };

@@ -5,7 +5,6 @@ import { Row, Col, Button, FormInput, FormTextarea } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
-import { ColumnGroup } from "primereact/columngroup";
 
 import * as logic from "../../business";
 

@@ -43,7 +43,7 @@ export default class DetailEducationProgramCom extends React.Component {
   // get subjects for ScheduleEducation
   getDataForScheduleEducation = () => {
     const nodes = this.ContentProgramCom.current.state.nodes;
-    return commonLogic.createDataFor8(nodes);
+    return nodes && nodes.length !== 0 ? commonLogic.createDataFor8(nodes) : {};
   };
   // end get subjects for ScheduleEducation
 
