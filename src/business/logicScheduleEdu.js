@@ -73,9 +73,16 @@ export const deleteSubject = (semesters, semester, subject) => {
   return data;
 };
 
-export const editorValueChange = (rowData, semester, value, semesters) => {
+export const editorValueChange = (props, value, semester, semesters) => {
   const data = [...semesters];
   const index = data.findIndex(ele => ele.semester === semester);
-  data[index].subjects[rowData]["note"] = value;
+  data[index].subjects[props.rowIndex][props.field] = value;
+  return data;
+};
+
+export const onRowSubjectReorder = (subjects, semester, semesters) => {
+  const data = [...semesters];
+  const index = data.findIndex(ele => ele.semester === semester);
+  data[index].subjects = [...subjects];
   return data;
 };

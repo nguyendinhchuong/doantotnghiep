@@ -47,17 +47,12 @@ export default class ScheduleEducationCom extends React.Component {
     });
   };
 
-  onOpenAddSemester = () => {
-    console.log(this.props.getData());
-    this.setState({
-      isDialogTable: true
-    });
-  };
-
   onOpenAddSubject = semester => {
+    const subjects = this.props.getData();
+    console.log(subjects)
     this.setState({
       isDialogTable: true,
-      semester: semester
+      semester: !isNaN(semester) ? semester : this.state.semester
     });
   };
 
@@ -139,30 +134,40 @@ export default class ScheduleEducationCom extends React.Component {
     this.setState({ listSubjects: subjects });
   };
 
-  onEditorValueChange(rowData, semester, value) {
-    const semesters = logic.editorValueChange(
-      rowData,
+  onRowSubjectReorder = (value, semester) => {
+    const subjects = [...value];
+    const semesters = logic.onRowSubjectReorder(
+      subjects,
       semester,
+      this.state.semesters
+    );
+    this.setState({ semesters: semesters });
+  };
+
+  onEditorValueChange(props, value, semester) {
+    const semesters = logic.editorValueChange(
+      props,
       value,
+      semester,
       this.state.semesters
     );
     this.setState({ semesters: semesters });
   }
 
-  inputTextEditor = (rowData, semester, field) => {
+  inputNoteEditor = (props, value, semester) => {
     return (
       <InputText
         type="text"
-        value={rowData.note}
+        value={props.rowData.note}
         onChange={e =>
-          this.onEditorValueChange(rowData, semester, e.target.value)
+          this.onEditorValueChange(props, e.target.value, semester)
         }
       />
     );
   };
 
-  noteEditor = (rowData, semester) => {
-    return this.inputTextEditor(rowData, semester, "note");
+  noteEditor = (props, value, semester) => {
+    return this.inputNoteEditor(props, value, semester);
   };
 
   rowExpansionTemplate = data => {
@@ -170,18 +175,19 @@ export default class ScheduleEducationCom extends React.Component {
       <ColumnGroup>
         <Row>
           <Column header="Mã Học Phần" rowSpan={2} style={{ width: "3em" }} />
-          <Column header="Tên Học Phần" rowSpan={2} style={{ width: "8em" }} />
+          <Column header="Tên Học Phần" rowSpan={2} style={{ width: "7em" }} />
           <Column header="Loại HP" rowSpan={2} style={{ width: "0.5em" }} />
           <Column header="Số TC" rowSpan={2} style={{ width: "0.5em" }} />
           <Column header="Số Tiết" colSpan={3} style={{ width: "5em" }} />
-          <Column header="Ghi Chú" rowSpan={2} style={{ width: "3em" }} />
+          <Column header="Ghi Chú" rowSpan={2} style={{ width: "4em" }} />
+          <Column rowSpan={2} style={{ width: "0.5em" }} />
           <Column
             header={
               <Button
                 title={`Thêm môn học`}
                 onClick={() => this.onOpenAddSubject(data.semester)}
                 theme="success"
-                style={{ padding: "0.8em", margin: "0" }}
+                style={{ padding: "0.6em", margin: "0" }}
               >
                 <i className="material-icons">add</i>
               </Button>
@@ -204,6 +210,8 @@ export default class ScheduleEducationCom extends React.Component {
         responsive={true}
         value={data.subjects}
         editable={true}
+        reorderableRows={true}
+        onRowReorder={e => this.onRowSubjectReorder(e.value, data.semester)}
       >
         <Column field="SubjectCode" />
         <Column field="SubjectName" />
@@ -212,7 +220,13 @@ export default class ScheduleEducationCom extends React.Component {
         <Column field="TheoryPeriod" style={{ textAlign: "center" }} />
         <Column field="PracticePeriod" style={{ textAlign: "center" }} />
         <Column field="ExercisePeriod" style={{ textAlign: "center" }} />
-        {/*<Column field="note" editor={() => this.noteEditor(rowData, data.semester)} />*/}
+        <Column
+          field="note"
+          editor={(props, value) =>
+            this.noteEditor(props, value, data.semester)
+          }
+        />
+        <Column rowReorder={true} style={{ textAlign: "center" }} />
         <Column
           body={(rowData, column) =>
             this.actionTemplateForSubjects(rowData, column, data.semester)
@@ -243,7 +257,7 @@ export default class ScheduleEducationCom extends React.Component {
       <div>
         <Button
           onClick={() => this.openDeleteSemester(rowData)}
-          theme="secondary"
+          theme="light"
           title={`Xóa học kì`}
           style={{ padding: "0.5em", margin: "0" }}
         >
@@ -301,15 +315,15 @@ export default class ScheduleEducationCom extends React.Component {
             header={
               <Button
                 title="Thêm học kì"
-                onClick={this.onOpenAddSemester}
+                onClick={this.onOpenAddSubject}
                 theme="success"
               >
                 <i className="material-icons">playlist_add</i>
               </Button>
             }
           />
-          <Column header="HỌC KÌ" />
           <Column style={{ width: "5em" }} />
+          <Column header="HỌC KÌ" />
         </Row>
       </ColumnGroup>
     );
@@ -329,19 +343,18 @@ export default class ScheduleEducationCom extends React.Component {
             expander={true}
           />
           <Column
-            field="semester"
-            className="text-center font-weight-bold"
-            style={{ backgroundColor: "#E2EFD9" }}
-          />
-          <Column
             body={(rowData, column) =>
               this.actionTemplateForSemesters(rowData, column)
             }
             style={{
-              width: "5em",
               textAlign: "center",
               backgroundColor: "#E2EFD9"
             }}
+          />
+          <Column
+            field="semester"
+            className="text-center font-weight-bold"
+            style={{ backgroundColor: "#E2EFD9" }}
           />
         </DataTable>
 

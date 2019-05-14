@@ -200,3 +200,36 @@ export const createSaveDataForContent = (nodes, outData, level) => {
     }
   }
 };
+
+const groupBy = (xs, key) => {
+  return xs.reduce((previous, current) => {
+    previous[current[key]] && previous[current[key]].length !== 0
+      ? previous[current[key]].push(current)
+      : (previous[current[key]] = new Array(current));
+    return previous;
+  }, {});
+};
+
+const createArrayFor8 = (nodes, outData) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    for (let i in nodes) {
+      let data = nodes[i].data;
+      if (data.isTable) {
+        outData.value = outData.value
+          ? [outData.value, ...data.subjects]
+          : [...data.subjects];
+      }
+      if (!data.isTable) {
+        let children = nodes[i].children;
+        createArrayFor8(children, outData);
+      }
+    }
+  }
+};
+
+export const createDataFor8 = nodes => {
+  const data = {};
+  createArrayFor8(nodes, data);
+  return groupBy(data.value, "nameBlock");
+};

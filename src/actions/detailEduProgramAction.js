@@ -204,8 +204,8 @@ export const onSaveContentProgram = contentProgram => {
     // }&datecreated=${contentProgram.datecreated}`;
     let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${contentProgram.iddetail}`;
     let params = {};
-    console.log(JSON.stringify(contentProgram.data))
-    params.data = JSON.stringify(contentProgram.data);
+    console.log(JSON.stringify(contentProgram.contentNodes))
+    params.data = JSON.stringify(contentProgram.contentNodes);
     axios
       .post(req, params, {
         headers: { "Content-Type": "application/json" }

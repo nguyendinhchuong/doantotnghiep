@@ -10,6 +10,7 @@ import TitleCom from "../detailEducationProgram/TitleCom";
 import ScheduleEducationCom from "../detailEducationProgram/ScheduleEducationCom";
 
 import * as event from "../../business/events";
+import * as commonLogic from "../../business/commonEducation";
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -41,7 +42,8 @@ export default class DetailEducationProgramCom extends React.Component {
 
   // get subjects for ScheduleEducation
   getDataForScheduleEducation = () => {
-    return this.ContentProgramCom.current.state.nodes;
+    const nodes = this.ContentProgramCom.current.state.nodes;
+    return commonLogic.createDataFor8(nodes);
   };
   // end get subjects for ScheduleEducation
 
@@ -134,11 +136,15 @@ export default class DetailEducationProgramCom extends React.Component {
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
-    console.log(targetEduProgram)
+    console.log(targetEduProgram);
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
-    const contentProgram = event.onSaveContent(this.props, contentNodes);
-    console.log(contentProgram)
+    const contentProgram = {
+      contentNodes,
+      datecreated: new Date().toISOString(),
+      iddetail: this.props.detailEduProgram.Id
+    };
+    console.log(contentProgram);
 
     this.props.onSaveEduProgram(
       infoEduProgram,
