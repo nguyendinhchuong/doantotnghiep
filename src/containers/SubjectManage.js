@@ -40,7 +40,6 @@ class SubjectManageTemp extends Component {
           </Col>
         </Row>
 
-        <hr />
         <Row>
           <Col lg="12" md="12">
             <SubjectManageCom

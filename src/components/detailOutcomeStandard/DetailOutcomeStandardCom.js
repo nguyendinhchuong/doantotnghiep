@@ -8,6 +8,8 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { AutoComplete } from "primereact/autocomplete";
 
+import "../../assets/common.css";
+
 import * as logic from "../../business";
 
 import DataInputCom from "./DataInputCom";
@@ -474,7 +476,7 @@ export default class DetailOutcomeStandardCom extends Component {
               onClick={this.onSave}
               disabled={this.state.isSaveBtnDisabled}
             >
-              <i className="material-icons">save</i> Lưu cây CĐR
+              <i className="material-icons">save</i> Lưu CĐR
             </Button>
             <Button
               style={{ margin: "0 10px" }}
@@ -492,23 +494,15 @@ export default class DetailOutcomeStandardCom extends Component {
             </Button>
           </Col>
           <Col lg="2" md="2" sm="2">
+            <DataInputCom handleFile={this.handleFile} />
+          </Col>
+          <Col lg="2" md="2" sm="2">
             <label
               onClick={this.onShowExportCom}
-              style={{
-                float: "right",
-                borderRadius: "8px",
-                border: "1px solid #17C671",
-                display: "inline-block",
-                color: "#17C671",
-                padding: "6px",
-                cursor: "pointer"
-              }}
+              className="export"
             >
               <i className="material-icons">save_alt</i> Tạo file Excel
             </label>
-          </Col>
-          <Col lg="2" md="2" sm="2">
-            <DataInputCom handleFile={this.handleFile} />
           </Col>
         </Row>
         <Row>
@@ -536,7 +530,7 @@ export default class DetailOutcomeStandardCom extends Component {
           </Col>
         </Row>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Tên file"
             visible={this.state.exportVisible}
@@ -553,7 +547,7 @@ export default class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Tên..."
             visible={this.state.visible}
@@ -570,7 +564,7 @@ export default class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Khóa cấp chuyển tới"
             visible={this.state.DragNodeVisible}
@@ -590,7 +584,7 @@ export default class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Các phiên bản"
             style={{ width: "60vw" }}
@@ -610,7 +604,7 @@ export default class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Tên phiên bản..."
             visible={this.state.saveRevisionVisible}
@@ -626,7 +620,7 @@ export default class DetailOutcomeStandardCom extends Component {
             />
           </Dialog>
         </div>
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Thông báo"
             visible={this.state.deleteAlertVisible}
@@ -652,7 +646,7 @@ export default class DetailOutcomeStandardCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Thông báo"
             visible={this.state.deleteReAlertVisible}

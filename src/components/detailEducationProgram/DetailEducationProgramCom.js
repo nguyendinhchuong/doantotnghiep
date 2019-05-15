@@ -136,7 +136,6 @@ export default class DetailEducationProgramCom extends React.Component {
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
-    console.log(targetEduProgram);
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
     const contentProgram = {
@@ -144,7 +143,6 @@ export default class DetailEducationProgramCom extends React.Component {
       datecreated: new Date().toISOString(),
       iddetail: this.props.detailEduProgram.Id
     };
-    console.log(contentProgram);
 
     this.props.onSaveEduProgram(
       infoEduProgram,
@@ -187,7 +185,7 @@ export default class DetailEducationProgramCom extends React.Component {
                 onClick={this.onSave}
                 theme="success"
               >
-                <i className="material-icons">save</i> Lưu chương trình đào tạo
+                <i className="material-icons">save</i> Lưu CTĐT
               </Button>
             </p>
           </Col>

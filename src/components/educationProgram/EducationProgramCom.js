@@ -4,6 +4,7 @@ import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 
 export default class EduProgramCom extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ export default class EduProgramCom extends Component {
       major: { Id: "0" },
       facultyId: 0,
       schoolYear: "",
-      eduId: 0
+      eduId: 0,
+      globalFilter: ""
     };
   }
 
@@ -380,34 +382,79 @@ export default class EduProgramCom extends Component {
       </Dialog>
     );
 
+    const header = (
+      <Row style={{ margin: "0" }}>
+        <Col lg="6" md="6" sm="6">
+          <p align="left">
+            <Button onClick={this.onOpenAdd} theme="success">
+              <i className="material-icons">playlist_add</i> Thêm CTĐT
+            </Button>
+          </p>
+        </Col>
+        <Col lg="6" md="6" sm="6">
+          <p align="right">
+            <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+              search
+            </i>
+            <InputText
+              type="search"
+              onInput={e => this.setState({ globalFilter: e.target.value })}
+              placeholder="Tìm kiếm"
+              size="50"
+            />
+          </p>
+        </Col>
+      </Row>
+    );
+
     return (
       <div>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <p align="left">
-              <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">playlist_add</i> Thêm Chương trình
-                đào tạo
-              </Button>
-            </p>
-          </Col>
-          <Col lg="12" md="12" sm="12">
-            <DataTable value={this.props.eduPrograms}>
-              <Column field="EduName" header="Tên" />
-              <Column field="LevelName" header="Trình độ" />
-              <Column field="MajorCode" header="Mã ngành" />
-              <Column field="MajorName" header="Ngành" />
-              <Column field="NameProgram" header="Hệ (Loại hình)" />
-              <Column field="SchoolYear" header="Khóa tuyển" />
+            <DataTable
+              header={header}
+              paginator={true}
+              rows={6}
+              ref={el => (this.dt = el)}
+              globalFilter={this.state.globalFilter}
+              emptyMessage="No records found"
+              value={this.props.eduPrograms}
+            >
+              <Column field="EduName" header="Tên" style={{ width: "5em" }} />
+              <Column
+                field="LevelName"
+                header="Trình độ"
+                style={{ width: "2em" }}
+              />
+              <Column
+                field="MajorCode"
+                header="Mã ngành"
+                style={{ width: "2em" }}
+              />
+              <Column
+                field="MajorName"
+                header="Ngành"
+                style={{ width: "3em" }}
+              />
+              <Column
+                field="NameProgram"
+                header="Hệ (Loại hình)"
+                style={{ width: "2em" }}
+              />
+              <Column
+                field="SchoolYear"
+                header="Khóa tuyển"
+                style={{ width: "1em" }}
+              />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "8em" }}
+                style={{ textAlign: "center", width: "2em" }}
               />
             </DataTable>
           </Col>
         </Row>
         {dialog}
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Thông báo"
             visible={this.state.deleteVisible}

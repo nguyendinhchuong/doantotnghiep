@@ -5,6 +5,9 @@ import { Row, Col, Button, FormInput, FormTextarea } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+
+import "../../assets/common.css";
 
 import * as logic from "../../business";
 
@@ -26,7 +29,8 @@ export default class SubjectManageCom extends Component {
       description: "",
       tmpSubjects: [],
       deleteVisible: false,
-      id: 0
+      id: 0,
+      globalFilter: ""
     };
   }
 
@@ -362,7 +366,7 @@ export default class SubjectManageCom extends Component {
     );
 
     const alertDialog = (
-      <div className="content-section implementation">
+      <div>
         <Dialog
           header="Thông báo"
           visible={this.state.deleteVisible}
@@ -423,12 +427,12 @@ export default class SubjectManageCom extends Component {
             value={this.state.tmpSubjects}
             style={{ height: "30vw", overflowY: "scroll" }}
           >
-            <Column field="subjectcode" header="Mã học phần" />
-            <Column field="subjectname" header="Tên học phần" />
-            <Column field="credit" header="Tín chỉ" />
-            <Column field="theoryperiod" header="Tiết lý thuyết" />
-            <Column field="practiceperiod" header="Tiết thực hành" />
-            <Column field="exerciseperiod" header="Tiết bài tập" />
+            <Column field="subjectcode" header="Mã học phần" style={{ width: "2em" }} />
+            <Column field="subjectname" header="Tên học phần" style={{ width: "5em" }} />
+            <Column field="credit" header="Tín chỉ" style={{ width: "1em" }} />
+            <Column field="theoryperiod" header="Tiết lý thuyết" style={{ width: "1em" }} />
+            <Column field="practiceperiod" header="Tiết thực hành" style={{ width: "1em" }} />
+            <Column field="exerciseperiod" header="Tiết bài tập" style={{ width: "1em" }} />
           </DataTable>
         </Col>
       </Dialog>
@@ -480,68 +484,86 @@ export default class SubjectManageCom extends Component {
       </Dialog>
     );
 
+    const header = (
+      <Row>
+        <Col lg="2" md="2" sm="2">
+          <p align="left">
+            <Button onClick={this.onOpenAdd} theme="success">
+              <i className="material-icons">playlist_add</i> Thêm HP
+            </Button>
+          </p>
+        </Col>
+        <Col lg="2" md="2" sm="2">
+          <DataInputCom importFile={this.importFile} />
+        </Col>
+        <Col lg="2" md="2" sm="2">
+          <label onClick={this.onExport} className="export">
+            <i className="material-icons">save_alt</i> Tạo file Excel
+          </label>
+        </Col>
+        <Col lg="6" md="6" sm="6">
+          <p align="right">
+            <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+              search
+            </i>
+            <InputText
+              type="search"
+              onInput={e => this.setState({ globalFilter: e.target.value })}
+              placeholder="Tìm kiếm"
+              size="50"
+            />
+          </p>
+        </Col>
+      </Row>
+    );
+
     return (
       <div>
         <Row>
-          <Col lg="2" md="2" sm="2">
-            <p align="left">
-              <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">add</i> Thêm Học phần
-              </Button>
-            </p>
-          </Col>
-          <Col lg="6" md="6" sm="6" />
-          <Col lg="2" md="2" sm="2">
-            <label
-              onClick={this.onExport}
-              style={{
-                float: "right",
-                borderRadius: "8px",
-                border: "1px solid #17C671",
-                display: "inline-block",
-                color: "#17C671",
-                padding: "6px",
-                cursor: "pointer"
-              }}
-            >
-              <i className="material-icons">save_alt</i> Tạo file Excel
-            </label>
-          </Col>
-          <Col lg="2" md="2" sm="2">
-            <DataInputCom importFile={this.importFile} />
-          </Col>
-
           <Col lg="12" md="12" sm="12">
-            <DataTable value={this.props.subjects}>
+            <DataTable
+              header={header}
+              paginator={true}
+              rows={6}
+              ref={el => (this.dt = el)}
+              globalFilter={this.state.globalFilter}
+              emptyMessage="No records found"
+              value={this.props.subjects}
+            >
               <Column
                 sortable={true}
                 field="SubjectCode"
                 header="Mã học phần"
+                 style={{ width: "2em" }}
               />
               <Column
                 sortable={true}
                 field="SubjectName"
                 header="Tên học phần"
+                 style={{ width: "4em" }}
               />
-              <Column sortable={true} field="Credit" header="Tín chỉ" />
+              <Column sortable={true} field="Credit" header="Tín chỉ"  style={{ width: "1em" }}/>
               <Column
                 sortable={true}
                 field="TheoryPeriod"
                 header="Tiết lý thuyết"
+                 style={{ width: "1em" }}
               />
               <Column
                 sortable={true}
                 field="PracticePeriod"
                 header="Tiết thực hành"
+                 style={{ width: "1em" }}
               />
               <Column
                 sortable={true}
                 field="ExercisePeriod"
                 header="Tiết bài tập"
+                 style={{ width: "1em" }}
               />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "8em" }}
+                style={{ textAlign: "center", width: "2em" }}
               />
             </DataTable>
           </Col>

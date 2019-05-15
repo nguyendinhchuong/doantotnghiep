@@ -5,6 +5,7 @@ import { DataTable } from "primereact/datatable";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 
 export default class OutcomeStandardCom extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export default class OutcomeStandardCom extends Component {
       duplicatedOutcomeId: 0,
       outcomeReview: [],
       deleteVisible: false,
-      idOutcome: 0
+      idOutcome: 0,
+      globalFilter: ""
     };
   }
 
@@ -461,33 +463,79 @@ export default class OutcomeStandardCom extends Component {
       </Dialog>
     );
 
+    const header = (
+      <Row style={{ margin: "0" }}>
+        <Col lg="6" md="6" sm="6">
+          <p align="left">
+            <Button onClick={this.onOpenAdd} theme="success">
+              <i className="material-icons">playlist_add</i> Thêm CĐR
+            </Button>
+          </p>
+        </Col>
+        <Col lg="6" md="6" sm="6">
+          <p align="right">
+            <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+              search
+            </i>
+            <InputText
+              type="search"
+              onInput={e => this.setState({ globalFilter: e.target.value })}
+              placeholder="Tìm kiếm"
+              size="50"
+            />
+          </p>
+        </Col>
+      </Row>
+    );
+
     return (
       <div>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <p align="left">
-              <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">playlist_add</i> Thêm Chuẩn đầu ra
-              </Button>
-            </p>
-          </Col>
-          <Col lg="12" md="12" sm="12">
-            <DataTable value={this.props.outcomeStandards}>
-              <Column field="NameOutcomeStandard" header="Tên" />
-              <Column field="NameFaculty" header="Khoa" />
-              <Column field="NameProgram" header="Hệ (Loại hình)" />
-              <Column field="NameUser" header="Người tạo" />
-              <Column field="SchoolYear" header="Năm học" />
+            <DataTable
+              header={header}
+              paginator={true}
+              rows={6}
+              ref={el => (this.dt = el)}
+              globalFilter={this.state.globalFilter}
+              emptyMessage="No records found"
+              value={this.props.outcomeStandards}
+            >
+              <Column
+                field="NameOutcomeStandard"
+                header="Tên"
+                style={{ width: "5em" }}
+              />
+              <Column
+                field="NameFaculty"
+                header="Khoa"
+                style={{ width: "3em" }}
+              />
+              <Column
+                field="NameProgram"
+                header="Hệ (Loại hình)"
+                style={{ width: "2em" }}
+              />
+              <Column
+                field="NameUser"
+                header="Người tạo"
+                style={{ width: "2em" }}
+              />
+              <Column
+                field="SchoolYear"
+                header="Năm học"
+                style={{ width: "1em" }}
+              />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "12em" }}
+                style={{ textAlign: "center", width: "3em" }}
               />
             </DataTable>
           </Col>
         </Row>
         {dialog}
         {dupDialog}
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Thông báo"
             visible={this.state.deleteVisible}
@@ -517,4 +565,3 @@ export default class OutcomeStandardCom extends Component {
     );
   }
 }
-//<DataTable value={[{NameOutcomeStandard:"hihi",NameFaculty:"hihi",NameProgram:"hihi",NameUser:"hihi",SchoolYear:"hihi"}]}>

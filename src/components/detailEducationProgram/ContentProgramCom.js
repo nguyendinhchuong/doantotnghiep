@@ -500,7 +500,6 @@ export default class ContentProgramCom extends React.Component {
   render() {
     return (
       <div>
-        <hr />
         <TreeTable value={this.state.nodes}>
           <Column
             field="displayName"

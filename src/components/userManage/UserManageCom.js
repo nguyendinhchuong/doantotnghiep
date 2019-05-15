@@ -166,7 +166,7 @@ export default class UserManageCom extends Component {
     );
 
     const alertDialog = (
-      <div className="content-section implementation">
+      <div>
         <Dialog
           header="Thông báo"
           visible={this.state.deleteVisible}
