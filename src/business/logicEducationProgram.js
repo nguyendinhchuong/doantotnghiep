@@ -160,9 +160,6 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
       node.children = [];
     }
     arr.push(node);
-    // if (nodes[i].data && nodes[i].data.isTable) {
-    //   convertTreenodeToArr(nodes[i].data.subjects, arr);
-    // }
     if (nodes[i].children) {
       convertTreenodeToArr(nodes[i].children, arr);
     }
@@ -377,3 +374,140 @@ export const totalCreditsOfTable = subjects =>{
     return total += +blocks[0].optionCredit;
   },0);
 };
+
+export const convertDbToTreeNodes = data1 =>{
+  const arr = [
+    ...data.eduContents,
+    ...data.subjectBlocks,
+    ...data.detailBlocks
+  ];
+  arr.reduce((nodes, row)=>{
+    const rank =common.getRank(row.KeyRow);
+    const isTable = row.Type;
+    if(rank === 2){
+      return nodes = addRoot(nodes, row.NameRow);
+    }
+    else{
+      // handle add child
+    }
+  },[]);
+  return arr;
+};
+
+const data =  {
+  "eduContents": [
+    {
+      "Id": 192,
+      "KeyRow": "7.1",
+      "NameRow": "KIẾN THỨC GIÁO DỤC ĐẠI CƯƠNG",
+      "Type": false,
+      "IdEduProgram": 6,
+      "DateCreated": null
+    },
+    {
+      "Id": 193,
+      "KeyRow": "7.1.1",
+      "NameRow": "Lý luận Triết học Mác-Lênin và Tư tưởng Hồ Chí Minh",
+      "Type": false,
+      "IdEduProgram": 6,
+      "DateCreated": null
+    },
+    {
+      "Id": 194,
+      "KeyRow": "7.1.1.1",
+      "NameRow": "",
+      "Type": true,
+      "IdEduProgram": 6,
+      "DateCreated": null
+    },
+    {
+      "Id": 195,
+      "KeyRow": "7.1.2",
+      "NameRow": "Khoa học xã hội – Kinh tế – Kỹ năng",
+      "Type": false,
+      "IdEduProgram": 6,
+      "DateCreated": null
+    },
+    {
+      "Id": 196,
+      "KeyRow": "7.1.2.1",
+      "NameRow": "",
+      "Type": true,
+      "IdEduProgram": 6,
+      "DateCreated": null
+    }
+  ],
+  "subjectBlocks": [
+    {
+      "Id": 42,
+      "IdEduProgContent": 196,
+      "Credit": 0,
+      "isAccumulated": true,
+      "KeyRow": "7.1.2.1",
+      "NameBlock": "BB",
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 43,
+      "IdEduProgContent": 196,
+      "Credit": 2,
+      "isAccumulated": true,
+      "KeyRow": "7.1.2.1",
+      "NameBlock": "TC( Xã hội ) : Học 2 chỉ",
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 44,
+      "IdEduProgContent": 194,
+      "Credit": 0,
+      "isAccumulated": true,
+      "KeyRow": "7.1.1.1",
+      "NameBlock": "BB",
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    }
+  ],
+  "detailBlocks": [
+    {
+      "Id": 74,
+      "IdSubject": 4,
+      "IdSubjectBlock": 42,
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 75,
+      "IdSubject": 1,
+      "IdSubjectBlock": 44,
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 76,
+      "IdSubject": 2,
+      "IdSubjectBlock": 44,
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 77,
+      "IdSubject": 3,
+      "IdSubjectBlock": 44,
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 78,
+      "IdSubject": 5,
+      "IdSubjectBlock": 43,
+      "DateCreated": "2019-03-02T00:00:00.000Z"
+    },
+    {
+      "Id": 79,
+      "IdSubject": 24,
+      "IdSubjectBlock": 43,
+      "DateCreated": "2019-05-07T17:00:00.000Z"
+    },
+    {
+      "Id": 80,
+      "IdSubject": 25,
+      "IdSubjectBlock": 43,
+      "DateCreated": "2019-05-07T17:00:00.000Z"
+    }
+  ]
+}

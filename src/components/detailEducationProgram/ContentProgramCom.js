@@ -43,6 +43,8 @@ export default class ContentProgramCom extends React.Component {
       filterBlocks: []
     };
     this.deleteSubject.bind(this);
+    console.log(logic.convertDbToTreeNodes());
+    
   }
 
   // Add
@@ -148,7 +150,6 @@ export default class ContentProgramCom extends React.Component {
       );
     }
     child.data.subjects = subjectsTable;
-    console.log(subjectsTable);
     
     child.data.totalCredits = logic.totalCreditsOfTable(subjectsTable);
     child.data.subjects = logic.sortSubject(child.data.subjects);
