@@ -43,7 +43,6 @@ export default class ContentProgramCom extends React.Component {
       filterBlocks: []
     };
     this.deleteSubject.bind(this);
-    console.log(logic.convertDbToTreeNodes());
     
   }
 

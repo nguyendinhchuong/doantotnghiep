@@ -375,33 +375,40 @@ export const totalCreditsOfTable = subjects => {
   }, 0);
 };
 
-export const convertDbToTreeNodes = data1 => {
-  const arr = [
-    ...data.eduContents,
-    ...data.subjectBlocks,
-    ...data.detailBlocks
-  ];
-  return arr.reduce((nodes, row) => {
-    if (row.hasOwnProperty('Type')) {
-      const rank = common.getRank(row.KeyRow);
-      if (rank === 2) {
-        return nodes = addRoot(nodes, row.NameRow);
-      }
-      else {
-        // handle add child
-        const isTable = row.Type;
-        const parentNode = findParentNode(nodes, row.KeyRow);
-        if (!isTable) {
-          return nodes = addChildTitle(nodes, parentNode, row.NameRow);
-        }
-        return nodes = addChildTable(nodes, parentNode);
-      }
+export const convertDbToTreeNodes = (data1, subjects ) => {
+  const contentPro = [...data.eduContents];
+  const blocks = [...data.subjectBlocks];
+  const detailBlocks = [... data.detailBlocks];
+  // convert -> nodes
+  const nodes = contentPro.reduce((nodes, row) => {
+    const rank = common.getRank(row.KeyRow);
+    if (rank === 2) {
+      return nodes = addRoot(nodes, row.NameRow);
     }
-    return nodes;
+    const parentNode = findParentNode(nodes, row.KeyRow);
+    if (!row.Type) {
+      return nodes = addChildTitle(nodes, parentNode, row.NameRow);
+    }
+    return nodes = addChildTable(nodes, parentNode);
   }, []);
+
+  // add subjects and block
+  return blocks.reduce((nodes, block)=>{
+    const idSubjectsOfDetailBlock = idDetailSubjectsOfBlock(block, detailBlocks);
+    const subjectsOfBlock = subjectsOfDetailBlock(idSubjectsOfDetailBlock, subjects);
+    const node = findNode(nodes, block.KeyRow);
+    subjectsOfBlock.map((subject)=>{
+      subject.nameBlock = block.NameBlock;
+      subject.isAccumulation = block.isAccumulated;
+      subject.parentKey = block.KeyRow;
+      node.data.subjects.push(subject);
+      node.data.totalCredits = totalCreditsOfTable(node.data.subjects);
+    });
+    return nodes = common.updateNode(nodes, node);
+  },nodes);
 };
 
-const findParentNode = (nodes,key) => {
+const findParentNode = (nodes, key) => {
   let parentKey = common.parentKey(key);
   // case root = 7.1.... => 1.1...
   if (key[0] === "7") {
@@ -409,6 +416,15 @@ const findParentNode = (nodes,key) => {
     parentKey = parentKey.slice(firstDot + 1, parentKey.length);
   }
   return common.findNodeByKey(nodes, parentKey);
+}
+
+const findNode = (nodes, key)=>{
+  // case root = 7.1.... => 1.1...
+  if (key[0] === "7") {
+    const firstDot = key.indexOf(".");
+    key = key.slice(firstDot + 1, key.length);
+  }
+  return common.findNodeByKey(nodes, key);
 }
 
 const addChildTable = (nodes, nodeParent) => {
@@ -430,120 +446,14 @@ const addChildTable = (nodes, nodeParent) => {
   return nodes;
 };
 
-const data = {
-  "eduContents": [
-    {
-      "Id": 192,
-      "KeyRow": "7.1",
-      "NameRow": "KIẾN THỨC GIÁO DỤC ĐẠI CƯƠNG",
-      "Type": false,
-      "IdEduProgram": 6,
-      "DateCreated": null
-    },
-    {
-      "Id": 193,
-      "KeyRow": "7.1.1",
-      "NameRow": "Lý luận Triết học Mác-Lênin và Tư tưởng Hồ Chí Minh",
-      "Type": false,
-      "IdEduProgram": 6,
-      "DateCreated": null
-    },
-    {
-      "Id": 194,
-      "KeyRow": "7.1.1.1",
-      "NameRow": "",
-      "Type": true,
-      "IdEduProgram": 6,
-      "DateCreated": null
-    },
-    {
-      "Id": 195,
-      "KeyRow": "7.1.2",
-      "NameRow": "Khoa học xã hội – Kinh tế – Kỹ năng",
-      "Type": false,
-      "IdEduProgram": 6,
-      "DateCreated": null
-    },
-    {
-      "Id": 196,
-      "KeyRow": "7.1.2.1",
-      "NameRow": "",
-      "Type": true,
-      "IdEduProgram": 6,
-      "DateCreated": null
-    }
-  ],
-  "subjectBlocks": [
-    {
-      "Id": 42,
-      "IdEduProgContent": 196,
-      "Credit": 0,
-      "isAccumulated": true,
-      "KeyRow": "7.1.2.1",
-      "NameBlock": "BB",
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 43,
-      "IdEduProgContent": 196,
-      "Credit": 2,
-      "isAccumulated": true,
-      "KeyRow": "7.1.2.1",
-      "NameBlock": "TC( Xã hội ) : Học 2 chỉ",
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 44,
-      "IdEduProgContent": 194,
-      "Credit": 0,
-      "isAccumulated": true,
-      "KeyRow": "7.1.1.1",
-      "NameBlock": "BB",
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    }
-  ],
-  "detailBlocks": [
-    {
-      "Id": 74,
-      "IdSubject": 4,
-      "IdSubjectBlock": 42,
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 75,
-      "IdSubject": 1,
-      "IdSubjectBlock": 44,
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 76,
-      "IdSubject": 2,
-      "IdSubjectBlock": 44,
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 77,
-      "IdSubject": 3,
-      "IdSubjectBlock": 44,
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 78,
-      "IdSubject": 5,
-      "IdSubjectBlock": 43,
-      "DateCreated": "2019-03-02T00:00:00.000Z"
-    },
-    {
-      "Id": 79,
-      "IdSubject": 24,
-      "IdSubjectBlock": 43,
-      "DateCreated": "2019-05-07T17:00:00.000Z"
-    },
-    {
-      "Id": 80,
-      "IdSubject": 25,
-      "IdSubjectBlock": 43,
-      "DateCreated": "2019-05-07T17:00:00.000Z"
-    }
-  ]
+const idDetailSubjectsOfBlock = (block, detailSubjects) =>{
+  return detailSubjects.reduce((results, row) => {
+    return row.IdSubjectBlock === block.Id ? results.concat(row.IdSubject) : results;
+  },[]);
 }
+
+const subjectsOfDetailBlock = (idDetailBlock, subjects) =>{
+  return subjects.reduce((results, subject) => {
+    return idDetailBlock.includes(subject.Id) ? results.concat(subject) : results;
+  }, []);
+};
