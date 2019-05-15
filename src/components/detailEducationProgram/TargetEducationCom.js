@@ -293,7 +293,7 @@ export default class TargetEducationCom extends Component {
     );
 
     return (
-      <div className="p-grid content-section implementation">
+      <div>
         <Row>
           <Col lg="12" md="12" sm="12">
             <TreeTable value={this.state.targetNodes}>
@@ -335,7 +335,7 @@ export default class TargetEducationCom extends Component {
           </Col>
         </Row>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Thêm Mục Tiêu Đào Tạo"
             visible={this.state.targetVisible}
@@ -398,7 +398,7 @@ export default class TargetEducationCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Chi tiết chuẩn đầu ra"
             visible={this.state.detailOsVisible}
@@ -421,7 +421,7 @@ export default class TargetEducationCom extends Component {
           </Dialog>
         </div>
 
-        <div className="content-section implementation">
+        <div>
           <Dialog
             header="Thông báo"
             visible={this.state.deleteAlertVisible}

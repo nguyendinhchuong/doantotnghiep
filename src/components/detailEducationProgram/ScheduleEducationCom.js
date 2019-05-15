@@ -349,7 +349,7 @@ export default class ScheduleEducationCom extends React.Component {
     );
 
     return (
-      <div className="content-section implementation">
+      <div>
         <DataTable
           value={this.state.semesters}
           expandedRows={this.state.expandedRows}

@@ -148,7 +148,6 @@ export default class ContentProgramCom extends React.Component {
       );
     }
     child.data.subjects = subjectsTable;
-    console.log(subjectsTable);
     
     child.data.totalCredits = logic.totalCreditsOfTable(subjectsTable);
     child.data.subjects = logic.sortSubject(child.data.subjects);
@@ -499,7 +498,6 @@ export default class ContentProgramCom extends React.Component {
   render() {
     return (
       <div>
-        <hr />
         <TreeTable value={this.state.nodes}>
           <Column
             field="displayName"
