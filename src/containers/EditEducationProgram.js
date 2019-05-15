@@ -12,10 +12,15 @@ import * as levelsAction from "../actions/levelsAction";
 import * as majorsAction from "../actions/majorsAction";
 import * as programsAction from "../actions/programsAction";
 import * as subjectsAction from "../actions/subjectsAction";
-import * as eduProgramsAction from "../actions/eduProgramsAction";
-import * as detailEduProgramAction from "../actions/detailEduProgramAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
+
+import * as eduProgramsAction from "../actions/eduProgramsAction";
+import * as detailEduProgramAction from "../actions/detailEduProgramAction";
+
+import * as _detailContentAction from "../actions/_detailContentAction";
+import * as _detailScheduleAction from "../actions/_detailScheduleAction";
+import * as _detailTargetAction from "../actions/_detailTargetAction";
 
 import { connect } from "react-redux";
 
@@ -30,7 +35,15 @@ class DetailEducationProgramTmp extends Component {
     const id = urlParams.get("id");
     this.props.onLoadEduProgram(id);
     Promise.resolve(this.props.onLoadDetailEduProgram(id)).then(() => {
-      this.props.onLoadTargetEduProgram(this.props.detailEduProgram.Id);
+      Promise.resolve(
+        this.props.onLoadTargetProgram(this.props.detailEduProgram.Id)
+      ).then(() => {
+        Promise.resolve(
+          this.props.onLoadContentProgram(this.props.detailEduProgram.Id)
+        ).then(() => {
+          this.props.onloadScheduleProgram(this.props.detailEduProgram.Id);
+        });
+      });
     });
     this.props.onLoadLevels();
     this.props.onLoadMajors();
@@ -87,10 +100,10 @@ class DetailEducationProgramTmp extends Component {
               targetNodes={this.props.targetEduProgram}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
-              onSaveEduProgram={this.props.onSaveEduProgram}
               onLoadDetailOutcomeStandard={
                 this.props.onLoadDetailOutcomeStandard
               }
+              onSaveEduProgram={this.props.onSaveEduProgram}
             />
           </Col>
         </Row>
@@ -117,11 +130,14 @@ export default connect(mapStateToProps, {
   onLoadMajors: majorsAction.onLoadMajors,
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadSubjects: subjectsAction.onLoadSubjects,
-  onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
-  onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
-  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
-  onLoadTargetEduProgram: detailEduProgramAction.onLoadTargetEduProgram,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
-  onLoadDetailOutcomeStandard:
-    detailOutcomeStandardAction.onLoadDetailOutcomeStandard
+  onLoadDetailOutcomeStandard: detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
+
+  onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
+  onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+
+  onLoadContentProgram: _detailContentAction.onLoadContentProgram,
+  onloadScheduleProgram: _detailScheduleAction.onloadScheduleProgram,
+  onLoadTargetProgram: _detailTargetAction.onLoadTargetProgram
 })(DetailEducationProgramTmp);

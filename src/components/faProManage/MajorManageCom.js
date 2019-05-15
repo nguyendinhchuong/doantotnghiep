@@ -4,6 +4,7 @@ import { Row, Col, Button, FormSelect, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 
 export default class MajorManageCom extends Component {
   constructor(props) {
@@ -14,7 +15,8 @@ export default class MajorManageCom extends Component {
       majorName: "",
       faculty: {},
       deleteVisible: false,
-      id: 0
+      id: 0,
+      globalFilter: ""
     };
   }
 
@@ -209,21 +211,44 @@ export default class MajorManageCom extends Component {
       </div>
     );
 
+    const header = (
+      <Row style={{ margin: "0" }}>
+        <Col lg="6" md="6" sm="6">
+          <p align="left">
+            <Button onClick={this.onOpenAdd} theme="success">
+              <i className="material-icons">add</i> Thêm Ngành
+            </Button>
+          </p>
+        </Col>
+        <Col lg="6" md="6" sm="6">
+          <p align="right">
+            <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+              search
+            </i>
+            <InputText
+              type="search"
+              onInput={e => this.setState({ globalFilter: e.target.value })}
+              placeholder="Tìm kiếm"
+              size="50"
+            />
+          </p>
+        </Col>
+      </Row>
+    );
+
     return (
       <div>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <br />
-          </Col>
-          <Col lg="12" md="12" sm="12">
-            <p align="left">
-              <Button onClick={this.onOpenAdd} theme="success">
-                <i className="material-icons">add</i> Thêm Ngành
-              </Button>
-            </p>
-          </Col>
-          <Col lg="12" md="12" sm="12">
-            <DataTable value={this.props.majors}>
+            <DataTable
+              header={header}
+              paginator={true}
+              rows={6}
+              ref={el => (this.dt = el)}
+              globalFilter={this.state.globalFilter}
+              emptyMessage="No records found"
+              value={this.props.majors}
+            >
               <Column sortable={true} field="MajorCode" header="Mã ngành" />
               <Column sortable={true} field="MajorName" header="Tên ngành" />
               <Column

@@ -15,7 +15,9 @@ import { majors } from "./majors";
 import { eduPrograms } from "./eduPrograms";
 import { infoEduProgram } from "./infoEduProgram";
 import { detailEduProgram } from "./detailEduProgram";
-import { targetEduProgram } from "./targetEduProgram";
+import { contentNodes } from "./_contentNodes";
+import { scheduleNodes } from "./_scheduleNodes";
+import { targetNodes } from "./_targetNodes";
 
 const rootReducer = combineReducers({
   faculties,
@@ -29,12 +31,16 @@ const rootReducer = combineReducers({
   levels,
   majors,
   eduPrograms,
+  message,
+  
   infoEduProgram,
   detailEduProgram,
-  targetEduProgram,
-  message,
+  contentNodes,
+  scheduleNodes,
+  targetNodes,
+  
   users,
-  user
+  user,
 });
 
 export default rootReducer;

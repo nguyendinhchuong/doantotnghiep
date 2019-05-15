@@ -42,10 +42,13 @@ export default class ContentProgramCom extends React.Component {
       descriptionBlockBB: "",
       filterBlocks: []
     };
-    this.deleteSubject.bind(this);
-    console.log(logic.convertDbToTreeNodes());
-    
   }
+
+  // get targetNodes from redux
+  getContentNodes = contentNodes => {
+    // this.setState({ nodes: contentNodes });
+  };
+  // end get targetNodes from redux
 
   // Add
   handleAddRoot = () => {

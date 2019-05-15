@@ -15,8 +15,9 @@ import * as commonLogic from "../../business/commonEducation";
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
     super(props);
-    this.TargetEducationCom = React.createRef();
+    this.ScheduleEducationCom = React.createRef();
     this.ContentProgramCom = React.createRef();
+    this.TargetEducationCom = React.createRef();
 
     this.state = {
       // states for Title
@@ -134,27 +135,35 @@ export default class DetailEducationProgramCom extends React.Component {
     const infoEduProgram = event.onSaveInfo(this.props, this.state);
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
 
-    const targetNodes = this.TargetEducationCom.current.state.targetNodes;
-    const targetEduProgram = event.onSaveTarget(this.props, targetNodes);
+    const iddetail = this.props.detailEduProgram.Id;
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
-    const contentProgram = {
-      contentNodes,
-      datecreated: new Date().toISOString(),
-      iddetail: this.props.detailEduProgram.Id
-    };
+    const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
+    const targetNodes = this.TargetEducationCom.current.state.targetNodes;
 
-    this.props.onSaveEduProgram(
+    const data = event.parseDataForSaveEduProgram(
+      iddetail,
       infoEduProgram,
       detailEduProgram,
-      targetEduProgram,
-      contentProgram
+      contentNodes,
+      scheduleNodes,
+      targetNodes
     );
+
+    this.props.onSaveEduProgram(data);
   };
   // end fucntions for redux
 
   componentWillReceiveProps(nextProps) {
     const data = event.receiveProps(nextProps);
+
+    const contentNodes = this.ContentProgramCom.current.state.nodes;
+    if (JSON.stringify(contentNodes) !== JSON.stringify(nextProps.contentNodes))
+      this.ContentProgramCom.current.getContentNodes(nextProps.contentNodes);
+
+    const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
+    if (JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes))
+      this.ScheduleEducationCom.current.getScheduleNodes(nextProps.scheduleNodes);
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))
@@ -270,7 +279,7 @@ export default class DetailEducationProgramCom extends React.Component {
 
               <AccordionTab header="KẾ HOẠCH GIẢNG DẠY DỰ KIẾN">
                 <ScheduleEducationCom
-                  subjects={this.props.subjects}
+                  ref={this.ScheduleEducationCom}
                   getData={this.getDataForScheduleEducation}
                 />
               </AccordionTab>
