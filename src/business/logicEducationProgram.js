@@ -375,7 +375,7 @@ export const totalCreditsOfTable = subjects => {
   }, 0);
 };
 
-export const convertDbToTreeNodes = (data1, subjects ) => {
+export const convertDbToTreeNodes = (data, subjects ) => {
   const contentPro = [...data.eduContents];
   const blocks = [...data.subjectBlocks];
   const detailBlocks = [... data.detailBlocks];
