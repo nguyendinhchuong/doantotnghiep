@@ -2,6 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
+import * as contentAction from "./_detailContentAction";
 
 export const loadDetailEduProgramSuccess = detailEduProgram => ({
   type: cst.LOAD_DETAIL_EDUPROGRAM_SUCCESS,
@@ -69,6 +70,8 @@ export const onSaveDetailEduProgram = data => {
           dispatch(message.message(chirp));
           dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
           dispatch(saveDetailEduProgramSuccess(res));
+          // where to put actions LOL
+          dispatch(contentAction.onSaveContentProgram(data.contentProgram));
         } else {
           let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));

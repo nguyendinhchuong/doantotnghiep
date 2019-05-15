@@ -149,7 +149,6 @@ export default class DetailEducationProgramCom extends React.Component {
       scheduleNodes,
       targetNodes
     );
-
     this.props.onSaveEduProgram(data);
   };
   // end fucntions for redux

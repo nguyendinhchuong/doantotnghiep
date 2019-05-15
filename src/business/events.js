@@ -127,9 +127,21 @@ export const parseDataForSaveEduProgram = (
 ) => {
   const datecreated = new Date().toISOString();
 
-  const contentProgram = { contentNodes, iddetail, datecreated };
-  const scheduleProgram = { scheduleNodes, iddetail, datecreated };
-  const targetProgram = { targetNodes, iddetail, datecreated };
+  const contentProgram = {
+    contentNodes: [...contentNodes],
+    iddetail,
+    datecreated
+  };
+  const scheduleProgram = {
+    scheduleNodes: [...scheduleNodes],
+    iddetail,
+    datecreated
+  };
+  const targetProgram = {
+    targetNodes: [...targetNodes],
+    iddetail,
+    datecreated
+  };
 
   const data = {
     infoEduProgram,
