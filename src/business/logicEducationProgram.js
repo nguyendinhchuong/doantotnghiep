@@ -70,8 +70,8 @@ export const filterSubjects = (e, subjects) => {
   const re = new RegExp(e.query.toLowerCase());
   const results = subjects
     ? subjects.filter(item => {
-        return re.test(item.SubjectName.toLowerCase());
-      })
+      return re.test(item.SubjectName.toLowerCase());
+    })
     : [];
   return results;
 };
@@ -155,8 +155,8 @@ export const addSubjectInOnchange = (subjects, subject) => {
 export const convertTreenodeToArr = (nodes, arr = []) => {
   const length = nodes.length;
   for (let i = 0; i < length; i++) {
-    const node = {...nodes[i]};
-    if(node.children && node.children.length){
+    const node = { ...nodes[i] };
+    if (node.children && node.children.length) {
       node.children = [];
     }
     arr.push(node);
@@ -346,55 +346,91 @@ export const checkExistsBlock = (nameBlock, listBlocks) => {
   });
 };
 
-export const updateAccumulationAndCredit = ( subjects, ... agru) => {
+export const updateAccumulationAndCredit = (subjects, ...agru) => {
   return subjects.map(subject => {
-    const description = subject.nameBlock.slice(subject.nameBlock.indexOf('(')+2,subject.nameBlock.indexOf(')')-1);
+    const description = subject.nameBlock.slice(subject.nameBlock.indexOf('(') + 2, subject.nameBlock.indexOf(')') - 1);
     if (subject.nameBlock.startsWith("TC") && description === agru[0]) {
-      return { 
-        ...subject, 
-        isAccumulation: agru[1], 
-        optionCredit: agru[2] 
+      return {
+        ...subject,
+        isAccumulation: agru[1],
+        optionCredit: agru[2]
       };
     }
     return { ...subject };
   });
 };
 
-export const totalCreditsOfTable = subjects =>{
-  const groups = groupBy(subjects, item =>{
+export const totalCreditsOfTable = subjects => {
+  const groups = groupBy(subjects, item => {
     return item.nameBlock;
   });
-  
-  return groups.reduce((total, blocks) =>{
-    if(blocks[0].nameBlock.startsWith("BB")){
-      return total += blocks.reduce((totalCredit, subject) =>{
+
+  return groups.reduce((total, blocks) => {
+    if (blocks[0].nameBlock.startsWith("BB")) {
+      return total += blocks.reduce((totalCredit, subject) => {
         return totalCredit += +subject.Credit;
-      },0);
+      }, 0);
     }
     return total += +blocks[0].optionCredit;
-  },0);
+  }, 0);
 };
 
-export const convertDbToTreeNodes = data1 =>{
+export const convertDbToTreeNodes = data1 => {
   const arr = [
     ...data.eduContents,
     ...data.subjectBlocks,
     ...data.detailBlocks
   ];
-  arr.reduce((nodes, row)=>{
-    const rank =common.getRank(row.KeyRow);
-    const isTable = row.Type;
-    if(rank === 2){
-      return nodes = addRoot(nodes, row.NameRow);
+  return arr.reduce((nodes, row) => {
+    if (row.hasOwnProperty('Type')) {
+      const rank = common.getRank(row.KeyRow);
+      if (rank === 2) {
+        return nodes = addRoot(nodes, row.NameRow);
+      }
+      else {
+        // handle add child
+        const isTable = row.Type;
+        const parentNode = findParentNode(nodes, row.KeyRow);
+        if (!isTable) {
+          return nodes = addChildTitle(nodes, parentNode, row.NameRow);
+        }
+        return nodes = addChildTable(nodes, parentNode);
+      }
     }
-    else{
-      // handle add child
-    }
-  },[]);
-  return arr;
+    return nodes;
+  }, []);
 };
 
-const data =  {
+const findParentNode = (nodes,key) => {
+  let parentKey = common.parentKey(key);
+  // case root = 7.1.... => 1.1...
+  if (key[0] === "7") {
+    const firstDot = parentKey.indexOf(".");
+    parentKey = parentKey.slice(firstDot + 1, parentKey.length);
+  }
+  return common.findNodeByKey(nodes, parentKey);
+}
+
+const addChildTable = (nodes, nodeParent) => {
+  const length = nodeParent.children.length;
+  const key = `${nodeParent.key}.${length + 1}`;
+  let node = {
+    key: key,
+    data: {
+      isTable: true,
+      optionalCredit: 0,
+      totalCredits: 0,
+      subjects: [],
+      displayName: ""
+    },
+    children: []
+  };
+  nodeParent.children.push(node);
+  nodes = common.updateNode(nodes, nodeParent);
+  return nodes;
+};
+
+const data = {
   "eduContents": [
     {
       "Id": 192,
