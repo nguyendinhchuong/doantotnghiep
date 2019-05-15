@@ -30,6 +30,12 @@ export default class ScheduleEducationCom extends React.Component {
     };
   }
 
+  // get targetNodes from redux
+  getScheduleNodes = scheduleNodes => {
+    // this.setState({ semesters: scheduleNodes });
+  };
+  // end get targetNodes from redux
+
   suggestBlocks = event => {
     let results = Object.keys(this.state.groupSubjectsFrom7).filter(block => {
       return block.toLowerCase().startsWith(event.query.toLowerCase());

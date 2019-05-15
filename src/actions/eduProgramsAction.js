@@ -119,47 +119,33 @@ export const saveEduProgramError = errorMessage => ({
   errorMessage
 });
 
-export const onSaveEduProgram = (
-  infoEduProgram,
-  detailEduProgram,
-  targetEduProgram,
-  contentProgram
-) => {
+export const onSaveEduProgram = data => {
   return (dispatch, getState) => {
     let params = {};
-    params.data = JSON.stringify(infoEduProgram);
+    params.data = JSON.stringify(data.infoEduProgram);
     axios
       .post(
-        `${links.SAVE_EDUPROGRAM}?ideduprog=${infoEduProgram.ideduprog}`,
-        params,
-        {
-          headers: { "Content-Type": "application/json" }
-        }
+        `${links.SAVE_EDUPROGRAM}?ideduprog=${data.infoEduProgram.ideduprog}`,
+        params, { headers: { "Content-Type": "application/json" } }
       )
       .then(res => {
         if (res.data.code === 1) {
           let chirp = { message: `Lưu thông tin CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
-          dispatch(onLoadEduProgram(infoEduProgram.ideduprog));
+          dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
           dispatch(saveEduProgramSuccess(res));
-          dispatch(
-            detailEduProgramAction.onSaveDetailEduProgram(
-              detailEduProgram,
-              targetEduProgram,
-              contentProgram
-            )
-          );
+          dispatch(detailEduProgramAction.onSaveDetailEduProgram(data));
         } else {
           let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));
-          dispatch(onLoadEduProgram(infoEduProgram.ideduprog));
+          dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
           dispatch(saveEduProgramError(res));
         }
       })
       .catch(err => {
         let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
         dispatch(message.message(chirp));
-        dispatch(onLoadEduProgram(infoEduProgram.ideduprog));
+        dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
         dispatch(saveEduProgramError(err));
       });
   };

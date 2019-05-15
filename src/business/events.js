@@ -114,6 +114,29 @@ export const onSaveContent = (prop, contentNodes) => {
     data,
     contentNodes
   };
-  console.log(JSON.stringify(data))
   return contentProgram;
+};
+
+export const parseDataForSaveEduProgram = (
+  iddetail,
+  infoEduProgram,
+  detailEduProgram,
+  contentNodes,
+  scheduleNodes,
+  targetNodes
+) => {
+  const datecreated = new Date().toISOString();
+
+  const contentProgram = { contentNodes, iddetail, datecreated };
+  const scheduleProgram = { scheduleNodes, iddetail, datecreated };
+  const targetProgram = { targetNodes, iddetail, datecreated };
+
+  const data = {
+    infoEduProgram,
+    detailEduProgram,
+    contentProgram,
+    scheduleProgram,
+    targetProgram
+  };
+  return data;
 };

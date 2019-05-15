@@ -46,6 +46,12 @@ export default class ContentProgramCom extends React.Component {
     
   }
 
+  // get targetNodes from redux
+  getContentNodes = contentNodes => {
+    // this.setState({ nodes: contentNodes });
+  };
+  // end get targetNodes from redux
+
   // Add
   handleAddRoot = () => {
     const data = logic.addRoot(this.state.nodes, this.state.nameValue);

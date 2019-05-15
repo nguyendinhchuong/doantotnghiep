@@ -2,11 +2,10 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
-import * as targetLogic from "../business/logicTargetEducation";
 
 export const loadDetailEduProgramSuccess = detailEduProgram => ({
   type: cst.LOAD_DETAIL_EDUPROGRAM_SUCCESS,
-  detailEduProgram: detailEduProgram
+  detailEduProgram
 });
 
 export const loadDetailEduProgramError = errorMessage => ({
@@ -21,13 +20,12 @@ export const onLoadDetailEduProgram = id => {
       .get(req)
       .then(res => {
         const detailEduProgram = res.data.data;
-        if (detailEduProgram === undefined || detailEduProgram === null) {
+        if (detailEduProgram) {
+          dispatch(loadDetailEduProgramSuccess(detailEduProgram));
+        } else {
           let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
-        } else {
-          dispatch(loadDetailEduProgramSuccess(detailEduProgram));
-          dispatch(onLoadTargetEduProgram(detailEduProgram.Id));
         }
       })
       .catch(err => {
@@ -43,18 +41,24 @@ export const saveDetailEduProgramSuccess = successMessage => ({
   successMessage
 });
 
-export const saveDetailEduProgramError = errorMessage => ({
+export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_ERROR,
-  errorMessage
+  errorMessage,
+  detailEduProgram
 });
 
-export const onSaveDetailEduProgram = (detailEduProgram, targetEduProgram, contentProgram) => {
+// infoEduProgram,
+// detailEduProgram,
+// contentProgram,
+// scheduleProgram,
+// targetProgram
+export const onSaveDetailEduProgram = data => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
-      detailEduProgram.ideduprogram
+      data.detailEduProgram.ideduprogram
     }`;
     let params = {};
-    params.data = JSON.stringify(detailEduProgram);
+    params.data = JSON.stringify(data.detailEduProgram);
     axios
       .post(req, params, {
         headers: { "Content-Type": "application/json" }
@@ -63,171 +67,20 @@ export const onSaveDetailEduProgram = (detailEduProgram, targetEduProgram, conte
         if (res.data.code === 1) {
           let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
           dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(detailEduProgram.ideduprogram));
-          // dispatch(onSaveTargetEduProgram(targetEduProgram));
-          dispatch(onSaveContentProgram(contentProgram));
+          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
           dispatch(saveDetailEduProgramSuccess(res));
         } else {
           let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
           dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(detailEduProgram.ideduprogram));
+          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
           dispatch(saveDetailEduProgramError(res));
         }
       })
       .catch(err => {
         let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 0 };
         dispatch(message.message(chirp));
-        dispatch(onLoadDetailEduProgram(detailEduProgram.ideduprogram));
+        dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
         dispatch(saveDetailEduProgramError(err));
-      });
-  };
-};
-
-export const loadTargetEduProgramSuccess = targetEduProgram => ({
-  type: cst.LOAD_TARGET_EDUPROGRAM_SUCCESS,
-  targetEduProgram: targetEduProgram
-});
-
-export const loadTargetEduProgramError = errorMessage => ({
-  type: cst.LOAD_TARGET_EDUPROGRAM_ERROR,
-  errorMessage
-});
-
-export const onLoadTargetEduProgram = id => {
-  return (dispatch, getState) => {
-    let req = `${links.LOAD_TARGET_EDUPROGRAM}?iddetaileduprogram=${id}`;
-    axios
-      .get(req)
-      .then(res => {
-        const data = res.data.data;
-        if (data === undefined || data === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
-          dispatch(message.message(chirp));
-          dispatch(loadTargetEduProgramError(res));
-        } else {
-          let targetEduProgram = targetLogic.convertDBToTreeNodeForEduPro(data);
-          dispatch(loadTargetEduProgramSuccess(targetEduProgram));
-        }
-      })
-      .catch(err => {
-        let chirp = { message: `Tải mục tiêu đào tạo thất bại`, isRight: 0 };
-        dispatch(message.message(chirp));
-        dispatch(loadTargetEduProgramError(err));
-      });
-  };
-};
-
-export const saveTargetEduProgramSuccess = (
-  targetEduProgram,
-  successMessage
-) => ({
-  type: cst.SAVE_TARGET_EDUPROGRAM_SUCCESS,
-  targetEduProgram: targetEduProgram,
-  successMessage
-});
-
-export const saveTargetEduProgramError = (targetEduProgram, errorMessage) => ({
-  type: cst.SAVE_TARGET_EDUPROGRAM_ERROR,
-  targetEduProgram: targetEduProgram,
-  errorMessage
-});
-
-export const onSaveTargetEduProgram = targetEduProgram => {
-  return (dispatch, getState) => {
-    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
-      targetEduProgram.iddetail
-    }&datecreated=${targetEduProgram.datecreated}`;
-    let params = {};
-    params.data = JSON.stringify(targetEduProgram.data);
-    axios
-      .post(req, params, {
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => {
-        if (res.data.code === 1) {
-          let chirp = {
-            message: `Lưu mục tiêu đào tạo thành công`,
-            isRight: 1
-          };
-          dispatch(message.message(chirp));
-          dispatch(saveTargetEduProgramSuccess(targetEduProgram.data, res));
-        } else {
-          let chirp = { message: `Lưu mục tiêu đào tạo thất bại`, isRight: 0 };
-          dispatch(message.message(chirp));
-          dispatch(saveTargetEduProgramError(targetEduProgram.data, res));
-        }
-      })
-      .catch(err => {
-        let chirp = { message: `Lưu mục tiêu đào tạo thất bại`, isRight: 0 };
-        dispatch(message.message(chirp));
-        dispatch(saveTargetEduProgramError(targetEduProgram.data, err));
-      });
-  };
-};
-
-export const loadContentProgramSuccess = contentProgram => ({
-  type: cst.LOAD_CONTENT_EDUPROGRAM_SUCCESS,
-  contentProgram: contentProgram
-});
-
-export const loadContentProgramError = errorMessage => ({
-  type: cst.LOAD_CONTENT_EDUPROGRAM_ERROR,
-  errorMessage
-});
-
-export const onLoadContentProgram = idDetail => {
-  return (dispatch, getState) => {
-    let req = `${links.LOAD_CONTENT_EDUPROGRAM}?iddetaileduprogram=${idDetail}`;
-    axios
-      .get(req)
-      .then(res => {})
-      .catch(err => {});
-  };
-};
-
-export const saveContentProgramSuccess = (contentProgram, successMessage) => ({
-  type: cst.SAVE_CONTENT_EDUPROGRAM_SUCCESS,
-  contentProgram,
-  successMessage
-});
-
-export const saveContentProgramError = (contentProgram, errorMessage) => ({
-  type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
-  contentProgram,
-  errorMessage
-});
-
-export const onSaveContentProgram = contentProgram => {
-  return (dispatch, getState) => {
-    // let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${
-    //   contentProgram.iddetail
-    // }&datecreated=${contentProgram.datecreated}`;
-    let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${contentProgram.iddetail}`;
-    let params = {};
-    console.log(JSON.stringify(contentProgram.contentNodes))
-    params.data = JSON.stringify(contentProgram.contentNodes);
-    axios
-      .post(req, params, {
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => {
-        if (res.data.code === 1) {
-          let chirp = {
-            message: `Lưu nội dung chương trình thành công`,
-            isRight: 1
-          };
-          dispatch(message.message(chirp));
-          dispatch(saveContentProgramSuccess(contentProgram.contentNodes, res));
-        } else {
-          let chirp = { message: `Lưu nội dung chương trình thất bại`, isRight: 0 };
-          dispatch(message.message(chirp));
-          dispatch(saveContentProgramError(contentProgram.contentNodes, res));
-        }
-      })
-      .catch(err => {
-        let chirp = { message: `Lưu nội dung chương trình thất bại`, isRight: 0 };
-        dispatch(message.message(chirp));
-        dispatch(saveContentProgramError(contentProgram.contentNodes, err));
       });
   };
 };
