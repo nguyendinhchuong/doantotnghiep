@@ -15,6 +15,7 @@ export const loadContentProgramError = errorMessage => ({
 
 export const onLoadContentProgram = idDetail => {
   return (dispatch, getState) => {
+    console.log("HAHAHAHAHAHAHAHAAHAHAHAHAHAH: "+idDetail)
     let req = `${links.LOAD_CONTENT_EDUPROGRAM}?id=${idDetail}`;
     axios
       .get(req)

@@ -18,10 +18,6 @@ import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAc
 import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as detailEduProgramAction from "../actions/detailEduProgramAction";
 
-import * as _detailContentAction from "../actions/_detailContentAction";
-import * as _detailScheduleAction from "../actions/_detailScheduleAction";
-import * as _detailTargetAction from "../actions/_detailTargetAction";
-
 import { connect } from "react-redux";
 
 class DetailEducationProgramTmp extends Component {
@@ -34,17 +30,8 @@ class DetailEducationProgramTmp extends Component {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
     this.props.onLoadEduProgram(id);
-    Promise.resolve(this.props.onLoadDetailEduProgram(id)).then(() => {
-      Promise.resolve(
-        this.props.onLoadTargetProgram(this.props.detailEduProgram.Id)
-      ).then(() => {
-        Promise.resolve(
-          this.props.onLoadContentProgram(this.props.detailEduProgram.Id)
-        ).then(() => {
-          this.props.onloadScheduleProgram(this.props.detailEduProgram.Id);
-        });
-      });
-    });
+    this.props.onLoadDetailEduProgram(id);
+
     this.props.onLoadLevels();
     this.props.onLoadMajors();
     this.props.onLoadPrograms();
@@ -100,9 +87,7 @@ class DetailEducationProgramTmp extends Component {
               targetNodes={this.props.targetEduProgram}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
-              onLoadDetailOutcomeStandard={
-                this.props.onLoadDetailOutcomeStandard
-              }
+              onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
               onSaveEduProgram={this.props.onSaveEduProgram}
             />
           </Col>
@@ -135,9 +120,5 @@ export default connect(mapStateToProps, {
 
   onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
-  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
-
-  onLoadContentProgram: _detailContentAction.onLoadContentProgram,
-  onloadScheduleProgram: _detailScheduleAction.onloadScheduleProgram,
-  onLoadTargetProgram: _detailTargetAction.onLoadTargetProgram
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
 })(DetailEducationProgramTmp);
