@@ -1,27 +1,33 @@
 import React from "react";
-import { DataTable } from "primereact/datatable";
+import { Button } from "shards-react";
+import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row, Col } from "shards-react";
 
 export default class TableProgramArchiCom extends React.Component {
   render() {
+    const header = (
+      <div className="p-clearfix" style={{ lineHeight: "1.87em" }}>
+        Tổng số tín chỉ tích lũy khi tốt nghiệp: {this.props.sumCredit}
+        <Button
+          onClick={this.props.refreshCate6}
+          theme="info"
+          style={{ float: "right" }}
+        >
+          <i className="material-icons">refresh</i>
+        </Button>
+      </div>
+    );
     const headerGroup = (
       <ColumnGroup>
         <Row>
-          <Column header="STT" rowSpan={2} />
-          <Column header="Khối kiến thức" rowSpan={2} colSpan={4} />
-          <Column header="Số tín chỉ (TC)" colSpan={4} />
-          <Column
-            header="Tổng số tín chỉ tích lũy khi tốt nghiệp"
-            rowSpan={2}
-          />
-          <Column header="Ghi chú" rowSpan={2} />
+          <Column header="Khối kiến thức" rowSpan={2} />
+          <Column header="Số tín chỉ" colSpan={3} />
         </Row>
         <Row>
           <Column header="Bắt buộc" />
           <Column header="Tự chọn" />
-          <Column header="Tự chọn tự do" />
           <Column header="Tổng cộng" />
         </Row>
       </ColumnGroup>
@@ -31,16 +37,19 @@ export default class TableProgramArchiCom extends React.Component {
       <div>
         <Row>
           <Col lg="12" md="12" sm="12">
-            <DataTable value={this.props.data} headerColumnGroup={headerGroup}>
-              <Column field="index" />
-              <Column field="index" colSpan={4} />
-              <Column field="index" />
-              <Column field="index" />
-              <Column field="index" />
-              <Column field="index" />
-              <Column field="index" />
-              <Column field="index" />
-            </DataTable>
+            <TreeTable
+              header={header}
+              headerColumnGroup={headerGroup}
+              value={this.props.archiNodes}
+              groupField="sumCredit"
+              sortField="sumCredit"
+              sortOrder={1}
+            >
+              <Column field="name" expander />
+              <Column field="sum" />
+              <Column field="TCSum" />
+              <Column field="BBSum" />
+            </TreeTable>
           </Col>
         </Row>
       </div>

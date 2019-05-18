@@ -43,7 +43,6 @@ export default class ContentProgramCom extends React.Component {
       filterBlocks: []
     };
     this.deleteSubject.bind(this);
-    
   }
 
   // get targetNodes from redux
@@ -155,7 +154,7 @@ export default class ContentProgramCom extends React.Component {
       );
     }
     child.data.subjects = subjectsTable;
-    
+
     child.data.totalCredits = logic.totalCreditsOfTable(subjectsTable);
     child.data.subjects = logic.sortSubject(child.data.subjects);
     child.data.subjects = logic.indexSubjects(child.data.subjects);

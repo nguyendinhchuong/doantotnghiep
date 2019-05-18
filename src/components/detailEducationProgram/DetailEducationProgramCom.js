@@ -36,8 +36,10 @@ export default class DetailEducationProgramCom extends React.Component {
       //end states for TargetEdu
       // states this Component
       eduYear: 0,
-      sumCredit: 0
+      sumCredit: 0,
       // end states this Component
+      // states for cate 6
+      archiNodes: []
     };
   }
 
@@ -118,6 +120,19 @@ export default class DetailEducationProgramCom extends React.Component {
   };
   // end functions for detailEduProgram
 
+  // functions for category 6
+  refreshCate6 = () => {
+    const contentNodes = this.ContentProgramCom.current.state.nodes;
+    const sumCredit = commonLogic.calculateSumCredit(contentNodes).sum;
+    const newNodes = [...contentNodes];
+    commonLogic.createDataFor6(newNodes, sumCredit);
+    this.setState({
+      archiNodes: newNodes,
+      sumCredit: sumCredit
+    });
+  };
+  // end functions for category 6
+
   // functions for targetEducation
   onSaveOutcomeUsed = (IdOutcome, OSUsedNode) => {
     this.setState({
@@ -161,8 +176,12 @@ export default class DetailEducationProgramCom extends React.Component {
       this.ContentProgramCom.current.getContentNodes(nextProps.contentNodes);
 
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
-    if (JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes))
-      this.ScheduleEducationCom.current.getScheduleNodes(nextProps.scheduleNodes);
+    if (
+      JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes)
+    )
+      this.ScheduleEducationCom.current.getScheduleNodes(
+        nextProps.scheduleNodes
+      );
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))
@@ -267,7 +286,11 @@ export default class DetailEducationProgramCom extends React.Component {
               </AccordionTab>
 
               <AccordionTab header="CẤU TRÚC CHƯƠNG TRÌNH">
-                <TableProgramArchiCom />
+                <TableProgramArchiCom
+                  sumCredit={this.state.sumCredit}
+                  archiNodes={this.state.archiNodes}
+                  refreshCate6={this.refreshCate6}
+                />
               </AccordionTab>
               <AccordionTab header="NỘI DUNG CHƯƠNG TRÌNH">
                 <ContentProgramCom

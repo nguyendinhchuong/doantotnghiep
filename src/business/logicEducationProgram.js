@@ -70,8 +70,8 @@ export const filterSubjects = (e, subjects) => {
   const re = new RegExp(e.query.toLowerCase());
   const results = subjects
     ? subjects.filter(item => {
-      return re.test(item.SubjectName.toLowerCase());
-    })
+        return re.test(item.SubjectName.toLowerCase());
+      })
     : [];
   return results;
 };
@@ -348,7 +348,10 @@ export const checkExistsBlock = (nameBlock, listBlocks) => {
 
 export const updateAccumulationAndCredit = (subjects, ...agru) => {
   return subjects.map(subject => {
-    const description = subject.nameBlock.slice(subject.nameBlock.indexOf('(') + 2, subject.nameBlock.indexOf(')') - 1);
+    const description = subject.nameBlock.slice(
+      subject.nameBlock.indexOf("(") + 2,
+      subject.nameBlock.indexOf(")") - 1
+    );
     if (subject.nameBlock.startsWith("TC") && description === agru[0]) {
       return {
         ...subject,
@@ -367,45 +370,51 @@ export const totalCreditsOfTable = subjects => {
 
   return groups.reduce((total, blocks) => {
     if (blocks[0].nameBlock.startsWith("BB")) {
-      return total += blocks.reduce((totalCredit, subject) => {
-        return totalCredit += +subject.Credit;
-      }, 0);
+      return (total += blocks.reduce((totalCredit, subject) => {
+        return (totalCredit += +subject.Credit);
+      }, 0));
     }
-    return total += +blocks[0].optionCredit;
+    return (total += +blocks[0].optionCredit);
   }, 0);
 };
 
-export const convertDbToTreeNodes = (data, subjects ) => {
+export const convertDbToTreeNodes = (data, subjects) => {
   const contentPro = [...data.eduContents];
   const blocks = [...data.subjectBlocks];
-  const detailBlocks = [... data.detailBlocks];
+  const detailBlocks = [...data.detailBlocks];
   // convert -> nodes
   const nodes = contentPro.reduce((nodes, row) => {
     const rank = common.getRank(row.KeyRow);
     if (rank === 2) {
-      return nodes = addRoot(nodes, row.NameRow);
+      return (nodes = addRoot(nodes, row.NameRow));
     }
     const parentNode = findParentNode(nodes, row.KeyRow);
     if (!row.Type) {
-      return nodes = addChildTitle(nodes, parentNode, row.NameRow);
+      return (nodes = addChildTitle(nodes, parentNode, row.NameRow));
     }
-    return nodes = addChildTable(nodes, parentNode);
+    return (nodes = addChildTable(nodes, parentNode));
   }, []);
 
   // add subjects and block
-  return blocks.reduce((nodes, block)=>{
-    const idSubjectsOfDetailBlock = idDetailSubjectsOfBlock(block, detailBlocks);
-    const subjectsOfBlock = subjectsOfDetailBlock(idSubjectsOfDetailBlock, subjects);
+  return blocks.reduce((nodes, block) => {
+    const idSubjectsOfDetailBlock = idDetailSubjectsOfBlock(
+      block,
+      detailBlocks
+    );
+    const subjectsOfBlock = subjectsOfDetailBlock(
+      idSubjectsOfDetailBlock,
+      subjects
+    );
     const node = findNode(nodes, block.KeyRow);
-    subjectsOfBlock.map((subject)=>{
+    subjectsOfBlock.map(subject => {
       subject.nameBlock = block.NameBlock;
       subject.isAccumulation = block.isAccumulated;
       subject.parentKey = block.KeyRow;
       node.data.subjects.push(subject);
       node.data.totalCredits = totalCreditsOfTable(node.data.subjects);
     });
-    return nodes = common.updateNode(nodes, node);
-  },nodes);
+    return (nodes = common.updateNode(nodes, node));
+  }, nodes);
 };
 
 const findParentNode = (nodes, key) => {
@@ -416,16 +425,16 @@ const findParentNode = (nodes, key) => {
     parentKey = parentKey.slice(firstDot + 1, parentKey.length);
   }
   return common.findNodeByKey(nodes, parentKey);
-}
+};
 
-const findNode = (nodes, key)=>{
+const findNode = (nodes, key) => {
   // case root = 7.1.... => 1.1...
   if (key[0] === "7") {
     const firstDot = key.indexOf(".");
     key = key.slice(firstDot + 1, key.length);
   }
   return common.findNodeByKey(nodes, key);
-}
+};
 
 const addChildTable = (nodes, nodeParent) => {
   const length = nodeParent.children.length;
@@ -446,14 +455,18 @@ const addChildTable = (nodes, nodeParent) => {
   return nodes;
 };
 
-const idDetailSubjectsOfBlock = (block, detailSubjects) =>{
+const idDetailSubjectsOfBlock = (block, detailSubjects) => {
   return detailSubjects.reduce((results, row) => {
-    return row.IdSubjectBlock === block.Id ? results.concat(row.IdSubject) : results;
-  },[]);
-}
+    return row.IdSubjectBlock === block.Id
+      ? results.concat(row.IdSubject)
+      : results;
+  }, []);
+};
 
-const subjectsOfDetailBlock = (idDetailBlock, subjects) =>{
+const subjectsOfDetailBlock = (idDetailBlock, subjects) => {
   return subjects.reduce((results, subject) => {
-    return idDetailBlock.includes(subject.Id) ? results.concat(subject) : results;
+    return idDetailBlock.includes(subject.Id)
+      ? results.concat(subject)
+      : results;
   }, []);
 };

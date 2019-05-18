@@ -241,3 +241,61 @@ export const createDataFor8 = nodes => {
   const groupSubjects = groupBy(data.value, "nameBlock");
   return { groupSubjects, subjects: data.value };
 };
+
+export const calculateSumCredit = nodes => {
+  const data = {};
+  data.value = [];
+  createArrayFor8(nodes, data);
+  const groupSubjects = groupBy(data.value, "nameBlock");
+  let sum = 0;
+  let TCSum = 0;
+  let BBSum = 0;
+  for (let key in groupSubjects) {
+    if (groupSubjects.hasOwnProperty(key)) {
+      if (groupSubjects[key][0].optionCredit && key.indexOf("TC") === 0) {
+        sum += groupSubjects[key][0].optionCredit;
+        TCSum += groupSubjects[key][0].optionCredit;
+      } else {
+        for (let j in groupSubjects[key]) {
+          sum += groupSubjects[key][j].Credit;
+          BBSum += groupSubjects[key][j].Credit;
+        }
+      }
+    }
+  }
+  const outdata = { sum, TCSum, BBSum };
+  return outdata;
+};
+
+export const createDataFor6 = (nodes, sumCredit) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    for (let i in nodes) {
+      let tmp = [];
+      tmp.push(nodes[i]);
+      let credits = calculateSumCredit(tmp);
+      let newChildren = nodes[i].key.length === 5 ? [] : [...nodes[i].children];
+      let key = nodes[i].key;
+      let data = {
+        name: nodes[i].data.name,
+        sum: credits.sum,
+        TCSum: credits.TCSum,
+        BBSum: credits.BBSum,
+        sumCredit
+      };
+      nodes[i] = {
+        children: newChildren,
+        key,
+        data
+      };
+      tmp = [];
+      credits = {};
+      newChildren = [];
+      key = "";
+      data = {};
+
+      let children = nodes[i].children;
+      createDataFor6(children, sumCredit);
+    }
+  }
+};
