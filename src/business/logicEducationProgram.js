@@ -331,10 +331,18 @@ export const updateBlocks = (subjects, ...agru) => {
       subject.nameBlock += `( ${agru[0]} )`;
       subject.isAccumulation = agru[2];
     }
-    if (subject.nameBlock.startsWith("TC") && agru[1]) {
+    else if (subject.nameBlock.startsWith("TC") && agru[1]) {
       subject.nameBlock += `( ${agru[1]} ) : Học ${agru[4]} chỉ`;
       subject.isAccumulation = agru[3];
       subject.optionCredit = agru[4];
+    }
+    else if(subject.nameBlock.startsWith("TC")){
+      subject.nameBlock += `: Học ${agru[4]} chỉ`;
+      subject.isAccumulation = agru[3];
+      subject.optionCredit = agru[4];
+    }
+    else{
+      subject.isAccumulation = agru[2];
     }
     return arr.concat(subject);
   }, []);
