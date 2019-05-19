@@ -3,6 +3,8 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
+import * as logicEdu from '../business/logicEducationProgram'
+
 export const loadContentProgramSuccess = contentNodes => ({
   type: cst.LOAD_CONTENT_EDUPROGRAM_SUCCESS,
   contentNodes
@@ -57,7 +59,8 @@ export const onSaveContentProgram = contentProgram => {
     }`;
     let params = {};
     console.log(contentProgram)
-    params.data = JSON.stringify(contentProgram.contentNodes);
+    const data = logicEdu.convertTreenodeToArr(contentProgram.contentNodes);
+    params.data = JSON.stringify(data);
     axios
       .post(req, params, {
         headers: { "Content-Type": "application/json" }
