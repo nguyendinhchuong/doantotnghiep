@@ -3,7 +3,7 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
-import * as logicEdu from '../business/logicEducationProgram'
+import * as logicEdu from "../business/logicEducationProgram";
 
 export const loadContentProgramSuccess = contentNodes => ({
   type: cst.LOAD_CONTENT_EDUPROGRAM_SUCCESS,
@@ -21,7 +21,8 @@ export const onLoadContentProgram = idDetail => {
     axios
       .get(req)
       .then(res => {
-        const contentNodes = res.data;
+        const contentNodes = res.data.data;
+        // const { eduContents, subjectBlocks, detailBlocks } = contentNodes;
         if (contentNodes) {
           dispatch(loadContentProgramSuccess(contentNodes));
         } else {
@@ -58,7 +59,7 @@ export const onSaveContentProgram = contentProgram => {
       contentProgram.iddetail
     }`;
     let params = {};
-    console.log(contentProgram)
+    console.log(contentProgram);
     const data = logicEdu.convertTreenodeToArr(contentProgram.contentNodes);
     params.data = JSON.stringify(data);
     axios

@@ -15,8 +15,8 @@ import * as commonLogic from "../../business/commonEducation";
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
     super(props);
-    this.ScheduleEducationCom = React.createRef();
     this.ContentProgramCom = React.createRef();
+    this.ScheduleEducationCom = React.createRef();
     this.TargetEducationCom = React.createRef();
 
     this.state = {
