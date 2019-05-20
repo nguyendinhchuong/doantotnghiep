@@ -27,6 +27,7 @@ export default class AlertCom extends React.Component {
   }
 
   render() {
+    console.log("HAHAHAHAHAHAHAHA")
     return (
       <Growl
         className="my-growl"
