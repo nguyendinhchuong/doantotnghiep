@@ -151,7 +151,6 @@ export default class DetailEducationProgramCom extends React.Component {
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
 
     const iddetail = this.props.detailEduProgram.Id;
-
     const contentNodes = this.ContentProgramCom.current.state.nodes;
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
@@ -173,11 +172,16 @@ export default class DetailEducationProgramCom extends React.Component {
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
     if (JSON.stringify(contentNodes) !== JSON.stringify(nextProps.contentNodes))
+<<<<<<< HEAD
       this.ContentProgramCom.current.getContentNodes(
         nextProps.contentNodes,
         this.props.subjects
       );
 
+=======
+      this.ContentProgramCom.current.getContentNodes(nextProps.contentNodes, nextProps.subjects);
+      
+>>>>>>> 649f93bb495bb6611b307ab2594e2688f82d18a5
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
     if (
       JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes)

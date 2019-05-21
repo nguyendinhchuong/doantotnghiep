@@ -1,5 +1,6 @@
 import * as logic from "./";
 import * as commonLogic from "./commonEducation";
+import * as logicEduContent from "./logicEducationProgram"
 
 export const receiveProps = nextProps => {
   const MajorId = nextProps.infoEduProgram
@@ -128,7 +129,7 @@ export const parseDataForSaveEduProgram = (
   const datecreated = new Date().toISOString();
 
   const contentProgram = {
-    contentNodes: [...contentNodes],
+    contentNodes: logicEduContent.convertTreenodeToArr(contentNodes),
     iddetail,
     datecreated
   };
