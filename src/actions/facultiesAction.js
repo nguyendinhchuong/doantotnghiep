@@ -21,7 +21,10 @@ export const onLoadFaculties = () => {
       .then(res => {
         const faculties = res.data.data;
         if (faculties === undefined || faculties === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadFacultiesError(res));
         } else {
@@ -29,7 +32,10 @@ export const onLoadFaculties = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các khoa thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các khoa thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadFacultiesError(err));
       });
@@ -52,21 +58,34 @@ export const onAddFaculty = data => {
     let body = {};
     body.data = JSON.stringify(data);
     axios
-      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadFaculties());
-          let chirp = { message: `Thêm khoa thành công`, isRight: 1 };
+          let chirp = {
+            message: `Thêm khoa thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addFacultySuccess(res));
         } else {
-          let chirp = { message: `Thêm khoa thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Thêm khoa thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addFacultyError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Thêm khoa thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm khoa thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addFacultyError(err));
       });
@@ -90,18 +109,27 @@ export const onDeleteFaculty = id => {
       .post(req)
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Xóa khoa thành công`, isRight: 1 };
+          let chirp = {
+            message: `Xóa khoa thành công`,
+            isRight: 1
+          };
           dispatch(onLoadFaculties());
           dispatch(message.message(chirp));
           dispatch(deleteFacultySuccess(res));
         } else {
-          let chirp = { message: `Xóa khoa thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Xóa khoa thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(deleteFacultyError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Xóa khoa thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Xóa khoa thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(deleteFacultyError(err));
       });

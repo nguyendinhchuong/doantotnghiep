@@ -21,7 +21,10 @@ export const onLoadSubjects = () => {
       .then(res => {
         const subjects = res.data.data;
         if (subjects === undefined || subjects === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadSubjectsError(res));
         } else {
@@ -29,7 +32,10 @@ export const onLoadSubjects = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các môn học thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các môn học thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadSubjectsError(err));
       });
@@ -52,21 +58,34 @@ export const onAddSubject = data => {
     let body = {};
     body.data = JSON.stringify(data);
     axios
-      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadSubjects());
-          let chirp = { message: `Thêm môn học thành công`, isRight: 1 };
+          let chirp = {
+            message: `Thêm môn học thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addSubjectSuccess(res));
         } else {
-          let chirp = { message: `Thêm môn học thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Thêm môn học thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addSubjectError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Thêm môn học thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm môn học thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addSubjectError(err));
       });
@@ -89,7 +108,11 @@ export const onAddSubjectBulk = data => {
     let body = {};
     body.data = JSON.stringify(data);
     axios
-      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadSubjects());
@@ -109,7 +132,10 @@ export const onAddSubjectBulk = data => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Thêm danh sách môn học thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm danh sách môn học thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addSubjectBulkError(err));
       });
@@ -133,18 +159,27 @@ export const onDeleteSubject = id => {
       .post(req)
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Xóa môn học thành công`, isRight: 1 };
+          let chirp = {
+            message: `Xóa môn học thành công`,
+            isRight: 1
+          };
           dispatch(onLoadSubjects());
           dispatch(message.message(chirp));
           dispatch(deleteSubjectSuccess(res));
         } else {
-          let chirp = { message: `Xóa môn học thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Xóa môn học thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(deleteSubjectError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Xóa môn học thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Xóa môn học thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(deleteSubjectError(err));
       });
@@ -169,7 +204,10 @@ export const onLoadUsingEduPro = id => {
       .then(res => {
         const usingEduPro = res.data.data;
         if (usingEduPro === undefined || usingEduPro === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadUsingEduProError(res));
         } else {

@@ -26,17 +26,25 @@ export const onLoadDetailEduProgram = id => {
         if (detailEduProgram) {
           dispatch(loadDetailEduProgramSuccess(detailEduProgram));
           // where to put actions LOL
-          dispatch(contentAction.onLoadContentProgram(detailEduProgram.Id));
-          dispatch(scheduleAction.onloadScheduleProgram(detailEduProgram.Id));
+          dispatch(contentAction.onLoadContentProgram(detailEduProgram
+            .Id));
+          dispatch(scheduleAction.onloadScheduleProgram(detailEduProgram
+            .Id));
           dispatch(targetAction.onLoadTargetProgram(detailEduProgram.Id));
         } else {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải chi tiết CTĐT thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải chi tiết CTĐT thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadDetailEduProgramError(err));
       });
@@ -68,29 +76,45 @@ export const onSaveDetailEduProgram = data => {
     params.data = JSON.stringify(data.detailEduProgram);
     axios
       .post(req, params, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 1 };
+          let chirp = {
+            message: `Lưu chi tiết CTĐT thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+          dispatch(onLoadDetailEduProgram(data.detailEduProgram
+            .ideduprogram));
           dispatch(saveDetailEduProgramSuccess(res));
           // where to put actions LOL
-          dispatch(contentAction.onSaveContentProgram(data.contentProgram));
-          dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+          dispatch(contentAction.onSaveContentProgram(data
+            .contentProgram));
+          dispatch(scheduleAction.onSaveScheduleProgram(data
+            .scheduleProgram));
           dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
         } else {
-          let chirp = { message: `Lưu chi tiết CTĐT thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Lưu chi tiết CTĐT thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+          dispatch(onLoadDetailEduProgram(data.detailEduProgram
+            .ideduprogram));
           dispatch(saveDetailEduProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Lưu chi tiết CTĐT thành công`, isRight: 0 };
+        let chirp = {
+          message: `Lưu chi tiết CTĐT thành công`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
-        dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+        dispatch(onLoadDetailEduProgram(data.detailEduProgram
+          .ideduprogram));
         dispatch(saveDetailEduProgramError(err));
       });
   };

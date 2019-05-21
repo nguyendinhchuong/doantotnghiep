@@ -15,7 +15,8 @@ export const loadTargetProgramError = errorMessage => ({
 
 export const onLoadTargetProgram = idDetail => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_TARGET_EDUPROGRAM}?iddetaileduprogram=${idDetail}`;
+    let req =
+      `${links.LOAD_TARGET_EDUPROGRAM}?iddetaileduprogram=${idDetail}`;
     axios
       .get(req)
       .then(res => {
@@ -23,13 +24,19 @@ export const onLoadTargetProgram = idDetail => {
         if (targetNodes) {
           dispatch(loadTargetProgramSuccess(targetNodes));
         } else {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadTargetProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải mục tiêu đào tạo thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải mục tiêu đào tạo thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadTargetProgramError(err));
       });
@@ -56,7 +63,9 @@ export const onSaveTargetProgram = targetProgram => {
     params.data = JSON.stringify(targetProgram.targetNodes);
     axios
       .post(req, params, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       .then(res => {
         if (res.data.code === 1) {
@@ -68,13 +77,20 @@ export const onSaveTargetProgram = targetProgram => {
           dispatch(onLoadTargetProgram(targetProgram.iddetail));
           dispatch(saveTargetProgramSuccess(res));
         } else {
-          let chirp = { message: `Lưu mục tiêu đào tạo thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Lưu mục tiêu đào tạo thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
-          dispatch(saveTargetProgramError(targetProgram.targetNodes, res));
+          dispatch(saveTargetProgramError(targetProgram.targetNodes,
+          res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Lưu mục tiêu đào tạo thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Lưu mục tiêu đào tạo thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(saveTargetProgramError(targetProgram.targetNodes, err));
       });

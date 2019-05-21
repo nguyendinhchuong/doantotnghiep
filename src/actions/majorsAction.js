@@ -21,7 +21,10 @@ export const onLoadMajors = () => {
       .then(res => {
         const majors = res.data.data;
         if (majors === undefined || majors === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadMajorsError(res));
         } else {
@@ -29,7 +32,10 @@ export const onLoadMajors = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các ngành thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các ngành thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadMajorsError(err));
       });
@@ -52,21 +58,34 @@ export const onAddMajor = data => {
     let body = {};
     body.data = JSON.stringify(data);
     axios
-      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadMajors());
-          let chirp = { message: `Thêm ngành thành công`, isRight: 1 };
+          let chirp = {
+            message: `Thêm ngành thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addMajorSuccess(res));
         } else {
-          let chirp = { message: `Thêm ngành thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Thêm ngành thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addMajorError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Thêm ngành thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm ngành thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addMajorError(err));
       });
@@ -90,18 +109,27 @@ export const onDeleteMajor = id => {
       .post(req)
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Xóa ngành thành công`, isRight: 1 };
+          let chirp = {
+            message: `Xóa ngành thành công`,
+            isRight: 1
+          };
           dispatch(onLoadMajors());
           dispatch(message.message(chirp));
           dispatch(deleteMajorSuccess(res));
         } else {
-          let chirp = { message: `Xóa ngành thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Xóa ngành thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(deleteMajorError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Xóa ngành thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Xóa ngành thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(deleteMajorError(err));
       });

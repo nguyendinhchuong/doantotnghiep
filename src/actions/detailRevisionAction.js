@@ -2,7 +2,9 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
-import { onLoadRevisions } from "./revisionsAction";
+import {
+  onLoadRevisions
+} from "./revisionsAction";
 import * as logic from "../business";
 
 export const addDetailRevisionSuccess = (nodes, successMessage) => ({
@@ -31,7 +33,9 @@ export const onAddDetailRevision = (data, nodes, info) => {
             res.data.data.Id
           }`;
           return axios.post(link2, params, {
-            headers: { "Content-Type": "application/json" }
+            headers: {
+              "Content-Type": "application/json"
+            }
           });
         } else {
           let chirp = {
@@ -89,7 +93,10 @@ export const onLoadDetailRevision = id => {
       .then(res => {
         const data = res.data.data;
         if (data === undefined || data === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadDetailRevisionError(res));
         } else {

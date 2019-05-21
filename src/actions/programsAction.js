@@ -21,7 +21,10 @@ export const onLoadPrograms = () => {
       .then(res => {
         const programs = res.data.data;
         if (programs === undefined || programs === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadProgramsError(res));
         } else {
@@ -29,7 +32,10 @@ export const onLoadPrograms = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các chương trình thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các chương trình thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadProgramsError(err));
       });
@@ -52,21 +58,34 @@ export const onAddProgram = data => {
     let body = {};
     body.data = JSON.stringify(data);
     axios
-      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadPrograms());
-          let chirp = { message: `Thêm chương trình thành công`, isRight: 1 };
+          let chirp = {
+            message: `Thêm chương trình thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addProgramSuccess(res));
         } else {
-          let chirp = { message: `Thêm chương trình thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Thêm chương trình thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Thêm chương trình thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm chương trình thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addProgramError(err));
       });
@@ -90,18 +109,27 @@ export const onDeleteProgram = id => {
       .post(req)
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Xóa chương trình thành công`, isRight: 1 };
+          let chirp = {
+            message: `Xóa chương trình thành công`,
+            isRight: 1
+          };
           dispatch(onLoadPrograms());
           dispatch(message.message(chirp));
           dispatch(deleteProgramSuccess(res));
         } else {
-          let chirp = { message: `Xóa chương trình thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Xóa chương trình thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(deleteProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Xóa chương trình thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Xóa chương trình thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(deleteProgramError(err));
       });

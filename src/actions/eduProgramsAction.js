@@ -22,7 +22,10 @@ export const onLoadEduPrograms = () => {
       .then(res => {
         const eduPrograms = res.data.data;
         if (eduPrograms === undefined || eduPrograms === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadEduProgramsError(res));
         } else {
@@ -30,7 +33,10 @@ export const onLoadEduPrograms = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các CTĐT thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các CTĐT thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadEduProgramsError(err));
       });
@@ -54,22 +60,33 @@ export const onAddEduProgram = data => {
     params.data = JSON.stringify(data);
     axios
       .post(link, params, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadEduPrograms());
-          let chirp = { message: `Tạo CTĐT thành công`, isRight: 1 };
+          let chirp = {
+            message: `Tạo CTĐT thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addEduProgramSuccess(res));
         } else {
-          let chirp = { message: `Tạo CTĐT thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Tạo CTĐT thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addEduProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tạo CTĐT thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tạo CTĐT thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addEduProgramError(err));
       });
@@ -94,7 +111,10 @@ export const onLoadEduProgram = id => {
       .then(res => {
         const infoEduProgram = res.data.data;
         if (infoEduProgram === undefined || infoEduProgram === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadEduProgramError(res));
         } else {
@@ -102,7 +122,10 @@ export const onLoadEduProgram = id => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải thông tin CTĐT thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải thông tin CTĐT thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadEduProgramError(err));
       });
@@ -126,24 +149,37 @@ export const onSaveEduProgram = data => {
     axios
       .post(
         `${links.SAVE_EDUPROGRAM}?ideduprog=${data.infoEduProgram.ideduprog}`,
-        params, { headers: { "Content-Type": "application/json" } }
+        params, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
       )
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Lưu thông tin CTĐT thành công`, isRight: 1 };
+          let chirp = {
+            message: `Lưu thông tin CTĐT thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
           dispatch(saveEduProgramSuccess(res));
           dispatch(detailEduProgramAction.onSaveDetailEduProgram(data));
         } else {
-          let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Lưu thông tin CTĐT thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
           dispatch(saveEduProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Lưu thông tin CTĐT thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Lưu thông tin CTĐT thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
         dispatch(saveEduProgramError(err));

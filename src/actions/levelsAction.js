@@ -21,7 +21,10 @@ export const onLoadLevels = () => {
       .then(res => {
         const levels = res.data.data;
         if (levels === undefined || levels === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadLevelsError(res));
         } else {
@@ -29,7 +32,10 @@ export const onLoadLevels = () => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các trình độ thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các trình độ thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadLevelsError(err));
       });
@@ -52,21 +58,34 @@ export const onAddLevel = data => {
     let body = {};
     body.data = JSON.stringify(data);
     axios
-      .post(link, body, { headers: { "Content-Type": "application/json" } })
+      .post(link, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(res => {
         if (res.data.code === 1) {
           dispatch(onLoadLevels());
-          let chirp = { message: `Thêm trình độ thành công`, isRight: 1 };
+          let chirp = {
+            message: `Thêm trình độ thành công`,
+            isRight: 1
+          };
           dispatch(message.message(chirp));
           dispatch(addLevelSuccess(res));
         } else {
-          let chirp = { message: `Thêm trình độ thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Thêm trình độ thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(addLevelError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Thêm trình độ thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Thêm trình độ thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(addLevelError(err));
       });
@@ -90,18 +109,27 @@ export const onDeleteLevel = id => {
       .post(req)
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = { message: `Xóa trình độ thành công`, isRight: 1 };
+          let chirp = {
+            message: `Xóa trình độ thành công`,
+            isRight: 1
+          };
           dispatch(onLoadLevels());
           dispatch(message.message(chirp));
           dispatch(deleteLevelSuccess(res));
         } else {
-          let chirp = { message: `Xóa trình độ thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Xóa trình độ thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(deleteLevelError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Xóa trình độ thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Xóa trình độ thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(deleteLevelError(err));
       });

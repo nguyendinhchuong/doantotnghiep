@@ -26,7 +26,10 @@ export const onLoadContentProgram = idDetail => {
         if (contentNodes) {
           dispatch(loadContentProgramSuccess(contentNodes));
         } else {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadContentProgramError(res));
         }
@@ -64,7 +67,9 @@ export const onSaveContentProgram = contentProgram => {
     params.data = JSON.stringify(data);
     axios
       .post(req, params, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       .then(res => {
         if (res.data.code === 1) {
@@ -81,7 +86,8 @@ export const onSaveContentProgram = contentProgram => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(saveContentProgramError(contentProgram.contentNodes, res));
+          dispatch(saveContentProgramError(contentProgram.contentNodes,
+            res));
         }
       })
       .catch(err => {
@@ -90,7 +96,8 @@ export const onSaveContentProgram = contentProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveContentProgramError(contentProgram.contentNodes, err));
+        dispatch(saveContentProgramError(contentProgram.contentNodes,
+          err));
       });
   };
 };

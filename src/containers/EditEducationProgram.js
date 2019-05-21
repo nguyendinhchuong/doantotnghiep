@@ -68,12 +68,11 @@ class DetailEducationProgramTmp extends Component {
               subtitle="Chỉnh sửa CTĐT"
               className="text-sm-left"
             />
-          </Col>
+          </Col>{" "}
           <Col lg="4" md="4" sm="4">
-            <AlertCom message={this.props.message} />
-          </Col>
+            <AlertCom message={this.props.message} />{" "}
+          </Col>{" "}
         </Row>
-
         <hr />
         <Row>
           <Col lg="12" md="12">
@@ -84,14 +83,16 @@ class DetailEducationProgramTmp extends Component {
               subjects={this.props.subjects}
               infoEduProgram={infoEduProgram}
               detailEduProgram={this.props.detailEduProgram}
-              targetNodes={this.props.targetEduProgram}
               outcomeStandards={this.props.outcomeStandards}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
-              onLoadDetailOutcomeStandard={this.props.onLoadDetailOutcomeStandard}
+              onLoadDetailOutcomeStandard={
+                this.props.onLoadDetailOutcomeStandard
+              }
               onSaveEduProgram={this.props.onSaveEduProgram}
-            />
-          </Col>
-        </Row>
+              contentNodes={this.props.contentNodes}
+            />{" "}
+          </Col>{" "}
+        </Row>{" "}
       </Container>
     );
   }
@@ -107,18 +108,21 @@ const mapStateToProps = state => ({
   subjects: state.subjects,
   infoEduProgram: state.infoEduProgram,
   detailEduProgram: state.detailEduProgram,
-  targetEduProgram: state.targetEduProgram
+  contentNodes: state.contentNodes
 });
 
-export default connect(mapStateToProps, {
-  onLoadLevels: levelsAction.onLoadLevels,
-  onLoadMajors: majorsAction.onLoadMajors,
-  onLoadPrograms: programsAction.onLoadPrograms,
-  onLoadSubjects: subjectsAction.onLoadSubjects,
-  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
-  onLoadDetailOutcomeStandard: detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
-
-  onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
-  onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
-  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
-})(DetailEducationProgramTmp);
+export default connect(
+  mapStateToProps,
+  {
+    onLoadLevels: levelsAction.onLoadLevels,
+    onLoadMajors: majorsAction.onLoadMajors,
+    onLoadPrograms: programsAction.onLoadPrograms,
+    onLoadSubjects: subjectsAction.onLoadSubjects,
+    onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
+    onLoadDetailOutcomeStandard:
+      detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
+    onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
+    onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
+    onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
+  }
+)(DetailEducationProgramTmp);

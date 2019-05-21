@@ -23,13 +23,19 @@ export const onloadScheduleProgram = idDetail => {
         if (scheduleNodes) {
           dispatch(loadScheduleProgramSuccess(scheduleNodes));
         } else {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadScheduleProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải kế hoạch giảng dạy thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải kế hoạch giảng dạy thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadScheduleProgramError(err));
       });
@@ -56,7 +62,9 @@ export const onSaveScheduleProgram = scheduleProgram => {
     params.data = JSON.stringify(scheduleProgram.scheduleNodes);
     axios
       .post(req, params, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
       .then(res => {
         if (res.data.code === 1) {
@@ -84,7 +92,8 @@ export const onSaveScheduleProgram = scheduleProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveScheduleProgramError(scheduleProgram.scheduleNodes, err));
+        dispatch(saveScheduleProgramError(scheduleProgram.scheduleNodes,
+          err));
       });
   };
 };

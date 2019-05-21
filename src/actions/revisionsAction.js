@@ -21,7 +21,10 @@ export const onLoadRevisions = idOutcomeStandard => {
       .then(res => {
         const revisions = res.data.data;
         if (revisions === undefined || revisions === null) {
-          let chirp = { message: `Chưa có dữ liệu`, isRight: 0 };
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(loadRevisionsError(res));
         } else {
@@ -29,7 +32,10 @@ export const onLoadRevisions = idOutcomeStandard => {
         }
       })
       .catch(err => {
-        let chirp = { message: `Tải các phiên bản thất bại`, isRight: 0 };
+        let chirp = {
+          message: `Tải các phiên bản thất bại`,
+          isRight: 0
+        };
         dispatch(message.message(chirp));
         dispatch(loadRevisionsError(err));
       });
@@ -50,7 +56,10 @@ export const deleteRevisionError = errorMessage => ({
 export const onDeleteRevision = (idRevision, idOutcome, nodes) => {
   return (dispatch, getState) => {
     if (idOutcome < 1) {
-      let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+      let chirp = {
+        message: `Xóa phiên bản thất bại`,
+        isRight: 0
+      };
       dispatch(message.message(chirp));
       dispatch(deleteRevisionError("Chưa đủ dữ liệu"));
     } else {
@@ -59,18 +68,27 @@ export const onDeleteRevision = (idRevision, idOutcome, nodes) => {
         .post(req)
         .then(res => {
           if (res.data.code === 1) {
-            let chirp = { message: `Xóa phiên bản thành công`, isRight: 1 };
+            let chirp = {
+              message: `Xóa phiên bản thành công`,
+              isRight: 1
+            };
             dispatch(onLoadRevisions(idOutcome));
             dispatch(message.message(chirp));
             dispatch(deleteRevisionSuccess(res, nodes));
           } else {
-            let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+            let chirp = {
+              message: `Xóa phiên bản thất bại`,
+              isRight: 0
+            };
             dispatch(message.message(chirp));
             dispatch(deleteRevisionError(res));
           }
         })
         .catch(err => {
-          let chirp = { message: `Xóa phiên bản thất bại`, isRight: 0 };
+          let chirp = {
+            message: `Xóa phiên bản thất bại`,
+            isRight: 0
+          };
           dispatch(message.message(chirp));
           dispatch(deleteRevisionError(err));
         });
