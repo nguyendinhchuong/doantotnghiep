@@ -164,7 +164,6 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
       convertTreenodeToArr(nodes[i].children, arr);
     }
   }
-  return arr;
 };
 
 export const deteleSubject = (subjects, subject) => {
@@ -330,18 +329,15 @@ export const updateBlocks = (subjects, ...agru) => {
     if (subject.nameBlock.startsWith("BB") && agru[0]) {
       subject.nameBlock += `( ${agru[0]} )`;
       subject.isAccumulation = agru[2];
-    }
-    else if (subject.nameBlock.startsWith("TC") && agru[1]) {
+    } else if (subject.nameBlock.startsWith("TC") && agru[1]) {
       subject.nameBlock += `( ${agru[1]} ) : Học ${agru[4]} chỉ`;
       subject.isAccumulation = agru[3];
       subject.optionCredit = agru[4];
-    }
-    else if(subject.nameBlock.startsWith("TC")){
+    } else if (subject.nameBlock.startsWith("TC")) {
       subject.nameBlock += `: Học ${agru[4]} chỉ`;
       subject.isAccumulation = agru[3];
       subject.optionCredit = agru[4];
-    }
-    else{
+    } else {
       subject.isAccumulation = agru[2];
     }
     return arr.concat(subject);

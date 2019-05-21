@@ -62,8 +62,10 @@ export const onSaveContentProgram = contentProgram => {
       contentProgram.iddetail
     }`;
     let params = {};
-    console.log(contentProgram);
-    const data = logicEdu.convertTreenodeToArr(contentProgram.contentNodes);
+    console.log(contentProgram.contentNodes);
+    let data = [];
+    logicEdu.convertTreenodeToArr(contentProgram.contentNodes, data);
+    console.log(data);
     params.data = JSON.stringify(data);
     axios
       .post(req, params, {
@@ -86,8 +88,7 @@ export const onSaveContentProgram = contentProgram => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(saveContentProgramError(contentProgram.contentNodes,
-            res));
+          dispatch(saveContentProgramError(contentProgram.contentNodes, res));
         }
       })
       .catch(err => {
@@ -96,8 +97,7 @@ export const onSaveContentProgram = contentProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveContentProgramError(contentProgram.contentNodes,
-          err));
+        dispatch(saveContentProgramError(contentProgram.contentNodes, err));
       });
   };
 };
