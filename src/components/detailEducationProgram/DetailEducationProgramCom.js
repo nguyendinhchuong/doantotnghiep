@@ -173,7 +173,7 @@ export default class DetailEducationProgramCom extends React.Component {
 
     const contentNodes = this.ContentProgramCom.current.state.nodes;
     if (JSON.stringify(contentNodes) !== JSON.stringify(nextProps.contentNodes))
-      this.ContentProgramCom.current.getContentNodes(nextProps.contentNodes);
+      this.ContentProgramCom.current.getContentNodes(nextProps.contentNodes, nextProps.subjects);
 
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
     if (

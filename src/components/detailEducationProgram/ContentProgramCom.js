@@ -46,8 +46,10 @@ export default class ContentProgramCom extends React.Component {
   }
 
   // get targetNodes from redux
-  getContentNodes = contentNodes => {
-    // this.setState({ nodes: contentNodes });
+  getContentNodes = (contentNodes, subjects) => {
+    let contents = logic.convertDbToTreeNodes(contentNodes, subjects);
+    contents = this.loadTreeNodes(contents);
+    this.setState({ nodes: contents });
   };
   // end get targetNodes from redux
 
