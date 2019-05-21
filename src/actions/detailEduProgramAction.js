@@ -49,6 +49,35 @@ export const onLoadDetailEduProgram = id => {
   };
 };
 
+export const onLoadDetailEduProgramAfterSave = id => {
+  return (dispatch, getState) => {
+    let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
+    axios
+      .get(req)
+      .then(res => {
+        const detailEduProgram = res.data.data;
+        if (detailEduProgram) {
+          dispatch(loadDetailEduProgramSuccess(detailEduProgram));
+        } else {
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(loadDetailEduProgramError(res));
+        }
+      })
+      .catch(err => {
+        let chirp = {
+          message: `Tải chi tiết CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+        dispatch(loadDetailEduProgramError(err));
+      });
+  };
+};
+
 export const saveDetailEduProgramSuccess = successMessage => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_SUCCESS,
   successMessage
@@ -85,13 +114,14 @@ export const onSaveDetailEduProgram = data => {
             isRight: 1
           };
           // where to put actions LOL
-          // dispatch(contentAction.onSaveContentProgram(data
-          //   .contentProgram));
-          dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
-          dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
+          dispatch(contentAction.onSaveContentProgram(data.contentProgram));
+          // dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+          // dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
 
-          dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+          // dispatch(message.message(chirp));
+          // dispatch(
+          //   onLoadDetailEduProgramAfterSave(data.detailEduProgram.ideduprogram)
+          // );
           dispatch(saveDetailEduProgramSuccess(res));
         } else {
           let chirp = {
@@ -105,7 +135,7 @@ export const onSaveDetailEduProgram = data => {
       })
       .catch(err => {
         let chirp = {
-          message: `Lưu chi tiết CTĐT thành công`,
+          message: `Lưu chi tiết CTĐT thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));

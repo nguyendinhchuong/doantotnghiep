@@ -20,7 +20,6 @@ export const onLoadTargetProgram = idDetail => {
       .get(req)
       .then(res => {
         const targetNodes = res.data.data;
-        console.log(targetNodes);
         if (targetNodes) {
           dispatch(loadTargetProgramSuccess(targetNodes));
         } else {

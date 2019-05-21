@@ -163,6 +163,7 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
     if (nodes[i].children) {
       convertTreenodeToArr(nodes[i].children, arr);
     }
+    return arr;
   }
 };
 

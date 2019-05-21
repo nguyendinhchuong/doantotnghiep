@@ -50,10 +50,15 @@ export const saveContentProgramSuccess = successMessage => ({
   successMessage
 });
 
-export const saveContentProgramError = (contentNodes, errorMessage) => ({
+// export const saveContentProgramError = (contentNodes, errorMessage) => ({
+//   type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
+//   errorMessage,
+//   contentNodes
+// });
+
+export const saveContentProgramError = errorMessage => ({
   type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
-  errorMessage,
-  contentNodes
+  errorMessage
 });
 
 export const onSaveContentProgram = contentProgram => {
@@ -63,10 +68,7 @@ export const onSaveContentProgram = contentProgram => {
     }`;
     let params = {};
     console.log(contentProgram.contentNodes);
-    let data = [];
-    logicEdu.convertTreenodeToArr(contentProgram.contentNodes, data);
-    console.log(data);
-    params.data = JSON.stringify(data);
+    params.data = JSON.stringify(contentProgram.contentNodes);
     axios
       .post(req, params, {
         headers: {
@@ -80,7 +82,7 @@ export const onSaveContentProgram = contentProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(onLoadContentProgram(contentProgram.iddetail));
+          // dispatch(onLoadContentProgram(contentProgram.iddetail));
           dispatch(saveContentProgramSuccess(res));
         } else {
           let chirp = {
@@ -88,7 +90,8 @@ export const onSaveContentProgram = contentProgram => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(saveContentProgramError(contentProgram.contentNodes, res));
+          // dispatch(saveContentProgramError(contentProgram.contentNodes, res));
+          dispatch(saveContentProgramError(res));
         }
       })
       .catch(err => {
@@ -97,7 +100,8 @@ export const onSaveContentProgram = contentProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveContentProgramError(contentProgram.contentNodes, err));
+        // dispatch(saveContentProgramError(contentProgram.contentNodes, err));
+        dispatch(saveContentProgramError(err));
       });
   };
 };

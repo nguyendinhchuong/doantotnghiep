@@ -149,7 +149,8 @@ export const onSaveEduProgram = data => {
     axios
       .post(
         `${links.SAVE_EDUPROGRAM}?ideduprog=${data.infoEduProgram.ideduprog}`,
-        params, {
+        params,
+        {
           headers: {
             "Content-Type": "application/json"
           }
@@ -161,8 +162,7 @@ export const onSaveEduProgram = data => {
             message: `Lưu thông tin CTĐT thành công`,
             isRight: 1
           };
-          dispatch(message.message(chirp));
-          dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
+          // dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(res));
           dispatch(detailEduProgramAction.onSaveDetailEduProgram(data));
         } else {

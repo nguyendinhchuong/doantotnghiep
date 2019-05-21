@@ -80,7 +80,7 @@ export const onSaveScheduleProgram = scheduleProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(onloadScheduleProgram(scheduleProgram.iddetail));
+          // dispatch(onloadScheduleProgram(scheduleProgram.iddetail));
           dispatch(saveScheduleProgramSuccess(res));
         } else {
           let chirp = {
