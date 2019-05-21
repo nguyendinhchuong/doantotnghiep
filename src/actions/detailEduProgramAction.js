@@ -26,10 +26,8 @@ export const onLoadDetailEduProgram = id => {
         if (detailEduProgram) {
           dispatch(loadDetailEduProgramSuccess(detailEduProgram));
           // where to put actions LOL
-          dispatch(contentAction.onLoadContentProgram(detailEduProgram
-            .Id));
-          dispatch(scheduleAction.onloadScheduleProgram(detailEduProgram
-            .Id));
+          dispatch(contentAction.onLoadContentProgram(detailEduProgram.Id));
+          dispatch(scheduleAction.onloadScheduleProgram(detailEduProgram.Id));
           dispatch(targetAction.onLoadTargetProgram(detailEduProgram.Id));
         } else {
           let chirp = {
@@ -86,24 +84,22 @@ export const onSaveDetailEduProgram = data => {
             message: `Lưu chi tiết CTĐT thành công`,
             isRight: 1
           };
-          dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(data.detailEduProgram
-            .ideduprogram));
-          dispatch(saveDetailEduProgramSuccess(res));
           // where to put actions LOL
-          dispatch(contentAction.onSaveContentProgram(data
-            .contentProgram));
-          dispatch(scheduleAction.onSaveScheduleProgram(data
-            .scheduleProgram));
+          // dispatch(contentAction.onSaveContentProgram(data
+          //   .contentProgram));
+          dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
           dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
+
+          dispatch(message.message(chirp));
+          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+          dispatch(saveDetailEduProgramSuccess(res));
         } else {
           let chirp = {
             message: `Lưu chi tiết CTĐT thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(data.detailEduProgram
-            .ideduprogram));
+          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
           dispatch(saveDetailEduProgramError(res));
         }
       })
@@ -113,8 +109,7 @@ export const onSaveDetailEduProgram = data => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(onLoadDetailEduProgram(data.detailEduProgram
-          .ideduprogram));
+        dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
         dispatch(saveDetailEduProgramError(err));
       });
   };

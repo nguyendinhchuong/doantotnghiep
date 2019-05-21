@@ -37,8 +37,8 @@ export const SAVE_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/update/`;
 export const LOAD_CONTENT_EDUPROGRAM = `${LINK}/eduprogcontent/get/`;
 export const SAVE_CONTENT_EDUPROGRAM = `${LINK}/eduprogcontent/add/`;
 
-export const LOAD_SCHEDULE_EDUPROGRAM = `${LINK}/eduprogschedule/get/`;
-export const SAVE_SCHEDULE_EDUPROGRAM = `${LINK}/eduprogschedule/add/`;
+export const LOAD_SCHEDULE_EDUPROGRAM = `${LINK}/teachplanblock/getdetail/`;
+export const SAVE_SCHEDULE_EDUPROGRAM = `${LINK}/teachplanblock/update/`;
 
 export const LOAD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/get/`;
 export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/update/`;

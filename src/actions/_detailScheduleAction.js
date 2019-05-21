@@ -3,6 +3,8 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
+import * as scheduleLogic from "../business/logicScheduleEdu";
+
 export const loadScheduleProgramSuccess = scheduleNodes => ({
   type: cst.LOAD_SCHEDULE_EDUPROGRAM_SUCCESS,
   scheduleNodes
@@ -15,11 +17,16 @@ export const loadScheduleProgramError = errorMessage => ({
 
 export const onloadScheduleProgram = idDetail => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_SCHEDULE_EDUPROGRAM}?ideduprog=${idDetail}`;
+    let req = `${links.LOAD_SCHEDULE_EDUPROGRAM}?iddetailedu=${idDetail}`;
     axios
       .get(req)
       .then(res => {
-        const scheduleNodes = res.data;
+        const data = res.data.data;
+        const scheduleNodes = scheduleLogic.mapSubjectsToScheduleNodes(
+          data,
+          getState().subjects
+        );
+
         if (scheduleNodes) {
           dispatch(loadScheduleProgramSuccess(scheduleNodes));
         } else {
@@ -55,7 +62,7 @@ export const saveScheduleProgramError = (scheduleNodes, errorMessage) => ({
 
 export const onSaveScheduleProgram = scheduleProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_SCHEDULE_EDUPROGRAM}?ideduprog=${
+    let req = `${links.SAVE_SCHEDULE_EDUPROGRAM}?iddetailedu=${
       scheduleProgram.iddetail
     }`;
     let params = {};
@@ -92,8 +99,7 @@ export const onSaveScheduleProgram = scheduleProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveScheduleProgramError(scheduleProgram.scheduleNodes,
-          err));
+        dispatch(saveScheduleProgramError(scheduleProgram.scheduleNodes, err));
       });
   };
 };

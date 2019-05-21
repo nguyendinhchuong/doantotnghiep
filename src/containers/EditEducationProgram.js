@@ -90,6 +90,8 @@ class DetailEducationProgramTmp extends Component {
               }
               onSaveEduProgram={this.props.onSaveEduProgram}
               contentNodes={this.props.contentNodes}
+              scheduleNodes={this.props.scheduleNodes}
+              targetNodes={this.props.targetNodes}
             />{" "}
           </Col>{" "}
         </Row>{" "}
@@ -108,7 +110,9 @@ const mapStateToProps = state => ({
   subjects: state.subjects,
   infoEduProgram: state.infoEduProgram,
   detailEduProgram: state.detailEduProgram,
-  contentNodes: state.contentNodes
+  contentNodes: state.contentNodes,
+  scheduleNodes: state.scheduleNodes,
+  targetNodes: state.targetNodes
 });
 
 export default connect(

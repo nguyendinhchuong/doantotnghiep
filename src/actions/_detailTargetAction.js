@@ -15,12 +15,12 @@ export const loadTargetProgramError = errorMessage => ({
 
 export const onLoadTargetProgram = idDetail => {
   return (dispatch, getState) => {
-    let req =
-      `${links.LOAD_TARGET_EDUPROGRAM}?iddetaileduprogram=${idDetail}`;
+    let req = `${links.LOAD_TARGET_EDUPROGRAM}?iddetaileduprogram=${idDetail}`;
     axios
       .get(req)
       .then(res => {
-        const targetNodes = res.data;
+        const targetNodes = res.data.data;
+        console.log(targetNodes);
         if (targetNodes) {
           dispatch(loadTargetProgramSuccess(targetNodes));
         } else {
@@ -82,8 +82,7 @@ export const onSaveTargetProgram = targetProgram => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(saveTargetProgramError(targetProgram.targetNodes,
-          res));
+          dispatch(saveTargetProgramError(targetProgram.targetNodes, res));
         }
       })
       .catch(err => {

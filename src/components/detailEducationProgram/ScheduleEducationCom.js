@@ -32,7 +32,7 @@ export default class ScheduleEducationCom extends React.Component {
 
   // get targetNodes from redux
   getScheduleNodes = scheduleNodes => {
-    // this.setState({ semesters: scheduleNodes });
+    this.setState({ semesters: scheduleNodes });
   };
   // end get targetNodes from redux
 
@@ -138,7 +138,7 @@ export default class ScheduleEducationCom extends React.Component {
       filterSubjects: logic.filterSubjects(
         e,
         this.state.block &&
-        Object.keys(this.state.groupSubjectsFrom7).includes(this.state.block)
+          Object.keys(this.state.groupSubjectsFrom7).includes(this.state.block)
           ? this.state.groupSubjectsFrom7[this.state.block]
           : this.state.subjectsFrom7
       )
@@ -188,7 +188,7 @@ export default class ScheduleEducationCom extends React.Component {
     return (
       <InputText
         type="text"
-        value={props.rowData.note}
+        value={props.rowData.Note}
         onChange={e =>
           this.onEditorValueChange(props, e.target.value, semester)
         }
@@ -251,7 +251,7 @@ export default class ScheduleEducationCom extends React.Component {
         <Column field="PracticePeriod" style={{ textAlign: "center" }} />
         <Column field="ExercisePeriod" style={{ textAlign: "center" }} />
         <Column
-          field="note"
+          field="Note"
           editor={(props, value) =>
             this.noteEditor(props, value, data.semester)
           }

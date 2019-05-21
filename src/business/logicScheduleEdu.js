@@ -86,3 +86,21 @@ export const onRowSubjectReorder = (subjects, semester, semesters) => {
   data[index].subjects = [...subjects];
   return data;
 };
+
+export const mapSubjectsToScheduleNodes = (scheduleNodes, subjects) => {
+  const tmpNodes = scheduleNodes
+    .filter(row => row.semester > 0)
+    .map(row => {
+      const newSubjects = row.subjects.map(subject => {
+        for (let i in subjects) {
+          if (subject.IdSubject === subjects[i].Id) {
+            const { Id, ...rest } = subjects[i];
+            return { ...subject, ...rest };
+          }
+        }
+      });
+      return { semester: row.semester, subjects: newSubjects };
+    });
+  tmpNodes.sort(sortSemester);
+  return tmpNodes;
+};
