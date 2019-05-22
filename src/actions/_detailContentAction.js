@@ -60,7 +60,6 @@ export const onSaveContentProgram = contentProgram => {
       contentProgram.iddetail
     }`;
     let params = {};
-    console.log(contentProgram.contentNodes);
     params.data = JSON.stringify(contentProgram.contentNodes);
     axios
       .post(req, params, {
@@ -75,7 +74,13 @@ export const onSaveContentProgram = contentProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(onLoadContentProgram(contentProgram.iddetail));
+          // dispatch(onLoadContentProgram(contentProgram.iddetail));
+          dispatch(
+            saveContentProgramError(
+              { nodes: contentProgram.nodes, isRevert: true },
+              res
+            )
+          );
           dispatch(saveContentProgramSuccess(res));
         } else {
           let chirp = {
