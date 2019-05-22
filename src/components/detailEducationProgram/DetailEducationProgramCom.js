@@ -174,7 +174,7 @@ export default class DetailEducationProgramCom extends React.Component {
     if (nextProps.contentNodes.eduContents) {
       this.ContentProgramCom.current.getContentNodes(
         nextProps.contentNodes,
-        this.props.subjects
+        nextProps.subjects
       );
     } else if (nextProps.contentNodes.isRevert) {
       this.ContentProgramCom.current.getContentNodesFromRevert(
