@@ -293,6 +293,7 @@ export const deleteSubjectTable = (nodes, subject) => {
   }
   const parentNode = common.findNodeByKey(root, keyParent);
   parentNode.data.subjects = deteleSubject(parentNode.data.subjects, subject);
+  parentNode.data.totalCredits = totalCreditsOfTable(parentNode.data.subjects);
   root = common.updateNode(root, parentNode);
   return root;
 };
