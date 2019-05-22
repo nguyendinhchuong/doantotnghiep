@@ -171,7 +171,6 @@ export default class DetailEducationProgramCom extends React.Component {
   componentWillReceiveProps(nextProps) {
     const data = event.receiveProps(nextProps);
 
-    // const contentNodes = this.ContentProgramCom.current.state.nodes;
     if (nextProps.contentNodes.eduContents) {
       this.ContentProgramCom.current.getContentNodes(
         nextProps.contentNodes,

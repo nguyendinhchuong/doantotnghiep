@@ -118,18 +118,16 @@ export const onSaveDetailEduProgram = data => {
           // dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
           // dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
 
-          // dispatch(message.message(chirp));
-          // dispatch(
-          //   onLoadDetailEduProgramAfterSave(data.detailEduProgram.ideduprogram)
-          // );
+          dispatch(message.message(chirp));
           dispatch(saveDetailEduProgramSuccess(res));
+          // dispatch(onLoadDetailEduProgramAfterSave(data.detailEduProgram.ideduprogram));
         } else {
           let chirp = {
             message: `Lưu chi tiết CTĐT thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+          // dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
           dispatch(saveDetailEduProgramError(res));
         }
       })
@@ -139,7 +137,7 @@ export const onSaveDetailEduProgram = data => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+        // dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
         dispatch(saveDetailEduProgramError(err));
       });
   };

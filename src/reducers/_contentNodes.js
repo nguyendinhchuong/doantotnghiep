@@ -7,8 +7,7 @@ export const contentNodes = (state = {}, action) => {
     case types.LOAD_CONTENT_EDUPROGRAM_ERROR:
       return {};
     case types.SAVE_CONTENT_EDUPROGRAM_ERROR:
-      // return action.contentNodes;
-      return {};
+      return action.contentNodes;
     default:
       return state;
   }

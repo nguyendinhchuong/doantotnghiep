@@ -162,7 +162,7 @@ export const onSaveEduProgram = data => {
             message: `Lưu thông tin CTĐT thành công`,
             isRight: 1
           };
-          // dispatch(message.message(chirp));
+          dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(res));
           dispatch(detailEduProgramAction.onSaveDetailEduProgram(data));
         } else {
@@ -171,7 +171,7 @@ export const onSaveEduProgram = data => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
+          // dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
           dispatch(saveEduProgramError(res));
         }
       })
@@ -181,7 +181,7 @@ export const onSaveEduProgram = data => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
+        // dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
         dispatch(saveEduProgramError(err));
       });
   };

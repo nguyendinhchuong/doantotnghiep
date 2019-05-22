@@ -3,8 +3,6 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
-import * as logicEdu from "../business/logicEducationProgram";
-
 export const loadContentProgramSuccess = contentNodes => ({
   type: cst.LOAD_CONTENT_EDUPROGRAM_SUCCESS,
   contentNodes
@@ -91,7 +89,6 @@ export const onSaveContentProgram = contentProgram => {
               res
             )
           );
-          dispatch(saveContentProgramError(res));
         }
       })
       .catch(err => {
@@ -104,7 +101,6 @@ export const onSaveContentProgram = contentProgram => {
           { nodes: contentProgram.nodes, isRevert: true },
           err
         );
-        dispatch(saveContentProgramError(err));
       });
   };
 };

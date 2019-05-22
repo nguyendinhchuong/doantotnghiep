@@ -375,6 +375,11 @@ export default class ContentProgramCom extends React.Component {
       });
   };
 
+  isCanAdd = node => {
+    if (node.children[0]) if (node.children[0].data.isTable) return false;
+    return true;
+  };
+
   // Template
   actionTemplate(node, column) {
     return (
@@ -390,15 +395,17 @@ export default class ContentProgramCom extends React.Component {
           </Button>
         ) : (
           <span>
-            <Button
-              onClick={() => this.isShowDialogChild(node)}
-              onMouseOver={() => this.mouseOver(node)}
-              theme="success"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Thêm cấp con của ${this.state.nodeHover}`}
-            >
-              <i className="material-icons">add</i>
-            </Button>
+            {this.isCanAdd(node) && (
+              <Button
+                onClick={() => this.isShowDialogChild(node)}
+                onMouseOver={() => this.mouseOver(node)}
+                theme="success"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title={`Thêm cấp con của ${this.state.nodeHover}`}
+              >
+                <i className="material-icons">add</i>
+              </Button>
+            )}
             <Button
               onClick={() => this.upSameLevel(node)}
               onMouseOver={() => this.mouseOverUp(node)}
@@ -508,6 +515,7 @@ export default class ContentProgramCom extends React.Component {
   );
 
   render() {
+    console.log(this.state.nodes);
     return (
       <div>
         <TreeTable value={this.state.nodes}>
