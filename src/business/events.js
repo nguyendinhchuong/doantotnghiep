@@ -128,6 +128,7 @@ export const parseDataForSaveEduProgram = (
 ) => {
   const datecreated = new Date().toISOString();
   const contentProgram = {
+    nodes: contentNodes,
     contentNodes: logicEduContent.convertTreenodeToArr(contentNodes),
     iddetail,
     datecreated

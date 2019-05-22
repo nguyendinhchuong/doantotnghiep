@@ -55,7 +55,7 @@ export const saveTargetProgramError = (targetNodes, errorMessage) => ({
 
 export const onSaveTargetProgram = targetProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_TARGET_EDUPROGRAM}?ideduprog=${
+    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
       targetProgram.iddetail
     }`;
     let params = {};
@@ -73,7 +73,7 @@ export const onSaveTargetProgram = targetProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(onLoadTargetProgram(targetProgram.iddetail));
+          // dispatch(onLoadTargetProgram(targetProgram.iddetail));
           dispatch(saveTargetProgramSuccess(res));
         } else {
           let chirp = {

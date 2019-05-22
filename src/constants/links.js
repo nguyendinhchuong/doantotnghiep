@@ -41,6 +41,7 @@ export const LOAD_SCHEDULE_EDUPROGRAM = `${LINK}/teachplanblock/getdetail/`;
 export const SAVE_SCHEDULE_EDUPROGRAM = `${LINK}/teachplanblock/update/`;
 
 export const LOAD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/get/`;
+export const ADD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/add/`;
 export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/update/`;
 
 // subjects links

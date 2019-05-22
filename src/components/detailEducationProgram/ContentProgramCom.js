@@ -51,6 +51,10 @@ export default class ContentProgramCom extends React.Component {
     contents = this.loadTreeNodes(contents);
     this.setState({ nodes: contents });
   };
+
+  getContentNodesFromRevert = contentNodes => {
+    this.setState({ nodes: contentNodes.nodes });
+  };
   // end get targetNodes from redux
 
   // Add

@@ -50,15 +50,10 @@ export const saveContentProgramSuccess = successMessage => ({
   successMessage
 });
 
-// export const saveContentProgramError = (contentNodes, errorMessage) => ({
-//   type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
-//   errorMessage,
-//   contentNodes
-// });
-
-export const saveContentProgramError = errorMessage => ({
+export const saveContentProgramError = (contentNodes, errorMessage) => ({
   type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
-  errorMessage
+  errorMessage,
+  contentNodes
 });
 
 export const onSaveContentProgram = contentProgram => {
@@ -76,13 +71,13 @@ export const onSaveContentProgram = contentProgram => {
         }
       })
       .then(res => {
-        if (res.data.code === 1) {
+        if (res.data.code === "OK") {
           let chirp = {
             message: `Lưu nội dung chương trình thành công`,
             isRight: 1
           };
           dispatch(message.message(chirp));
-          // dispatch(onLoadContentProgram(contentProgram.iddetail));
+          dispatch(onLoadContentProgram(contentProgram.iddetail));
           dispatch(saveContentProgramSuccess(res));
         } else {
           let chirp = {
@@ -90,7 +85,12 @@ export const onSaveContentProgram = contentProgram => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-          // dispatch(saveContentProgramError(contentProgram.contentNodes, res));
+          dispatch(
+            saveContentProgramError(
+              { nodes: contentProgram.nodes, isRevert: true },
+              res
+            )
+          );
           dispatch(saveContentProgramError(res));
         }
       })
@@ -100,7 +100,10 @@ export const onSaveContentProgram = contentProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        // dispatch(saveContentProgramError(contentProgram.contentNodes, err));
+        saveContentProgramError(
+          { nodes: contentProgram.nodes, isRevert: true },
+          err
+        );
         dispatch(saveContentProgramError(err));
       });
   };

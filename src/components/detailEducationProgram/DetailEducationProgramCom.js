@@ -171,11 +171,16 @@ export default class DetailEducationProgramCom extends React.Component {
     const data = event.receiveProps(nextProps);
 
     // const contentNodes = this.ContentProgramCom.current.state.nodes;
-    if (nextProps.contentNodes.eduContents)
+    if (nextProps.contentNodes.eduContents) {
       this.ContentProgramCom.current.getContentNodes(
         nextProps.contentNodes,
         this.props.subjects
       );
+    } else if (nextProps.contentNodes.isRevert) {
+      this.ContentProgramCom.current.getContentNodesFromRevert(
+        nextProps.contentNodes
+      );
+    }
 
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
     if (
