@@ -160,11 +160,11 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
       node.children = [];
     }
     arr.push(node);
-    if (nodes[i].children) {
+    if (nodes[i].children.length) {
       convertTreenodeToArr(nodes[i].children, arr);
     }
-    return arr;
   }
+  return arr;
 };
 
 export const deteleSubject = (subjects, subject) => {
