@@ -515,7 +515,6 @@ export default class ContentProgramCom extends React.Component {
   );
 
   render() {
-    console.log(this.state.nodes);
     return (
       <div>
         <TreeTable value={this.state.nodes}>

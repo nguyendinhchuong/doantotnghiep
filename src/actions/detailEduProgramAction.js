@@ -116,7 +116,7 @@ export const onSaveDetailEduProgram = data => {
           // dispatch(message.message(chirp));
           // where to put actions LOL
           dispatch(contentAction.onSaveContentProgram(data.contentProgram));
-          // dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+          dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
           // dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
 
           dispatch(saveDetailEduProgramSuccess(res));
