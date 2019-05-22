@@ -54,6 +54,12 @@ export const saveContentProgramError = (contentNodes, errorMessage) => ({
   contentNodes
 });
 
+const afterSaveContentProgram = (contentNodes, errorMessage) => ({
+  type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
+  errorMessage,
+  contentNodes
+});
+
 export const onSaveContentProgram = contentProgram => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${
@@ -76,7 +82,7 @@ export const onSaveContentProgram = contentProgram => {
           dispatch(message.message(chirp));
           // dispatch(onLoadContentProgram(contentProgram.iddetail));
           dispatch(
-            saveContentProgramError(
+            afterSaveContentProgram(
               { nodes: contentProgram.nodes, isRevert: true },
               res
             )

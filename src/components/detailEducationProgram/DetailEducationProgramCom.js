@@ -194,6 +194,8 @@ export default class DetailEducationProgramCom extends React.Component {
     if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))
       this.TargetEducationCom.current.getTargetNodes(nextProps.targetNodes);
 
+    this.refreshCate6();
+
     this.setState({
       nameEduProgram: data.nameEduProgram,
       major: data.major,

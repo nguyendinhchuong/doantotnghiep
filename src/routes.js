@@ -11,6 +11,7 @@ import EditOutcomeStandard from "./containers/EditOutcomeStandard";
 import SubjectManage from "./containers/SubjectManage";
 import FaProManage from "./containers/FaProManage";
 import UserManage from "./containers/UserManage";
+import TeachingManage from "./containers/TeachingManage";
 
 export default [
   {
@@ -60,5 +61,11 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: UserManage
+  },
+  {
+    path: "/teaching-manage",
+    exact: true,
+    layout: DefaultLayout,
+    component: TeachingManage
   }
 ];

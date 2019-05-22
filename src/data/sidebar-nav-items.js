@@ -24,6 +24,11 @@ export default function() {
       title: "Quản lý người dùng",
       htmlBefore: '<i class="material-icons">supervisor_account</i>',
       to: "/user-manage"
+    },
+    {
+      title: "Phân công giáo viên",
+      htmlBefore: '<i class="material-icons">assignment_ind</i>',
+      to: "/teaching-manage"
     }
   ];
 }

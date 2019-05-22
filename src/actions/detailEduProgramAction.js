@@ -109,35 +109,32 @@ export const onSaveDetailEduProgram = data => {
       })
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = {
-            message: `Lưu chi tiết CTĐT thành công`,
-            isRight: 1
-          };
+          // let chirp = {
+          //   message: `Lưu chi tiết CTĐT thành công`,
+          //   isRight: 1
+          // };
+          // dispatch(message.message(chirp));
           // where to put actions LOL
           dispatch(contentAction.onSaveContentProgram(data.contentProgram));
           // dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
           // dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
 
-          dispatch(message.message(chirp));
           dispatch(saveDetailEduProgramSuccess(res));
-          // dispatch(onLoadDetailEduProgramAfterSave(data.detailEduProgram.ideduprogram));
         } else {
-          let chirp = {
-            message: `Lưu chi tiết CTĐT thất bại`,
-            isRight: 0
-          };
-          dispatch(message.message(chirp));
-          // dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+          // let chirp = {
+          //   message: `Lưu chi tiết CTĐT thất bại`,
+          //   isRight: 0
+          // };
+          // dispatch(message.message(chirp));
           dispatch(saveDetailEduProgramError(res));
         }
       })
       .catch(err => {
-        let chirp = {
-          message: `Lưu chi tiết CTĐT thất bại`,
-          isRight: 0
-        };
-        dispatch(message.message(chirp));
-        // dispatch(onLoadDetailEduProgram(data.detailEduProgram.ideduprogram));
+        // let chirp = {
+        //   message: `Lưu chi tiết CTĐT thất bại`,
+        //   isRight: 0
+        // };
+        // dispatch(message.message(chirp));
         dispatch(saveDetailEduProgramError(err));
       });
   };
