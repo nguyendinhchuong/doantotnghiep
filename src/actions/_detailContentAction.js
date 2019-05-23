@@ -54,8 +54,8 @@ export const saveContentProgramError = (contentNodes, errorMessage) => ({
   contentNodes
 });
 
-const afterSaveContentProgram = (contentNodes, errorMessage) => ({
-  type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
+const afterSaveContentProgramSuccess = (contentNodes, errorMessage) => ({
+  type: cst.SAVE_CONTENT_EDUPROGRAM_SUCCESS,
   errorMessage,
   contentNodes
 });
@@ -75,19 +75,12 @@ export const onSaveContentProgram = contentProgram => {
       })
       .then(res => {
         if (res.data.code === "OK") {
-          let chirp = {
-            message: `Lưu nội dung chương trình thành công`,
-            isRight: 1
-          };
-          dispatch(message.message(chirp));
-          // dispatch(onLoadContentProgram(contentProgram.iddetail));
           dispatch(
-            afterSaveContentProgram(
+            afterSaveContentProgramSuccess(
               { nodes: contentProgram.nodes, isRevert: true },
               res
             )
           );
-          dispatch(saveContentProgramSuccess(res));
         } else {
           let chirp = {
             message: `Lưu nội dung chương trình thất bại`,

@@ -75,12 +75,6 @@ export const onSaveScheduleProgram = scheduleProgram => {
       })
       .then(res => {
         if (res.data.code === 1) {
-          let chirp = {
-            message: `Lưu kế hoạch giảng dạy thành công`,
-            isRight: 1
-          };
-          dispatch(message.message(chirp));
-          // dispatch(onloadScheduleProgram(scheduleProgram.iddetail));
           dispatch(saveScheduleProgramSuccess(res));
         } else {
           let chirp = {

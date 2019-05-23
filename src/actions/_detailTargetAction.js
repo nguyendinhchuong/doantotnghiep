@@ -3,6 +3,9 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
+import * as commonLogic from "../business/commonEducation";
+import * as logic from "../business/";
+
 export const loadTargetProgramSuccess = targetNodes => ({
   type: cst.LOAD_TARGET_EDUPROGRAM_SUCCESS,
   targetNodes
@@ -59,7 +62,14 @@ export const onSaveTargetProgram = targetProgram => {
       targetProgram.iddetail
     }`;
     let params = {};
-    params.data = JSON.stringify(targetProgram.targetNodes);
+    const outdata = [];
+    const level = logic.getMaxLevel(targetProgram.targetNodes);
+    commonLogic.createSaveDataForTarget(targetProgram.targetNodes, outdata, level);
+
+    console.error(outdata)
+
+
+    params.data = JSON.stringify(outdata);
     axios
       .post(req, params, {
         headers: {
@@ -73,7 +83,6 @@ export const onSaveTargetProgram = targetProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          // dispatch(onLoadTargetProgram(targetProgram.iddetail));
           dispatch(saveTargetProgramSuccess(res));
         } else {
           let chirp = {

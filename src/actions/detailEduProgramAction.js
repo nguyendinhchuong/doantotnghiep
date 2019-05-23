@@ -83,10 +83,9 @@ export const saveDetailEduProgramSuccess = successMessage => ({
   successMessage
 });
 
-export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
+export const saveDetailEduProgramError = errorMessage => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_ERROR,
-  errorMessage,
-  detailEduProgram
+  errorMessage
 });
 
 // infoEduProgram,
@@ -94,6 +93,9 @@ export const saveDetailEduProgramError = (detailEduProgram, errorMessage) => ({
 // contentProgram,
 // scheduleProgram,
 // targetProgram
+
+
+
 export const onSaveDetailEduProgram = data => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
@@ -109,33 +111,37 @@ export const onSaveDetailEduProgram = data => {
       })
       .then(res => {
         if (res.data.code === 1) {
-          // let chirp = {
-          //   message: `Lưu chi tiết CTĐT thành công`,
-          //   isRight: 1
-          // };
-          // dispatch(message.message(chirp));
+          dispatch(saveDetailEduProgramSuccess(res));
           // where to put actions LOL
           dispatch(contentAction.onSaveContentProgram(data.contentProgram));
           dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
-          // dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
-
-          dispatch(saveDetailEduProgramSuccess(res));
+          dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
         } else {
-          // let chirp = {
-          //   message: `Lưu chi tiết CTĐT thất bại`,
-          //   isRight: 0
-          // };
-          // dispatch(message.message(chirp));
           dispatch(saveDetailEduProgramError(res));
+          let chirp = {
+            message: `Lưu các danh mục CTĐT thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
         }
       })
       .catch(err => {
-        // let chirp = {
-        //   message: `Lưu chi tiết CTĐT thất bại`,
-        //   isRight: 0
-        // };
-        // dispatch(message.message(chirp));
         dispatch(saveDetailEduProgramError(err));
+        let chirp = {
+          message: `Lưu các danh mục CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
       });
   };
 };
+
+// Promise.resolve(
+//   dispatch(contentAction.onSaveContentProgram(data.contentProgram))
+// ).then(() => {
+//   Promise.resolve(
+//     dispatch(targetAction.onSaveTargetProgram(data.targetProgram))
+//   ).then(() => {
+//       dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram))
+//   });
+// });

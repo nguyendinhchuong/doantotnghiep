@@ -158,29 +158,24 @@ export const onSaveEduProgram = data => {
       )
       .then(res => {
         if (res.data.code === 1) {
-          // let chirp = {
-          //   message: `Lưu thông tin CTĐT thành công`,
-          //   isRight: 1
-          // };
-          // dispatch(message.message(chirp));
           dispatch(saveEduProgramSuccess(res));
           dispatch(detailEduProgramAction.onSaveDetailEduProgram(data));
         } else {
-          // let chirp = {
-          //   message: `Lưu thông tin CTĐT thất bại`,
-          //   isRight: 0
-          // };
-          // dispatch(message.message(chirp));
           dispatch(saveEduProgramError(res));
+          let chirp = {
+          message: `Lưu CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
         }
       })
       .catch(err => {
-        // let chirp = {
-        //   message: `Lưu thông tin CTĐT thất bại`,
-        //   isRight: 0
-        // };
-        // dispatch(message.message(chirp));
         dispatch(saveEduProgramError(err));
+        let chirp = {
+          message: `Lưu CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
       });
   };
 };
