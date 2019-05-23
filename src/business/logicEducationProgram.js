@@ -385,7 +385,7 @@ export const totalCreditsOfTable = subjects => {
 };
 
 export const convertDbToTreeNodes = (data, subjects) => {
-  const contentPro = [...data.eduContents];
+  const contentPro = sortKeyRow([...data.eduContents]);
   const blocks = [...data.subjectBlocks];
   const detailBlocks = [...data.detailBlocks];
   // convert -> nodes
@@ -432,6 +432,17 @@ const findParentNode = (nodes, key) => {
   }
   return common.findNodeByKey(nodes, parentKey);
 };
+
+const sortKeyRow = arr =>{
+  return arr.sort((a, b) => {
+    const key1 = a.KeyRow;
+    const key2 = b.KeyRow;
+    if (key1 === key2) {
+      return key1.localeCompare(key2);
+    }
+    return key1.length - key2.length;
+  });
+}
 
 const findNode = (nodes, key) => {
   // case root = 7.1.... => 1.1...
