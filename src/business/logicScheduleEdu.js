@@ -44,8 +44,11 @@ const sortSemester = (a, b) => {
 export const addSemester = (semester, subjects, semesters) => {
   let data = [...semesters];
 
+  console.error(subjects);
+
   const newSubjects = subjects.map(ele => {
-    ele.note = ele.note ? ele.note : "";
+    ele.Note = ele.Note ? ele.Note : "";
+    ele.Optional = ele.option ? ele.option : "BB";
     return ele;
   });
 
@@ -88,20 +91,18 @@ export const onRowSubjectReorder = (subjects, semester, semesters) => {
 };
 
 export const mapSubjectsToScheduleNodes = (scheduleNodes, subjects) => {
-  console.error(scheduleNodes)
-  const tmpNodes = scheduleNodes
-    .filter(row => row.semester > 0)
-    .map(row => {
-      const newSubjects = row.subjects.map(subject => {
-        for (let i in subjects) {
-          if (subject.IdSubject === subjects[i].Id) {
-            const { Id, ...rest } = subjects[i];
-            return { ...subject, ...rest };
-          }
+  console.error(scheduleNodes);
+  const tmpNodes = scheduleNodes.filter(row => row.semester > 0).map(row => {
+    const newSubjects = row.subjects.map(subject => {
+      for (let i in subjects) {
+        if (subject.IdSubject === subjects[i].Id) {
+          const { Id, ...rest } = subjects[i];
+          return { ...subject, ...rest };
         }
-      });
-      return { semester: row.semester, subjects: newSubjects };
+      }
     });
+    return { semester: row.semester, subjects: newSubjects };
+  });
   tmpNodes.sort(sortSemester);
   return tmpNodes;
 };

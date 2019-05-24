@@ -3,6 +3,8 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
+import * as scheduleAction from "./_detailScheduleAction";
+
 export const loadContentProgramSuccess = contentNodes => ({
   type: cst.LOAD_CONTENT_EDUPROGRAM_SUCCESS,
   contentNodes
@@ -20,7 +22,6 @@ export const onLoadContentProgram = idDetail => {
       .get(req)
       .then(res => {
         const contentNodes = res.data.data;
-        // const { eduContents, subjectBlocks, detailBlocks } = contentNodes;
         if (contentNodes) {
           dispatch(loadContentProgramSuccess(contentNodes));
         } else {
@@ -48,26 +49,18 @@ export const saveContentProgramSuccess = successMessage => ({
   successMessage
 });
 
-export const saveContentProgramError = (contentNodes, errorMessage) => ({
+export const saveContentProgramError = errorMessage => ({
   type: cst.SAVE_CONTENT_EDUPROGRAM_ERROR,
-  errorMessage,
-  contentNodes
+  errorMessage
 });
 
-const afterSaveContentProgramSuccess = (contentNodes, errorMessage) => ({
-  type: cst.SAVE_CONTENT_EDUPROGRAM_SUCCESS,
-  errorMessage,
-  contentNodes
-});
-
-export const onSaveContentProgram = contentProgram => {
+export const onSaveContentProgram = data => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${
-      contentProgram.iddetail
+      data.contentProgram.iddetail
     }`;
     let params = {};
-    console.log(contentProgram.contentNodes);
-    params.data = JSON.stringify(contentProgram.contentNodes);
+    params.data = JSON.stringify(data.contentProgram.contentNodes);
     axios
       .post(req, params, {
         headers: {
@@ -76,36 +69,34 @@ export const onSaveContentProgram = contentProgram => {
       })
       .then(res => {
         if (res.data.code === "OK") {
-          dispatch(
-            afterSaveContentProgramSuccess(
-              { nodes: contentProgram.nodes, isRevert: true },
-              res
-            )
-          );
+          dispatch(scheduleAction.onSaveScheduleProgram(data));
+          dispatch(saveContentProgramSuccess(res));
         } else {
           let chirp = {
+            message: `Lưu CTĐT thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          chirp = {
             message: `Lưu nội dung chương trình thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(
-            saveContentProgramError(
-              { nodes: contentProgram.nodes, isRevert: true },
-              res
-            )
-          );
+          dispatch(saveContentProgramError(res));
         }
       })
       .catch(err => {
         let chirp = {
+          message: `Lưu CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+        chirp = {
           message: `Lưu nội dung chương trình thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));
-        saveContentProgramError(
-          { nodes: contentProgram.nodes, isRevert: true },
-          err
-        );
+        dispatch(saveContentProgramError(err));
       });
   };
 };

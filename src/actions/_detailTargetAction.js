@@ -50,24 +50,24 @@ export const saveTargetProgramSuccess = successMessage => ({
   successMessage
 });
 
-export const saveTargetProgramError = (targetNodes, errorMessage) => ({
+export const saveTargetProgramError = errorMessage => ({
   type: cst.SAVE_TARGET_EDUPROGRAM_ERROR,
-  targetNodes,
   errorMessage
 });
 
-export const onSaveTargetProgram = targetProgram => {
+export const onSaveTargetProgram = data => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
-      targetProgram.iddetail
+      data.targetProgram.iddetail
     }`;
     let params = {};
     const outdata = [];
-    const level = logic.getMaxLevel(targetProgram.targetNodes);
-    commonLogic.createSaveDataForTarget(targetProgram.targetNodes, outdata, level);
-
-    console.error(outdata)
-
+    const level = logic.getMaxLevel(data.targetProgram.targetNodes);
+    commonLogic.createSaveDataForTarget(
+      data.targetProgram.targetNodes,
+      outdata,
+      level
+    );
 
     params.data = JSON.stringify(outdata);
     axios
@@ -79,27 +79,37 @@ export const onSaveTargetProgram = targetProgram => {
       .then(res => {
         if (res.data.code === 1) {
           let chirp = {
-            message: `Lưu mục tiêu đào tạo thành công`,
+            message: `Lưu CTĐT thành công`,
             isRight: 1
           };
           dispatch(message.message(chirp));
           dispatch(saveTargetProgramSuccess(res));
         } else {
           let chirp = {
-            message: `Lưu mục tiêu đào tạo thất bại`,
+            message: `Lưu CTĐT thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(saveTargetProgramError(targetProgram.targetNodes, res));
+          chirp = {
+            message: `Lưu CTĐT thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(saveTargetProgramError(res));
         }
       })
       .catch(err => {
         let chirp = {
+          message: `Lưu CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+        chirp = {
           message: `Lưu mục tiêu đào tạo thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveTargetProgramError(targetProgram.targetNodes, err));
+        dispatch(saveTargetProgramError(err));
       });
   };
 };

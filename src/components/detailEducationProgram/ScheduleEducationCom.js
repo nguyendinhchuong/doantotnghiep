@@ -245,7 +245,7 @@ export default class ScheduleEducationCom extends React.Component {
       >
         <Column field="SubjectCode" />
         <Column field="SubjectName" />
-        <Column field="option" style={{ textAlign: "center" }} />
+        <Column field="Optional" style={{ textAlign: "center" }} />
         <Column field="Credit" style={{ textAlign: "center" }} />
         <Column field="TheoryPeriod" style={{ textAlign: "center" }} />
         <Column field="PracticePeriod" style={{ textAlign: "center" }} />

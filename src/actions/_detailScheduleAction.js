@@ -3,6 +3,8 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
+import * as targetAction from "./_detailTargetAction";
+
 import * as scheduleLogic from "../business/logicScheduleEdu";
 
 export const loadScheduleProgramSuccess = scheduleNodes => ({
@@ -54,19 +56,18 @@ export const saveScheduleProgramSuccess = successMessage => ({
   successMessage
 });
 
-export const saveScheduleProgramError = (scheduleNodes, errorMessage) => ({
+export const saveScheduleProgramError = errorMessage => ({
   type: cst.SAVE_SCHEDULE_EDUPROGRAM_ERROR,
-  errorMessage,
-  scheduleNodes
+  errorMessage
 });
 
-export const onSaveScheduleProgram = scheduleProgram => {
+export const onSaveScheduleProgram = data => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_SCHEDULE_EDUPROGRAM}?iddetailedu=${
-      scheduleProgram.iddetail
+      data.scheduleProgram.iddetail
     }`;
     let params = {};
-    params.data = JSON.stringify(scheduleProgram.scheduleNodes);
+    params.data = JSON.stringify(data.scheduleProgram.scheduleNodes);
     axios
       .post(req, params, {
         headers: {
@@ -75,25 +76,34 @@ export const onSaveScheduleProgram = scheduleProgram => {
       })
       .then(res => {
         if (res.data.code === 1) {
+          dispatch(targetAction.onSaveTargetProgram(data));
           dispatch(saveScheduleProgramSuccess(res));
         } else {
           let chirp = {
-            message: `Lưu kế hoạch giảng dạy thất bại`,
+            message: `Lưu CTĐT thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(
-            saveScheduleProgramError(scheduleProgram.scheduleNodes, res)
-          );
+          chirp = {
+            message: `Lưu kế hoạch giảng dạy CTĐT thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(saveScheduleProgramError(res));
         }
       })
       .catch(err => {
         let chirp = {
-          message: `Lưu kế hoạch giảng dạy thất bại`,
+          message: `Lưu CTĐT thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(saveScheduleProgramError(scheduleProgram.scheduleNodes, err));
+        chirp = {
+          message: `Lưu kế hoạch giảng dạy CTĐT thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+        dispatch(saveScheduleProgramError(err));
       });
   };
 };
